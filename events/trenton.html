@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crossing the Delaware &amp; Trenton</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="trenton">
+<main>
+  <header class="event-head">
+    <h1>Crossing the Delaware &amp; Trenton</h1>
+    <p class="meta">December 25–26, 1776 · Delaware River and Trenton, New Jersey</p>
+  </header>
+
+  <figure class="map">
+    <h2>The plan: three crossings, one success</h2>
+    <div class="map-canvas" id="map-crossings"></div>
+    <figcaption>
+      Washington planned three crossings for Christmas night. Only his own column, at McConkey's Ferry nine miles above Trenton, got across. At Birmingham it split in two to come at the town from two directions.
+      <ol>
+        <li>Main army (about 2,400 men), crossing from about 11 p.m. to 3 a.m.</li>
+        <li>Ewing's militia was to cross at Trenton Ferry and hold the Assunpink bridge, but was stopped by ice.</li>
+        <li>Cadwalader was to cross near Bristol against the posts around Bordentown. Some of his men got over but were recalled.</li>
+      </ol>
+      <span class="note-approx">The positions of the Bristol-area crossing and the Birmingham road junction are approximate.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>The attack on Trenton, about 8 a.m., December 26</h2>
+    <div class="map-canvas" id="map-attack"></div>
+    <figcaption>
+      Greene's column (with Washington) came in on the Pennington road, and Knox's guns at the head of King and Queen Streets swept both streets. Sullivan's column came along the River Road into the lower town and seized the Assunpink bridge.
+      <ol>
+        <li>Hessian outposts are driven in.</li>
+        <li>Rall's and Lossberg's regiments try to form in an orchard east of town. Rall is mortally wounded, and they surrender.</li>
+        <li>The Knyphausen regiment surrenders near the Assunpink. Several hundred Hessians escape over the bridge toward Bordentown before it is closed.</li>
+      </ol>
+      <span class="note-approx">Street lines follow the modern Warren Street (then King Street) and Broad Street (then Queen Street). Unit positions are schematic.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+HMap.render('#map-crossings', {
+  geo: 'trenton-crossings',
+  bbox: [-74.99, 40.06, -74.66, 40.33],
+  // modern dammed and quarry lakes
+  water: { hide: ['Van Sciver Lk', 'Manor Lk', 'Mercer County Lk', 'Lk Luxembourg', 'Springfield Lk', 'Carnegie Lk'], hideIn: [[-74.83, 40.13, -74.785, 40.185]] },
+  alt: 'Map of the Delaware River between Bristol and McConkey\'s Ferry showing the three planned crossings',
+  towns: [
+    { place: 'trenton' },
+    { place: 'mcconkeys-ferry', label: { dx: -8, dy: -6, anchor: 'end' } },
+    { place: 'bordentown' },
+    { place: 'burlington', label: { dx: 7, dy: 12 } },
+    { name: 'Bristol', coords: [-74.852, 40.100], kind: 'village', label: { dx: -7, dy: 4, anchor: 'end' } },
+    { name: 'Birmingham', coords: [-74.828, 40.270], kind: 'village', label: { dx: 7, dy: -4 } },
+    { name: 'Pennington', coords: [-74.791, 40.328], kind: 'village', label: { dx: 7, dy: 14 } }
+  ],
+  roads: [
+    { coords: [[-74.866, 40.293], [-74.850, 40.284], [-74.828, 40.270]] },
+    { coords: [[-74.828, 40.270], [-74.803, 40.250], [-74.775, 40.232], [-74.764, 40.226]] },
+    { coords: [[-74.828, 40.270], [-74.808, 40.255], [-74.788, 40.236], [-74.768, 40.221]] }
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', coords: [[-74.880, 40.300], [-74.862, 40.291]], width: 4 },
+    { side: 'continental', kind: 'march', label: 'Greene', labelAt: 0.55, coords: [[-74.826, 40.268], [-74.808, 40.258], [-74.792, 40.245], [-74.770, 40.229]] },
+    { side: 'continental', kind: 'march', label: 'Sullivan', labelAt: 0.5, coords: [[-74.830, 40.266], [-74.818, 40.252], [-74.797, 40.236], [-74.775, 40.222]] },
+    { side: 'continental', kind: 'march', label: 'from McConkey\'s Ferry', labelAt: 0.5, coords: [[-74.862, 40.291], [-74.845, 40.281], [-74.830, 40.271]] },
+    { side: 'militia', kind: 'march', approx: true, label: 'Ewing (failed)', coords: [[-74.800, 40.196], [-74.784, 40.205], [-74.773, 40.212]] },
+    { side: 'continental', kind: 'march', approx: true, label: 'Cadwalader (recalled)', coords: [[-74.905, 40.085], [-74.887, 40.088], [-74.870, 40.093]] }
+  ],
+  units: [
+    { side: 'hessian', coords: [-74.748, 40.212], label: 'Rall', labelPos: { dx: 18, dy: 4 } },
+    { side: 'hessian', coords: [-74.685, 40.155], label: 'Donop', labelPos: { dx: 18, dy: -8 } }
+  ],
+  callouts: [
+    { coords: [-74.894, 40.302], n: 1 },
+    { coords: [-74.810, 40.192], n: 2 },
+    { coords: [-74.925, 40.085], n: 3 }
+  ],
+  labels: [
+    { coords: [-74.935, 40.205], text: 'PENNSYLVANIA', kind: 'region' },
+    { coords: [-74.720, 40.275], text: 'NEW JERSEY', kind: 'region' },
+    { coords: [-74.952, 40.142], text: 'Delaware River', kind: 'water', angle: -58 },
+    { coords: [-74.705, 40.232], text: 'Assunpink Creek', kind: 'water', size: 12, angle: -15 }
+  ]
+});
+
+HMap.render('#map-attack', {
+  geo: 'trenton-attack',
+  bbox: [-74.792, 40.205, -74.742, 40.240],
+  terrain: { contours: 5 },
+  alt: 'Street-level map of Trenton showing the two American columns converging on the Hessian garrison',
+  roads: [
+    { name: 'King St.', coords: [[-74.7637, 40.2257], [-74.7660, 40.2215], [-74.7676, 40.2175]] },
+    { name: 'Queen St.', coords: [[-74.7637, 40.2257], [-74.7624, 40.2210], [-74.7608, 40.2170]] },
+    { name: 'Pennington Rd', coords: [[-74.7905, 40.2395], [-74.7800, 40.2340], [-74.7700, 40.2290], [-74.7637, 40.2257]] },
+    { name: 'Princeton Rd', coords: [[-74.7637, 40.2257], [-74.7560, 40.2300], [-74.7450, 40.2370]] },
+    { name: 'River Rd', coords: [[-74.7920, 40.2300], [-74.7840, 40.2265], [-74.7760, 40.2215], [-74.7700, 40.2178], [-74.7640, 40.2160]] },
+    { coords: [[-74.7608, 40.2170], [-74.7585, 40.2140], [-74.7520, 40.2085]] }
+  ],
+  towns: [
+    { name: 'Old Barracks', coords: [-74.7680, 40.2187], kind: 'building', label: { dx: -7, dy: 4, anchor: 'end' } },
+    { name: 'Assunpink bridge', coords: [-74.7604, 40.2168], kind: 'building', label: { dx: 8, dy: 12 } },
+    { name: 'The Hermitage', coords: [-74.7860, 40.2280], kind: 'building', label: { dx: 0, dy: -9, anchor: 'middle' } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'attack', label: 'Greene (with Washington)', coords: [[-74.7905, 40.2390], [-74.7790, 40.2335], [-74.7690, 40.2285], [-74.7650, 40.2266]] },
+    { side: 'continental', kind: 'attack', label: 'Stephen & Fermoy', labelAt: 0.55, coords: [[-74.7700, 40.2310], [-74.7630, 40.2318], [-74.7560, 40.2290]] },
+    { side: 'continental', kind: 'attack', label: 'Sullivan', labelAt: 0.4, coords: [[-74.7915, 40.2295], [-74.7830, 40.2255], [-74.7745, 40.2205], [-74.7660, 40.2172]] },
+    { side: 'continental', kind: 'march', label: 'St. Clair', labelAt: 0.5, coords: [[-74.7680, 40.2166], [-74.7640, 40.2158], [-74.7612, 40.2160]] },
+    { side: 'hessian', kind: 'retreat', label: 'escape to Bordentown', labelAt: 0.6, coords: [[-74.7600, 40.2160], [-74.7570, 40.2125], [-74.7500, 40.2075]] },
+    { side: 'hessian', kind: 'retreat', coords: [[-74.7700, 40.2310], [-74.7665, 40.2280]] }
+  ],
+  units: [
+    { side: 'continental', type: 'artillery', coords: [-74.7643, 40.2264], label: 'Knox\'s guns', labelPos: { dx: -18, dy: -10, anchor: 'end' } },
+    { side: 'hessian', coords: [-74.7650, 40.2210], label: 'Knyphausen', angle: -70, labelPos: { dx: -14, dy: 4, anchor: 'end' } },
+    { side: 'hessian', coords: [-74.7585, 40.2240], label: 'Rall', angle: 20 },
+    { side: 'hessian', coords: [-74.7578, 40.2215], label: 'Lossberg', angle: 20 }
+  ],
+  battles: [ { coords: [-74.7590, 40.2262], label: 'Orchard' } ],
+  callouts: [
+    { coords: [-74.7725, 40.2330], n: 1 },
+    { coords: [-74.7545, 40.2250], n: 2 },
+    { coords: [-74.7625, 40.2185], n: 3 }
+  ],
+  labels: [
+    { coords: [-74.7790, 40.2110], text: 'Delaware River', kind: 'water', angle: -28 },
+    { coords: [-74.7520, 40.2150], text: 'Assunpink Creek', kind: 'water', size: 12.5, angle: -32 }
+  ]
+});
+</script>
+</body>
+</html>

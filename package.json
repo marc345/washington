@@ -1,0 +1,18 @@
+{
+  "name": "washington-maps",
+  "private": true,
+  "description": "Geographic companion to Chernow's Washington: A Life. Dev tooling only; the site itself has no build step.",
+  "scripts": {
+    "serve": "npx http-server -p 8080 -c-1 .",
+    "vendor": "node tools/vendor.mjs"
+  },
+  "devDependencies": {
+    "d3": "^7.9.0",
+    "http-server": "^14.1.1",
+    "leaflet": "1.9",
+    "mapshaper": "^0.7.72",
+    "playwright": "^1.63.0",
+    "pngjs": "^7.0.0",
+    "topojson-client": "^3.1.0"
+  }
+}

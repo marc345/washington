@@ -1,0 +1,132 @@
+/* Shared styles: page chrome + map (hm-*) classes. */
+:root {
+  --paper: #f3ead3;
+  --paper-2: #e9dcbc;
+  --ink: #2b2118;
+  --ink-soft: #5d4b39;
+  --rule: #c4ab7c;
+  --accent: #7a1f1a;
+  --land: #efe3c4;
+  --sea: #bccfd0;
+  --sea-edge: #7d9ea3;
+  --river: #6f9298;
+  --contour: #a08a63;
+  --road: #8b6b45;
+  --serif: "EB Garamond", Garamond, Georgia, serif;
+  --display: "IM Fell English", "EB Garamond", Georgia, serif;
+  --gutter: 16px;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  background-image: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,.35), transparent 60%);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 18px;
+  line-height: 1.45;
+}
+a { color: var(--accent); }
+a:hover { text-decoration-thickness: 2px; }
+
+.site-header {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 10px var(--gutter);
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper-2);
+  font-size: 16px;
+}
+.site-header .home { font-family: var(--display); font-size: 19px; color: var(--ink); text-decoration: none; }
+.site-header .home::before { content: "← "; color: var(--accent); }
+.site-header .spacer { flex: 1; }
+.pager { display: flex; gap: 14px; }
+.pager a { text-decoration: none; white-space: nowrap; }
+
+main { max-width: 1180px; margin: 0 auto; padding: 18px var(--gutter) 48px; }
+
+.event-head h1 {
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(28px, 5vw, 44px); line-height: 1.1; margin: 8px 0 4px;
+}
+.event-head .meta { color: var(--ink-soft); font-style: italic; margin: 0 0 6px; }
+.event-head .lede { max-width: 46em; margin: 6px 0 18px; }
+
+figure.map {
+  margin: 0 0 36px;
+  padding: 12px;
+  background: #f8f1df;
+  border: 1px solid var(--rule);
+  box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 6px 18px rgba(60,40,10,.08);
+}
+figure.map h2 {
+  font-family: var(--display); font-weight: 400; font-size: clamp(21px, 3.2vw, 27px);
+  margin: 2px 2px 10px;
+}
+.map-canvas { width: 100%; min-height: 120px; }
+.map-canvas svg { display: block; width: 100%; height: auto; }
+figure.map figcaption { font-size: 16.5px; margin: 8px 2px 0; max-width: 52em; }
+figure.map figcaption ol { margin: 6px 0 0; padding-left: 1.4em; }
+figure.map figcaption li { margin: 2px 0; }
+figure.map .note-approx { color: var(--ink-soft); font-style: italic; font-size: 15px; }
+
+.hm-legend {
+  list-style: none; margin: 10px 2px 0; padding: 8px 0 0;
+  border-top: 1px dotted var(--rule);
+  display: flex; flex-wrap: wrap; gap: 4px 18px;
+  font-size: 15px;
+}
+.hm-legend li { display: flex; align-items: center; gap: 6px; }
+.hm-legend svg { width: 28px; height: 14px; flex: none; overflow: visible; }
+
+.site-footer {
+  border-top: 1px solid var(--rule); padding: 14px var(--gutter) 28px;
+  color: var(--ink-soft); font-size: 14px; text-align: center;
+}
+.site-footer .pager { justify-content: space-between; max-width: 1180px; margin: 0 auto 12px; font-size: 16px; }
+
+/* ---------- SVG map ---------- */
+.hmap { font-family: var(--serif); }
+.hm-sea { fill: var(--sea); }
+.hm-land { fill: var(--land); stroke: #8c7a5c; stroke-width: .6; }
+.hm-land-fix { stroke: none; }
+.hm-water { fill: var(--sea); stroke: var(--sea-edge); stroke-width: .5; }
+.hm-rivers path { fill: none; stroke: var(--river); stroke-linecap: round; stroke-linejoin: round; }
+.hm-contour { fill: none; stroke: var(--contour); stroke-opacity: .55; }
+.hm-contour-index { stroke-opacity: .85; }
+.hm-road { fill: none; stroke: var(--road); stroke-linecap: round; }
+.hm-move-casing { fill: none; stroke: #fffaf0; stroke-opacity: .75; stroke-linecap: round; stroke-linejoin: round; }
+.hm-move { stroke-linejoin: round; }
+.hm-sym-town { fill: var(--ink); }
+.hm-sym-building { fill: #fffaf0; stroke: var(--ink); stroke-width: 1.2; }
+.hm-sym-church { stroke: var(--ink); fill: none; }
+.hm-sym-ferry { fill: #fffaf0; stroke: var(--ink); stroke-width: 1.2; }
+.hm-sym-hq { fill: #d7a52e; stroke: var(--ink); stroke-width: 1; }
+.hm-battle { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; }
+.hm-callout { fill: var(--ink); stroke: #fffaf0; stroke-width: 1.5; }
+.hm-callout-n { fill: #fffaf0; font-weight: 700; font-family: var(--serif); }
+.hm-frame { fill: none; stroke: var(--ink); stroke-width: 2; }
+.hm-frame-inner { stroke-width: .8; }
+.hm-north-arrow { fill: var(--ink); }
+.hm-scale-bg { fill: rgba(248, 241, 223, .85); stroke: var(--rule); stroke-width: .8; }
+.hm-scale-bar { fill: none; stroke: var(--ink); }
+
+.hm-lbl { fill: var(--ink); paint-order: stroke; stroke: rgba(248, 241, 223, .9); stroke-width: 3px; stroke-linejoin: round; }
+.hm-lbl-place { font-weight: 500; }
+.hm-lbl-town { font-weight: 600; letter-spacing: .02em; }
+.hm-lbl-water { fill: #3e6870; font-style: italic; letter-spacing: .12em; stroke: rgba(188, 207, 208, .8); }
+.hm-lbl-region { fill: var(--ink-soft); text-transform: uppercase; letter-spacing: .28em; font-weight: 500; }
+.hm-lbl-terrain { fill: #6e5531; font-style: italic; }
+.hm-lbl-note { fill: var(--ink-soft); font-style: italic; }
+.hm-lbl-unit { font-weight: 600; }
+.hm-lbl-area { fill: var(--ink-soft); font-style: italic; font-weight: 600; }
+.hm-lbl-road { fill: #6b4f2e; font-style: italic; }
+.hm-lbl-battle { fill: var(--accent); font-weight: 700; font-style: italic; }
+.hm-lbl-move { fill: var(--ink); font-style: italic; font-weight: 600; paint-order: stroke; stroke: rgba(248, 241, 223, .92); stroke-width: 3px; }
+
+@media (max-width: 640px) {
+  body { font-size: 17px; }
+  figure.map { padding: 8px; margin: 0 calc(-1 * var(--gutter) + 4px) 28px; }
+  .site-header .pager { width: 100%; justify-content: space-between; }
+}
