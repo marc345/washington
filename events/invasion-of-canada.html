@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Invasion of Canada</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="invasion-of-canada">
+<main>
+  <header class="event-head">
+    <h1>Invasion of Canada</h1>
+    <p class="meta">September 1775 – October 1776 · Maine, the St. Lawrence valley and Lake Champlain</p>
+  </header>
+
+  <figure class="map">
+    <h2>Autumn 1775: two roads to Quebec</h2>
+    <div class="map-canvas" id="map-routes"></div>
+    <figcaption>
+      Montgomery went north by the Lake Champlain–Richelieu waterway toward Montreal. Arnold took about 1,100 men up the Kennebec and over the mountains to strike Quebec from the south. Only about 600 of them got there.
+      <ol>
+        <li>Sep 25 – Oct 9: Arnold's bateaux work up the Kennebec from Fort Western past Norridgewock Falls.</li>
+        <li>Oct 11–16: the Great Carrying Place, a 12-mile portage by way of three ponds to the Dead River.</li>
+        <li>Oct 21–25: a flood swamps the Dead River camps. Enos's rear division turns back with much of the food.</li>
+        <li>Oct 26 – Nov 3: over the Height of Land to Lake Megantic, then down the Chaudière rapids to the first French farms at Sartigan.</li>
+        <li>Nov 13–14: Arnold crosses the St. Lawrence by night from Pointe-Lévis to Wolfe's Cove.</li>
+        <li>Sep 17 – Nov 3: siege of St. Johns. Chambly falls on Oct 18, and St. Johns surrenders two weeks later.</li>
+        <li>Nov 13: Montgomery enters Montreal. Carleton slips downriver to Quebec.</li>
+        <li>Dec 2–3: Montgomery joins Arnold at Pointe-aux-Trembles, and they close in on Quebec together.</li>
+      </ol>
+      <span class="note-approx">Routes are drawn at campaign scale and follow the rivers only roughly. The portage and Height of Land legs are approximate.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>The assault on Quebec, before dawn, December 31, 1775</h2>
+    <div class="map-canvas" id="map-quebec"></div>
+    <figcaption>
+      In a snowstorm, two columns struck the Lower Town from opposite ends while feints held the walled Upper Town's garrison in place. The plan was to meet in the Lower Town and climb into the upper city together.
+      <ol>
+        <li>Feints: Brown at the Cape Diamond bastion and Livingston's Canadians at St. John's Gate. Signal rockets go up at about 4 a.m.</li>
+        <li>Montgomery leads his column along the narrow shore path under Cape Diamond. Grapeshot from the blockhouse at Près-de-Ville kills him, and his column falls back.</li>
+        <li>Arnold's column passes under the walls by the St. Charles shore. He is wounded at the first barricade, and Morgan takes it.</li>
+        <li>Morgan's men are stopped at the second barricade in Sault-au-Matelot street.</li>
+        <li>Troops sent out of Palace Gate retake the first barricade behind them. Morgan's party, more than 400 men, is trapped and surrenders by about 10 a.m.</li>
+      </ol>
+      <span class="note-approx">Shorelines are reconstructed by hand: the Lower Town waterfront, Pointe-à-Carcy and the St. Charles flats are later landfill. The wall trace follows the surviving fortifications, and the barricade sites are approximate.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>May – October 1776: retreat up the Richelieu and the fight for the lake</h2>
+    <div class="map-canvas" id="map-retreat"></div>
+    <figcaption>
+      British reinforcements reached Quebec on May 6, and the American siege army, weakened by smallpox, fled upriver. By early July the survivors were back at Crown Point and Ticonderoga. Both sides then built fleets to control Lake Champlain.
+      <ol>
+        <li>May 6: the siege is abandoned in haste.</li>
+        <li>May 19–20: the American post at the Cedars, west of Montreal, surrenders.</li>
+        <li>Jun 8: an American counterattack at Trois-Rivières is routed.</li>
+        <li>Jun 15–18: Arnold leaves Montreal, and St. Johns and Chambly are abandoned and burned. The army rests at the fever-ridden Île aux Noix, then goes on up the lake.</li>
+        <li>Oct 11–13: Carleton's new fleet sails south from St. Johns and catches Arnold's flotilla at Valcour Island (see next map).</li>
+      </ol>
+      <span class="note-approx">Retreat routes are schematic.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>Valcour Island, October 11–12, 1776</h2>
+    <div class="map-canvas" id="map-valcour"></div>
+    <figcaption>
+      Arnold anchored his 15 vessels in a line across the channel behind Valcour Island. The British fleet sailed past the island with the wind behind it and had to beat back up into the wind to attack. The fight lasted from late morning until dark.
+      <ol>
+        <li>The schooner <i>Royal Savage</i> runs aground on the island and is burned. The gondola <i>Philadelphia</i> sinks that evening.</li>
+        <li>The British line closes the southern exit, with Indian allies firing from the island and the shore.</li>
+        <li>On the night of the 11th the Americans slip past the British line in fog, in single file close to the western shore.</li>
+        <li>Oct 13: overtaken near Split Rock, Arnold runs his last boats aground at Ferris Bay, about 30 miles south, and burns them. He then marches his men to Crown Point.</li>
+      </ol>
+      <span class="note-approx">Ship positions are schematic. Lake levels are modern but close to those of 1776.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+// Slightly smaller map text on phones, where these maps are crowded.
+const SMALL = () => window.innerWidth < 600;
+
+// Lake Megantic is missing from the campaign-scale lake data; outline from OpenStreetMap, simplified.
+const MEGANTIC = [[-70.939,45.546],[-70.907,45.543],[-70.901,45.53],[-70.888,45.526],[-70.893,45.52],[-70.884,45.51],[-70.891,45.507],[-70.89,45.496],[-70.903,45.488],[-70.894,45.479],[-70.89,45.455],[-70.877,45.453],[-70.866,45.456],[-70.875,45.484],[-70.869,45.49],[-70.869,45.524],[-70.9,45.56],[-70.895,45.568],[-70.882,45.573],[-70.926,45.589],[-70.916,45.572],[-70.922,45.555]].reverse();
+const ROUTES_BBOX = [-74.3, 43.35, -69.4, 47.05];
+
+// Arnold's route, traced along the Kennebec, Dead and Chaudière rivers
+const ARNOLD_1 = [[-69.771, 44.316], [-69.70, 44.43], [-69.624, 44.556], [-69.617, 44.675], [-69.699, 44.778], [-69.795, 44.735], [-69.874, 44.826], [-69.844, 44.919], [-69.861, 45.025], [-69.907, 45.087], [-69.953, 45.12], [-69.975, 45.205]];
+const ARNOLD_2 = [[-69.975, 45.205], [-70.06, 45.20], [-70.18, 45.195], [-70.328, 45.201], [-70.451, 45.191], [-70.529, 45.251], [-70.604, 45.298], [-70.70, 45.355], [-70.80, 45.385], [-70.87, 45.46]];
+const ARNOLD_3 = [[-70.87, 45.46], [-70.885, 45.53], [-70.886, 45.58], [-70.80, 45.659], [-70.736, 45.718], [-70.676, 45.763], [-70.637, 45.824], [-70.652, 45.93], [-70.662, 46.006], [-70.665, 46.11], [-70.738, 46.195], [-70.887, 46.298], [-71.041, 46.44], [-71.12, 46.55], [-71.17, 46.70], [-71.17, 46.79]];
+
+HMap.render('#map-routes', {
+  geo: 'invasion-of-canada-routes',
+  bbox: ROUTES_BBOX,
+  get textScale() { return SMALL() ? 0.8 : 1; },
+  alt: 'Map of northern New England and the St. Lawrence valley showing Arnold\'s route up the Kennebec and down the Chaudière, and Montgomery\'s route down Lake Champlain to Montreal, both ending at Quebec',
+  corrections: { water: [MEGANTIC] },
+  towns: [
+    { place: 'quebec', label: { dx: -9, dy: -8, anchor: 'end' } },
+    { place: 'montreal', label: { dx: -9, dy: -6, anchor: 'end' } },
+    { place: 'st-johns', side: 'british', label: { dx: 10, dy: 5 } },
+    { name: 'Chambly', coords: [-73.294, 45.448], kind: 'fort', side: 'british', label: { dx: 10, dy: -2 } },
+    { name: 'Île aux Noix', coords: [-73.264, 45.124], kind: 'village', label: { dx: 8, dy: 5 } },
+    { place: 'fort-ticonderoga', side: 'continental', label: { dx: 10, dy: 5 } },
+    { place: 'crown-point', side: 'continental', label: { dx: 10, dy: 4 } },
+    { name: 'Pointe-aux-Trembles', coords: [-71.585, 46.698], kind: 'village', label: { dx: -6, dy: -8, anchor: 'end' } },
+    { name: 'Fort Western', coords: [-69.771, 44.316], kind: 'fort', side: 'continental', label: { dx: -10, dy: 4, anchor: 'end' } },
+    { name: 'Norridgewock', coords: [-69.791, 44.713], kind: 'village', label: { dx: -7, dy: 4, anchor: 'end' } },
+    { name: 'Sartigan', coords: [-70.672, 46.123], kind: 'village', label: { dx: 8, dy: 4 } },
+    { name: 'Pointe-Lévis', coords: [-71.17, 46.795], kind: 'village', label: { dx: 8, dy: 12 } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'naval', label: 'by sea from Newburyport', labelAt: 0.3, coords: [[-70.75, 43.36], [-70.20, 43.55], [-69.80, 43.75], [-69.775, 44.06], [-69.765, 44.25]] },
+    { side: 'continental', kind: 'march', label: 'Arnold', labelAt: 0.18, coords: ARNOLD_1 },
+    { side: 'continental', kind: 'march', approx: true, coords: ARNOLD_2 },
+    { side: 'continental', kind: 'march', label: 'Arnold', labelAt: 0.4, coords: ARNOLD_3 },
+    { side: 'continental', kind: 'march', straight: true, coords: [[-71.175, 46.80], [-71.205, 46.80]], width: 2 },
+    { side: 'continental', kind: 'retreat', label: 'Enos turns back', labelAt: 0.55, approx: true, coords: [[-70.38, 45.155], [-70.15, 45.10], [-69.97, 45.03], [-69.90, 44.96]] },
+    { side: 'continental', kind: 'naval', label: 'Montgomery', labelAt: 0.5, coords: [[-73.40, 43.86], [-73.42, 44.10], [-73.38, 44.45], [-73.33, 44.85], [-73.27, 45.10]] },
+    { side: 'continental', kind: 'march', coords: [[-73.25, 45.32], [-73.40, 45.42], [-73.50, 45.47]] },
+    { side: 'continental', kind: 'naval', label: 'Montgomery', labelAt: 0.3, coords: [[-73.48, 45.56], [-73.15, 45.95], [-72.80, 46.20], [-72.30, 46.42], [-71.90, 46.62], [-71.62, 46.69]] },
+    { side: 'continental', kind: 'march', coords: [[-71.57, 46.71], [-71.40, 46.77], [-71.24, 46.80]] }
+  ],
+  callouts: [
+    { coords: [-69.55, 44.43], n: 1 },
+    { coords: [-70.03, 45.29], n: 2 },
+    { coords: [-70.38, 45.03], n: 3 },
+    { coords: [-70.96, 45.38], n: 4 },
+    { coords: [-71.02, 46.87], n: 5 },
+    { coords: [-73.05, 45.25], n: 6 },
+    { coords: [-73.72, 45.66], n: 7 },
+    { coords: [-71.72, 46.58], n: 8 }
+  ],
+  labels: [
+    { coords: [-72.2, 45.75], text: 'PROVINCE OF QUEBEC', kind: 'region' },
+    { coords: [-73.95, 44.35], text: 'NEW YORK', kind: 'region', size: 11 },
+    { coords: [-72.2, 44.15], text: 'NEW HAMPSHIRE\nGRANTS', kind: 'region', size: 11 },
+    { coords: [-70.75, 44.30], text: 'MAINE\n(MASS.)', kind: 'region', size: 11 },
+    { coords: [-71.85, 46.42], text: 'St. Lawrence', kind: 'water', angle: -27 },
+    { coords: [-73.17, 44.55], text: 'Lake Champlain', kind: 'water', angle: -82, size: 12.5 },
+    { coords: [-73.06, 45.7], text: 'Richelieu R.', kind: 'water', angle: -78, size: 11.5 },
+    { coords: [-70.06, 44.98], text: 'Kennebec R.', kind: 'water', angle: -72, size: 11.5 },
+    { coords: [-71.05, 45.47], text: 'L. Megantic', kind: 'water', size: 11, anchor: 'end' }
+  ]
+});
+
+// Quebec: the base land data is too coarse here, so the land outline comes from the
+// elevation grid (6 m contour) and the period shoreline is restored with water patches.
+fetch('../data/geo/invasion-of-canada-quebec-shore.json').then(r => r.json()).then(shore => {
+  HMap.render('#map-quebec', {
+    geo: 'invasion-of-canada-quebec',
+    bbox: [-71.234, 46.7975, -71.196, 46.8225],
+    terrain: { contours: 10, exaggeration: 2.5 },
+    alt: 'Map of Quebec City showing the walled Upper Town, the Lower Town below the cliffs, and the two American columns attacking the Lower Town from opposite ends',
+    corrections: { water: [
+      // Lower Town waterfront, Pointe-à-Carcy and St. Charles estuary as in 1775
+      [[-71.2205, 46.7930], [-71.2196, 46.7975], [-71.2160, 46.8003], [-71.2125, 46.8027], [-71.2100, 46.8043], [-71.2072, 46.8068], [-71.2053, 46.8091], [-71.2037, 46.8109], [-71.2027, 46.8124], [-71.2024, 46.8140], [-71.2028, 46.8155], [-71.2042, 46.8167], [-71.2070, 46.8174], [-71.2110, 46.8178], [-71.2160, 46.8182], [-71.2210, 46.8188], [-71.2260, 46.8194], [-71.2305, 46.8200],
+       [-71.2305, 46.8214], [-71.2270, 46.8238], [-71.2200, 46.8243], [-71.2150, 46.8250], [-71.2105, 46.8268], [-71.2075, 46.8292], [-71.2052, 46.8320], [-71.2048, 46.8360], [-71.1960, 46.8360], [-71.1960, 46.7930]]
+    ] },
+    lines: [
+      { coords: [[-71.2305, 46.8207], [-71.2345, 46.8212], [-71.2380, 46.8200], [-71.2420, 46.8196], [-71.2460, 46.8205]], color: '#9dbcbf', width: 3.5 }
+    ],
+    works: [
+      // west wall from Cape Diamond to the cliff above St-Roch, then along the cliff (Côte du Palais)
+      { side: 'british', coords: [[-71.2090, 46.8062], [-71.2103, 46.8071], [-71.2118, 46.8086], [-71.2114, 46.8095], [-71.2129, 46.8110], [-71.2125, 46.8118], [-71.2131, 46.8127], [-71.2140, 46.8133], [-71.2135, 46.8140], [-71.2144, 46.8151]] },
+      { side: 'british', coords: [[-71.2144, 46.8151], [-71.2116, 46.8158], [-71.2087, 46.8162], [-71.2067, 46.8162], [-71.2045, 46.8160]] },
+      { side: 'british', kind: 'line', coords: [[-71.2104, 46.8036], [-71.2094, 46.8048]] },
+      { side: 'british', kind: 'line', coords: [[-71.2058, 46.8171], [-71.2052, 46.8160]] },
+      { side: 'british', kind: 'line', coords: [[-71.2040, 46.8144], [-71.2029, 46.8138]] }
+    ],
+    towns: [
+      { name: 'Palace Gate', coords: [-71.2128, 46.8155], kind: 'building', label: { dx: -6, dy: -8, anchor: 'end' } },
+      { name: "St. John's Gate", coords: [-71.2131, 46.8127], kind: 'building', label: { dx: -7, dy: -5, anchor: 'end' } },
+      { name: "St. Louis Gate", coords: [-71.2114, 46.8095], kind: 'building', label: { dx: -7, dy: 4, anchor: 'end' } },
+      { name: 'Près-de-Ville', coords: [-71.2099, 46.8042], kind: 'building', label: { dx: -10, dy: -8, anchor: 'end' } }
+    ],
+    moves: [
+      { side: 'continental', kind: 'attack', label: 'Montgomery (about 300)', labelAt: 0.45, coords: [[-71.2215, 46.7958], [-71.2165, 46.8001], [-71.2128, 46.8025], [-71.2108, 46.8037]] },
+      { side: 'continental', kind: 'retreat', coords: [[-71.2120, 46.8022], [-71.2150, 46.8000], [-71.2190, 46.7970]], width: 2 },
+      { side: 'continental', kind: 'attack', label: 'Arnold (about 600)', labelAt: 0.4, coords: [[-71.2300, 46.8168], [-71.2230, 46.8175], [-71.2150, 46.8172], [-71.2095, 46.8170], [-71.2064, 46.8168]] },
+      { side: 'continental', kind: 'attack', label: 'Morgan', labelAt: 0.5, coords: [[-71.2050, 46.8163], [-71.2042, 46.8155], [-71.2036, 46.8146]], width: 3 },
+      { side: 'british', kind: 'attack', label: 'sortie', labelAt: 0.35, coords: [[-71.2126, 46.8152], [-71.2118, 46.8166], [-71.2090, 46.8173], [-71.2070, 46.8173]], width: 3 },
+      { side: 'militia', kind: 'attack', approx: true, label: 'Livingston', labelAt: 0.45, coords: [[-71.2215, 46.8100], [-71.2180, 46.8112], [-71.2142, 46.8124]], width: 2.4 },
+      { side: 'militia', kind: 'attack', approx: true, label: 'Brown', labelAt: 0.4, coords: [[-71.2170, 46.8048], [-71.2130, 46.8058], [-71.2102, 46.8064]], width: 2.4 }
+    ],
+    units: [
+      { side: 'british', coords: [-71.2085, 46.8118], label: 'Carleton\'s garrison', labelPos: { dx: 0, dy: 24, anchor: 'middle' } }
+    ],
+    battles: [
+      { coords: [-71.2096, 46.8046], label: 'Montgomery killed', labelPos: { dx: 10, dy: 26, anchor: 'start' } },
+      { coords: [-71.2058, 46.8169], label: 'Arnold wounded', labelPos: { dx: 6, dy: -24, anchor: 'start' } }
+    ],
+    callouts: [
+      { coords: [-71.2190, 46.8070], n: 1 },
+      { coords: [-71.2135, 46.8010], n: 2 },
+      { coords: [-71.2200, 46.8193], n: 3 },
+      { coords: [-71.2018, 46.8150], n: 4 },
+      { coords: [-71.2095, 46.8185], n: 5 }
+    ],
+    labels: [
+      { coords: [-71.2065, 46.8100], text: 'UPPER TOWN', kind: 'region', size: 12.5, angle: -40 },
+      { coords: [-71.2012, 46.8118], text: 'Lower\nTown', kind: 'note', size: 12, anchor: 'start' },
+      { coords: [-71.2245, 46.8145], text: 'St-Roch', kind: 'note', size: 12.5 },
+      { coords: [-71.2235, 46.8082], text: 'St-Jean suburb', kind: 'note', size: 12 },
+      { coords: [-71.2290, 46.8040], text: 'Plains of Abraham', kind: 'terrain', size: 13, angle: -30 },
+      { coords: [-71.2068, 46.8080], text: 'Cape Diamond', kind: 'terrain', size: 12.5, angle: -50 },
+      { coords: [-71.1990, 46.8010], text: 'St. Lawrence River', kind: 'water', angle: -62 },
+      { coords: [-71.2180, 46.8222], text: 'St. Charles estuary', kind: 'water', size: 13, angle: -8 }
+    ],
+    after: ({ root, defs, proj, d3 }) => {
+      const g = d3.geoPath(proj);
+      const d = shore.map(r => g({ type: 'Polygon', coordinates: [r.concat([r[0]])] })).join('');
+      root.select('path.hm-land').attr('d', d);
+      root.selectAll('path.hm-water').style('stroke', 'none');
+      defs.selectAll('clipPath').filter(function () { return /-land$/.test(this.id); }).select('path').attr('d', d);
+    }
+  });
+});
+
+HMap.render('#map-retreat', {
+  geo: 'invasion-of-canada-routes',
+  bbox: ROUTES_BBOX,
+  get textScale() { return SMALL() ? 0.8 : 1; },
+  alt: 'Map of the St. Lawrence valley and Lake Champlain showing the American retreat from Quebec in 1776 and the British fleet\'s advance up the lake',
+  corrections: { water: [MEGANTIC] },
+  towns: [
+    { place: 'quebec', label: { dx: 9, dy: -8 } },
+    { place: 'montreal', label: { dx: -9, dy: -6, anchor: 'end' } },
+    { place: 'st-johns', label: { dx: 10, dy: 5 } },
+    { name: 'Chambly', coords: [-73.294, 45.448], kind: 'village', label: { dx: 8, dy: -2 } },
+    { name: 'Île aux Noix', coords: [-73.264, 45.124], kind: 'village', label: { dx: 8, dy: 5 } },
+    { name: 'Sorel', coords: [-73.117, 46.044], kind: 'village', label: { dx: 8, dy: 10 } },
+    { name: 'Trois-Rivières', coords: [-72.543, 46.343], kind: 'village', label: { dx: 8, dy: 13 } },
+    { name: 'Deschambault', coords: [-71.930, 46.649], kind: 'village', label: { dx: -2, dy: -9, anchor: 'end' } },
+    { name: 'The Cedars', coords: [-74.058, 45.309], kind: 'village', label: { dx: 0, dy: 16, anchor: 'middle' } },
+    { place: 'valcour-island', label: { dx: 10, dy: 14 } },
+    { place: 'crown-point', side: 'continental', label: { dx: 10, dy: 4 } },
+    { place: 'fort-ticonderoga', side: 'continental', label: { dx: 10, dy: 5 } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'retreat', label: 'retreat, May 6', labelAt: 0.3, coords: [[-71.25, 46.80], [-71.60, 46.70], [-71.93, 46.64], [-72.40, 46.40], [-72.85, 46.18], [-73.10, 46.06]] },
+    { side: 'continental', kind: 'attack', coords: [[-73.05, 46.10], [-72.80, 46.25], [-72.60, 46.33]], width: 3 },
+    { side: 'continental', kind: 'retreat', coords: [[-73.15, 46.00], [-73.20, 45.70], [-73.27, 45.45], [-73.25, 45.25], [-73.27, 45.13]] },
+    { side: 'continental', kind: 'retreat', coords: [[-73.55, 45.50], [-73.45, 45.40], [-73.30, 45.32]], width: 2 },
+    { side: 'continental', kind: 'retreat', coords: [[-73.30, 45.08], [-73.36, 44.80], [-73.42, 44.45], [-73.44, 44.07]] },
+    { side: 'british', kind: 'march', label: 'Carleton follows', labelAt: 0.45, coords: [[-71.30, 46.90], [-71.95, 46.80], [-72.55, 46.50], [-73.05, 46.22], [-73.35, 45.85], [-73.33, 45.45]] },
+    { side: 'british', kind: 'naval', coords: [[-73.21, 45.30], [-73.22, 44.95], [-73.28, 44.70], [-73.33, 44.58], [-73.33, 44.30], [-73.39, 44.12]] }
+  ],
+  battles: [
+    { coords: [-72.60, 46.36], label: '' },
+    { coords: [-73.43, 44.62], label: '' }
+  ],
+  callouts: [
+    { coords: [-71.45, 46.90], n: 1 },
+    { coords: [-74.05, 45.42], n: 2 },
+    { coords: [-72.40, 46.25], n: 3 },
+    { coords: [-72.95, 45.25], n: 4 },
+    { coords: [-73.66, 44.62], n: 5 }
+  ],
+  labels: [
+    { coords: [-71.60, 45.55], text: 'PROVINCE OF QUEBEC', kind: 'region', size: 13 },
+    { coords: [-72.30, 44.30], text: 'NEW HAMPSHIRE\nGRANTS', kind: 'region', size: 11 },
+    { coords: [-71.95, 46.43], text: 'St. Lawrence', kind: 'water', angle: -27 },
+    { coords: [-73.13, 44.22], text: 'Lake Champlain', kind: 'water', angle: -82, size: 12.5 }
+  ]
+});
+
+HMap.render('#map-valcour', {
+  geo: 'invasion-of-canada-valcour',
+  bbox: [-73.475, 44.565, -73.37, 44.645],
+  // the coarse Natural Earth outline overlaps the shore; the Census pieces are used instead
+  water: { hide: ['Lake Champlain'] },
+  alt: 'Map of Lake Champlain around Valcour Island showing the American line behind the island, the British attack from the south, and the American escape by night',
+  ships: [
+    { side: 'continental', coords: [-73.4385, 44.6150] },
+    { side: 'continental', coords: [-73.4357, 44.6158] },
+    { side: 'continental', coords: [-73.4329, 44.6166], label: 'Arnold\'s line', labelPos: { dx: -14, dy: -18, anchor: 'end' } },
+    { side: 'continental', coords: [-73.4301, 44.6174] },
+    { side: 'continental', coords: [-73.4248, 44.6098], angle: 30, label: 'Royal Savage', labelPos: { dx: 10, dy: 20, anchor: 'start' } },
+    { side: 'british', coords: [-73.437, 44.600] },
+    { side: 'british', coords: [-73.430, 44.5985] },
+    { side: 'british', coords: [-73.423, 44.598], label: 'Carleton\'s fleet', labelPos: { dx: 0, dy: 22, anchor: 'middle' } },
+    { side: 'british', coords: [-73.416, 44.5985] },
+    { side: 'british', coords: [-73.409, 44.600] }
+  ],
+  moves: [
+    { side: 'british', kind: 'naval', label: 'British approach, morning Oct 11', labelAt: 0.35, coords: [[-73.392, 44.645], [-73.385, 44.625], [-73.390, 44.600], [-73.397, 44.589]] },
+    { side: 'british', kind: 'naval', coords: [[-73.401, 44.5855], [-73.412, 44.5845], [-73.423, 44.5895]] },
+    { side: 'continental', kind: 'retreat', label: 'night escape', labelAt: 0.5, approx: true, coords: [[-73.4375, 44.6125], [-73.4382, 44.600], [-73.433, 44.588], [-73.418, 44.578], [-73.407, 44.568]] }
+  ],
+  battles: [ { coords: [-73.431, 44.6040] } ],
+  units: [
+    { side: 'native', coords: [-73.418, 44.622], label: 'Indian allies', labelPos: { dx: 18, dy: 4 } },
+    { side: 'native', coords: [-73.456, 44.603], labelPos: { dx: 0, dy: 0 } }
+  ],
+  callouts: [
+    { coords: [-73.414, 44.6125], n: 1 },
+    { coords: [-73.405, 44.591], n: 2 },
+    { coords: [-73.443, 44.583], n: 3 },
+    { coords: [-73.376, 44.575], n: 4 }
+  ],
+  labels: [
+    { coords: [-73.411, 44.632], text: 'Valcour\nIsland', kind: 'terrain', size: 13 },
+    { coords: [-73.3775, 44.592], text: 'Lake Champlain', kind: 'water', angle: -80, size: 13 },
+    { coords: [-73.460, 44.632], text: 'NEW YORK', kind: 'region', size: 13 },
+    { coords: [-73.392, 44.5695], text: 'to Split Rock and Ferris Bay, Oct 13 ↓', kind: 'note', size: 11.5 }
+  ],
+  after: ({ root }) => {
+    // remove the seams between the county pieces of the lake
+    root.selectAll('path.hm-water').style('stroke', 'none');
+  }
+});
+</script>
+</body>
+</html>

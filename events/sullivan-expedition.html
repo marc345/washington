@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sullivan–Clinton expedition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="sullivan-expedition">
+<main>
+  <header class="event-head">
+    <h1>Sullivan–Clinton expedition</h1>
+    <p class="meta">June – October 1779 · Pennsylvania frontier and Iroquois country, western New York</p>
+  </header>
+
+  <figure class="map">
+    <h2>Two columns converge on Tioga</h2>
+    <div class="map-canvas" id="map-overview"></div>
+    <figcaption>
+      Washington's plan sent Sullivan's main army up the Susquehanna from Pennsylvania while James Clinton's brigade came down the river from the Mohawk valley. Joined at Tioga, the combined force of about 4,000 men marched into Seneca country.
+      <ol>
+        <li>Jun 18–23: Sullivan cuts a road across the Pocono uplands from Easton to the Wyoming valley, which had been raided the year before. Supply delays hold him there until July 31.</li>
+        <li>Aug 9: Clinton's men break a dam they had built at the outlet of Otsego Lake. The release of water floats their 200 boats down the shallow upper Susquehanna.</li>
+        <li>Aug 22: the two columns meet at Tioga, where the Chemung joins the Susquehanna.</li>
+        <li>Aug 29: Newtown, the campaign's only pitched battle (next map).</li>
+        <li>September: towns, orchards and crops are destroyed from Seneca Lake to the Genesee River (third map). Retreating Loyalists and Iroquois fall back to Fort Niagara.</li>
+      </ol>
+      <span class="note-approx">Routes are drawn at campaign scale. A third column under Brodhead marched up the Allegheny from Fort Pitt, west of this map.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>August 29: Newtown</h2>
+    <div class="map-canvas" id="map-newtown"></div>
+    <figcaption>
+      About 600 Loyalist rangers and Iroquois under John Butler and Joseph Brant waited behind a hidden log breastwork on the slope above the trail. Sullivan's riflemen spotted it, and he planned to pin the defenders in front while two brigades worked around behind the hill.
+      <ol>
+        <li>Hand's light infantry takes cover along Baldwin Creek, facing the breastwork. The artillery opens fire in mid-afternoon.</li>
+        <li>Poor's and Clinton's brigades go up the swampy hollow to climb the hill from the northeast. The marsh slows them down.</li>
+        <li>Ogden's regiment moves along the river against the defenders' other flank.</li>
+        <li>As Poor's men reach the crest, the defenders slip away along the ridge toward Newtown before the trap closes.</li>
+      </ol>
+      <span class="note-approx">The breastwork and troop positions are approximate. The river follows its modern course.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>September 1779: the burning of the Seneca and Cayuga towns</h2>
+    <div class="map-canvas" id="map-lakes"></div>
+    <figcaption>
+      The army met little resistance after Newtown. It burned some forty towns, with their houses, orchards and stored corn, then turned back from the Genesee in mid-September. Detachments swept both shores of Cayuga Lake on the way home.
+      <ol>
+        <li>Sep 1–2: Catharine's Town, at the head of Seneca Lake.</li>
+        <li>Sep 7: Kanadaseaga, the chief Seneca town.</li>
+        <li>Sep 13: a scouting party under Lt. Thomas Boyd is ambushed near Conesus Lake. Boyd and Sgt. Michael Parker are captured and killed.</li>
+        <li>Sep 14–15: Genesee Castle (Little Beard's Town), the largest town, is destroyed. The army turns back.</li>
+        <li>Sep 20–28: Butler's detachment burns the Cayuga towns on the east shore, and Dearborn's the west shore. Both rejoin the army near Tioga, and it reaches Easton on Oct 15.</li>
+      </ol>
+      <span class="note-approx">Town sites and routes are approximate. Only the main towns are shown.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+const SMALL = () => window.innerWidth < 600;
+
+// Otsego Lake is missing from the campaign-scale lake data; drawn by hand
+const OTSEGO = [[-74.925, 42.700], [-74.905, 42.770], [-74.905, 42.820], [-74.890, 42.835], [-74.875, 42.800], [-74.880, 42.760], [-74.900, 42.710]];
+
+HMap.render('#map-overview', {
+  geo: 'sullivan-expedition-overview',
+  bbox: [-78.3, 40.55, -74.2, 43.4],
+  get textScale() { return SMALL() ? 0.8 : 1; },
+  alt: 'Map of northeastern Pennsylvania and western New York showing Sullivan\'s route from Easton up the Susquehanna, Clinton\'s route from the Mohawk down the Susquehanna, and the combined march to the Genesee',
+  corrections: { water: [OTSEGO] },
+  towns: [
+    { place: 'easton', label: { dx: 9, dy: 5 } },
+    { place: 'wyoming-valley', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { place: 'tioga', label: { dx: 8, dy: 14 } },
+    { name: 'Canajoharie', coords: [-74.572, 42.905], kind: 'village', label: { dx: 8, dy: -6 } },
+    { name: 'Oquaga', coords: [-75.64, 42.076], kind: 'village', label: { dx: 0, dy: 16, anchor: 'middle' } },
+    { name: 'Kanadaseaga', coords: [-76.98, 42.87], kind: 'village', side: 'native', label: { dx: -2, dy: -9, anchor: 'end' } },
+    { place: 'genesee-castle', label: { dx: -8, dy: 16, anchor: 'middle' } },
+    { place: 'fort-stanwix', side: 'continental', label: { dx: 10, dy: 4 } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', label: 'Sullivan, Jun 18–23', labelAt: 0.45, coords: [[-75.21, 40.69], [-75.40, 40.95], [-75.62, 41.12], [-75.86, 41.24]] },
+    { side: 'continental', kind: 'march', label: 'Jul 31 – Aug 11', labelAt: 0.5, coords: [[-75.88, 41.26], [-75.98, 41.45], [-76.10, 41.57], [-76.26, 41.67], [-76.42, 41.80], [-76.505, 41.97]] },
+    { side: 'continental', kind: 'march', coords: [[-74.57, 42.90], [-74.75, 42.86], [-74.88, 42.835]] },
+    { side: 'continental', kind: 'naval', label: 'Clinton, Aug 9–22', labelAt: 0.45, coords: [[-74.92, 42.70], [-75.06, 42.45], [-75.32, 42.32], [-75.50, 42.20], [-75.64, 42.09], [-75.91, 42.10], [-76.26, 42.10], [-76.50, 42.00]] },
+    { side: 'continental', kind: 'march', label: 'Aug 26 – Sep 15', labelAt: 0.4, coords: [[-76.52, 42.00], [-76.735, 42.04], [-76.83, 42.18], [-76.85, 42.35], [-76.88, 42.55], [-76.90, 42.72], [-76.98, 42.86], [-77.28, 42.89], [-77.50, 42.79], [-77.70, 42.75], [-77.81, 42.77]] },
+    { side: 'loyalist', kind: 'retreat', label: 'to Fort Niagara', labelAt: 0.5, coords: [[-77.85, 42.82], [-78.05, 42.98], [-78.30, 43.12]] }
+  ],
+  battles: [ { coords: [-76.735, 42.04], label: 'Newtown', labelPos: { dx: -14, dy: 4, anchor: 'end' } } ],
+  callouts: [
+    { coords: [-75.05, 40.95], n: 1 },
+    { coords: [-74.70, 42.70], n: 2 },
+    { coords: [-76.30, 41.86], n: 3 },
+    { coords: [-76.55, 42.17], n: 4 },
+    { coords: [-77.40, 42.60], n: 5 }
+  ],
+  labels: [
+    { coords: [-77.45, 43.30], text: 'Lake Ontario', kind: 'water' },
+    { coords: [-74.95, 42.92], text: 'Otsego L.', kind: 'water', size: 11, anchor: 'end' },
+    { coords: [-75.55, 41.75], text: 'Susquehanna R.', kind: 'water', size: 11.5, angle: -55 },
+    { coords: [-77.45, 41.10], text: 'PENNSYLVANIA', kind: 'region', size: 13 },
+    { coords: [-75.35, 42.55], text: 'NEW YORK', kind: 'region', size: 13 },
+    { coords: [-76.20, 42.95], text: 'IROQUOIS\nCOUNTRY', kind: 'region', size: 11 },
+    { coords: [-75.00, 41.25], text: 'Poconos', kind: 'terrain', size: 12 }
+  ]
+});
+
+HMap.render('#map-newtown', {
+  geo: 'sullivan-expedition-newtown',
+  bbox: [-76.775, 42.012, -76.685, 42.07],
+  get textScale() { return SMALL() ? 0.85 : 1; },
+  terrain: { contours: 10 },
+  water: { hideUnnamed: true },
+  alt: 'Map of the Newtown battlefield on the Chemung River showing the hidden breastwork, the American frontal position on Baldwin Creek and the flanking march around Sullivan Hill',
+  works: [
+    { side: 'loyalist', coords: [[-76.7252, 42.0400], [-76.7243, 42.0423], [-76.7253, 42.0446], [-76.7280, 42.0458]] }
+  ],
+  roads: [
+    { kind: 'track', coords: [[-76.685, 42.0285], [-76.700, 42.0275], [-76.712, 42.0310], [-76.722, 42.0360], [-76.730, 42.0395], [-76.742, 42.0440], [-76.760, 42.0560], [-76.775, 42.0640]] }
+  ],
+  units: [
+    { side: 'loyalist', coords: [-76.7290, 42.0440], angle: 70, label: 'Butler\'s Rangers', labelPos: { dx: -14, dy: -2, anchor: 'end' } },
+    { side: 'native', coords: [-76.7300, 42.0410], angle: 60, label: 'Brant', labelPos: { dx: -14, dy: 6, anchor: 'end' } },
+    { side: 'continental', coords: [-76.7195, 42.0405], angle: 75, label: 'Hand', labelPos: { dx: 12, dy: 4 } },
+    { side: 'continental', type: 'artillery', coords: [-76.7150, 42.0362], label: 'artillery', labelPos: { dx: 16, dy: 10 } },
+    { side: 'continental', coords: [-76.7080, 42.0315], label: 'Maxwell (reserve)', labelPos: { dx: 0, dy: 18, anchor: 'middle' } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', label: 'Sullivan from Tioga', labelAt: 0.5, coords: [[-76.6855, 42.0290], [-76.6950, 42.0282], [-76.7030, 42.0295]] },
+    { side: 'continental', kind: 'attack', label: 'Poor & Clinton', labelAt: 0.45, coords: [[-76.7120, 42.0370], [-76.7160, 42.0470], [-76.7230, 42.0570], [-76.7320, 42.0620], [-76.7380, 42.0560]] },
+    { side: 'continental', kind: 'attack', label: 'Ogden', labelAt: 0.5, coords: [[-76.7160, 42.0310], [-76.7240, 42.0335], [-76.7292, 42.0385]], width: 3 },
+    { side: 'loyalist', kind: 'retreat', label: 'escape toward Newtown', labelAt: 0.55, coords: [[-76.7300, 42.0460], [-76.7400, 42.0490], [-76.7530, 42.0570], [-76.7680, 42.0650]] }
+  ],
+  battles: [ { coords: [-76.7230, 42.0418] } ],
+  callouts: [
+    { coords: [-76.7170, 42.0440], n: 1 },
+    { coords: [-76.7110, 42.0520], n: 2 },
+    { coords: [-76.7280, 42.0295], n: 3 },
+    { coords: [-76.7440, 42.0560], n: 4 }
+  ],
+  labels: [
+    { coords: [-76.7390, 42.0475], text: 'Sullivan Hill', kind: 'terrain', size: 13, angle: -25 },
+    { coords: [-76.7560, 42.0420], text: 'Chemung River', kind: 'water', angle: -38 },
+    { coords: [-76.7260, 42.0545], text: 'Baldwin Cr.', kind: 'water', size: 11.5, angle: -60 }
+  ]
+});
+
+HMap.render('#map-lakes', {
+  geo: 'sullivan-expedition-lakes',
+  bbox: [-77.95, 41.95, -76.35, 43.0],
+  get textScale() { return SMALL() ? 0.8 : 1; },
+  // the Census pieces of the big lakes duplicate the Natural Earth outlines; marsh impoundments and reservoirs hidden
+  water: {
+    hide: ['Seneca Lk', 'Cayuga Lk', 'Keuka Lk', 'Canandaigua Lk', 'Skaneateles Lk', 'Owasco Lk', 'Black Lk', 'Mill Pond', 'The Wide Waters'],
+    hideIn: [[-76.80, 42.99, -76.77, 43.01], [-77.20, 41.85, -77.10, 41.93]]
+  },
+  alt: 'Map of the Finger Lakes region showing the army\'s route from Tioga past Seneca Lake to the Genesee River, the Seneca and Cayuga towns it burned, and the detachments that swept Cayuga Lake',
+  towns: [
+    { place: 'tioga', label: { dx: 8, dy: 12 } },
+    { place: 'newtown-ny', side: 'native', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Catharine\'s Town', coords: [-76.845, 42.347], kind: 'village', label: { dx: 8, dy: 12 } },
+    { name: 'Kendaia', coords: [-76.875, 42.715], kind: 'village', label: { dx: 8, dy: 4 } },
+    { name: 'Kanadaseaga', coords: [-76.980, 42.870], kind: 'village', label: { dx: -2, dy: -9, anchor: 'end' } },
+    { name: 'Skoiyase', coords: [-76.860, 42.905], kind: 'village', label: { dx: 6, dy: -7 } },
+    { name: 'Kanandaigua', coords: [-77.285, 42.885], kind: 'village', label: { dx: 0, dy: -10, anchor: 'middle' } },
+    { name: 'Honeoye', coords: [-77.505, 42.787], kind: 'village', label: { dx: 0, dy: -10, anchor: 'middle' } },
+    { place: 'genesee-castle', label: { dx: 0, dy: -10, anchor: 'middle' } },
+    { name: 'Cayuga Castle', coords: [-76.715, 42.820], kind: 'village', label: { dx: 8, dy: -4 } },
+    { name: 'Chonodote', coords: [-76.700, 42.752], kind: 'village', label: { dx: 8, dy: 6 } },
+    { name: 'Coreorgonel', coords: [-76.530, 42.430], kind: 'village', label: { dx: 8, dy: 4 } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', label: 'Aug 26 – Sep 14', labelAt: 0.3, coords: [[-76.515, 41.99], [-76.735, 42.04], [-76.83, 42.18], [-76.845, 42.35], [-76.835, 42.47], [-76.845, 42.60], [-76.862, 42.72], [-76.935, 42.86], [-77.28, 42.89], [-77.50, 42.79], [-77.70, 42.74], [-77.80, 42.775]] },
+    { side: 'continental', kind: 'retreat', label: 'return, Sep 16–30', labelAt: 0.14, coords: [[-77.80, 42.795], [-77.50, 42.81], [-77.28, 42.91], [-76.98, 42.895], [-76.88, 42.80], [-76.835, 42.70], [-76.815, 42.50], [-76.82, 42.34], [-76.77, 42.16], [-76.62, 42.03], [-76.53, 41.99]] },
+    { side: 'continental', kind: 'march', label: 'Dearborn', labelAt: 0.5, approx: true, coords: [[-76.86, 42.68], [-76.78, 42.56], [-76.62, 42.45], [-76.55, 42.40]] },
+    { side: 'continental', kind: 'march', label: 'Butler', labelAt: 0.4, approx: true, coords: [[-76.90, 42.90], [-76.72, 42.84], [-76.68, 42.70], [-76.55, 42.47], [-76.48, 42.25], [-76.50, 42.02]] }
+  ],
+  battles: [
+    { coords: [-76.735, 42.04] },
+    { coords: [-77.765, 42.735], label: 'Boyd ambushed', labelPos: { dx: 0, dy: 22, anchor: 'middle' } }
+  ],
+  callouts: [
+    { coords: [-77.00, 42.33], n: 1 },
+    { coords: [-77.06, 42.80], n: 2 },
+    { coords: [-77.68, 42.66], n: 3 },
+    { coords: [-77.83, 42.86], n: 4 },
+    { coords: [-76.45, 42.62], n: 5 }
+  ],
+  legendExtra: [ { svg: '<svg viewBox="0 0 26 12"><circle cx="13" cy="6" r="3.2" fill="#3a2f24"/></svg>', text: 'Iroquois town destroyed' } ],
+  labels: [
+    { coords: [-76.905, 42.52], text: 'Seneca L.', kind: 'water', angle: -85, size: 12.5 },
+    { coords: [-76.640, 42.60], text: 'Cayuga L.', kind: 'water', angle: -68, size: 12.5 },
+    { coords: [-77.120, 42.55], text: 'Keuka L.', kind: 'water', angle: -60, size: 11 },
+    { coords: [-77.360, 42.73], text: 'Canandaigua L.', kind: 'water', angle: -65, size: 11 },
+    { coords: [-77.840, 42.60], text: 'Genesee R.', kind: 'water', angle: -70, size: 11.5 },
+    { coords: [-76.700, 42.10], text: 'Chemung R.', kind: 'water', angle: -15, size: 11.5 },
+    { coords: [-77.30, 42.25], text: 'SENECA COUNTRY', kind: 'region', size: 12 }
+  ]
+});
+</script>
+</body>
+</html>

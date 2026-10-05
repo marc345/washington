@@ -1,0 +1,5 @@
+[
+  { "id": "newport-1778-bay", "bbox": [-71.6, 41.3, -71.05, 41.78], "detail": "regional" },
+  { "id": "newport-1778-siege", "bbox": [-71.36, 41.46, -71.24, 41.56], "detail": "local" },
+  { "id": "newport-1778-battle", "bbox": [-71.29, 41.575, -71.20, 41.645], "detail": "local" }
+]

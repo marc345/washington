@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Saratoga campaign</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="saratoga">
+<main>
+  <header class="event-head">
+    <h1>Saratoga campaign</h1>
+    <p class="meta">June – October 1777 · Lake Champlain, the upper Hudson and the Mohawk valley, New York</p>
+  </header>
+
+  <figure class="map">
+    <h2>The British plan: three converging thrusts on Albany</h2>
+    <div class="map-canvas" id="map-campaign"></div>
+    <figcaption>
+      Burgoyne came south from Canada by Lake Champlain, St. Leger was to sweep down the Mohawk valley, and help was expected from New York up the Hudson. Only Burgoyne got anywhere near Albany.
+      <ol>
+        <li>Jul 5–6: British guns on Mount Defiance force the Americans to abandon Ticonderoga in the night.</li>
+        <li>Jul 7: the American rear guard fights a delaying action at Hubbardton.</li>
+        <li>Jul 6–30: Burgoyne marches overland by Skenesborough and Fort Anne. Schuyler's men fell trees and wreck bridges, and it takes him over three weeks to reach Fort Edward.</li>
+        <li>Aug 16: a German foraging force sent toward Bennington is destroyed by Stark's militia.</li>
+        <li>Aug 3–22: St. Leger besieges Fort Stanwix. Herkimer's relief column is ambushed at Oriskany on Aug 6. St. Leger withdraws when he hears that Arnold is coming.</li>
+        <li>Sep 13–15: Burgoyne crosses to the west bank of the Hudson at Saratoga and heads for Albany.</li>
+        <li>Oct 6–16: Clinton takes the Highlands forts below the map. An advance force burns Kingston and then turns back.</li>
+      </ol>
+      <span class="note-approx">Routes are drawn at campaign scale and are approximate in detail.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>September 19: Freeman's Farm</h2>
+    <div class="map-canvas" id="map-freeman"></div>
+    <figcaption>
+      Burgoyne advanced from his camp on the river in three columns. Morgan's riflemen met the center column in the clearing at Freeman's farm. The fight there went back and forth all afternoon as Arnold fed in more brigades from the Bemis Heights lines.
+      <ol>
+        <li>Morgan's men cut down the British advance guard at the farm, about 1 p.m.</li>
+        <li>The farm clearing changes hands several times. The 62nd Regiment is nearly destroyed.</li>
+        <li>Late in the day Riedesel's Germans arrive from the river road on the American right, and the Americans withdraw at dusk. The British hold the field but lose about 600 men, twice the American loss.</li>
+      </ol>
+      <span class="note-approx">Column routes and unit positions are schematic. The American lines are shown as they were finished after September 19.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>October 7: Bemis Heights</h2>
+    <div class="map-canvas" id="map-bemis"></div>
+    <figcaption>
+      Burgoyne sent about 1,500 men and ten guns out to the Barber wheatfield to probe the American left. The Americans attacked both flanks at once and drove them back into the fortified camp. That evening Burgoyne's position was no longer tenable.
+      <ol>
+        <li>Poor's brigade strikes the grenadiers on the British left while Morgan and Dearborn turn the right. Fraser is mortally wounded rallying the line.</li>
+        <li>Arnold, who had no command, leads an attack on the Balcarres redoubt, which is beaten off.</li>
+        <li>Learned's brigade and Morgan storm the Breymann redoubt from the rear. Breymann is killed and Arnold is shot in the leg.</li>
+      </ol>
+      <span class="note-approx">Redoubt sites follow the national park's markers. Unit positions are schematic.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>October 8–17: retreat and surrender at Saratoga</h2>
+    <div class="map-canvas" id="map-surrender"></div>
+    <figcaption>
+      Burgoyne fell back up the river in heavy rain, leaving his wounded behind. At Saratoga he dug in on the heights north of Fish Creek, where Gates's growing army closed in on three sides and militia held the far bank and the road north. The army laid down its arms on October 17.
+      <ol>
+        <li>Oct 8–9: the night retreat by the river road.</li>
+        <li>Oct 10: Burgoyne's fortified camp above Fish Creek. Schuyler's house and mills are burned.</li>
+        <li>Militia across the Hudson and Stark's men at the crossings to the north cut off any escape.</li>
+        <li>Oct 17: some 5,900 men march out and ground their arms by the old fort on the river flats.</li>
+      </ol>
+      <span class="note-approx">The extent of the British camp and the American positions are approximate.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+const SMALL = () => window.innerWidth < 600;
+
+// Lake George is missing from the campaign-scale lake data; outline from Census TIGER, simplified.
+const LAKE_GEORGE = [[-73.624,43.579],[-73.619,43.578],[-73.597,43.584],[-73.588,43.591],[-73.573,43.617],[-73.567,43.618],[-73.554,43.631],[-73.541,43.648],[-73.526,43.656],[-73.513,43.666],[-73.507,43.677],[-73.495,43.717],[-73.502,43.74],[-73.478,43.76],[-73.487,43.764],[-73.488,43.779],[-73.484,43.792],[-73.468,43.795],[-73.464,43.802],[-73.459,43.802],[-73.447,43.807],[-73.433,43.822],[-73.427,43.809],[-73.438,43.804],[-73.471,43.772],[-73.46,43.769],[-73.464,43.758],[-73.459,43.73],[-73.467,43.726],[-73.472,43.707],[-73.484,43.692],[-73.487,43.68],[-73.492,43.673],[-73.494,43.654],[-73.504,43.644],[-73.513,43.643],[-73.539,43.626],[-73.556,43.605],[-73.565,43.597],[-73.581,43.574],[-73.589,43.569],[-73.607,43.567],[-73.614,43.556],[-73.607,43.553],[-73.617,43.537],[-73.619,43.521],[-73.629,43.519],[-73.636,43.5],[-73.629,43.486],[-73.63,43.468],[-73.64,43.472],[-73.645,43.461],[-73.652,43.459],[-73.655,43.447],[-73.672,43.447],[-73.684,43.441],[-73.701,43.418],[-73.712,43.422],[-73.709,43.43],[-73.693,43.449],[-73.692,43.458],[-73.682,43.474],[-73.685,43.483],[-73.676,43.491],[-73.674,43.512],[-73.669,43.528],[-73.661,43.525],[-73.656,43.537],[-73.665,43.542],[-73.657,43.548],[-73.633,43.601],[-73.625,43.611]];
+
+HMap.render('#map-campaign', {
+  geo: 'saratoga-campaign',
+  bbox: [-75.85, 41.85, -72.65, 44.55],
+  get textScale() { return SMALL() ? 0.8 : 1; },
+  alt: 'Map of New York from Lake Ontario to Lake Champlain and the Hudson showing Burgoyne\'s advance from Canada, St. Leger\'s expedition to Fort Stanwix, Bennington and Clinton\'s move up the Hudson',
+  corrections: { water: [LAKE_GEORGE] },
+  lines: [
+    // narrow south arm of Lake Champlain (Ticonderoga to Skenesborough), missing at this scale
+    { coords: [[-73.395, 43.84], [-73.375, 43.78], [-73.39, 43.70], [-73.40, 43.62], [-73.405, 43.556]], color: '#9dbcbf', width: 2.5 }
+  ],
+  towns: [
+    { place: 'crown-point', label: { dx: -10, dy: 4, anchor: 'end' } },
+    { place: 'fort-ticonderoga', side: 'continental', label: { dx: -11, dy: 4, anchor: 'end' } },
+    { name: 'Skenesborough', coords: [-73.405, 43.556], kind: 'village', label: { dx: 8, dy: 4 } },
+    { place: 'fort-edward', side: 'continental', label: { dx: 10, dy: 4 } },
+    { place: 'saratoga', label: { dx: -9, dy: -3, anchor: 'end' } },
+    { place: 'albany', label: { dx: 9, dy: 5 } },
+    { place: 'bennington', label: { dx: 8, dy: 13 } },
+    { place: 'fort-stanwix', side: 'continental', label: { dx: 0, dy: -12, anchor: 'middle' } },
+    { name: 'Kingston', coords: [-74.002, 41.929], kind: 'town', label: { dx: -9, dy: 4, anchor: 'end' } }
+  ],
+  moves: [
+    { side: 'british', kind: 'naval', label: 'Burgoyne', labelAt: 0.4, coords: [[-73.34, 44.56], [-73.38, 44.40], [-73.42, 44.10], [-73.40, 43.86]] },
+    { side: 'british', kind: 'march', label: 'Jul 6–30', labelAt: 0.55, coords: [[-73.405, 43.55], [-73.49, 43.414], [-73.585, 43.275]] },
+    { side: 'british', kind: 'naval', coords: [[-73.44, 43.80], [-73.49, 43.72], [-73.52, 43.66], [-73.60, 43.58], [-73.66, 43.50], [-73.70, 43.43], [-73.60, 43.29]], width: 1.8 },
+    { side: 'british', kind: 'march', coords: [[-73.59, 43.26], [-73.575, 43.17], [-73.59, 43.10], [-73.63, 43.01]] },
+    { side: 'continental', kind: 'retreat', label: 'St. Clair', labelAt: 0.3, approx: true, coords: [[-73.37, 43.82], [-73.14, 43.70], [-73.00, 43.55], [-73.05, 43.35], [-73.40, 43.27], [-73.56, 43.25]] },
+    { side: 'continental', kind: 'retreat', approx: true, coords: [[-73.60, 43.25], [-73.62, 43.05], [-73.68, 42.85], [-73.70, 42.79]] },
+    { side: 'continental', kind: 'march', coords: [[-73.73, 42.79], [-73.72, 42.90], [-73.66, 42.99]] },
+    { side: 'hessian', kind: 'attack', label: 'Baum', labelAt: 0.5, coords: [[-73.555, 43.165], [-73.45, 43.05], [-73.32, 42.95]] },
+    { side: 'militia', kind: 'attack', coords: [[-73.20, 42.88], [-73.27, 42.925]], width: 3 },
+    { side: 'british', kind: 'naval', label: 'St. Leger', labelAt: 0.55, coords: [[-75.86, 43.235], [-75.70, 43.20], [-75.50, 43.21]] },
+    { side: 'british', kind: 'retreat', approx: true, coords: [[-75.50, 43.25], [-75.70, 43.285], [-75.86, 43.30]], width: 2 },
+    { side: 'militia', kind: 'attack', coords: [[-74.98, 43.03], [-75.20, 43.10], [-75.34, 43.17]], width: 3 },
+    { side: 'continental', kind: 'march', label: 'Arnold\'s relief', labelAt: 0.4, approx: true, coords: [[-73.75, 42.75], [-74.20, 42.84], [-74.70, 42.90], [-75.00, 42.98], [-75.42, 43.18]] },
+    { side: 'british', kind: 'naval', coords: [[-73.96, 41.86], [-73.95, 41.92], [-73.95, 42.06]] }
+  ],
+  battles: [
+    { coords: [-73.13, 43.696], label: 'Hubbardton', labelPos: { dx: 0, dy: -15, anchor: 'middle' } },
+    { coords: [-73.303, 42.94] },
+    { coords: [-75.366, 43.177], label: 'Oriskany', labelPos: { dx: 0, dy: 22, anchor: 'middle' } },
+    { coords: [-73.64, 43.00], label: 'Freeman\'s Farm,\nBemis Heights', labelPos: { dx: -14, dy: 4, anchor: 'end' } }
+  ],
+  callouts: [
+    { coords: [-73.62, 43.89], n: 1 },
+    { coords: [-72.93, 43.62], n: 2 },
+    { coords: [-73.30, 43.43], n: 3 },
+    { coords: [-73.10, 43.03], n: 4 },
+    { coords: [-75.38, 43.40], n: 5 },
+    { coords: [-73.42, 43.13], n: 6 },
+    { coords: [-73.75, 41.98], n: 7 }
+  ],
+  labels: [
+    { coords: [-73.16, 44.28], text: 'Lake Champlain', kind: 'water', angle: -82, size: 12.5 },
+    { coords: [-73.78, 43.66], text: 'Lake George', kind: 'water', angle: -60, size: 11 },
+    { coords: [-75.76, 43.14], text: 'Oneida L.', kind: 'water', size: 11 },
+    { coords: [-74.40, 42.82], text: 'Mohawk R.', kind: 'water', size: 11.5, angle: -12 },
+    { coords: [-73.88, 42.40], text: 'Hudson R.', kind: 'water', size: 11.5, angle: -85 },
+    { coords: [-74.75, 42.35], text: 'NEW YORK', kind: 'region', size: 13 },
+    { coords: [-72.86, 43.40], text: 'NEW HAMPSHIRE\nGRANTS', kind: 'region', size: 11 },
+    { coords: [-74.45, 43.90], text: 'Adirondack wilderness', kind: 'terrain', size: 12.5 }
+  ]
+});
+
+// Freeman's Farm and Bemis Heights share one base map.
+const FIELD = {
+  geo: 'saratoga-field',
+  bbox: [-73.662, 42.979, -73.604, 43.016],
+  terrain: { contours: 10 },
+  works: [
+    // American fortified lines on Bemis Heights, river bluff to the Neilson farm and west
+    { side: 'continental', coords: [[-73.618, 42.9795], [-73.626, 42.9825], [-73.634, 42.9850], [-73.6415, 42.9875], [-73.6470, 42.9915], [-73.6510, 42.9905], [-73.6550, 42.9860]] },
+    { side: 'continental', coords: [[-73.6415, 42.9875], [-73.6400, 42.9830], [-73.6385, 42.9790]] }
+  ],
+  roads: [
+    { coords: [[-73.6125, 43.022], [-73.6110, 43.008], [-73.6130, 42.995], [-73.6185, 42.983], [-73.6250, 42.976]] }
+  ],
+  towns: [
+    { name: 'Neilson farm', coords: [-73.6416, 42.9863], kind: 'building', label: { dx: 8, dy: 14 } },
+    { name: 'Freeman farm', coords: [-73.6386, 43.0060], kind: 'building', label: { dx: 8, dy: -6 } }
+  ],
+  labels: [
+    { coords: [-73.6300, 42.9790], text: 'Bemis Heights', kind: 'terrain', size: 13, angle: 20 },
+    { coords: [-73.6058, 42.9925], text: 'Hudson River', kind: 'water', angle: -68, size: 12 },
+    { coords: [-73.6185, 43.0098], text: 'Great Ravine', kind: 'terrain', size: 11.5, angle: -20 },
+    { coords: [-73.6270, 42.9925], text: 'Mill Creek', kind: 'water', size: 11, angle: 25 }
+  ]
+};
+
+HMap.render('#map-freeman', Object.assign({}, FIELD, {
+  get textScale() { return SMALL() ? 0.85 : 1; },
+  alt: 'Map of the Saratoga battlefield on September 19 showing three British columns advancing south and the American brigades meeting them at Freeman\'s farm',
+  moves: [
+    { side: 'british', kind: 'march', label: 'Fraser', labelAt: 0.5, coords: [[-73.6330, 43.0165], [-73.6440, 43.0150], [-73.6510, 43.0110], [-73.6490, 43.0065]] },
+    { side: 'british', kind: 'attack', label: 'Hamilton', labelAt: 0.45, coords: [[-73.6230, 43.0165], [-73.6280, 43.0130], [-73.6340, 43.0090], [-73.6370, 43.0070]] },
+    { side: 'hessian', kind: 'march', label: 'Riedesel', labelAt: 0.4, coords: [[-73.6085, 43.0165], [-73.6095, 43.0090], [-73.6120, 43.0020]] },
+    { side: 'hessian', kind: 'attack', label: 'late afternoon', labelAt: 0.5, coords: [[-73.6140, 43.0010], [-73.6240, 43.0005], [-73.6340, 43.0030]] },
+    { side: 'continental', kind: 'attack', label: 'Morgan', labelAt: 0.5, coords: [[-73.6460, 42.9925], [-73.6440, 42.9990], [-73.6400, 43.0040]] },
+    { side: 'continental', kind: 'attack', label: 'Poor, Learned', labelAt: 0.5, coords: [[-73.6500, 42.9915], [-73.6540, 42.9990], [-73.6470, 43.0040]] }
+  ],
+  units: [
+    { side: 'continental', coords: [-73.6350, 42.9845], label: 'Gates', angle: -20, labelPos: { dx: 0, dy: 18, anchor: 'middle' } }
+  ],
+  battles: [ { coords: [-73.6392, 43.0045], label: '' } ],
+  callouts: [
+    { coords: [-73.6345, 43.0035], n: 1 },
+    { coords: [-73.6430, 43.0085], n: 2 },
+    { coords: [-73.6215, 43.0050], n: 3 }
+  ]
+}));
+
+HMap.render('#map-bemis', Object.assign({}, FIELD, {
+  get textScale() { return SMALL() ? 0.85 : 1; },
+  alt: 'Map of the Saratoga battlefield on October 7 showing the British reconnaissance at the Barber wheatfield, the American attack on both flanks, and the storming of the Breymann redoubt',
+  works: FIELD.works.concat([
+    // British fortified camp: Balcarres redoubt at Freeman's farm, Breymann redoubt to its north-west, river works
+    { side: 'british', closed: true, coords: [[-73.6405, 43.0070], [-73.6370, 43.0068], [-73.6365, 43.0040], [-73.6400, 43.0035]] },
+    { side: 'hessian', closed: true, coords: [[-73.6418, 43.0103], [-73.6398, 43.0102], [-73.6396, 43.0087], [-73.6416, 43.0087]] },
+    { side: 'british', coords: [[-73.6365, 43.0055], [-73.6300, 43.0060], [-73.6240, 43.0045], [-73.6180, 43.0030], [-73.6110, 43.0030]] }
+  ]),
+  areas: [
+    { coords: [[-73.6495, 43.0035], [-73.6440, 43.0030], [-73.6420, 42.9990], [-73.6475, 42.9985]], side: 'neutral', opacity: 0.12, legend: 'Barber wheatfield' }
+  ],
+  moves: [
+    { side: 'british', kind: 'march', coords: [[-73.6380, 43.0035], [-73.6420, 43.0025], [-73.6450, 43.0015]], width: 2.4 },
+    { side: 'continental', kind: 'attack', label: 'Poor', labelAt: 0.4, coords: [[-73.6400, 42.9890], [-73.6410, 42.9950], [-73.6435, 42.9990]] },
+    { side: 'continental', kind: 'attack', label: 'Morgan', labelAt: 0.35, coords: [[-73.6520, 42.9910], [-73.6575, 42.9990], [-73.6540, 43.0050], [-73.6495, 43.0040]] },
+    { side: 'continental', kind: 'attack', label: 'Learned', labelAt: 0.35, coords: [[-73.6470, 42.9925], [-73.6480, 42.9985]], width: 3.5 },
+    { side: 'continental', kind: 'attack', label: 'Arnold', labelAt: 0.4, coords: [[-73.6450, 43.0020], [-73.6430, 43.0040], [-73.6410, 43.0050]], width: 3 },
+    { side: 'continental', kind: 'attack', labelAt: 0.5, coords: [[-73.6495, 43.0060], [-73.6475, 43.0095], [-73.6425, 43.0098]] },
+    { side: 'british', kind: 'retreat', coords: [[-73.6450, 43.0030], [-73.6420, 43.0050], [-73.6410, 43.0060]], width: 2 }
+  ],
+  units: [
+    { side: 'british', coords: [-73.6435, 43.0012], angle: -25 },
+    { side: 'continental', coords: [-73.6350, 42.9845], label: 'Gates', angle: -20, labelPos: { dx: 0, dy: 18, anchor: 'middle' } }
+  ],
+  towns: [
+    { name: 'Neilson farm', coords: [-73.6416, 42.9863], kind: 'building', label: { dx: 8, dy: 14 } },
+    { name: 'Balcarres redoubt', coords: [-73.6386, 43.0053], kind: 'fort', side: 'british', label: { dx: 12, dy: -10 } },
+    { name: 'Breymann redoubt', coords: [-73.6407, 43.0095], kind: 'fort', side: 'hessian', label: { dx: 10, dy: -4 } },
+    { name: 'Great Redoubt', coords: [-73.6109, 43.0027], kind: 'fort', side: 'british', label: { dx: -4, dy: 20, anchor: 'end' } }
+  ],
+  battles: [ { coords: [-73.6462, 42.9997] } ],
+  callouts: [
+    { coords: [-73.6370, 42.9975], n: 1 },
+    { coords: [-73.6340, 43.0075], n: 2 },
+    { coords: [-73.6450, 43.0125], n: 3 }
+  ]
+}));
+
+HMap.render('#map-surrender', {
+  geo: 'saratoga-surrender',
+  bbox: [-73.66, 43.035, -73.545, 43.125],
+  get textScale() { return SMALL() ? 0.85 : 1; },
+  // basin of the later Champlain Canal
+  water: { hideIn: [[-73.5905, 43.0545, -73.588, 43.058]] },
+  alt: 'Map of the Hudson at Saratoga (Schuylerville) showing Burgoyne\'s retreat and his army surrounded north of Fish Creek',
+  roads: [
+    { coords: [[-73.603, 43.030], [-73.597, 43.060], [-73.590, 43.085], [-73.583, 43.100], [-73.578, 43.120], [-73.574, 43.130]] }
+  ],
+  areas: [
+    { coords: [[-73.6015, 43.0985], [-73.5960, 43.1080], [-73.5840, 43.1085], [-73.5775, 43.1030], [-73.5800, 43.0985], [-73.5900, 43.0970]], side: 'british', opacity: 0.3, legend: 'British fortified camp' }
+  ],
+  towns: [
+    { name: 'Schuyler\'s house', coords: [-73.5817, 43.0958], kind: 'building', label: { dx: 8, dy: 13 } },
+    { name: 'Field of grounded arms', coords: [-73.5777, 43.1003], kind: 'building', label: { dx: 9, dy: -6 } },
+    { name: 'Dovegat', coords: [-73.5954, 43.0604], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } }
+  ],
+  moves: [
+    { side: 'british', kind: 'retreat', label: 'Burgoyne, Oct 8–9', labelAt: 0.4, coords: [[-73.6055, 43.036], [-73.600, 43.060], [-73.593, 43.085], [-73.590, 43.099]] },
+    { side: 'continental', kind: 'march', label: 'Gates, Oct 10', labelAt: 0.45, coords: [[-73.628, 43.036], [-73.615, 43.065], [-73.6015, 43.081]] },
+    { side: 'continental', kind: 'march', label: 'Morgan', labelAt: 0.5, coords: [[-73.648, 43.036], [-73.645, 43.075], [-73.628, 43.102], [-73.614, 43.109]] }
+  ],
+  units: [
+    { side: 'continental', coords: [-73.600, 43.0835], label: 'Gates', labelPos: { dx: 18, dy: 12 } },
+    { side: 'continental', coords: [-73.609, 43.1105], angle: 70, label: 'Morgan', labelPos: { dx: -12, dy: -8, anchor: 'end' } },
+    { side: 'militia', coords: [-73.563, 43.092], angle: 80, label: 'Fellows', labelPos: { dx: 12, dy: 4 } },
+    { side: 'militia', coords: [-73.568, 43.121], label: 'Stark', labelPos: { dx: 18, dy: 4 } },
+    { side: 'british', coords: [-73.590, 43.103], label: 'Burgoyne', labelPos: { dx: 0, dy: -12, anchor: 'middle' } }
+  ],
+  callouts: [
+    { coords: [-73.588, 43.050], n: 1 },
+    { coords: [-73.590, 43.1135], n: 2 },
+    { coords: [-73.553, 43.110], n: 3 },
+    { coords: [-73.5685, 43.1045], n: 4 }
+  ],
+  labels: [
+    { coords: [-73.5745, 43.058], text: 'Hudson River', kind: 'water', angle: -72 },
+    { coords: [-73.625, 43.090], text: 'Fish Creek', kind: 'water', size: 12, angle: -30 },
+    { coords: [-73.597, 43.0395], text: 'battlefield 6 miles ↓', kind: 'note', size: 11.5, anchor: 'start' }
+  ]
+});
+</script>
+</body>
+</html>

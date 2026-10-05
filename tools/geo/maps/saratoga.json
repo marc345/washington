@@ -1,0 +1,5 @@
+[
+  { "id": "saratoga-campaign", "bbox": [-75.85, 41.85, -72.65, 44.55], "detail": "campaign" },
+  { "id": "saratoga-field", "bbox": [-73.662, 42.979, -73.604, 43.016], "detail": "local" },
+  { "id": "saratoga-surrender", "bbox": [-73.66, 43.035, -73.545, 43.125], "detail": "local" }
+]

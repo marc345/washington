@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Newport</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="newport-1778">
+<main>
+  <header class="event-head">
+    <h1>Newport</h1>
+    <p class="meta">July 29 – August 30, 1778 · Narragansett Bay and Aquidneck Island, Rhode Island</p>
+  </header>
+
+  <figure class="map">
+    <h2>The allied plan: French fleet in the bay, Sullivan on the island</h2>
+    <div class="map-canvas" id="map-bay"></div>
+    <figcaption>
+      The British held Newport and all of Aquidneck Island with about 6,700 men. D'Estaing's fleet was to force its way into the bay and land French troops while Sullivan crossed onto the island from the east, so that Newport would be attacked from two sides.
+      <ol>
+        <li>Jul 29: the French fleet arrives off Point Judith. Frigates enter the western and Sakonnet passages, and the British burn or scuttle their own warships to keep them from being captured.</li>
+        <li>Aug 8: d'Estaing runs past the Newport batteries into the bay. The British pull back into their lines around the town.</li>
+        <li>Aug 9: Sullivan crosses from Tiverton at Howland's Ferry. The same day Howe's relief fleet appears off Point Judith.</li>
+        <li>Aug 10: d'Estaing sails out to fight Howe. A great gale on Aug 11–12 scatters and damages both fleets before they can engage.</li>
+        <li>Aug 20–22: the French return only to announce that they are leaving for repairs in Boston, taking their troops with them.</li>
+      </ol>
+      <span class="note-approx">Fleet tracks are schematic.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>August 15–28: the siege lines before Newport</h2>
+    <div class="map-canvas" id="map-siege"></div>
+    <figcaption>
+      Sullivan's army, about 10,000 men and largely New England militia, dug in on Honeyman's Hill opposite the British works and began to bombard them. Without the French fleet and troops, an assault was out of the question, and thousands of militia went home.
+      <ol>
+        <li>The British outer line, from Easton's Pond over Green End and Tonomy Hill to the harbor.</li>
+        <li>American batteries and approach trenches on Honeyman's Hill.</li>
+        <li>Night of Aug 28: Sullivan withdraws north to the fortified line on Butts Hill.</li>
+      </ol>
+      <span class="note-approx">The line traces are approximate. Several ponds here are modern reservoirs and are not shown.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>August 29: the Battle of Rhode Island</h2>
+    <div class="map-canvas" id="map-battle"></div>
+    <figcaption>
+      Pigot followed the retreat up both island roads. The American rear guards fell back to the Butts Hill line. The heaviest fighting came on the American right, at the foot of the hill, where Greene's wing beat back repeated Hessian attacks.
+      <ol>
+        <li>Smith's British column comes up the East Road and pushes Livingston's rear guard off Quaker Hill.</li>
+        <li>Lossberg's Hessians drive Laurens's light troops back along the West Road from Turkey Hill.</li>
+        <li>Greene's wing, including the 1st Rhode Island Regiment with its many Black and Native American soldiers, holds the valley below Butts Hill. British frigates fire into the American flank.</li>
+        <li>Night of Aug 30: the army crosses safely to Tiverton and Bristol. Clinton arrives with 4,000 reinforcements the next day.</li>
+      </ol>
+      <span class="note-approx">Road lines and unit positions are approximate.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+const SMALL = () => window.innerWidth < 600;
+
+HMap.render('#map-bay', {
+  geo: 'newport-1778-bay',
+  bbox: [-71.6, 41.3, -71.05, 41.78],
+  get textScale() { return SMALL() ? 0.85 : 1; },
+  alt: 'Map of Narragansett Bay showing the French fleet forcing the passage into the bay, Sullivan crossing onto Aquidneck Island, and the British fleet arriving off Point Judith',
+  towns: [
+    { place: 'newport', side: 'british', label: { dx: -8, dy: 14, anchor: 'end' } },
+    { name: 'Tiverton', coords: [-71.200, 41.640], kind: 'village', label: { dx: 8, dy: 4 } },
+    { name: 'Bristol', coords: [-71.268, 41.677], kind: 'village', label: { dx: -8, dy: -4, anchor: 'end' } },
+    { name: 'Point Judith', coords: [-71.481, 41.361], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Howland\'s Ferry', coords: [-71.213, 41.630], kind: 'ferry', label: { dx: 8, dy: 14 } }
+  ],
+  ships: [
+    { side: 'french', coords: [-71.465, 41.39], angle: 20 },
+    { side: 'french', coords: [-71.445, 41.395], angle: 20, label: 'd\'Estaing, Jul 29', labelPos: { dx: -10, dy: 26, anchor: 'middle' } },
+    { side: 'french', coords: [-71.345, 41.535], angle: -90, label: 'Aug 8–10', labelPos: { dx: 16, dy: 4, anchor: 'start' } },
+    { side: 'british', coords: [-71.31, 41.322], angle: 160 },
+    { side: 'british', coords: [-71.28, 41.316], angle: 160, label: 'Howe, Aug 9', labelPos: { dx: 22, dy: 4, anchor: 'start' } }
+  ],
+  moves: [
+    { side: 'french', kind: 'naval', label: 'into the bay, Aug 8', labelAt: 0.55, coords: [[-71.40, 41.405], [-71.375, 41.44], [-71.355, 41.462], [-71.348, 41.49], [-71.345, 41.52]] },
+    { side: 'french', kind: 'naval', coords: [[-71.36, 41.52], [-71.363, 41.47], [-71.37, 41.42], [-71.355, 41.37], [-71.335, 41.338]] },
+    { side: 'french', kind: 'naval', coords: [[-71.43, 41.41], [-71.43, 41.46], [-71.425, 41.50]], width: 1.6 },
+    { side: 'french', kind: 'naval', coords: [[-71.20, 41.42], [-71.215, 41.47], [-71.222, 41.51]], width: 1.6 },
+    { side: 'continental', kind: 'march', label: 'Sullivan', labelAt: 0.7, coords: [[-71.17, 41.66], [-71.195, 41.635], [-71.225, 41.62], [-71.250, 41.60]] },
+    { side: 'continental', kind: 'march', coords: [[-71.255, 41.585], [-71.265, 41.55], [-71.275, 41.515]] }
+  ],
+  callouts: [
+    { coords: [-71.33, 41.37], n: 1 },
+    { coords: [-71.30, 41.445], n: 2 },
+    { coords: [-71.15, 41.60], n: 3 },
+    { coords: [-71.38, 41.335], n: 4 },
+    { coords: [-71.395, 41.555], n: 5 }
+  ],
+  labels: [
+    { coords: [-71.27, 41.555], text: 'Aquidneck I.', kind: 'terrain', size: 12.5, angle: -60 },
+    { coords: [-71.383, 41.505], text: 'Conanicut I.', kind: 'terrain', size: 11.5, angle: -78 },
+    { coords: [-71.32, 41.60], text: 'Prudence I.', kind: 'terrain', size: 11, angle: -70 },
+    { coords: [-71.212, 41.505], text: 'Sakonnet R.', kind: 'water', size: 12, angle: -80 },
+    { coords: [-71.32, 41.705], text: 'Narragansett Bay', kind: 'water', size: 13 },
+    { coords: [-71.15, 41.37], text: 'ATLANTIC OCEAN', kind: 'water', size: 13 },
+    { coords: [-71.52, 41.62], text: 'RHODE ISLAND', kind: 'region', size: 13 },
+    { coords: [-71.13, 41.70], text: 'MASSACHUSETTS', kind: 'region', size: 11 }
+  ]
+});
+
+HMap.render('#map-siege', {
+  geo: 'newport-1778-siege',
+  bbox: [-71.36, 41.46, -71.24, 41.56],
+  get textScale() { return SMALL() ? 0.85 : 1; },
+  terrain: { contours: 10 },
+  // Newport's water-supply reservoirs (19th–20th century) on the line of the siege works
+  water: { hide: ['Green End Pond', 'Gardiner Pond', 'Nelson Pond', 'Saint Marys Pond', 'Sisson Pond', 'Lawton Valley Resr'] },
+  alt: 'Map of Newport and the southern end of Aquidneck Island showing the British lines north of the town and the American siege works on Honeyman\'s Hill',
+  works: [
+    { side: 'british', coords: [[-71.2885, 41.4930], [-71.2915, 41.4990], [-71.2937, 41.5044], [-71.2990, 41.5068], [-71.3050, 41.5075], [-71.3120, 41.5095], [-71.3190, 41.5115]] },
+    { side: 'british', kind: 'redoubt', coords: [[-71.2937, 41.5044]], size: 7 },
+    { side: 'british', kind: 'redoubt', coords: [[-71.3030, 41.5075]], size: 7 },
+    { side: 'continental', coords: [[-71.2780, 41.5110], [-71.2785, 41.5060], [-71.2800, 41.5010]] },
+    { side: 'continental', coords: [[-71.2790, 41.5045], [-71.2840, 41.5040], [-71.2870, 41.5050]] }
+  ],
+  roads: [
+    { name: 'East Road', coords: [[-71.2750, 41.5600], [-71.2770, 41.5350], [-71.2830, 41.5150], [-71.2950, 41.5000], [-71.3080, 41.4920]], labelAt: 0.25 },
+    { name: 'West Road', coords: [[-71.3020, 41.5600], [-71.3080, 41.5350], [-71.3140, 41.5150], [-71.3125, 41.4950]], labelAt: 0.25 }
+  ],
+  towns: [
+    { place: 'newport', label: { dx: -10, dy: 4, anchor: 'end' } },
+    { name: 'Green End', coords: [-71.2937, 41.5044], kind: 'building', label: { dx: 10, dy: 16 } },
+    { name: 'Tonomy Hill', coords: [-71.3030, 41.5075], kind: 'building', label: { dx: -4, dy: -12, anchor: 'end' } }
+  ],
+  units: [
+    { side: 'british', coords: [-71.3050, 41.4990], label: 'Pigot', labelPos: { dx: 18, dy: 4 } },
+    { side: 'hessian', coords: [-71.2995, 41.4955], angle: 60 },
+    { side: 'continental', coords: [-71.2745, 41.5100], angle: 80, label: 'Sullivan', labelPos: { dx: 12, dy: 4 } },
+    { side: 'militia', coords: [-71.2735, 41.5185], angle: 80 }
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', label: 'Aug 15', labelAt: 0.5, coords: [[-71.2760, 41.5580], [-71.2770, 41.5400], [-71.2765, 41.5230]] },
+    { side: 'continental', kind: 'retreat', label: 'Aug 28, to Butts Hill', labelAt: 0.5, coords: [[-71.2700, 41.5200], [-71.2670, 41.5400], [-71.2650, 41.5590]] }
+  ],
+  callouts: [
+    { coords: [-71.3225, 41.5060], n: 1 },
+    { coords: [-71.2715, 41.5050], n: 2 },
+    { coords: [-71.2580, 41.5420], n: 3 }
+  ],
+  labels: [
+    { coords: [-71.2800, 41.4975], text: 'Honeyman\'s Hill', kind: 'terrain', size: 12, anchor: 'start', dx: 4 },
+    { coords: [-71.2870, 41.4870], text: 'Easton\'s\nPond', kind: 'water', size: 10.5, anchor: 'start', dx: 6 },
+    { coords: [-71.3330, 41.4980], text: 'Newport Harbor', kind: 'water', size: 12 },
+    { coords: [-71.3450, 41.5300], text: 'Narragansett Bay', kind: 'water', size: 13, angle: -70 },
+    { coords: [-71.2470, 41.5200], text: 'Sakonnet R.', kind: 'water', size: 12, angle: -70 }
+  ]
+});
+
+HMap.render('#map-battle', {
+  geo: 'newport-1778-battle',
+  bbox: [-71.29, 41.575, -71.20, 41.645],
+  get textScale() { return SMALL() ? 0.85 : 1; },
+  terrain: { contours: 10 },
+  alt: 'Map of the north end of Aquidneck Island showing the British and Hessian columns attacking up the East and West roads and the American line on Butts Hill',
+  works: [
+    { side: 'continental', coords: [[-71.2715, 41.6130], [-71.2640, 41.6150], [-71.2560, 41.6160], [-71.2512, 41.6150], [-71.2450, 41.6140], [-71.2405, 41.6125]] },
+    { side: 'continental', kind: 'redoubt', coords: [[-71.2512, 41.6150]], size: 7 }
+  ],
+  roads: [
+    { coords: [[-71.2745, 41.5700], [-71.2700, 41.5850], [-71.2620, 41.6000], [-71.2575, 41.6150], [-71.2560, 41.6300], [-71.2575, 41.6430]] },
+    { coords: [[-71.2470, 41.5700], [-71.2535, 41.5830], [-71.2510, 41.5980], [-71.2470, 41.6120], [-71.2380, 41.6250], [-71.2150, 41.6300]], labelAt: 0.1 }
+  ],
+  towns: [
+    { name: 'Butts Hill fort', coords: [-71.2512, 41.6150], kind: 'building', label: { dx: 10, dy: -10 } },
+    { name: 'Bristol Ferry', coords: [-71.2575, 41.6430], kind: 'ferry', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Howland\'s Ferry', coords: [-71.2130, 41.6300], kind: 'ferry', label: { dx: 0, dy: 18, anchor: 'middle' } }
+  ],
+  units: [
+    { side: 'continental', coords: [-71.2600, 41.6070], angle: -60, label: 'Greene', labelPos: { dx: 14, dy: 4 } },
+    { side: 'continental', coords: [-71.2660, 41.6050], angle: -60, label: '1st Rhode Island', labelPos: { dx: -14, dy: -8, anchor: 'end' } },
+    { side: 'continental', coords: [-71.2440, 41.6085], angle: 30, label: 'Glover', labelPos: { dx: 14, dy: 4 } },
+    { side: 'continental', coords: [-71.2500, 41.6215], label: 'Sullivan', labelPos: { dx: 18, dy: 4 } },
+    { side: 'hessian', coords: [-71.2700, 41.5905], angle: -70, label: 'Lossberg', labelPos: { dx: -16, dy: 4, anchor: 'end' } },
+    { side: 'british', coords: [-71.2545, 41.5895], angle: 20, label: 'Smith', labelPos: { dx: 16, dy: 4 } }
+  ],
+  ships: [
+    { side: 'british', coords: [-71.2800, 41.6010], angle: 70, label: 'frigates', labelPos: { dx: 0, dy: -16, anchor: 'middle' } },
+    { side: 'british', coords: [-71.2820, 41.5930], angle: 70 }
+  ],
+  moves: [
+    { side: 'continental', kind: 'retreat', label: 'Laurens', labelAt: 0.4, coords: [[-71.2755, 41.5720], [-71.2715, 41.5860], [-71.2655, 41.5990]], width: 2.2 },
+    { side: 'continental', kind: 'retreat', label: 'Livingston', labelAt: 0.4, coords: [[-71.2460, 41.5720], [-71.2510, 41.5850], [-71.2490, 41.6020]], width: 2.2 },
+    { side: 'hessian', kind: 'attack', coords: [[-71.2690, 41.5945], [-71.2670, 41.5995], [-71.2640, 41.6030]] },
+    { side: 'british', kind: 'attack', coords: [[-71.2550, 41.5930], [-71.2530, 41.5990], [-71.2505, 41.6045]] },
+    { side: 'continental', kind: 'retreat', label: 'Aug 30, night', labelAt: 0.5, coords: [[-71.2420, 41.6180], [-71.2280, 41.6265], [-71.2095, 41.6315]] }
+  ],
+  battles: [
+    { coords: [-71.2630, 41.6020] },
+    { coords: [-71.2544, 41.5828], label: 'Quaker Hill', labelPos: { dx: 14, dy: 16, anchor: 'start' } },
+    { coords: [-71.2700, 41.5840], label: 'Turkey Hill', labelPos: { dx: -14, dy: 4, anchor: 'end' } }
+  ],
+  callouts: [
+    { coords: [-71.2380, 41.5880], n: 1 },
+    { coords: [-71.2835, 41.5875], n: 2 },
+    { coords: [-71.2770, 41.6120], n: 3 },
+    { coords: [-71.2250, 41.6190], n: 4 }
+  ],
+  labels: [
+    { coords: [-71.2230, 41.5880], text: 'Sakonnet R.', kind: 'water', size: 12, angle: -78 },
+    { coords: [-71.2330, 41.6400], text: 'Mount Hope Bay', kind: 'water', size: 12 },
+    { coords: [-71.2900, 41.6300], text: 'Narragansett Bay', kind: 'water', size: 12, angle: -70 }
+  ]
+});
+</script>
+</body>
+</html>
