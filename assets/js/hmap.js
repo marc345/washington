@@ -689,7 +689,11 @@
       items.push([`<svg viewBox="0 0 30 12"><path d="M1,6 H22" stroke="#4a3b2c" stroke-width="${k === 'attack' ? 4.4 : Math.min(mk.width, 2.4)}" stroke-dasharray="${mk.dash ? mk.dash.replace(/\d+/g, n => n * 0.6) : ''}" fill="none"/><path d="M29,6 L21,1.5 L23,6 L21,10.5 Z" fill="#4a3b2c"/></svg>`, mk.label]);
     });
     if ((cfg.moves || []).some(x => x.approx)) items.push(['<svg viewBox="0 0 30 12"><path d="M2,6 H28" stroke="#4a3b2c" stroke-width="2.4" stroke-dasharray="1.2 4" stroke-linecap="round"/></svg>', 'Approximate route']);
-    if ((cfg.works || []).length) items.push(['<svg viewBox="0 0 30 12"><path d="M2,6 H28" stroke="#4a3b2c" stroke-width="2"/><path d="M2,6 H28" stroke="#4a3b2c" stroke-width="5" stroke-dasharray="1 3"/></svg>', 'Fortifications']);
+    const extra = (cfg.legendExtra || []).map(x => x.text || '').join(' ');
+    const works = cfg.works || [], redoubts = works.filter(w => w.kind === 'redoubt' && w.coords.length === 1);
+    if (works.length > redoubts.length) items.push(['<svg viewBox="0 0 30 12"><path d="M2,6 H28" stroke="#4a3b2c" stroke-width="2"/><path d="M2,6 H28" stroke="#4a3b2c" stroke-width="5" stroke-dasharray="1 3"/></svg>', 'Fortifications']);
+    if (redoubts.length && !/redoubt/i.test(extra)) items.push([`<svg viewBox="-8 -8 16 16"><path d="${starPath(0, 0, 6.5)}" fill="none" stroke="#4a3b2c" stroke-width="1.6"/></svg>`, 'Redoubt']);
+    if ((cfg.ships || []).length && !/ship|fleet/i.test(extra)) items.push(['<svg viewBox="-14 -13 28 18"><path d="M-11,-2 L9,-2 L13,1 L9,4 L-11,4 Z M-4,-2 L-4,-12 L4,-2 Z" fill="#8a7a66" stroke="#3a2f24" stroke-width="1"/></svg>', 'Ship']);
     (cfg.areas || []).filter(a => a.legend).forEach(a => items.push([`<svg viewBox="0 0 26 12"><rect x="1" y="1" width="24" height="10" fill="${SIDES[a.side || 'neutral'].fill}" fill-opacity="${a.opacity != null ? a.opacity : 0.22}" stroke="${SIDES[a.side || 'neutral'].stroke}" stroke-dasharray="3 2"/></svg>`, a.legend]));
     (cfg.lines || []).filter(l => l.legend).forEach(l => items.push([`<svg viewBox="0 0 30 12"><path d="M2,6 H28" stroke="${l.color || '#3a2f24'}" stroke-width="${l.width || 1.5}" stroke-dasharray="${l.dash || ''}"/></svg>`, l.legend]));
     const kinds2 = new Set((cfg.towns || []).map(t => t.kind || (gaz[t.place] || {}).kind));

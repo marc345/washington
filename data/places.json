@@ -31,7 +31,7 @@
   "harlem-heights": {"name": "Harlem Heights", "coords": [-73.945, 40.826], "kind": "village"},
   "kips-bay": {"name": "Kip's Bay", "coords": [-73.972, 40.744], "kind": "village"},
   "fort-washington": {"name": "Fort Washington", "coords": [-73.938, 40.851], "kind": "fort"},
-  "fort-lee": {"name": "Fort Lee", "coords": [-73.961, 40.851], "kind": "fort"},
+  "fort-lee": {"name": "Fort Lee", "coords": [-73.967, 40.851], "kind": "fort"},
   "kingsbridge": {"name": "Kingsbridge", "coords": [-73.905, 40.877], "kind": "village"},
   "white-plains": {"name": "White Plains", "coords": [-73.763, 41.034], "kind": "village"},
   "dobbs-ferry": {"name": "Dobbs Ferry", "coords": [-73.873, 41.014], "kind": "village"},

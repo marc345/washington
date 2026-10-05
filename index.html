@@ -77,23 +77,32 @@
       attribution: 'Tiles &copy; Esri &mdash; Esri, HERE, Garmin, USGS, NGA, EPA, USDA, NPS'
     }).addTo(map);
 
-    // Markers closer than ~28 px on screen merge into one marker listing all their events;
-    // regrouped on every zoom so nothing hides under another marker.
+    // Markers whose pins would overlap on screen merge into one pin listing all their events,
+    // placed at the mean position; regrouped on every zoom so nothing hides under another pin.
     const card = e => `<div class="card"><h3>${esc(e.title)}</h3><div class="d">${esc(e.dates)}</div><p>${esc(e.summary)}</p><a class="go" href="events/${e.id}.html">Open the maps →</a></div>`;
     const layer = L.layerGroup().addTo(map);
+    const pinLabel = ns => ns.length > 4 ? ns.slice(0, 3).join('·') + ` +${ns.length - 3}` : ns.join('·');
+    const pinW = ns => Math.max(26, pinLabel(ns).length * 7 + 14);
     function draw() {
       layer.clearLayers();
-      const z = map.getZoom(), groups = [];
-      events.forEach(e => {
-        const p = map.project([e.coords[1], e.coords[0]], z);
-        const g = groups.find(g => g.p.distanceTo(p) < 28);
-        if (g) g.items.push(e); else groups.push({ p, items: [e] });
-      });
+      const z = map.getZoom();
+      let groups = events.map(e => ({ p: map.project([e.coords[1], e.coords[0]], z), items: [e] }));
+      for (let merged = true; merged;) {
+        merged = false;
+        outer: for (let i = 0; i < groups.length; i++) for (let j = i + 1; j < groups.length; j++) {
+          const a = groups[i], b = groups[j];
+          const wa = pinW(a.items.map(e => e.n)), wb = pinW(b.items.map(e => e.n));
+          if (Math.abs(a.p.x - b.p.x) < (wa + wb) / 2 + 4 && Math.abs(a.p.y - b.p.y) < 30) {
+            const items = a.items.concat(b.items).sort((x, y) => x.n - y.n);
+            const p = a.p.multiplyBy(a.items.length).add(b.p.multiplyBy(b.items.length)).divideBy(items.length);
+            groups.splice(j, 1); groups[i] = { p, items }; merged = true; break outer;
+          }
+        }
+      }
       groups.forEach(g => {
         const w = g.items.some(e => e.washington);
         const ns = g.items.map(e => e.n);
-        const label = ns.length > 4 ? ns.slice(0, 3).join('·') + ` +${ns.length - 3}` : ns.join('·');
-        const icon = L.divIcon({ className: '', html: `<div class="pin ${w ? 'w' : 'o'} ${g.items.length > 1 ? 'multi' : ''}">${label}</div>`, iconSize: null, iconAnchor: [13, 13] });
+        const icon = L.divIcon({ className: '', html: `<div class="pin ${w ? 'w' : 'o'} ${g.items.length > 1 ? 'multi' : ''}">${pinLabel(ns)}</div>`, iconSize: null, iconAnchor: [pinW(ns) / 2, 13] });
         L.marker(map.unproject(g.p, z), { icon, title: g.items.map(e => e.title).join(' / '), riseOnHover: true })
           .bindPopup(g.items.map(card).join(''), { maxWidth: 300, maxHeight: 360, autoPanPadding: [20, 20] })
           .addTo(layer);
@@ -101,7 +110,7 @@
     }
     map.on('zoomend', draw);
     // Frame every event (Quebec to Savannah).
-    map.fitBounds(events.map(e => [e.coords[1], e.coords[0]]), { padding: [24, 24] });
+    map.fitBounds(events.map(e => [e.coords[1], e.coords[0]]), { paddingTopLeft: [30, 24], paddingBottomRight: [60, 48] }); // bottom clear of the attribution
     draw();
 
     const list = document.getElementById('list');
