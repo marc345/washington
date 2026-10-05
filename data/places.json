@@ -57,7 +57,7 @@
   "jockey-hollow": {"name": "Jockey Hollow", "coords": [-74.545, 40.762], "kind": "village"},
   "basking-ridge": {"name": "Basking Ridge", "coords": [-74.548, 40.706], "kind": "village"},
   "middlebrook": {"name": "Middlebrook", "coords": [-74.548, 40.585], "kind": "village"},
-  "springfield-nj": {"name": "Springfield", "coords": [-74.317, 40.7], "kind": "village"},
+  "springfield-nj": {"name": "Springfield", "coords": [-74.31, 40.7115], "kind": "village"},
   "freehold": {"name": "Monmouth Court House", "coords": [-74.274, 40.26], "kind": "village"},
   "allentown-nj": {"name": "Allentown", "coords": [-74.584, 40.178], "kind": "village"},
   "sandy-hook": {"name": "Sandy Hook", "coords": [-74.002, 40.462], "kind": "village"},
@@ -171,7 +171,7 @@
   "skenesborough": {"name": "Skenesborough", "coords": [-73.405, 43.556], "kind": "village"},
   "fort-western": {"name": "Fort Western", "coords": [-69.771, 44.316], "kind": "fort"},
   "pointe-aux-trembles": {"name": "Pointe-aux-Trembles", "coords": [-71.585, 46.698], "kind": "village"},
-  "trois-rivieres": {"name": "Trois-Rivi\u00e8res", "coords": [-72.543, 46.343], "kind": "town"},
+  "trois-rivieres": {"name": "Trois-Rivières", "coords": [-72.543, 46.343], "kind": "town"},
   "sorel": {"name": "Sorel", "coords": [-73.117, 46.044], "kind": "village"},
   "chambly": {"name": "Chambly", "coords": [-73.294, 45.448], "kind": "fort"},
   "kanadaseaga": {"name": "Kanadaseaga", "coords": [-76.98, 42.87], "kind": "village"},
@@ -179,5 +179,14 @@
   "howlands-ferry": {"name": "Howland's Ferry", "coords": [-71.213, 41.63], "kind": "ferry"},
   "point-judith": {"name": "Point Judith", "coords": [-71.481, 41.361], "kind": "village"},
   "kingston-ny": {"name": "Kingston", "coords": [-74.002, 41.929], "kind": "town"},
-  "oswego": {"name": "Oswego", "coords": [-76.51, 43.46], "kind": "fort"}
+  "oswego": {"name": "Oswego", "coords": [-76.51, 43.46], "kind": "fort"},
+  "englishtown": {"name": "Englishtown", "coords": [-74.358, 40.297], "kind": "village"},
+  "coryells-ferry": {"name": "Coryell's Ferry", "coords": [-74.945, 40.365], "kind": "ferry"},
+  "pennington": {"name": "Pennington", "coords": [-74.791, 40.328], "kind": "village"},
+  "kingston-nj": {"name": "Kingston", "coords": [-74.614, 40.375], "kind": "village"},
+  "bound-brook": {"name": "Bound Brook", "coords": [-74.538, 40.568], "kind": "village"},
+  "elizabethtown-point": {"name": "Elizabethtown Point", "coords": [-74.188, 40.646], "kind": "ferry"},
+  "connecticut-farms": {"name": "Connecticut Farms", "coords": [-74.265, 40.696], "kind": "village"},
+  "ford-mansion": {"name": "Ford Mansion", "coords": [-74.4705, 40.7983], "kind": "hq"},
+  "pluckemin": {"name": "Pluckemin", "coords": [-74.64, 40.645], "kind": "village"}
 }

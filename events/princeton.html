@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assunpink Creek &amp; Princeton</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="princeton">
+<main>
+  <header class="event-head">
+    <h1>Assunpink Creek &amp; Princeton</h1>
+    <p class="meta">January 2–3, 1777 · Trenton and Princeton, New Jersey</p>
+  </header>
+
+  <figure class="map">
+    <h2>January 2: Cornwallis's advance and the Assunpink line</h2>
+    <div class="map-canvas" id="map-assunpink"></div>
+    <figcaption>
+      Cornwallis marched from Princeton with about 5,500 men, leaving brigades at Princeton and Maidenhead. Riflemen under Hand slowed him at every stream, so he reached Trenton only near dusk. The Americans held the high ground south of the Assunpink, and their artillery covered the bridge.
+      <ol>
+        <li>Hand's first stand at Five Mile Run, late morning.</li>
+        <li>Second delay at Shabakunk Creek.</li>
+        <li>Last stand at Stockton Hollow, at the edge of town, mid-afternoon.</li>
+        <li>British attacks on the bridge are thrown back. Cornwallis decides to wait for morning.</li>
+      </ol>
+      <span class="note-approx">Positions of the American line and of the units along it are schematic. The line ran about three miles upstream to guard the fords.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>Night of January 2–3: the march around Cornwallis</h2>
+    <div class="map-canvas" id="map-night"></div>
+    <figcaption>
+      Leaving campfires burning and a few hundred men to make noise, the army slipped east along the Sandtown road at about 1 a.m. It turned north on a back road over the Quaker Bridge and reached Stony Brook near Princeton around sunrise.
+      <ol>
+        <li>Rear guard keeps the fires lit, then follows before dawn.</li>
+        <li>Quaker Bridge over the Assunpink.</li>
+        <li>Battle of Princeton, about 8 a.m. (see next map).</li>
+        <li>As Cornwallis hurries back, an American party breaks down the Stony Brook bridge to delay him.</li>
+        <li>The army moves on to Kingston, then turns north up the Millstone valley toward Morristown.</li>
+      </ol>
+      <span class="note-approx">The night-march route follows the modern Quakerbridge and Quaker Roads, which keep the line of the 1777 byroad. Its exact course through the woods is uncertain.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>The Battle of Princeton, morning of January 3</h2>
+    <div class="map-canvas" id="map-battle"></div>
+    <figcaption>
+      Mawhood had just set out for Trenton with the 17th Foot when he spotted the Americans. He turned back and met Mercer's brigade in William Clarke's orchard. Mercer fell mortally wounded and his men broke. Washington rode in with militia and Continental reinforcements, and the British line gave way.
+      <ol>
+        <li>Mercer's brigade heads for the Stony Brook bridge on the Post Road.</li>
+        <li>Clash in the orchard. Mercer is mortally wounded.</li>
+        <li>Washington rallies the line with Cadwalader's militia and Hitchcock's brigade. Mawhood's men break and flee back over the bridge toward Maidenhead.</li>
+        <li>Sullivan's column, on the back road, drives the 40th and 55th Foot through town. Most fall back toward New Brunswick. About 200 who shelter in Nassau Hall surrender after American guns open fire.</li>
+      </ol>
+      <span class="note-approx">The course of the back road across the Clarke farm and the unit positions are approximate. Some recent studies suggest Mifflin, not Mercer, was sent to the bridge.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+// Modern dammed, quarry and park lakes (none existed in 1777). Same list as the Trenton page plus local ones.
+const MODERN_LAKES = ['Van Sciver Lk', 'Manor Lk', 'Mercer County Lk', 'Lk Luxembourg', 'Springfield Lk', 'Carnegie Lk',
+  'Millstone River & Carnegie Lk', 'Colonial Lk', 'Spring Lk', 'Curtis Lk', 'Sylvia Lk', 'Rosedale Lk', 'Plainsboro Pond', 'Grovers Mill Pond'];
+// Post Road from Trenton through Maidenhead to Princeton (line of modern US 206 / Brunswick Ave)
+const POST_ROAD = [[-74.7637, 40.2257], [-74.7553, 40.2340], [-74.7425, 40.2498], [-74.7405, 40.2660], [-74.7332, 40.2746],
+  [-74.7340, 40.2923], [-74.7244, 40.3038], [-74.7104, 40.3108], [-74.6879, 40.3313], [-74.6826, 40.3328], [-74.6780, 40.3359],
+  [-74.6767, 40.3390], [-74.6698, 40.3452], [-74.6644, 40.3482]];
+// lower Assunpink through Trenton (culverted today, so missing from the stream data)
+const ASSUNPINK_LOWER = [[-74.7680, 40.2128], [-74.7630, 40.2150], [-74.7604, 40.2168], [-74.7560, 40.2190], [-74.7519, 40.2212]];
+
+HMap.render('#map-assunpink', {
+  geo: 'princeton-assunpink',
+  bbox: [-74.795, 40.202, -74.693, 40.302],
+  water: { hide: MODERN_LAKES, hideIn: [[-74.83, 40.13, -74.785, 40.185], [-74.80, 40.255, -74.69, 40.31], [-74.73, 40.23, -74.69, 40.255]] },
+  terrain: { contours: 5 },
+  alt: 'Map of the Post Road from Maidenhead to Trenton showing the British advance and the American line behind Assunpink Creek',
+  lines: [{ coords: ASSUNPINK_LOWER, color: '#6f9298', width: 1.6 }],
+  roads: [
+    { name: 'Post Road', labelAt: 0.8, coords: POST_ROAD.slice(0, 8) },
+    { name: 'Sandtown road', labelAt: 0.6, coords: [[-74.7585, 40.2140], [-74.7500, 40.2195], [-74.7399, 40.2336], [-74.7150, 40.2340], [-74.6880, 40.2366]] },
+    { coords: [[-74.7585, 40.2140], [-74.7520, 40.2085], [-74.7350, 40.1990]] },
+  ],
+  works: [
+    { side: 'continental', coords: [[-74.7655, 40.2128], [-74.7598, 40.2150], [-74.7540, 40.2178], [-74.7500, 40.2200], [-74.7470, 40.2240], [-74.7420, 40.2278], [-74.7368, 40.2318], [-74.7345, 40.2375]] }
+  ],
+  towns: [
+    { place: 'trenton', label: { dx: -9, dy: 2, anchor: 'end' } },
+    { name: 'Maidenhead', coords: [-74.7295, 40.2975], kind: 'village', label: { dx: 8, dy: 4 } },
+    { name: 'Assunpink bridge', coords: [-74.7604, 40.2168], kind: 'building', label: { dx: -10, dy: 8, anchor: 'end' } }
+  ],
+  moves: [
+    { side: 'british', kind: 'attack', label: 'Cornwallis (about 5,500)', labelAt: 0.5,
+      coords: [[-74.7225, 40.3050], [-74.7330, 40.2925], [-74.7322, 40.2746], [-74.7392, 40.2660], [-74.7412, 40.2498], [-74.7540, 40.2348], [-74.7618, 40.2190]] },
+    { side: 'continental', kind: 'retreat', label: 'Hand falls back', labelAt: 0.45,
+      coords: [[-74.7360, 40.2735], [-74.7432, 40.2655], [-74.7450, 40.2505], [-74.7570, 40.2350], [-74.7612, 40.2240], [-74.7590, 40.2150]] }
+  ],
+  units: [
+    { side: 'british', coords: [-74.7230, 40.2945], label: 'Leslie', labelPos: { dx: 30, dy: 4 } },
+    { side: 'continental', coords: [-74.7300, 40.2735], angle: -10, label: 'Hand', labelPos: { dx: 30, dy: 4 } },
+    { side: 'continental', type: 'artillery', coords: [-74.7578, 40.2142], angle: -30, w: 20, h: 9, label: 'Knox\'s guns', labelPos: { dx: 14, dy: 5 } },
+    { side: 'continental', coords: [-74.7470, 40.2222], angle: -45, w: 22, h: 9, label: 'Continental brigades', labelPos: { dx: 14, dy: 10 } },
+    { side: 'continental', coords: [-74.7375, 40.2300], angle: -60, w: 22, h: 9, label: 'St. Clair at the fords', labelPos: { dx: 14, dy: 6 } },
+    { side: 'militia', coords: [-74.7505, 40.2085], angle: -30, w: 22, h: 9, label: 'Pennsylvania militia', labelPos: { dx: 14, dy: 6 } },
+    { side: 'british', coords: [-74.7660, 40.2290], angle: 20, w: 22, h: 9, label: 'British camp', labelPos: { dx: 0, dy: -11, anchor: 'middle' } }
+  ],
+  battles: [{ coords: [-74.7612, 40.2182] }],
+  callouts: [
+    { coords: [-74.7245, 40.2700], n: 1 },
+    { coords: [-74.7380, 40.2470], n: 2 },
+    { coords: [-74.7505, 40.2365], n: 3 },
+    { coords: [-74.7572, 40.2208], n: 4 }
+  ],
+  labels: [
+    { coords: [-74.7905, 40.2232], text: 'Delaware River', kind: 'water', size: 12, angle: -38 },
+    { coords: [-74.7180, 40.2455], text: 'Assunpink Creek', kind: 'water', size: 12.5, angle: -50 },
+    { coords: [-74.7290, 40.2545], text: 'Shabakunk Cr.', kind: 'water', size: 11, angle: -10 },
+    { coords: [-74.7180, 40.2805], text: 'Five Mile Run', kind: 'water', size: 11, angle: 0 },
+    { coords: [-74.7650, 40.2380], text: 'Stockton\nHollow', kind: 'terrain', size: 11 },
+    { coords: [-74.6990, 40.2390], text: 'to Sandtown', kind: 'note', size: 10.5 },
+    { coords: [-74.7420, 40.2045], text: 'to Bordentown', kind: 'note', size: 10.5, angle: 30 }
+  ]
+});
+
+HMap.render('#map-night', {
+  geo: 'princeton-night-march',
+  bbox: [-74.81, 40.19, -74.60, 40.385],
+  water: { hide: MODERN_LAKES, hideIn: [[-74.83, 40.13, -74.785, 40.185], [-74.80, 40.235, -74.59, 40.39], [-74.73, 40.19, -74.59, 40.235]] },
+  alt: 'Map of the country between Trenton and Princeton showing the American night march by the Quaker Bridge road and the return of Cornwallis',
+  lines: [{ coords: ASSUNPINK_LOWER, color: '#6f9298', width: 1.4 }],
+  roads: [
+    { coords: POST_ROAD },
+    { coords: [[-74.7585, 40.2140], [-74.7500, 40.2195], [-74.7399, 40.2336], [-74.7150, 40.2340], [-74.6880, 40.2366]] },
+    { coords: [[-74.6880, 40.2366], [-74.6828, 40.2522], [-74.6696, 40.2772], [-74.6788, 40.2974], [-74.6847, 40.3051], [-74.6801, 40.3084], [-74.6844, 40.3171], [-74.6809, 40.3224], [-74.6791, 40.3276]] },
+    { coords: [[-74.6644, 40.3482], [-74.6560, 40.3500], [-74.6380, 40.3600], [-74.6145, 40.3745]] }
+  ],
+  towns: [
+    { place: 'trenton', label: { dx: -9, dy: -6, anchor: 'end' } },
+    { place: 'princeton', label: { dx: 8, dy: -8 } },
+    { name: 'Maidenhead', coords: [-74.7295, 40.2975], kind: 'village', label: { dx: 8, dy: 4 } },
+    { name: 'Sandtown', coords: [-74.6880, 40.2366], kind: 'village', label: { dx: 8, dy: 12 } },
+    { name: 'Quaker Bridge', coords: [-74.6703, 40.2702], kind: 'building', label: { dx: 9, dy: 4 } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', label: 'night march, from about 1 a.m.', labelAt: 0.6, width: 3.4,
+      coords: [[-74.7540, 40.2165], [-74.7420, 40.2320], [-74.7150, 40.2352], [-74.6900, 40.2380], [-74.6838, 40.2525], [-74.6708, 40.2772], [-74.6782, 40.2985], [-74.6836, 40.3060], [-74.6830, 40.3180], [-74.6800, 40.3262]] },
+    { side: 'continental', kind: 'march', label: 'to Kingston', labelAt: 0.5,
+      coords: [[-74.6620, 40.3505], [-74.6480, 40.3570], [-74.6320, 40.3655]] },
+    { side: 'british', kind: 'march', label: 'Cornwallis returns, Jan 3', labelAt: 0.42,
+      coords: [[-74.7560, 40.2290], [-74.7445, 40.2470], [-74.7425, 40.2655], [-74.7355, 40.2755], [-74.7362, 40.2930], [-74.7260, 40.3060], [-74.7110, 40.3130], [-74.6925, 40.3290]] }
+  ],
+  units: [
+    { side: 'continental', coords: [-74.7470, 40.2232], angle: -45 },
+    { side: 'british', coords: [-74.7660, 40.2290], angle: 20, label: 'Cornwallis', labelPos: { dx: -32, dy: -4, anchor: 'end' } },
+    { side: 'british', coords: [-74.7440, 40.2975], label: 'Leslie', labelPos: { dx: -32, dy: 4, anchor: 'end' } }
+  ],
+  battles: [{ coords: [-74.6770, 40.3330] }],
+  callouts: [
+    { coords: [-74.7370, 40.2190], n: 1 },
+    { coords: [-74.6640, 40.2615], n: 2 },
+    { coords: [-74.6680, 40.3220], n: 3 },
+    { coords: [-74.6890, 40.3215], n: 4 },
+    { coords: [-74.6440, 40.3680], n: 5 }
+  ],
+  labels: [
+    { coords: [-74.7010, 40.2610], text: 'Assunpink Creek', kind: 'water', size: 12, angle: -28 },
+    { coords: [-74.7250, 40.3430], text: 'Stony Brook', kind: 'water', size: 12, angle: -5 },
+    { coords: [-74.6190, 40.3480], text: 'Millstone R.', kind: 'water', size: 11.5, angle: -60 },
+    { coords: [-74.6280, 40.2280], text: 'NEW JERSEY', kind: 'region' }
+  ]
+});
+
+HMap.render('#map-battle', {
+  geo: 'princeton-battle',
+  bbox: [-74.690, 40.3235, -74.654, 40.3505],
+  water: { hide: MODERN_LAKES, hideUnnamed: true },
+  terrain: { contours: 5 },
+  alt: 'Map of the Princeton battlefield showing Mercer and Mawhood meeting at the Clarke orchard and the American advance into Princeton',
+  roads: [
+    { name: 'Post Road', labelAt: 0.82, coords: POST_ROAD.slice(7) },
+    { coords: [[-74.6644, 40.3482], [-74.6560, 40.3500], [-74.6440, 40.3570]] },
+    { name: 'Quaker Road', labelAt: 0.35, coords: [[-74.6844, 40.3171], [-74.6833, 40.3205], [-74.6809, 40.3224], [-74.6791, 40.3276], [-74.6805, 40.3310], [-74.6816, 40.3335]] },
+    { name: 'back road', kind: 'track', labelAt: 0.5, coords: [[-74.6791, 40.3276], [-74.6735, 40.3285], [-74.6680, 40.3325], [-74.6630, 40.3390], [-74.6605, 40.3460]] }
+  ],
+  towns: [
+    { name: 'Nassau Hall', coords: [-74.6593, 40.3487], kind: 'building', label: { dx: -8, dy: 15, anchor: 'end' } },
+    { name: 'T. Clarke house', coords: [-74.6758, 40.3303], kind: 'building', label: { dx: 0, dy: 17, anchor: 'middle' } },
+    { name: 'Quaker meeting house', coords: [-74.6795, 40.3275], kind: 'church', label: { dx: -9, dy: -4, anchor: 'end' } },
+    { name: 'Stony Brook bridge', coords: [-74.6823, 40.3334], kind: 'building', label: { dx: -8, dy: -7, anchor: 'end' } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', label: 'Mercer', labelAt: 0.5, coords: [[-74.6800, 40.3285], [-74.6808, 40.3305], [-74.6797, 40.3326]] },
+    { side: 'british', kind: 'attack', label: 'Mawhood', labelAt: 0.62, coords: [[-74.6930, 40.3265], [-74.6862, 40.3318], [-74.6823, 40.3338], [-74.6800, 40.3345]] },
+    { side: 'continental', kind: 'attack', label: 'Washington', labelAt: 0.4, coords: [[-74.6712, 40.3283], [-74.6745, 40.3320], [-74.6778, 40.3337]] },
+    { side: 'british', kind: 'retreat', coords: [[-74.6805, 40.3355], [-74.6845, 40.3352], [-74.6900, 40.3312], [-74.6975, 40.3255]] },
+    { side: 'continental', kind: 'attack', label: 'Sullivan', labelAt: 0.5, coords: [[-74.6715, 40.3290], [-74.6660, 40.3335], [-74.6620, 40.3405], [-74.6600, 40.3465]] },
+    { side: 'british', kind: 'retreat', coords: [[-74.6575, 40.3478], [-74.6545, 40.3495], [-74.6515, 40.3508]] }
+  ],
+  units: [
+    { side: 'british', coords: [-74.6640, 40.3420], angle: -50, label: '40th & 55th', labelPos: { dx: -26, dy: 4, anchor: 'end' } }
+  ],
+  battles: [{ coords: [-74.6790, 40.3338], label: 'Clarke\norchard', labelPos: { dx: 12, dy: 18, anchor: 'start' } }, { coords: [-74.6593, 40.3470] }],
+  callouts: [
+    { coords: [-74.6828, 40.3290], n: 1 },
+    { coords: [-74.6768, 40.3356], n: 2 },
+    { coords: [-74.6688, 40.3282], n: 3 },
+    { coords: [-74.6575, 40.3440], n: 4 }
+  ],
+  labels: [
+    { coords: [-74.6905, 40.3420], text: 'Stony Brook', kind: 'water', size: 13, angle: 55 },
+    { coords: [-74.6675, 40.3492], text: 'PRINCETON', kind: 'region', size: 14 }
+  ]
+});
+</script>
+</body>
+</html>

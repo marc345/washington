@@ -1,0 +1,5 @@
+[
+  { "id": "retreat-across-new-jersey-hackensack", "bbox": [-74.24, 40.70, -73.86, 40.99], "detail": "local" },
+  { "id": "retreat-across-new-jersey-route", "bbox": [-75.00, 40.08, -73.98, 40.80], "detail": "regional" },
+  { "id": "retreat-across-new-jersey-lee", "bbox": [-75.30, 40.00, -73.60, 41.33], "detail": "regional" }
+]

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Winter at Morristown</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="morristown-1777">
+<main>
+  <header class="event-head">
+    <h1>Winter at Morristown</h1>
+    <p class="meta">January – May 1777 · Morristown and central New Jersey</p>
+  </header>
+
+  <figure class="map">
+    <h2>Between New York and Philadelphia: the winter positions and the forage war</h2>
+    <div class="map-canvas" id="map-region"></div>
+    <figcaption>
+      After Princeton the army marched north to Morristown, arriving January 6. The British pulled back to a narrow strip along the Raritan between New Brunswick and Perth Amboy. Any British march on Philadelphia had to use the post road, within a day's reach of Morristown. All winter American outposts and militia attacked the parties the British sent out for forage and firewood.
+      <ol>
+        <li>Route from Princeton by Somerset Court House and Pluckemin, January 3–6.</li>
+        <li>Millstone, January 20: New Jersey militia under Dickinson drive off a large British foraging party.</li>
+        <li>Quibbletown and Drake's farm, February–March: repeated clashes with foragers out of New Brunswick.</li>
+        <li>Spanktown (Rahway), February 23: a British column is mauled on its way back to Perth Amboy.</li>
+        <li>Bound Brook, April 13: Cornwallis surprises Lincoln's outpost, but most of the garrison escapes.</li>
+      </ol>
+      <span class="note-approx">The British zone and the outpost positions are approximate. Only a few of the many winter skirmishes are shown.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>Morristown behind the Watchung ridges</h2>
+    <div class="map-canvas" id="map-ridges"></div>
+    <figcaption>
+      Two long ridges, the Watchung Mountains, and the Great Swamp lay between Morristown and the British posts. The few roads through the gaps could be watched from outposts, and the ridge top gave views over the plain toward New Brunswick and New York. In late May the army moved forward to the Middlebrook valley, behind the first ridge.
+      <ol>
+        <li>Washington's headquarters at Arnold's tavern on the Green. The troops were quartered in and around town and in the Loantaka valley.</li>
+        <li>Fort Nonsense, an earthwork on the hill above town, begun in spring 1777.</li>
+        <li>Middlebrook camp from May 28, overlooking the plain and the road from New Brunswick.</li>
+      </ol>
+      <span class="note-approx">Ridge crests and camp areas are drawn from the terrain data. Camp outlines are schematic.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+const REGION_LAKES = ["Assunpink Lk","Manor Lk","Van Sciver Lk","Mountain Lk","Cranberry Lk","Deal Lk","Duhernal Lk","Echo Lk","Farrington Lk","Glen Wild Lk","Lk Denmark","Lk Hopatcong","Lk Lackawanna","Lk Luxembourg","Lk Mohawk","Lk Musconetcong","Lk Parsippany","Lk Tappan","Mercer County Lk","Mount Hope Lk","New Wawayanda Lk","Paerdegat Basin","Paulins Kill Lk","Picatinny Lk","Pines Lk","Pompton Lk","Splitrock Resv","Stickle Pond","Tappan Lk","White Meadow Lk"];
+const box = (lon, lat, r = 0.02) => [lon - r, lat - r, lon + r, lat + r];
+// Post road from Paulus Hook / Elizabethtown Point to Trenton (line of modern Route 27 and US 206)
+const POST_ROAD = [[-74.172, 40.736], [-74.192, 40.708], [-74.215, 40.662], [-74.260, 40.643], [-74.285, 40.616], [-74.291, 40.592],
+  [-74.349, 40.554], [-74.375, 40.535], [-74.410, 40.510], [-74.447, 40.497], [-74.482, 40.482], [-74.546, 40.434], [-74.585, 40.418],
+  [-74.596, 40.386], [-74.614, 40.375], [-74.659, 40.349], [-74.710, 40.311], [-74.734, 40.292], [-74.741, 40.250], [-74.766, 40.222]];
+const MORRIS_ROADS = [
+  [[-74.481, 40.797], [-74.430, 40.765], [-74.383, 40.741], [-74.330, 40.715], [-74.317, 40.700], [-74.270, 40.690], [-74.215, 40.664]],  // to Chatham, Springfield, Elizabethtown
+  [[-74.481, 40.797], [-74.520, 40.745], [-74.548, 40.706], [-74.560, 40.640], [-74.538, 40.568], [-74.470, 40.520], [-74.447, 40.497]],  // to Basking Ridge, Bound Brook, New Brunswick
+  [[-74.548, 40.706], [-74.640, 40.645], [-74.620, 40.560], [-74.588, 40.500], [-74.610, 40.440], [-74.614, 40.375]]                       // Pluckemin, Somerset Court House, Kingston
+];
+
+HMap.render('#map-region', {
+  geo: 'morristown-1777-region',
+  bbox: [-74.92, 40.20, -73.95, 40.92],
+  water: { hide: REGION_LAKES, hideIn: [box(-74.290, 40.937), box(-74.508, 40.709), box(-74.446, 41.036), box(-74.565, 40.546)] },
+  alt: 'Map of central and northern New Jersey showing the American winter camp at Morristown, its outposts, and the British posts along the Raritan',
+  areas: [
+    { side: 'british', opacity: 0.2, legend: 'British-held area', coords: [[-74.475, 40.515], [-74.430, 40.527], [-74.350, 40.545], [-74.285, 40.540], [-74.255, 40.505], [-74.300, 40.480], [-74.400, 40.470], [-74.470, 40.480]] }
+  ],
+  roads: [{ coords: POST_ROAD }].concat(MORRIS_ROADS.map(c => ({ coords: c }))),
+  towns: [
+    { place: 'morristown', label: { dx: -10, dy: -6, anchor: 'end' } },
+    { name: 'Chatham', coords: [-74.383, 40.741], kind: 'village', label: { dx: 9, dy: -4 } },
+    { name: 'Pluckemin', coords: [-74.640, 40.645], kind: 'village', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { name: 'Somerset C.H.', coords: [-74.588, 40.500], kind: 'village', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { name: 'Bound Brook', coords: [-74.538, 40.568], kind: 'village', label: { dx: -9, dy: -6, anchor: 'end' } },
+    { place: 'princeton', label: { dx: -10, dy: 4, anchor: 'end' } },
+    { place: 'new-brunswick', label: { dx: 0, dy: 20, anchor: 'middle' } },
+    { place: 'perth-amboy', label: { dx: 10, dy: 12 } },
+    { place: 'elizabethtown', label: { dx: 10, dy: 4 } },
+    { place: 'newark', label: { dx: 10, dy: 4 } },
+    { place: 'new-york', label: { dx: 10, dy: 4 } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', label: 'Jan 3–6', labelAt: 0.78,
+      coords: [[-74.640, 40.365], [-74.612, 40.400], [-74.598, 40.470], [-74.605, 40.540], [-74.632, 40.620], [-74.600, 40.680], [-74.535, 40.745], [-74.490, 40.790]] }
+  ],
+  units: [
+    { side: 'continental', coords: [-74.445, 40.792], label: 'Main army' },
+    { side: 'continental', coords: [-74.655, 40.325], label: 'Putnam' },
+    { side: 'continental', coords: [-74.515, 40.598], label: 'Lincoln', labelPos: { dx: 0, dy: -14, anchor: 'middle' } },
+    { side: 'militia', coords: [-74.345, 40.655], label: 'Maxwell & militia', labelPos: { dx: 0, dy: 28, anchor: 'middle' } }
+  ],
+  battles: [
+    { coords: [-74.592, 40.528] },
+    { coords: [-74.430, 40.556] },
+    { coords: [-74.300, 40.596] },
+    { coords: [-74.545, 40.558] }
+  ],
+  callouts: [
+    { coords: [-74.648, 40.440], n: 1 },
+    { coords: [-74.598, 40.548], n: 2 },
+    { coords: [-74.430, 40.580], n: 3 },
+    { coords: [-74.275, 40.620], n: 4 },
+    { coords: [-74.545, 40.535], n: 5 }
+  ],
+  labels: [
+    { coords: [-74.500, 40.655], text: 'Watchung Mts.', kind: 'terrain', size: 12.5, angle: -32 },
+    { coords: [-74.720, 40.840], text: 'NEW JERSEY', kind: 'region' },
+    { coords: [-74.150, 40.590], text: 'STATEN IS.\n(British)', kind: 'region', size: 11 },
+    { coords: [-74.335, 40.505], text: 'Raritan R.', kind: 'water', size: 12, angle: -8 },
+    { coords: [-74.120, 40.420], text: 'Raritan Bay', kind: 'water', size: 12.5 }
+  ]
+});
+
+HMap.render('#map-ridges', {
+  geo: 'morristown-1777-ridges',
+  bbox: [-74.72, 40.47, -74.26, 40.84],
+  water: { hide: ["Farrington Lk","Majors Pond","Mill Pond","Mount Tabor Lk","Powder Mill Pond","Westons Mill Pond","Bee Meadow Pond","Black River Pond","Butler Pond","Cable Lk","Campbells Pond","Cromwell Lk","Crystal Lk","Dalrymple Pond","Echo Lk","Forge Pond","Horseshoe Lk","Jacksons Pond","Ledells Pond","Lk Nelson","Lk Parsippany","Lk Pocahontas","Loantaka Pond","Mount Kemble Lk","New Market Pond","Nomahegan Lk","Openaka Lk","Osborn Pond","Pleasant Valley Lk","Ravine Lk","Roosevelt Lk","Shackamaxon Lk","Shongum Lk","Silver Lk","Speedwell Lk","Spooky Brook Pond","Spring Lk","Sunset Lk","Surprise Lk","Taylor Lk","Triple Lks","Verona Lk","Warinanco Lk","Watchung Lk"], hideUnnamed: true },
+  terrain: { contours: 20, exaggeration: 3 },
+  alt: 'Terrain map of the Morristown area showing the Watchung ridges and the Great Swamp between the American camp and the British posts',
+  areas: [
+    { side: 'continental', opacity: 0.25, legend: 'Camp areas (schematic)', coords: [[-74.470, 40.800], [-74.455, 40.790], [-74.445, 40.770], [-74.455, 40.762], [-74.470, 40.775], [-74.485, 40.792]] },
+    { side: 'continental', opacity: 0.25, coords: [[-74.575, 40.590], [-74.540, 40.598], [-74.515, 40.592], [-74.525, 40.582], [-74.560, 40.580]] },
+    { side: 'neutral', opacity: 0.12, legend: 'Great Swamp', coords: [[-74.560, 40.720], [-74.500, 40.735], [-74.440, 40.725], [-74.430, 40.700], [-74.480, 40.680], [-74.545, 40.690]] }
+  ],
+  roads: MORRIS_ROADS.slice(0, 2).map(c => ({ coords: c })).concat([{ coords: [[-74.548, 40.706], [-74.640, 40.645], [-74.665, 40.600]] }, { coords: POST_ROAD.slice(2, 10) }]),
+  towns: [
+    { name: 'Morristown', coords: [-74.481, 40.797], kind: 'town', label: { dx: -10, dy: -8, anchor: 'end' } },
+    { name: '', coords: [-74.4815, 40.7965], kind: 'hq' },
+    { name: '', coords: [-74.4760, 40.7930], kind: 'fort', side: 'continental' },
+    { name: 'Chatham', coords: [-74.383, 40.741], kind: 'village', label: { dx: 9, dy: -4 } },
+    { place: 'springfield-nj', label: { dx: 9, dy: 10 } },
+    { place: 'basking-ridge', label: { dx: 9, dy: 4 } },
+    { name: 'Pluckemin', coords: [-74.640, 40.645], kind: 'village', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { name: 'Bound Brook', coords: [-74.538, 40.568], kind: 'village', label: { dx: 9, dy: 12 } },
+    { place: 'new-brunswick', label: { dx: 10, dy: 4 } },
+    { place: 'elizabethtown', label: { dx: -10, dy: -4, anchor: 'end' } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', label: 'May 28', labelAt: 0.5, coords: [[-74.520, 40.745], [-74.548, 40.700], [-74.565, 40.650], [-74.550, 40.600]] }
+  ],
+  callouts: [
+    { coords: [-74.497, 40.778], n: 1 },
+    { coords: [-74.462, 40.806], n: 2 },
+    { coords: [-74.590, 40.600], n: 3 }
+  ],
+  labels: [
+    { coords: [-74.430, 40.640], text: 'First Watchung', kind: 'terrain', size: 12, angle: -38 },
+    { coords: [-74.470, 40.665], text: 'Second Watchung', kind: 'terrain', size: 12, angle: -38 },
+    { coords: [-74.395, 40.712], text: 'Long Hill', kind: 'terrain', size: 11.5, angle: -22 },
+    { coords: [-74.560, 40.540], text: 'Raritan R.', kind: 'water', size: 12, angle: 10 },
+    { coords: [-74.405, 40.775], text: 'Passaic R.', kind: 'water', size: 11.5, angle: -40 },
+    { coords: [-74.330, 40.570], text: 'to Perth Amboy', kind: 'note', size: 10.5, angle: -35 }
+  ]
+});
+</script>
+</body>
+</html>

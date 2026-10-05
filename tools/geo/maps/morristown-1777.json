@@ -1,0 +1,4 @@
+[
+  { "id": "morristown-1777-region", "bbox": [-74.92, 40.20, -73.95, 40.92], "detail": "regional" },
+  { "id": "morristown-1777-ridges", "bbox": [-74.72, 40.47, -74.26, 40.84], "detail": "local" }
+]

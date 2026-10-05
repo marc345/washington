@@ -1,0 +1,5 @@
+[
+  { "id": "monmouth-campaign", "bbox": [-75.30, 39.55, -73.90, 40.75], "detail": "regional" },
+  { "id": "monmouth-battle", "bbox": [-74.365, 40.248, -74.262, 40.305], "detail": "local" },
+  { "id": "monmouth-line", "bbox": [-74.338, 40.257, -74.288, 40.292], "detail": "local" }
+]

@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Monmouth campaign</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="monmouth">
+<main>
+  <header class="event-head">
+    <h1>Monmouth campaign</h1>
+    <p class="meta">June 18–28, 1778 · Philadelphia to Monmouth Court House (Freehold), New Jersey</p>
+  </header>
+
+  <figure class="map">
+    <h2>Clinton's march across New Jersey and Washington's pursuit</h2>
+    <div class="map-canvas" id="map-campaign"></div>
+    <figcaption>
+      Clinton left Philadelphia on June 18 with about 17,000 troops and a baggage train some twelve miles long. Washington left Valley Forge the next day, crossed the Delaware above Trenton, and closed in from the north while militia and Maxwell's brigade broke bridges and felled trees in Clinton's path.
+      <ol>
+        <li>The British cross the Delaware to Gloucester and gather at Haddonfield.</li>
+        <li>At Allentown, Clinton turns east toward Sandy Hook rather than risk the Raritan crossings.</li>
+        <li>The Americans cross at Coryell's Ferry, June 22–23. Council of war at Hopewell, June 24.</li>
+        <li>Lee's advance force waits at Englishtown on June 27, six miles from the British camp.</li>
+        <li>After the battle Clinton reaches Sandy Hook, and the fleet carries the army to New York in early July.</li>
+      </ol>
+      <span class="note-approx">Routes are drawn along the main period roads and are approximate in detail.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>June 28, morning: Lee's attack and retreat</h2>
+    <div class="map-canvas" id="map-morning"></div>
+    <figcaption>
+      Lee's advance force of about 4,500 men moved out of Englishtown to strike the British rear guard as it left Monmouth Court House. Clinton turned back with his best troops. Lee's units, some withdrawing without orders, fell back across the ravines toward the main army.
+      <ol>
+        <li>The British main column and baggage set out for Middletown before dawn.</li>
+        <li>Wayne engages the British rear guard north of the court house while Lee tries to swing around its flank, about 10 a.m.</li>
+        <li>British grenadiers, guards and dragoons counterattack. Lee's line comes apart.</li>
+        <li>Washington meets the retreating Lee near the bridge, shortly before 1 p.m., and takes command.</li>
+      </ol>
+      <span class="note-approx">Unit positions and routes in the morning fighting are approximate and much simplified. Stream names are modern.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>June 28, afternoon: Washington's line at Perrine's Hill</h2>
+    <div class="map-canvas" id="map-afternoon"></div>
+    <figcaption>
+      Washington formed the main army on Perrine's Hill behind the marshy Middle Brook. British attacks across the bridge and around the left were beaten off, followed by a long artillery duel in heat near 100°F. That night Clinton slipped away toward Middletown.
+      <ol>
+        <li>Stirling's wing on the left repels the British light infantry and the 42nd.</li>
+        <li>Wayne holds the hedgerow and later fights the grenadiers near the parsonage.</li>
+        <li>Greene's guns on Combs Hill fire into the British flank, about 3:45 p.m., ending the duel.</li>
+        <li>Lafayette commands the second line behind the hill.</li>
+      </ol>
+      <span class="note-approx">Positions are schematic. The hedgerow, parsonage and Combs Hill locations follow the state battlefield park.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+const CAMP_LAKES = ["Alloway Lk","Lk Lenape","Makepeace Lk","Willow Grove Lk","Assunpink Lk","Harrisville Pond","North Pond","Oswego Lk","Bergen Basin","Country Lk","Duhernal Lk","Farrington Lk","Head of Bay Basin","Lk Luxembourg","Lk Nockamixon","Manor Lk","Mercer County Lk","Mirror Lk","Paerdegat Basin","Shell Bank Basin","Sommerville Basin","Springton Resv","Van Sciver Lk","Winhole Hask"];
+const box = (lon, lat, r = 0.02) => [lon - r, lat - r, lon + r, lat + r];
+
+HMap.render('#map-campaign', {
+  geo: 'monmouth-campaign',
+  bbox: [-75.30, 39.55, -73.90, 40.75],
+  water: { hide: CAMP_LAKES, hideIn: [box(-74.802, 40.170), box(-74.565, 40.547)] },
+  alt: 'Map of New Jersey from Philadelphia to Sandy Hook showing Clinton\'s march and Washington\'s pursuit in June 1778',
+  roads: [
+    { coords: [[-75.128, 39.895], [-75.033, 39.892], [-74.950, 39.960], [-74.787, 39.993], [-74.718, 40.068], [-74.648, 40.155], [-74.584, 40.178], [-74.515, 40.165], [-74.400, 40.205], [-74.274, 40.260], [-74.200, 40.330], [-74.117, 40.395], [-74.030, 40.420], [-74.002, 40.462]] },
+    { coords: [[-74.945, 40.365], [-74.765, 40.389], [-74.614, 40.375], [-74.514, 40.316], [-74.358, 40.297], [-74.274, 40.260]] }
+  ],
+  towns: [
+    { place: 'philadelphia', label: { dx: -10, dy: 4, anchor: 'end' } },
+    { name: 'Haddonfield', coords: [-75.033, 39.892], kind: 'village', label: { dx: 0, dy: 16, anchor: 'middle' } },
+    { name: 'Mount Holly', coords: [-74.787, 39.993], kind: 'village', label: { dx: 0, dy: 16, anchor: 'middle' } },
+    { name: 'Crosswicks', coords: [-74.648, 40.155], kind: 'village', label: { dx: -8, dy: 14, anchor: 'end' } },
+    { place: 'allentown-nj', label: { dx: 0, dy: 16, anchor: 'middle' } },
+    { place: 'freehold', label: { dx: 0, dy: 22, anchor: 'middle' } },
+    { name: 'Middletown', coords: [-74.117, 40.395], kind: 'village', label: { dx: -9, dy: -6, anchor: 'end' } },
+    { place: 'sandy-hook', label: { dx: -10, dy: -6, anchor: 'end' } },
+    { place: 'trenton', label: { dx: -10, dy: 4, anchor: 'end' } },
+    { name: 'Coryell\'s Ferry', coords: [-74.945, 40.365], kind: 'ferry', label: { dx: 0, dy: -10, anchor: 'middle' } },
+    { name: 'Hopewell', coords: [-74.765, 40.389], kind: 'village', label: { dx: 0, dy: -10, anchor: 'middle' } },
+    { name: 'Kingston', coords: [-74.614, 40.375], kind: 'village', label: { dx: 0, dy: -10, anchor: 'middle' } },
+    { name: '', coords: [-74.514, 40.316], kind: 'village' },
+    { name: 'Englishtown', coords: [-74.358, 40.297], kind: 'village', label: { dx: 0, dy: -10, anchor: 'middle' } }
+  ],
+  moves: [
+    { side: 'british', kind: 'march', label: 'Clinton, June 18–26', labelAt: 0.45,
+      coords: [[-75.150, 39.930], [-75.128, 39.900], [-75.033, 39.880], [-74.950, 39.948], [-74.787, 39.980], [-74.712, 40.055], [-74.645, 40.140], [-74.584, 40.165], [-74.515, 40.152], [-74.400, 40.192], [-74.285, 40.248]] },
+    { side: 'british', kind: 'march', coords: [[-74.262, 40.268], [-74.200, 40.318], [-74.117, 40.382], [-74.040, 40.410], [-74.012, 40.448]] },
+    { side: 'continental', kind: 'march', label: 'Washington', labelAt: 0.2,
+      coords: [[-75.300, 40.200], [-75.130, 40.310], [-74.990, 40.355], [-74.945, 40.378], [-74.765, 40.402], [-74.614, 40.388], [-74.514, 40.330], [-74.370, 40.308]] },
+    { side: 'continental', kind: 'attack', coords: [[-74.350, 40.293], [-74.300, 40.272], [-74.285, 40.265]] }
+  ],
+  battles: [{ coords: [-74.300, 40.272] }],
+  callouts: [
+    { coords: [-75.060, 39.845], n: 1 },
+    { coords: [-74.560, 40.130], n: 2 },
+    { coords: [-74.980, 40.410], n: 3 },
+    { coords: [-74.400, 40.270], n: 4 },
+    { coords: [-73.965, 40.400], n: 5 }
+  ],
+  labels: [
+    { coords: [-75.080, 40.250], text: 'PENNSYLVANIA', kind: 'region', size: 13 },
+    { coords: [-74.550, 39.800], text: 'NEW JERSEY', kind: 'region' },
+    { coords: [-74.860, 40.180], text: 'Delaware R.', kind: 'water', size: 12, angle: -55 },
+    { coords: [-74.200, 40.490], text: 'Raritan Bay', kind: 'water', size: 12 },
+    { coords: [-73.990, 40.150], text: 'Atlantic\nOcean', kind: 'water', size: 14 }
+  ]
+});
+
+// Englishtown – Monmouth Court House road (line of modern County Road 522)
+const ROAD_522 = [[-74.3700, 40.3020], [-74.3584, 40.2955], [-74.3536, 40.2950], [-74.3467, 40.2908], [-74.3399, 40.2892], [-74.3314, 40.2822],
+  [-74.3270, 40.2787], [-74.3130, 40.2721], [-74.2833, 40.2641], [-74.2737, 40.2579]];
+const BATTLE_COMMON = {
+  geo: 'monmouth-battle',
+  bbox: [-74.365, 40.248, -74.262, 40.305],
+  water: { hide: ['Lk Topanemus', 'Lk Weamaconk', 'Millhurst Pond'], hideUnnamed: true },
+  terrain: { contours: 5, exaggeration: 5 },
+  roads: [
+    { coords: ROAD_522 },
+    { coords: [[-74.3306, 40.2816], [-74.3380, 40.2880], [-74.3400, 40.3000], [-74.3360, 40.3200]] },
+    { name: 'to Middletown', labelAt: 0.6, coords: [[-74.2737, 40.2579], [-74.2650, 40.2640], [-74.2540, 40.2720], [-74.2480, 40.2780]] }
+  ]
+};
+const STREAM_LABELS = [
+  { coords: [-74.2980, 40.2742], text: 'Middle Brook', kind: 'water', size: 11, angle: 0 },
+  { coords: [-74.2960, 40.2908], text: 'North Brook', kind: 'water', size: 11, angle: -3 },
+  { coords: [-74.3020, 40.2565], text: 'Wemrock Brook', kind: 'water', size: 11, angle: -15 }
+];
+
+HMap.render('#map-morning', Object.assign({}, BATTLE_COMMON, {
+  alt: 'Map of the Monmouth battlefield in the morning of June 28, 1778, showing Lee\'s advance from Englishtown and his retreat',
+  towns: [
+    { name: 'Englishtown', coords: [-74.3584, 40.2955], kind: 'village', label: { dx: 0, dy: -10, anchor: 'middle' } },
+    { place: 'freehold', label: { dx: 0, dy: 18, anchor: 'middle' } },
+    { name: 'Tennent church', coords: [-74.3380, 40.2862], kind: 'church', label: { dx: -9, dy: -4, anchor: 'end' } },
+    { name: '', coords: [-74.3165, 40.2733], kind: 'building' }
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', label: 'Lee', labelAt: 0.35, coords: [[-74.3560, 40.2975], [-74.3400, 40.2910], [-74.3270, 40.2805], [-74.3100, 40.2745], [-74.2930, 40.2700]] },
+    { side: 'continental', kind: 'attack', label: 'Wayne', labelAt: 0.5, coords: [[-74.2930, 40.2700], [-74.2840, 40.2685], [-74.2790, 40.2665]] },
+    { side: 'continental', kind: 'march', approx: true, label: 'flank move', labelAt: 0.5, coords: [[-74.2950, 40.2725], [-74.2900, 40.2800], [-74.2800, 40.2830], [-74.2700, 40.2790]] },
+    { side: 'british', kind: 'attack', label: 'Clinton turns back', labelAt: 0.45, coords: [[-74.2640, 40.2700], [-74.2760, 40.2730], [-74.2900, 40.2770], [-74.3020, 40.2790]] },
+    { side: 'continental', kind: 'retreat', label: 'Lee falls back', labelAt: 0.5, coords: [[-74.2960, 40.2672], [-74.3060, 40.2697], [-74.3150, 40.2712], [-74.3240, 40.2748]] },
+    { side: 'british', kind: 'march', coords: [[-74.2720, 40.2605], [-74.2670, 40.2640], [-74.2630, 40.2668]] }
+  ],
+  units: [
+    { side: 'british', coords: [-74.2770, 40.2640], angle: -20 }
+  ],
+  battles: [{ coords: [-74.2830, 40.2715] }],
+  callouts: [
+    { coords: [-74.2680, 40.2700], n: 1 },
+    { coords: [-74.2905, 40.2630], n: 2 },
+    { coords: [-74.2930, 40.2830], n: 3 },
+    { coords: [-74.3200, 40.2690], n: 4 }
+  ],
+  labels: [STREAM_LABELS[0], STREAM_LABELS[1]]
+}));
+
+HMap.render('#map-afternoon', Object.assign({}, BATTLE_COMMON, {
+  geo: 'monmouth-line',
+  bbox: [-74.338, 40.257, -74.288, 40.292],
+  terrain: { contours: 2, exaggeration: 5 },
+  alt: 'Map of the Monmouth battlefield in the afternoon of June 28, 1778, showing Washington\'s line on Perrine\'s Hill, Combs Hill, and the British attacks',
+  roads: [{ coords: ROAD_522 }],
+  towns: [
+    { name: 'bridge', coords: [-74.3165, 40.2733], kind: 'building', label: { dx: -8, dy: 14, anchor: 'end' } },
+    { name: 'Parsonage', coords: [-74.3062, 40.2668], kind: 'building', label: { dx: 8, dy: 12 } }
+  ],
+  lines: [{ coords: [[-74.3100, 40.2775], [-74.3098, 40.2735], [-74.3088, 40.2695]], color: '#5d7a3a', width: 3, dash: '2 2', legend: 'Hedgerow' }],
+  moves: [
+    { side: 'british', kind: 'attack', label: 'grenadiers & guards', labelAt: 0.45, coords: [[-74.2990, 40.2765], [-74.3080, 40.2748], [-74.3150, 40.2738]] },
+    { side: 'british', kind: 'attack', label: 'light infantry & 42nd', labelAt: 0.45, coords: [[-74.3000, 40.2875], [-74.3110, 40.2855], [-74.3195, 40.2830]] },
+    { side: 'continental', kind: 'attack', label: '4:45 p.m.', labelAt: 0.5, coords: [[-74.3125, 40.2695], [-74.3085, 40.2668], [-74.3040, 40.2672]] }
+  ],
+  units: [
+    { side: 'continental', coords: [-74.3225, 40.2810], angle: -60, w: 34, label: 'Stirling', labelPos: { dx: -28, dy: -6, anchor: 'end' } },
+    { side: 'continental', type: 'artillery', coords: [-74.3200, 40.2758], angle: -60 },
+    { side: 'continental', coords: [-74.3290, 40.2765], angle: -60, w: 30, label: 'Lafayette', labelPos: { dx: -24, dy: 10, anchor: 'end' } },
+    { side: 'continental', coords: [-74.3108, 40.2718], angle: -85, label: 'Wayne', labelPos: { dx: -16, dy: 4, anchor: 'end' } },
+    { side: 'continental', type: 'artillery', coords: [-74.3130, 40.2635], angle: 30, label: 'Greene', labelPos: { dx: -24, dy: 4, anchor: 'end' } },
+    { side: 'british', type: 'artillery', coords: [-74.3010, 40.2795], angle: -80, label: 'British guns', labelPos: { dx: 20, dy: 4 } },
+    { side: 'british', coords: [-74.2965, 40.2720], angle: -80, label: 'Clinton', labelPos: { dx: 20, dy: 6 } }
+  ],
+  battles: [{ coords: [-74.3160, 40.2820] }, { coords: [-74.3055, 40.2685] }],
+  callouts: [
+    { coords: [-74.3270, 40.2860], n: 1 },
+    { coords: [-74.3010, 40.2640], n: 2 },
+    { coords: [-74.3080, 40.2622], n: 3 },
+    { coords: [-74.3345, 40.2735], n: 4 }
+  ],
+  labels: [
+    { coords: [-74.2985, 40.2732], text: 'Middle Brook', kind: 'water', size: 11, angle: 0 },
+    { coords: [-74.3260, 40.2715], text: 'Perrine\'s Hill', kind: 'terrain', size: 12, angle: -50 },
+    { coords: [-74.3110, 40.2600], text: 'Combs Hill', kind: 'terrain', size: 12 },
+    { coords: [-74.3330, 40.2850], text: 'to Englishtown', kind: 'note', size: 10.5, angle: 38 },
+    { coords: [-74.2925, 40.2655], text: 'to the court house', kind: 'note', size: 10.5, angle: 15 }
+  ]
+}));
+</script>
+</body>
+</html>
