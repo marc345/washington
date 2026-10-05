@@ -315,7 +315,7 @@
       const kind = t.kind || p.kind || 'town';
       drawPlaceSymbol(gPlaces, kind, c, fs, t.side);
       const name = t.name != null ? t.name : p.name;
-      if (name) label(gPlaces, c, name, Object.assign({ dx: 7, dy: 4, anchor: 'start' }, t.label), 'hm-lbl-place hm-lbl-' + kind, fs(t.size || (kind === 'town' ? 14 : 12)), u);
+      if (name) label(gPlaces, c, name, Object.assign({ dx: 7, dy: 4, anchor: 'start', sym: [fs(5), fs(5)] }, t.label), 'hm-lbl-place hm-lbl-' + kind, fs(t.size || (kind === 'town' ? 14 : 12)), u);
     });
 
     // ships
@@ -325,7 +325,7 @@
       const c = P(sh.coords);
       const g = el(gShips, 'g', { transform: `translate(${c[0]},${c[1]}) rotate(${sh.angle || 0}) scale(${u})` });
       el(g, 'path', { d: 'M-11,-2 L9,-2 L13,1 L9,4 L-11,4 Z M-4,-2 L-4,-12 L4,-2 Z', fill: side.fill, stroke: side.stroke, 'stroke-width': 1 });
-      if (sh.label) label(gShips, c, sh.label, Object.assign({ dx: 0, dy: -16, anchor: 'middle' }, sh.labelPos), 'hm-lbl-unit', fs(11), u);
+      if (sh.label) label(gShips, c, sh.label, Object.assign({ dx: 0, dy: -16, anchor: 'middle', sym: [fs(12), fs(8)] }, sh.labelPos), 'hm-lbl-unit', fs(11), u);
     });
 
     // units
@@ -337,7 +337,7 @@
     (cfg.battles || []).forEach(b => {
       const c = P(b.coords);
       el(gBattles, 'path', { d: swordsPath(), transform: `translate(${c[0]},${c[1]}) scale(${u})`, class: 'hm-battle' });
-      if (b.label) label(gBattles, c, b.label, Object.assign({ dx: 0, dy: -15, anchor: 'middle' }, b.labelPos), 'hm-lbl-battle', fs(13), u);
+      if (b.label) label(gBattles, c, b.label, Object.assign({ dx: 0, dy: -15, anchor: 'middle', sym: [fs(9), fs(9)] }, b.labelPos), 'hm-lbl-battle', fs(13), u);
     });
 
     // free labels
@@ -477,7 +477,7 @@
     if (un.type === 'cavalry') el(grp, 'line', { x1: -w / 2, y1: h / 2, x2: w / 2, y2: -h / 2, stroke: side.stroke, 'stroke-width': 1.2 });
     if (un.type === 'artillery') el(grp, 'circle', { cx: 0, cy: 0, r: h * 0.22, fill: side.stroke });
     if (un.label) {
-      const pos = Object.assign({ dx: w / 2 + 4, dy: 4, anchor: 'start' }, un.labelPos);
+      const pos = Object.assign({ dx: w / 2 + 4, dy: 4, anchor: 'start', sym: [fs(Math.max(w, h) / 2), fs(Math.max(w, h) / 2)] }, un.labelPos);
       label(g, c, un.label, pos, 'hm-lbl-unit', fs(un.size || 11.5), u);
     }
   }
@@ -509,24 +509,16 @@
     });
     const lines = String(text).split('\n');
     lines.forEach((ln, i) => el(t, 'tspan', { x, dy: i ? '1.1em' : 0 }).text(ln));
+    // the labelled symbol (centre and half-size), so keepLabelsInside never pushes the label onto it
+    if (o.sym) t.attr('data-ax', c[0]).attr('data-ay', c[1]).attr('data-rx', o.sym[0]).attr('data-ry', o.sym[1]);
     return t;
   }
 
   // Shift point labels that would be clipped by the map frame back inside it.
   // Labels overlapping the north arrow or scale box (`furn`) are moved off them by the shortest way.
   function keepLabelsInside(svg, VW, VH, pad, furn) {
-    svg.selectAll('.hm-root text.hm-lbl').each(function () {
-      if (this.querySelector('textPath')) return slidePathLabel(this, VW, VH, pad, furn);
-      let b = this.getBBox();
-      // measure the rotated box for rotated labels
-      const m = /rotate\(([-\d.]+),([-\d.]+),([-\d.]+)\)/.exec(this.getAttribute('transform') || '');
-      if (m) {
-        const a = +m[1] * Math.PI / 180, cx = +m[2], cy = +m[3];
-        const pts = [[b.x, b.y], [b.x + b.width, b.y], [b.x, b.y + b.height], [b.x + b.width, b.y + b.height]]
-          .map(([x, y]) => [cx + (x - cx) * Math.cos(a) - (y - cy) * Math.sin(a), cy + (x - cx) * Math.sin(a) + (y - cy) * Math.cos(a)]);
-        const xs = pts.map(q => q[0]), ys = pts.map(q => q[1]);
-        b = { x: Math.min(...xs), y: Math.min(...ys), width: Math.max(...xs) - Math.min(...xs), height: Math.max(...ys) - Math.min(...ys) };
-      }
+    // shift that brings box b inside the frame and off the north arrow and scale box
+    const place = b => {
       let dx = 0, dy = 0;
       if (b.x < pad) dx = pad - b.x; else if (b.x + b.width > VW - pad) dx = VW - pad - b.x - b.width;
       if (b.y < pad) dy = pad - b.y; else if (b.y + b.height > VH - pad) dy = VH - pad - b.y - b.height;
@@ -542,12 +534,41 @@
         const [ox, oy] = opts.reduce((a, c) => Math.hypot(...c) < Math.hypot(...a) ? c : a);
         dx += ox; dy += oy; lb.x += ox; lb.y += oy;
       });
+      return [dx, dy];
+    };
+    svg.selectAll('.hm-root text.hm-lbl').each(function () {
+      if (this.querySelector('textPath')) return slidePathLabel(this, VW, VH, pad, furn);
+      let b = this.getBBox();
+      // measure the rotated box for rotated labels
+      const m = /rotate\(([-\d.]+),([-\d.]+),([-\d.]+)\)/.exec(this.getAttribute('transform') || '');
+      if (m) {
+        const a = +m[1] * Math.PI / 180, cx = +m[2], cy = +m[3];
+        const pts = [[b.x, b.y], [b.x + b.width, b.y], [b.x, b.y + b.height], [b.x + b.width, b.y + b.height]]
+          .map(([x, y]) => [cx + (x - cx) * Math.cos(a) - (y - cy) * Math.sin(a), cy + (x - cx) * Math.sin(a) + (y - cy) * Math.cos(a)]);
+        const xs = pts.map(q => q[0]), ys = pts.map(q => q[1]);
+        b = { x: Math.min(...xs), y: Math.min(...ys), width: Math.max(...xs) - Math.min(...xs), height: Math.max(...ys) - Math.min(...ys) };
+      }
+      let [dx, dy] = place(b);
+      // A label pushed onto its own symbol is mirrored to the other side of the symbol instead.
+      const ax = +this.dataset.ax, ay = +this.dataset.ay, rx = +this.dataset.rx, ry = +this.dataset.ry;
+      const onSym = (ox, oy) => !(b.x + ox > ax + rx || b.x + b.width + ox < ax - rx || b.y + oy > ay + ry || b.y + b.height + oy < ay - ry);
+      if ((dx || dy) && !m && this.dataset.ax != null && onSym(dx, dy)) {
+        const mx = 2 * ax - 2 * b.x - b.width, my = 2 * ay - 2 * b.y - b.height;
+        let best = null;
+        [[mx, 0], [0, my], [mx, my]].forEach(([cx, cy]) => {
+          const [sx, sy] = place({ x: b.x + cx, y: b.y + cy, width: b.width, height: b.height });
+          const score = (onSym(cx + sx, cy + sy) ? 1e4 : 0) + Math.hypot(sx, sy);
+          if (!best || score < best[0]) best = [score, cx + sx, cy + sy];
+        });
+        if (best[0] < 1e4) [dx, dy] = [best[1], best[2]];
+      }
       if (dx || dy) {
         const tr = this.getAttribute('transform') || '';
         this.setAttribute('transform', `translate(${dx},${dy}) ${tr}`);
       }
     });
   }
+
 
   // Centroid if it falls inside the polygon, else the inside point farthest from its edges
   // (grid search), so labels of concave areas stay inside them.
