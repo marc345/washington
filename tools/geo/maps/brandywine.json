@@ -1,0 +1,22 @@
+[
+ {
+  "id": "brandywine-flank",
+  "bbox": [
+   -75.73,
+   39.818,
+   -75.53,
+   39.99
+  ],
+  "detail": "local"
+ },
+ {
+  "id": "brandywine-afternoon",
+  "bbox": [
+   -75.615,
+   39.862,
+   -75.545,
+   39.922
+  ],
+  "detail": "local"
+ }
+]

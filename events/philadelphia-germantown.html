@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fall of Philadelphia &amp; Germantown</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="philadelphia-germantown">
+<main>
+  <header class="event-head">
+    <h1>Fall of Philadelphia &amp; Germantown</h1>
+    <p class="meta">September 12 – October 4, 1777 · Schuylkill Valley, Philadelphia and Germantown, Pennsylvania</p>
+  </header>
+
+  <figure class="map">
+    <h2>Maneuvers along the Schuylkill, September 12–26</h2>
+    <div class="map-canvas" id="map-schuylkill"></div>
+    <figcaption>
+      After Brandywine, Washington recrossed the Schuylkill to stay between Howe and Philadelphia and the supply depots up the valley. A storm ended the one chance of battle, and Howe then drew him upriver with a feint before crossing below him and walking into the capital.
+      <ol>
+        <li>Sep 12–13: the army retreats through Chester and Darby, crosses the Schuylkill at Philadelphia, and rests at Germantown.</li>
+        <li>Sep 16: the armies meet near the White Horse Tavern, but a downpour soaks the cartridges (the "Battle of the Clouds"). Washington falls back to Yellow Springs and Reading Furnace to replace ammunition.</li>
+        <li>Night of Sep 20–21: Grey's bayonet attack surprises Wayne's division camped near Paoli.</li>
+        <li>Sep 21–23: Howe feints toward Reading. Washington shifts upriver to cover it, and the British cross at Fatland and Gordon's fords behind him.</li>
+        <li>Sep 26: Cornwallis marches into Philadelphia; Howe's main body camps at Germantown.</li>
+      </ol>
+      <span class="note-approx">Routes are simplified, and camp sites are approximate.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>Philadelphia occupied, September 26–27</h2>
+    <div class="map-canvas" id="map-occupation"></div>
+    <figcaption>
+      The city then filled only the blocks nearest the Delaware; the grid between there and the Schuylkill was mostly fields. Howe kept the bulk of his army in camp at Germantown, about six miles north, and sent Cornwallis's grenadiers to take over the city.
+      <ol>
+        <li>Sep 26: Cornwallis enters by the Germantown Road and Second Street.</li>
+        <li>Sep 27: American warships attack the new British batteries on the waterfront. The frigate <i>Delaware</i> runs aground and is captured.</li>
+      </ol>
+      <span class="note-approx">The waterfront is drawn at its 1777 line, before Delaware Avenue and the piers were built on fill. Windmill Island, later dredged away, is restored. The built-up area is approximate.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>Germantown, dawn, October 4</h2>
+    <div class="map-canvas" id="map-attack"></div>
+    <figcaption>
+      Washington marched all night from Methacton Hill in four columns, timed to strike Howe's camp at Germantown together at dawn. The two Continental columns came down the center while militia columns were to turn both British flanks. In thick fog the attack lost its timing and its way.
+      <ol>
+        <li>Sullivan's column overruns the British light infantry at Mount Airy.</li>
+        <li>About 120 men of the 40th Foot barricade themselves in the Chew house (Cliveden). The reserve stops to besiege it and loses precious time.</li>
+        <li>Part of Greene's column, drawn by the firing at Cliveden, runs into Wayne's men in the fog, and both fall back.</li>
+        <li>Greene's left pushes into the British camp near Market Square but is driven out as Cornwallis arrives from the city. The militia columns achieve little.</li>
+      </ol>
+      <span class="note-approx">Column routes follow the period roads; unit positions are schematic.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+// d3-geo treats a ring wound the wrong way as "everything except this ring": normalise winding.
+function ring(r) {
+  const area = d3.geoArea({ type: 'Polygon', coordinates: [r.concat([r[0]])] });
+  return area > 2 * Math.PI ? r.slice().reverse() : r;
+}
+// Philadelphia waterfront: Delaware Avenue and the piers stand on later fill
+const PHL_WATERFRONT = [[-75.1440, 39.895], [-75.1435, 39.905], [-75.1430, 39.915], [-75.1428, 39.925], [-75.1425, 39.933], [-75.1422, 39.940], [-75.1418, 39.948], [-75.1410, 39.955], [-75.1395, 39.9605], [-75.1375, 39.9620], [-75.1370, 39.950], [-75.1375, 39.940], [-75.1385, 39.930], [-75.1388, 39.915], [-75.1370, 39.895]];
+const WINDMILL_ISLAND = [[-75.1362, 39.9435], [-75.1350, 39.9440], [-75.1343, 39.9520], [-75.1352, 39.9524], [-75.1360, 39.9480]];
+const PERIOD = { water: [PHL_WATERFRONT].map(ring), land: [WINDMILL_ISLAND].map(ring) };
+const STREAMS = ['Schuylkill Riv', 'Wissahickon Crk', 'Tacony Crk', 'Frankford Crk', 'Sandy Run', 'Pennypack Crk', 'Cobbs Crk', 'Darby Crk', 'Perkiomen Crk', 'Skippack Crk', 'French Crk', 'Pickering Crk', 'Valley Crk', 'Brandywine Crk', 'Chester Crk', 'Crum Crk', 'Ridley Crk', 'Stony Crk', 'Tookany Crk'];
+
+HMap.render('#map-schuylkill', {
+  geo: 'philadelphia-germantown-schuylkill',
+  bbox: [-75.82, 39.78, -75.10, 40.30],
+  alt: 'Map of the lower Schuylkill valley from Chester and Philadelphia to Reading Furnace showing the armies\' moves between Brandywine and the fall of Philadelphia',
+  water: { hideUnnamed: true, hide: ['Springton Resv', 'Marsh Creek Lk', 'Marsh Crk Lk'] },
+  rivers: { only: STREAMS },
+  towns: [
+    { place: 'philadelphia', label: { dx: 9, dy: 10 } },
+    { place: 'germantown', label: { dx: 9, dy: 4 } },
+    { place: 'chester', label: { dx: -9, dy: -6, anchor: 'end' } },
+    { name: 'Darby', coords: [-75.259, 39.918], kind: 'village', label: { dx: 8, dy: 10 } },
+    { place: 'chadds-ford', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { name: 'Paoli', coords: [-75.5149, 40.0305], kind: 'village', label: { dx: 8, dy: 12 } },
+    { name: 'Yellow Springs', coords: [-75.623, 40.100], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Reading Furnace', coords: [-75.715, 40.172], kind: 'village', label: { dx: 0, dy: 16, anchor: 'middle' } },
+    { name: 'Parker\'s Ford', coords: [-75.5838, 40.1995], kind: 'ferry', label: { dx: 8, dy: 16 } },
+    { name: 'Gordon\'s Ford', coords: [-75.517, 40.131], kind: 'ferry', label: { dx: -8, dy: -6, anchor: 'end' } },
+    { name: 'Fatland Ford', coords: [-75.443, 40.110], kind: 'ferry', label: { dx: 8, dy: -6 } },
+    { place: 'valley-forge', label: { dx: 0, dy: 16, anchor: 'middle' } },
+    { name: 'Pennypacker\'s Mill', coords: [-75.4577, 40.2550], kind: 'building', label: { dx: 8, dy: -6 } },
+    { name: 'Pottsgrove', coords: [-75.650, 40.245], kind: 'village', label: { dx: -8, dy: -6, anchor: 'end' } },
+    { name: 'Methacton Hill', coords: [-75.347, 40.200], kind: 'village', label: { dx: 8, dy: -6 } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'retreat', label: 'Sep 11–13', labelAt: 0.12, coords: [[-75.590, 39.868], [-75.460, 39.855], [-75.360, 39.856], [-75.262, 39.922], [-75.190, 39.955], [-75.178, 40.028]] },
+    { side: 'continental', kind: 'march', label: 'Sep 14–15', labelAt: 0.5, coords: [[-75.190, 40.040], [-75.240, 40.040], [-75.330, 40.040], [-75.440, 40.045], [-75.535, 40.045]] },
+    { side: 'continental', kind: 'retreat', label: 'Sep 16–17', labelAt: 0.5, coords: [[-75.570, 40.045], [-75.615, 40.090], [-75.700, 40.162]] },
+    { side: 'continental', kind: 'march', label: 'Sep 18–19', labelAt: 0.4, coords: [[-75.700, 40.180], [-75.640, 40.195], [-75.585, 40.203], [-75.510, 40.195]] },
+    { side: 'continental', kind: 'march', label: 'Sep 21–23', labelAt: 0.5, coords: [[-75.505, 40.205], [-75.560, 40.235], [-75.630, 40.250]] },
+    { side: 'continental', kind: 'march', label: 'Sep 26', labelAt: 0.5, coords: [[-75.620, 40.262], [-75.540, 40.268], [-75.470, 40.258]] },
+    { side: 'continental', kind: 'attack', label: 'Oct 3–4', labelAt: 0.5, coords: [[-75.445, 40.245], [-75.360, 40.205], [-75.260, 40.130], [-75.200, 40.070]] },
+    { side: 'british', kind: 'march', label: 'Sep 15–16', labelAt: 0.5, coords: [[-75.585, 39.885], [-75.585, 39.950], [-75.568, 40.010]] },
+    { side: 'british', kind: 'march', coords: [[-75.555, 40.020], [-75.510, 40.050], [-75.470, 40.075]] },
+    { side: 'british', kind: 'march', label: 'feint', labelAt: 0.5, coords: [[-75.470, 40.085], [-75.500, 40.110], [-75.530, 40.122]] },
+    { side: 'british', kind: 'march', label: 'Sep 22–25', labelAt: 0.55, coords: [[-75.520, 40.128], [-75.470, 40.122], [-75.420, 40.130], [-75.330, 40.135], [-75.250, 40.090], [-75.185, 40.045]] },
+    { side: 'british', kind: 'march', label: 'Sep 26', labelAt: 0.5, coords: [[-75.170, 40.030], [-75.152, 39.990], [-75.146, 39.962]] },
+    { side: 'british', kind: 'attack', coords: [[-75.468, 40.068], [-75.490, 40.050], [-75.510, 40.035]] }
+  ],
+  units: [
+    { side: 'continental', coords: [-75.522, 40.023], w: 20 }
+  ],
+  battles: [
+    { coords: [-75.565, 40.015], label: 'Battle of the Clouds', labelPos: { dx: -14, dy: 12, anchor: 'end' } },
+    { coords: [-75.5149, 40.0305] }
+  ],
+  callouts: [
+    { coords: [-75.300, 39.890], n: 1 },
+    { coords: [-75.625, 40.030], n: 2 },
+    { coords: [-75.480, 40.005], n: 3 },
+    { coords: [-75.560, 40.168], n: 4 },
+    { coords: [-75.125, 39.995], n: 5 }
+  ],
+  labels: [
+    { coords: [-75.380, 40.175], text: 'Schuylkill River', kind: 'water', angle: 20 },
+    { coords: [-75.215, 39.868], text: 'Delaware River', kind: 'water', size: 13, angle: -22 },
+    { coords: [-75.330, 39.975], text: 'PENNSYLVANIA', kind: 'region', size: 13 }
+  ]
+});
+
+HMap.render('#map-occupation', {
+  geo: 'philadelphia-germantown-occupation',
+  bbox: [-75.25, 39.90, -75.07, 40.06],
+  alt: 'Map of Philadelphia and Germantown in September 1777 showing the small built-up city on the Delaware, Cornwallis\'s entry and the British camp at Germantown',
+  corrections: PERIOD,
+  water: { hide: ['Newton Lk'], hideUnnamed: true },
+  rivers: { only: STREAMS.concat(['Cooper Riv', 'Newton Crk', 'Pochack Crk', 'Mill Crk']) },
+  areas: [
+    { side: 'neutral', coords: [[-75.1400, 39.9640], [-75.1480, 39.9620], [-75.1545, 39.9560], [-75.1560, 39.9470], [-75.1530, 39.9380], [-75.1475, 39.9320], [-75.1442, 39.9320], [-75.1432, 39.9400], [-75.1422, 39.9480], [-75.1412, 39.9550], [-75.1397, 39.9605]], opacity: 0.35, smooth: false, legend: 'Built-up city, 1777' }
+  ],
+  roads: [
+    { coords: [[-75.1880, 40.0560], [-75.1731, 40.0349], [-75.1600, 40.0150], [-75.1520, 39.9950], [-75.1460, 39.9750], [-75.1430, 39.9640]], labelAt: 0.62 },
+    { coords: [[-75.1550, 39.9520], [-75.1810, 39.9540]] },
+    { coords: [[-75.1500, 39.9420], [-75.1700, 39.9410], [-75.2000, 39.9390], [-75.2150, 39.9330]] },
+    { name: 'Ridge Road', coords: [[-75.1520, 39.9600], [-75.1750, 39.9800], [-75.1950, 40.0040], [-75.2100, 40.0180], [-75.2350, 40.0400]], labelAt: 0.55 },
+    { coords: [[-75.1440, 39.9640], [-75.1200, 39.9900], [-75.0850, 40.0200]] }
+  ],
+  towns: [
+    { name: 'State House', coords: [-75.1500, 39.9489], kind: 'building', label: { dx: -8, dy: 14, anchor: 'end' } },
+    { place: 'germantown', label: { dx: 9, dy: 4 } },
+    { name: 'Middle Ferry', coords: [-75.1815, 39.9545], kind: 'ferry', label: { dx: -9, dy: -6, anchor: 'end' } },
+    { name: 'Gray\'s Ferry', coords: [-75.2000, 39.9390], kind: 'ferry', label: { dx: -9, dy: 12, anchor: 'end' } },
+    { name: 'Cooper\'s Ferry', coords: [-75.1260, 39.9440], kind: 'ferry', label: { dx: 9, dy: 4 } },
+    { name: 'Frankford', coords: [-75.0870, 40.0200], kind: 'village', label: { dx: 8, dy: 12 } },
+    { name: 'Kensington', coords: [-75.1300, 39.9700], kind: 'village', label: { dx: 8, dy: 4 } }
+  ],
+  moves: [
+    { side: 'british', kind: 'march', label: 'Cornwallis, Sep 26', labelAt: 0.5, coords: [[-75.1700, 40.0300], [-75.1580, 40.0120], [-75.1505, 39.9920], [-75.1455, 39.9730], [-75.1440, 39.9560]] },
+    { side: 'continental', kind: 'naval', label: 'Sep 27', labelAt: 0.5, coords: [[-75.1330, 39.9160], [-75.1340, 39.9300], [-75.1360, 39.9440]] }
+  ],
+  works: [
+    { kind: 'redoubt', coords: [[-75.1420, 39.9520]], side: 'british' }
+  ],
+  ships: [
+    { side: 'continental', coords: [-75.1385, 39.9565], angle: -70, label: 'Delaware (captured)', labelPos: { dx: 10, dy: -12, anchor: 'start' } }
+  ],
+  units: [
+    { side: 'british', coords: [-75.1880, 40.0300], label: 'Howe\'s main camp', angle: 35, labelPos: { dx: -18, dy: 4, anchor: 'end' } },
+    { side: 'british', coords: [-75.1600, 40.0420], angle: 35 }
+  ],
+  callouts: [
+    { coords: [-75.1650, 39.9930], n: 1 },
+    { coords: [-75.1230, 39.9300], n: 2 }
+  ],
+  labels: [
+    { coords: [-75.1720, 39.9300], text: 'PHILADELPHIA', kind: 'region', size: 14 },
+    { coords: [-75.1960, 39.9640], text: 'Schuylkill River', kind: 'water', size: 12.5, angle: -65 },
+    { coords: [-75.1270, 39.9110], text: 'Delaware River', kind: 'water', size: 12.5, angle: -80 },
+    { coords: [-75.0950, 39.9680], text: 'NEW JERSEY', kind: 'region', size: 13 },
+    { coords: [-75.2150, 40.0430], text: 'Wissahickon Cr.', kind: 'water', size: 11, angle: 55 },
+    { coords: [-75.1600, 39.9100], text: 'to Fort Mifflin, 5 mi ↓', kind: 'note' }
+  ]
+});
+
+HMap.render('#map-attack', {
+  geo: 'philadelphia-germantown-attack',
+  bbox: [-75.26, 40.005, -75.12, 40.115],
+  alt: 'Map of the Battle of Germantown showing four American columns converging on the British camp and the Chew house',
+  water: { hide: ['Sherry Lk'], hideUnnamed: true },
+  rivers: { only: STREAMS.concat(['Wingohocking Crk', 'Paper Mill Run', 'Cresheim Crk', 'Sandy Run Crk']) },
+  roads: [
+    { coords: [[-75.2200, 40.1260], [-75.2120, 40.1000], [-75.2074, 40.0771], [-75.1920, 40.0580], [-75.1812, 40.0474], [-75.1731, 40.0349], [-75.1620, 40.0170], [-75.1560, 40.0000]], labelAt: 0.82 },
+    { name: 'Skippack Road', coords: [[-75.2900, 40.1600], [-75.2500, 40.1420], [-75.2200, 40.1260]], labelAt: 0.4 },
+    { name: 'Limekiln Road', coords: [[-75.1720, 40.1600], [-75.1650, 40.1200], [-75.1620, 40.0800], [-75.1630, 40.0540]], labelAt: 0.35 },
+    { coords: [[-75.1630, 40.0540], [-75.1700, 40.0420], [-75.1731, 40.0349]] },
+    { coords: [[-75.3000, 40.1200], [-75.2700, 40.0850], [-75.2450, 40.0550], [-75.2200, 40.0280], [-75.2050, 40.0100]], labelAt: 0.25 },
+    { name: 'Old York Road', coords: [[-75.1150, 40.1600], [-75.1257, 40.0960], [-75.1340, 40.0500], [-75.1420, 40.0000]], labelAt: 0.75 },
+    { coords: [[-75.2100, 40.0180], [-75.1950, 40.0270], [-75.1731, 40.0349], [-75.1550, 40.0420], [-75.1400, 40.0460]] }
+  ],
+  towns: [
+    { name: 'Chestnut Hill', coords: [-75.2074, 40.0771], kind: 'village', label: { dx: 8, dy: 4 } },
+    { name: 'Mount Airy', coords: [-75.1920, 40.0580], kind: 'village', label: { dx: 8, dy: -4 } },
+    { name: 'Cliveden', coords: [-75.1812, 40.0474], kind: 'building', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { name: 'Market Square', coords: [-75.1731, 40.0349], kind: 'village', label: { dx: -8, dy: 12, anchor: 'end' } },
+    { name: 'Luken\'s Mill', coords: [-75.1630, 40.0540], kind: 'building', label: { dx: 8, dy: 4 } },
+    { name: 'Stenton (Howe\'s HQ)', coords: [-75.1555, 40.0307], kind: 'hq', label: { dx: 8, dy: 12 } },
+    { name: 'Jenkintown', coords: [-75.1257, 40.0960], kind: 'village', label: { dx: 8, dy: 4 } }
+  ],
+  units: [
+    { side: 'british', coords: [-75.1950, 40.0610], label: 'Light inf.', w: 20, angle: -30, labelPos: { dx: -14, dy: -6, anchor: 'end' } },
+    { side: 'british', coords: [-75.1950, 40.0290], angle: 30, label: 'Knyphausen', labelPos: { dx: -18, dy: 10, anchor: 'end' } },
+    { side: 'hessian', coords: [-75.2040, 40.0240], angle: 30 },
+    { side: 'british', coords: [-75.1600, 40.0420], angle: 20, label: 'Grant', labelPos: { dx: 18, dy: 6 } },
+    { side: 'british', coords: [-75.1450, 40.0455], angle: 10 },
+    { side: 'hessian', coords: [-75.2140, 40.0190], label: 'Jäger', w: 18, labelPos: { dx: 12, dy: 14 } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'attack', label: 'Sullivan, Wayne, Washington', labelAt: 0.76, coords: [[-75.2560, 40.1450], [-75.2200, 40.1260], [-75.2110, 40.0990], [-75.2060, 40.0760], [-75.1950, 40.0620]] },
+    { side: 'continental', kind: 'attack', label: 'Greene, Stephen, McDougall', labelAt: 0.6, coords: [[-75.1720, 40.1580], [-75.1650, 40.1200], [-75.1615, 40.0800], [-75.1640, 40.0560], [-75.1700, 40.0400]] },
+    { side: 'continental', kind: 'attack', coords: [[-75.1640, 40.0640], [-75.1720, 40.0560], [-75.1785, 40.0500]] },
+    { side: 'militia', kind: 'march', label: 'Armstrong', labelAt: 0.65, coords: [[-75.2950, 40.1200], [-75.2690, 40.0850], [-75.2440, 40.0550], [-75.2220, 40.0300]] },
+    { side: 'militia', kind: 'march', approx: true, label: 'Smallwood, Forman', labelAt: 0.8, coords: [[-75.1150, 40.1580], [-75.1250, 40.0960], [-75.1320, 40.0620]] },
+    { side: 'british', kind: 'march', label: 'Cornwallis', labelAt: 0.5, coords: [[-75.1560, 40.0010], [-75.1620, 40.0170], [-75.1690, 40.0300]] },
+    { side: 'continental', kind: 'retreat', label: 'retreat', labelAt: 0.3, coords: [[-75.2130, 40.0720], [-75.2270, 40.1000], [-75.2450, 40.1250]] }
+  ],
+  battles: [
+    { coords: [-75.1812, 40.0474], label: '', labelPos: { dx: 0, dy: -15 } },
+    { coords: [-75.1720, 40.0400] }
+  ],
+  callouts: [
+    { coords: [-75.1830, 40.0660], n: 1 },
+    { coords: [-75.1840, 40.0550], n: 2 },
+    { coords: [-75.1560, 40.0620], n: 3 },
+    { coords: [-75.1880, 40.0390], n: 4 }
+  ],
+  labels: [
+    { coords: [-75.2370, 40.0250], text: 'Schuylkill R.', kind: 'water', size: 12, angle: 48 },
+    { coords: [-75.2260, 40.0620], text: 'Wissahickon Cr.', kind: 'water', size: 11, angle: 60 },
+    { coords: [-75.2380, 40.1100], text: 'from Methacton Hill ↓', kind: 'note' }
+  ]
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+[
+ {
+  "id": "philadelphia-germantown-schuylkill",
+  "bbox": [
+   -75.82,
+   39.78,
+   -75.1,
+   40.3
+  ],
+  "detail": "local"
+ },
+ {
+  "id": "philadelphia-germantown-occupation",
+  "bbox": [
+   -75.25,
+   39.9,
+   -75.07,
+   40.06
+  ],
+  "detail": "local"
+ },
+ {
+  "id": "philadelphia-germantown-attack",
+  "bbox": [
+   -75.26,
+   40.005,
+   -75.12,
+   40.115
+  ],
+  "detail": "local"
+ }
+]

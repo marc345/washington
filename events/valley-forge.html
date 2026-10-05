@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Valley Forge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="valley-forge">
+<main>
+  <header class="event-head">
+    <h1>Valley Forge</h1>
+    <p class="meta">December 19, 1777 – June 19, 1778 · Valley Forge, Pennsylvania</p>
+  </header>
+
+  <figure class="map">
+    <h2>Watching Philadelphia: the winter of 1777–78</h2>
+    <div class="map-canvas" id="map-region"></div>
+    <figcaption>
+      Valley Forge lay about 20 miles from Philadelphia: close enough to watch Howe and shield the country to the west, far enough to make a surprise attack difficult. The British held the city behind a line of redoubts while patrols and foragers from both sides contested the ground between.
+      <ol>
+        <li>May 1: British raiders surprise Lacey's Pennsylvania militia at the Crooked Billet tavern.</li>
+        <li>May 20: Lafayette, sent forward to Barren Hill with about 2,200 men, nearly has his retreat cut off by converging British columns. He escapes over Matson's Ford.</li>
+        <li>Jun 18: Clinton, who has replaced Howe, evacuates Philadelphia across the Delaware toward New York. Washington leaves Valley Forge the next day in pursuit.</li>
+      </ol>
+      <span class="note-approx">The British redoubt line and all routes are approximate.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>The encampment</h2>
+    <div class="map-canvas" id="map-camp"></div>
+    <figcaption>
+      The army built some 1,500 log huts in brigade rows on a plateau bounded by the Schuylkill and Valley Creek. An outer line of earthworks faced Philadelphia; an inner line along the slope of Mount Joy formed a fallback. Steuben drilled the troops on the open ground between the lines from March onward.
+      <span class="note-approx">Lines and brigade areas follow the National Park Service's reconstruction of the camp and are simplified.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+const STREAMS = ['Schuylkill Riv', 'Wissahickon Crk', 'Valley Crk', 'Gulph Crk', 'Perkiomen Crk', 'Pennypack Crk', 'Tacony Crk', 'Frankford Crk', 'Sandy Run', 'Darby Crk', 'Cobbs Crk', 'Crum Crk', 'Ridley Crk', 'Pickering Crk', 'Stony Crk', 'Skippack Crk', 'Cooper Riv', 'Big Timber Crk', 'Neshaminy Crk', 'Rancocas Crk', 'Pennsauken Crk'];
+
+HMap.render('#map-region', {
+  geo: 'valley-forge-region',
+  bbox: [-75.65, 39.86, -75.0, 40.26],
+  alt: 'Map of the country between Valley Forge and Philadelphia showing the British defenses and the main events of the winter and spring',
+  water: { hideUnnamed: true, hide: ['Springton Resv', 'Newton Lk'] },
+  rivers: { only: STREAMS },
+  areas: [
+    { side: 'continental', coords: [[-75.465, 40.100], [-75.452, 40.088], [-75.430, 40.086], [-75.418, 40.098], [-75.430, 40.106], [-75.450, 40.106]], opacity: 0.45, legend: 'Valley Forge encampment' }
+  ],
+  works: [
+    { kind: 'line', side: 'british', coords: [[-75.1840, 39.9665], [-75.1700, 39.9670], [-75.1560, 39.9675], [-75.1440, 39.9670], [-75.1350, 39.9660]] }
+  ],
+  towns: [
+    { place: 'philadelphia', label: { dx: 9, dy: 10 } },
+    { place: 'germantown', label: { dx: 9, dy: 4 } },
+    { name: 'Valley Forge', coords: [-75.4594, 40.1017], kind: 'hq', label: { dx: -9, dy: -6, anchor: 'end' } },
+    { name: 'Barren Hill', coords: [-75.2575, 40.0855], kind: 'church', label: { dx: -8, dy: -6, anchor: 'end' } },
+    { name: 'Matson\'s Ford', coords: [-75.304, 40.074], kind: 'ferry', label: { dx: 8, dy: 15 } },
+    { name: 'Whitemarsh', coords: [-75.215, 40.125], kind: 'village', label: { dx: 8, dy: -4 } },
+    { name: 'Crooked Billet', coords: [-75.107, 40.175], kind: 'building', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Darby', coords: [-75.259, 39.918], kind: 'village' },
+    { name: 'Frankford', coords: [-75.087, 40.020], kind: 'village', label: { dx: 8, dy: 10 } },
+    { name: 'Gloucester', coords: [-75.128, 39.892], kind: 'village', label: { dx: -8, dy: 12, anchor: 'end' } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', label: 'May 18', labelAt: 0.4, coords: [[-75.440, 40.098], [-75.380, 40.090], [-75.320, 40.085], [-75.268, 40.087]] },
+    { side: 'continental', kind: 'retreat', coords: [[-75.262, 40.080], [-75.285, 40.072], [-75.305, 40.068], [-75.345, 40.078]] },
+    { side: 'british', kind: 'march', label: 'Grant', labelAt: 0.35, coords: [[-75.140, 39.972], [-75.105, 40.030], [-75.150, 40.100], [-75.215, 40.112], [-75.250, 40.098]] },
+    { side: 'british', kind: 'march', label: 'Grey', labelAt: 0.5, coords: [[-75.160, 39.975], [-75.200, 40.010], [-75.235, 40.050], [-75.252, 40.075]] },
+    { side: 'british', kind: 'retreat', label: 'Clinton, Jun 18', labelAt: 0.4, coords: [[-75.142, 39.945], [-75.128, 39.915], [-75.095, 39.893], [-75.040, 39.885], [-75.005, 39.880]] },
+    { side: 'continental', kind: 'march', label: 'to New Jersey, Jun 19', labelAt: 0.55, coords: [[-75.430, 40.110], [-75.330, 40.170], [-75.200, 40.220], [-75.010, 40.245]] }
+  ],
+  units: [
+    { side: 'continental', coords: [-75.360, 40.028], label: 'Radnor outposts', w: 20, labelPos: { dx: 14, dy: 4 } },
+    { side: 'militia', coords: [-75.095, 40.163], w: 20 }
+  ],
+  battles: [
+    { coords: [-75.100, 40.182], label: '' }
+  ],
+  callouts: [
+    { coords: [-75.070, 40.185], n: 1 },
+    { coords: [-75.275, 40.105], n: 2 },
+    { coords: [-75.100, 39.872], n: 3 }
+  ],
+  labels: [
+    { coords: [-75.215, 39.962], text: 'British lines', kind: 'note', size: 10.5 },
+    { coords: [-75.560, 40.165], text: 'Schuylkill River', kind: 'water', angle: -25 },
+    { coords: [-75.240, 39.870], text: 'Delaware River', kind: 'water', angle: -20 },
+    { coords: [-75.520, 39.950], text: 'PENNSYLVANIA', kind: 'region' },
+    { coords: [-75.300, 39.990], text: 'about 18 miles', kind: 'note', angle: 20 }
+  ],
+  lines: [
+    { coords: [[-75.440, 40.090], [-75.150, 39.955]], color: '#6b5a48', width: 1, dash: '3 4' }
+  ]
+});
+
+HMap.render('#map-camp', {
+  geo: 'valley-forge-camp',
+  bbox: [-75.475, 40.078, -75.415, 40.116],
+  terrain: { contours: 10 },
+  alt: 'Map of the Valley Forge encampment showing the outer and inner defense lines, brigade areas, headquarters and Sullivan\'s bridge',
+  water: { hideUnnamed: true },
+  areas: [
+    { side: 'continental', smooth: false, coords: [[-75.4232, 40.1040], [-75.4255, 40.1000], [-75.4295, 40.0965], [-75.4345, 40.0942], [-75.4390, 40.0925], [-75.4428, 40.0890], [-75.4470, 40.0872], [-75.4495, 40.0866], [-75.4492, 40.0850], [-75.4448, 40.0855], [-75.4418, 40.0870], [-75.4383, 40.0903], [-75.4338, 40.0920], [-75.4285, 40.0945], [-75.4245, 40.0985], [-75.4215, 40.1030]], opacity: 0.35, legend: 'Brigade hut rows' },
+    { side: 'continental', smooth: false, coords: [[-75.4440, 40.1060], [-75.4475, 40.1050], [-75.4505, 40.1040], [-75.4555, 40.1035], [-75.4560, 40.1015], [-75.4545, 40.0975], [-75.4520, 40.0960], [-75.4505, 40.0975], [-75.4505, 40.1020], [-75.4480, 40.1040], [-75.4445, 40.1048]], opacity: 0.35 }
+  ],
+  works: [
+    { kind: 'line', side: 'continental', coords: [[-75.4205, 40.1035], [-75.4232, 40.0995], [-75.4270, 40.0960], [-75.4320, 40.0932], [-75.4370, 40.0912], [-75.4410, 40.0880], [-75.4450, 40.0848], [-75.4495, 40.0840]] },
+    { kind: 'line', side: 'continental', coords: [[-75.4515, 40.0880], [-75.4490, 40.0913], [-75.4492, 40.0960], [-75.4493, 40.1016], [-75.4470, 40.1036], [-75.4440, 40.1046]] },
+    { kind: 'redoubt', coords: [[-75.4248, 40.0987]], side: 'continental' },
+    { kind: 'redoubt', coords: [[-75.4488, 40.0913]], side: 'continental' },
+    { kind: 'redoubt', coords: [[-75.4493, 40.1016]], side: 'continental' },
+    { kind: 'redoubt', coords: [[-75.4438, 40.1046]], side: 'continental' }
+  ],
+  roads: [
+    { name: 'Gulph Road', coords: [[-75.4050, 40.0830], [-75.4200, 40.0880], [-75.4385, 40.0918], [-75.4488, 40.0925], [-75.4550, 40.0970], [-75.4594, 40.1017]], labelAt: 0.12 },
+    { coords: [[-75.4594, 40.1017], [-75.4520, 40.1045], [-75.4441, 40.1085]] }
+  ],
+  lines: [
+    { coords: [[-75.4441, 40.1088], [-75.4443, 40.1132]], color: '#3a2f24', width: 3.5, legend: 'Sullivan\'s Bridge (spring 1778)' }
+  ],
+  towns: [
+    { name: 'Washington\'s HQ (Potts house)', coords: [-75.4594, 40.1017], kind: 'hq', label: { dx: -9, dy: -8, anchor: 'end' } },
+    { name: 'Steuben', coords: [-75.4698, 40.0991], kind: 'building', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Fatland Ford', coords: [-75.4445, 40.1140], kind: 'ferry', label: { dx: 9, dy: 4 } },
+    { name: 'Star Redoubt', coords: [-75.4438, 40.1046], kind: 'building', label: { dx: 9, dy: -4 } }
+  ],
+  labels: [
+    { coords: [-75.4560, 40.0865], text: 'Mount Joy', kind: 'terrain', size: 12 },
+    { coords: [-75.4685, 40.0910], text: 'Mount Misery', kind: 'terrain', size: 12 },
+    { coords: [-75.4605, 40.0880], text: 'Valley Creek', kind: 'water', size: 11.5, angle: -70 },
+    { coords: [-75.4300, 40.1130], text: 'Schuylkill River', kind: 'water', angle: -8 },
+    { coords: [-75.4400, 40.0985], text: 'Grand Parade', kind: 'note', size: 12 },
+    { coords: [-75.4440, 40.0945], text: 'Artillery park', kind: 'note', size: 10.5 },
+    { coords: [-75.4235, 40.0930], text: 'OUTER LINE', kind: 'note', size: 10.5, angle: -35 },
+    { coords: [-75.4290, 40.1000], text: 'Muhlenberg, Weedon', kind: 'note', size: 10, angle: -38 },
+    { coords: [-75.4365, 40.0952], text: 'Mass. & N.H. brigades', kind: 'note', size: 10, angle: -28 },
+    { coords: [-75.4445, 40.0895], text: 'Pennsylvanians', kind: 'note', size: 10, angle: -32 },
+    { coords: [-75.4555, 40.1060], text: 'N.C., N.J., Conn., R.I.', kind: 'note', size: 10 },
+    { coords: [-75.4240, 40.0830], text: 'to Philadelphia ↘', kind: 'note' }
+  ]
+});
+</script>
+</body>
+</html>

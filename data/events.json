@@ -39,7 +39,7 @@
     "summary": "Maneuvers along the Schuylkill lose Philadelphia; Washington's four-column dawn attack at Germantown falters in fog." },
   { "id": "saratoga", "title": "Saratoga campaign", "dates": "Jun – Oct 1777", "start": "1777-06-17", "coords": [-73.637, 42.999], "washington": false,
     "summary": "Burgoyne advances from Canada down Lake Champlain toward Albany and is forced to surrender his army at Saratoga." },
-  { "id": "delaware-forts-whitemarsh", "title": "Delaware River forts & Whitemarsh", "dates": "Oct – Dec 1777", "start": "1777-10-22", "coords": [-75.21, 39.88], "washington": true,
+  { "id": "delaware-forts-whitemarsh", "title": "Delaware River forts & Whitemarsh", "dates": "Oct – Dec 1777", "start": "1777-10-02", "coords": [-75.21, 39.88], "washington": true,
     "summary": "Forts Mifflin and Mercer hold the river against the British fleet for weeks; Howe probes Washington's camp at Whitemarsh before winter." },
   { "id": "valley-forge", "title": "Valley Forge", "dates": "Dec 1777 – Jun 1778", "start": "1777-12-19", "coords": [-75.44, 40.1], "washington": true,
     "summary": "The army's winter encampment on a plateau above the Schuylkill, a day's march from British-held Philadelphia." },

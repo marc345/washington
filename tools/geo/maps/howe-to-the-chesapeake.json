@@ -1,0 +1,22 @@
+[
+ {
+  "id": "howe-to-the-chesapeake-voyage",
+  "bbox": [
+   -77.6,
+   36.2,
+   -72.7,
+   41.0
+  ],
+  "detail": "campaign"
+ },
+ {
+  "id": "howe-to-the-chesapeake-elk",
+  "bbox": [
+   -76.02,
+   39.43,
+   -75.48,
+   39.92
+  ],
+  "detail": "local"
+ }
+]

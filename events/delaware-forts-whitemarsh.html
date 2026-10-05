@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Delaware River forts &amp; Whitemarsh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="delaware-forts-whitemarsh">
+<main>
+  <header class="event-head">
+    <h1>Delaware River forts &amp; Whitemarsh</h1>
+    <p class="meta">October – December 1777 · Delaware River below Philadelphia, and Whitemarsh, Pennsylvania</p>
+  </header>
+
+  <figure class="map">
+    <h2>The river barrier below Philadelphia</h2>
+    <div class="map-canvas" id="map-river"></div>
+    <figcaption>
+      Holding Philadelphia meant nothing to Howe unless his fleet could reach it. Sunken frames of timber tipped with iron (chevaux-de-frise) blocked the channel at Billingsport and again under the guns of Fort Mifflin and Fort Mercer, backed by the galleys of the Pennsylvania Navy.
+      <ol>
+        <li>Oct 2: a British force crosses from Chester and takes the unfinished fort at Billingsport; the lower barrier is gradually cleared.</li>
+        <li>Oct 22: Donop's Hessians march down from Cooper's Ferry and assault Fort Mercer at Red Bank.</li>
+        <li>Nov 18–20: Cornwallis crosses from Chester to Billingsport; Fort Mercer is abandoned before he arrives, and the American galleys are burned or slip upriver past the city.</li>
+      </ol>
+      <span class="note-approx">Shoreline adjusted to the period: the islands below the Schuylkill mouth, now joined to the mainland under the airport and Navy Yard, are shown as islands, and the Philadelphia waterfront is pulled back to its 1777 line. Island outlines and barrier positions are approximate.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>Fort Mifflin and Red Bank, October 22 – November 15</h2>
+    <div class="map-canvas" id="map-mifflin"></div>
+    <figcaption>
+      Fort Mifflin on Mud Island and Fort Mercer on the New Jersey bluff covered the barrier from both banks. Donop's assault on Fort Mercer failed with heavy loss, but British batteries on the marsh islands and warships pounded Fort Mifflin for weeks.
+      <ol>
+        <li>Oct 22: Donop's columns attack the north and east faces of Fort Mercer; Donop is mortally wounded.</li>
+        <li>Oct 23: the ship of the line <i>Augusta</i> and the sloop <i>Merlin</i>, aground below the barrier, burn and blow up.</li>
+        <li>Nov 15: the floating battery <i>Vigilant</i> is worked up the back channel to point-blank range. That night the garrison crosses to Red Bank.</li>
+      </ol>
+      <span class="note-approx">Island outlines, channel widths, battery and ship positions are approximate, after period British surveys.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>Whitemarsh to Valley Forge, December 4–19</h2>
+    <div class="map-canvas" id="map-whitemarsh"></div>
+    <figcaption>
+      Howe marched out of Philadelphia to fight the army in its hill camp at Whitemarsh, probed its left and right for three days, and returned without attacking. A week later the army crossed the Schuylkill and went into winter quarters at Valley Forge.
+      <ol>
+        <li>Dec 5: Howe reaches Chestnut Hill; Pennsylvania militia are driven back and their general, James Irvine, is captured.</li>
+        <li>Dec 7: fighting at Edge Hill with Morgan's riflemen and Maryland militia.</li>
+        <li>Dec 11: crossing at Matson's Ford runs into a large British foraging force. The army crosses at Swede's Ford instead and camps at Gulph Mills until Dec 19.</li>
+      </ol>
+      <span class="note-approx">Camp lines and routes are approximate.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+// Builds a water ring along a centreline (a narrow channel), half-width in degrees of latitude.
+function band(pts, h) {
+  const k = Math.cos(39.9 * Math.PI / 180), L = [], R = [];
+  pts.forEach((p, i) => {
+    const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)];
+    const dx = (b[0] - a[0]) * k, dy = b[1] - a[1], n = Math.hypot(dx, dy);
+    const nx = -dy / n, ny = dx / n;
+    L.push([p[0] + nx * h / k, p[1] + ny * h]); R.push([p[0] - nx * h / k, p[1] - ny * h]);
+  });
+  return L.concat(R.reverse());
+}
+// d3-geo treats a ring wound the wrong way as "everything except this ring": normalise winding.
+function ring(r) {
+  const area = d3.geoArea({ type: 'Polygon', coordinates: [r.concat([r[0]])] });
+  return area > 2 * Math.PI ? r.slice().reverse() : r;
+}
+// 1777 channels behind Hog Island and Mud Island (filled for the airport, the Navy Yard and dredge spoil)
+const BACK_CHANNEL = band([[-75.272, 39.8595], [-75.250, 39.8650], [-75.232, 39.8705], [-75.2215, 39.8752], [-75.2165, 39.8785], [-75.2115, 39.8820], [-75.2075, 39.8858], [-75.2045, 39.8895], [-75.2035, 39.8912]], 0.0006);
+// gap between Hog Island and Mud Island
+const HOG_GAP = band([[-75.2222, 39.8756], [-75.2188, 39.8722]], 0.00025);
+// dredge-spoil ground above Mud Island and the Navy Yard piers and basin
+const SPOIL = [[-75.2060, 39.8822], [-75.2035, 39.8870], [-75.2010, 39.8905], [-75.1990, 39.8930], [-75.1930, 39.8890], [-75.1990, 39.8815]];
+const NAVY_YARD = [[-75.1990, 39.8815], [-75.1960, 39.8870], [-75.1900, 39.8895], [-75.1800, 39.8905], [-75.1700, 39.8902], [-75.1600, 39.8900], [-75.1600, 39.8780], [-75.1900, 39.8790]];
+// Philadelphia waterfront: Delaware Avenue and the piers stand on later fill
+const PHL_WATERFRONT = [[-75.1440, 39.895], [-75.1435, 39.905], [-75.1430, 39.915], [-75.1428, 39.925], [-75.1425, 39.933], [-75.1422, 39.940], [-75.1418, 39.948], [-75.1410, 39.955], [-75.1395, 39.9605], [-75.1375, 39.9620], [-75.1370, 39.950], [-75.1375, 39.940], [-75.1385, 39.930], [-75.1388, 39.915], [-75.1370, 39.895]];
+const WINDMILL_ISLAND = [[-75.1362, 39.9435], [-75.1350, 39.9440], [-75.1343, 39.9520], [-75.1352, 39.9524], [-75.1360, 39.9480]];
+const PERIOD = { water: [BACK_CHANNEL, HOG_GAP, SPOIL, NAVY_YARD, PHL_WATERFRONT].map(ring), land: [WINDMILL_ISLAND].map(ring) };
+const CHEVAUX = '#3a2f24';
+
+HMap.render('#map-river', {
+  geo: 'delaware-forts-whitemarsh-river',
+  bbox: [-75.38, 39.76, -75.08, 39.97],
+  alt: 'Map of the Delaware River from Chester to Philadelphia showing the river forts and the lines of sunken obstructions',
+  corrections: PERIOD,
+  water: { hide: ['Newton Lk'], hideIn: [[-75.235, 39.884, -75.21, 39.895]] },
+  rivers: { only: ['Schuylkill Riv', 'Darby Crk', 'Cobbs Crk', 'Mantua Crk', 'Woodbury Crk', 'Big Timber Crk', 'Newton Crk', 'Cooper Riv', 'Raccoon Crk', 'Crum Crk', 'Ridley Crk', 'Chester Crk'] },
+  lines: [
+    { coords: [[-75.2405, 39.8478], [-75.2470, 39.8520], [-75.2540, 39.8560]], color: CHEVAUX, width: 3, dash: '2 2', legend: 'Chevaux-de-frise (sunken obstructions)' },
+    { coords: [[-75.2165, 39.8728], [-75.2100, 39.8705], [-75.2030, 39.8680]], color: CHEVAUX, width: 3, dash: '2 2' }
+  ],
+  towns: [
+    { place: 'philadelphia', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { place: 'chester', label: { dx: -8, dy: 14, anchor: 'end' } },
+    { name: 'Darby', coords: [-75.259, 39.918], kind: 'village' },
+    { name: 'Cooper\'s Ferry', coords: [-75.126, 39.944], kind: 'ferry', label: { dx: 8, dy: 4 } },
+    { name: 'Gloucester', coords: [-75.128, 39.892], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Woodbury', coords: [-75.153, 39.838], kind: 'village' },
+    { name: 'Billingsport', coords: [-75.2418, 39.8470], kind: 'fort', side: 'continental', label: { dx: 9, dy: 13 } },
+    { place: 'fort-mifflin', name: 'Fort Mifflin', side: 'continental', label: { dx: -10, dy: -4, anchor: 'end' } },
+    { place: 'fort-mercer', side: 'continental', label: { dx: 10, dy: 5 } }
+  ],
+  moves: [
+    { side: 'british', kind: 'march', label: 'Oct 1–2 · Nov 18', labelAt: 0.5, coords: [[-75.350, 39.846], [-75.300, 39.838], [-75.250, 39.842]] },
+    { side: 'hessian', kind: 'march', approx: true, label: 'Donop, Oct 21–22', labelAt: 0.3, coords: [[-75.124, 39.940], [-75.098, 39.918], [-75.090, 39.885], [-75.110, 39.866], [-75.150, 39.864], [-75.184, 39.869]] },
+    { side: 'british', kind: 'march', approx: true, label: 'Nov 20', labelAt: 0.5, coords: [[-75.236, 39.846], [-75.212, 39.850], [-75.196, 39.862]] },
+    { side: 'continental', kind: 'naval', label: 'galleys slip upriver, Nov 21', labelAt: 0.55, coords: [[-75.192, 39.880], [-75.160, 39.900], [-75.136, 39.925], [-75.128, 39.955], [-75.105, 39.966]] }
+  ],
+  ships: [
+    { side: 'british', coords: [-75.335, 39.8515], label: 'British fleet', angle: 10, labelPos: { dx: 0, dy: -14 } }
+  ],
+  callouts: [
+    { coords: [-75.285, 39.826], n: 1 },
+    { coords: [-75.112, 39.878], n: 2 },
+    { coords: [-75.215, 39.836], n: 3 }
+  ],
+  labels: [
+    { coords: [-75.325, 39.905], text: 'PENNSYLVANIA', kind: 'region' },
+    { coords: [-75.150, 39.822], text: 'NEW JERSEY', kind: 'region' },
+    { coords: [-75.335, 39.826], text: 'Delaware River', kind: 'water', angle: -18 },
+    { coords: [-75.218, 39.935], text: 'Schuylkill R.', kind: 'water', size: 12, angle: -75 },
+  ]
+});
+
+HMap.render('#map-mifflin', {
+  geo: 'delaware-forts-whitemarsh-mifflin',
+  bbox: [-75.245, 39.853, -75.175, 39.897],
+  alt: 'Detail map of Fort Mifflin on Mud Island and Fort Mercer at Red Bank with British batteries, ships and the Hessian assault',
+  corrections: PERIOD,
+  water: { hideIn: [[-75.235, 39.884, -75.21, 39.895], [-75.216, 39.877, -75.210, 39.882]] },
+  lines: [
+    { coords: [[-75.2165, 39.8728], [-75.2100, 39.8705], [-75.2030, 39.8680]], color: CHEVAUX, width: 3.5, dash: '2 2', legend: 'Chevaux-de-frise (sunken obstructions)' }
+  ],
+  works: [
+    { kind: 'redoubt', coords: [[-75.2235, 39.8792]], side: 'british' },
+    { kind: 'redoubt', coords: [[-75.2190, 39.8828]], side: 'british' },
+    { kind: 'redoubt', coords: [[-75.2142, 39.8862]], side: 'british' },
+    { kind: 'redoubt', coords: [[-75.2320, 39.8750]], side: 'british' }
+  ],
+  towns: [
+    { place: 'fort-mifflin', name: 'Fort Mifflin', side: 'continental', label: { dx: 10, dy: 14 } },
+    { place: 'fort-mercer', side: 'continental', label: { dx: 4, dy: 20 } }
+  ],
+  moves: [
+    { side: 'hessian', kind: 'attack', label: 'Donop', labelAt: 0.4, coords: [[-75.1770, 39.8790], [-75.1830, 39.8752], [-75.1897, 39.8726]] },
+    { side: 'hessian', kind: 'attack', coords: [[-75.1775, 39.8655], [-75.1840, 39.8678], [-75.1892, 39.8700]] },
+    { side: 'continental', kind: 'retreat', label: 'Nov 15–16', labelAt: 0.5, coords: [[-75.2105, 39.8752], [-75.2030, 39.8742], [-75.1950, 39.8718]] }
+  ],
+  ships: [
+    { side: 'british', coords: [-75.2192, 39.8768], angle: -35, label: 'Vigilant & Fury', labelPos: { dx: -16, dy: 4, anchor: 'end' } },
+    { side: 'british', coords: [-75.2240, 39.8668], angle: 25, label: 'Isis, Somerset & others', labelPos: { dx: 0, dy: 22 } },
+    { side: 'british', coords: [-75.2195, 39.8625], angle: 25 },
+    { side: 'british', coords: [-75.2380, 39.8622], angle: 15, label: 'Augusta', labelPos: { dx: 0, dy: 20 } },
+    { side: 'british', coords: [-75.2140, 39.8585], angle: 15, label: 'Merlin', labelPos: { dx: 0, dy: 20 } },
+    { side: 'continental', coords: [-75.2000, 39.8790], angle: 30, label: 'Pennsylvania galleys', labelPos: { dx: 14, dy: -10, anchor: 'start' } },
+    { side: 'continental', coords: [-75.1960, 39.8770], angle: 30 }
+  ],
+  callouts: [
+    { coords: [-75.1800, 39.8800], n: 1 },
+    { coords: [-75.2275, 39.8635], n: 2 },
+    { coords: [-75.2275, 39.8735], n: 3 }
+  ],
+  labels: [
+    { coords: [-75.2350, 39.8880], text: 'Province Island', kind: 'terrain', angle: -30 },
+    { coords: [-75.2330, 39.8665], text: 'Hog Island', kind: 'terrain', angle: -22 },
+    { coords: [-75.2095, 39.8790], text: 'Mud Island', kind: 'terrain', angle: -40 },
+    { coords: [-75.2260, 39.8840], text: 'British batteries', kind: 'note', angle: -38 },
+    { coords: [-75.2050, 39.8655], text: 'Delaware River', kind: 'water', angle: -20 },
+    { coords: [-75.1830, 39.8600], text: 'NEW JERSEY', kind: 'region', size: 13 },
+    { coords: [-75.2040, 39.8945], text: 'Schuylkill', kind: 'water', size: 11.5, angle: -50 }
+  ]
+});
+
+HMap.render('#map-whitemarsh', {
+  geo: 'delaware-forts-whitemarsh-camp',
+  bbox: [-75.50, 39.935, -75.07, 40.19],
+  alt: 'Map of the country between Philadelphia, Whitemarsh and Valley Forge showing Howe\'s December probe and the army\'s march to winter quarters',
+  water: { hide: ['Springton Resv'], hideUnnamed: true },
+  rivers: { only: ['Schuylkill Riv', 'Wissahickon Crk', 'Sandy Run', 'Valley Crk', 'Gulph Crk', 'Perkiomen Crk', 'Pennypack Crk', 'Tacony Crk', 'Frankford Crk', 'Stony Crk', 'Skippack Crk', 'Mill Crk', 'Plymouth Crk'] },
+  areas: [
+    { side: 'continental', coords: [[-75.248, 40.116], [-75.222, 40.121], [-75.196, 40.129], [-75.178, 40.139], [-75.183, 40.147], [-75.205, 40.140], [-75.230, 40.131], [-75.250, 40.125]], opacity: 0.3, legend: 'Whitemarsh camp (Nov 2 – Dec 11)' }
+  ],
+  roads: [
+    { coords: [[-75.146, 39.965], [-75.155, 39.995], [-75.168, 40.025], [-75.185, 40.050], [-75.200, 40.070], [-75.212, 40.090], [-75.220, 40.120]], labelAt: 0.3 },
+    { coords: [[-75.146, 39.975], [-75.138, 40.020], [-75.132, 40.060], [-75.125, 40.096], [-75.112, 40.140]], labelAt: 0.25 },
+    { name: 'Ridge Rd', coords: [[-75.165, 39.968], [-75.200, 40.010], [-75.230, 40.040], [-75.265, 40.080], [-75.300, 40.110], [-75.340, 40.150]], labelAt: 0.55 }
+  ],
+  towns: [
+    { place: 'philadelphia', label: { dx: 9, dy: 5 } },
+    { place: 'germantown', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Chestnut Hill', coords: [-75.2074, 40.0771], kind: 'village', label: { dx: 8, dy: 12 } },
+    { name: 'Headquarters', coords: [-75.205, 40.142], kind: 'hq', label: { dx: 0, dy: -11, anchor: 'middle' } },
+    { name: 'Jenkintown', coords: [-75.1257, 40.0960], kind: 'village' },
+    { name: 'Edge Hill', coords: [-75.145, 40.114], kind: 'village', label: { dx: 8, dy: -3 } },
+    { name: 'Matson\'s Ford', coords: [-75.304, 40.074], kind: 'ferry', label: { dx: 8, dy: 12 } },
+    { name: 'Swede\'s Ford', coords: [-75.343, 40.110], kind: 'ferry', label: { dx: -8, dy: -6, anchor: 'end' } },
+    { name: 'Gulph Mills', coords: [-75.3425, 40.0712], kind: 'village', label: { dx: -8, dy: 12, anchor: 'end' } },
+    { place: 'valley-forge', label: { dx: -6, dy: -9, anchor: 'end' } }
+  ],
+  moves: [
+    { side: 'british', kind: 'march', label: 'Howe, Dec 4–5', labelAt: 0.45, coords: [[-75.150, 39.975], [-75.160, 40.005], [-75.175, 40.035], [-75.195, 40.062], [-75.208, 40.085]] },
+    { side: 'british', kind: 'march', label: 'Dec 6–7', labelAt: 0.5, coords: [[-75.200, 40.090], [-75.180, 40.098], [-75.160, 40.108], [-75.150, 40.112]] },
+    { side: 'british', kind: 'retreat', label: 'Dec 8', labelAt: 0.5, coords: [[-75.132, 40.100], [-75.128, 40.060], [-75.132, 40.020], [-75.140, 39.980]] },
+    { side: 'continental', kind: 'march', label: 'Dec 11', labelAt: 0.5, coords: [[-75.235, 40.118], [-75.262, 40.098], [-75.292, 40.080]] },
+    { side: 'continental', kind: 'march', coords: [[-75.280, 40.090], [-75.320, 40.108], [-75.343, 40.108], [-75.346, 40.090], [-75.344, 40.076]] },
+    { side: 'continental', kind: 'march', label: 'Dec 19', labelAt: 0.5, coords: [[-75.350, 40.072], [-75.390, 40.083], [-75.432, 40.094]] }
+  ],
+  units: [
+    { side: 'british', coords: [-75.322, 40.060], label: 'Cornwallis (foraging)', angle: -20, labelPos: { dx: -18, dy: 18, anchor: 'end' } }
+  ],
+  battles: [
+    { coords: [-75.214, 40.096] },
+    { coords: [-75.152, 40.122] }
+  ],
+  callouts: [
+    { coords: [-75.232, 40.085], n: 1 },
+    { coords: [-75.168, 40.130], n: 2 },
+    { coords: [-75.302, 40.058], n: 3 }
+  ],
+  labels: [
+    { coords: [-75.390, 40.125], text: 'Schuylkill River', kind: 'water', angle: -8 },
+    { coords: [-75.226, 40.058], text: 'Wissahickon Cr.', kind: 'water', size: 11, angle: 62 },
+    { coords: [-75.262, 40.040], text: 'Schuylkill R.', kind: 'water', size: 12, angle: 48 },
+    { coords: [-75.420, 40.000], text: 'PENNSYLVANIA', kind: 'region' }
+  ]
+});
+</script>
+</body>
+</html>

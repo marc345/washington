@@ -1,0 +1,22 @@
+[
+ {
+  "id": "valley-forge-region",
+  "bbox": [
+   -75.65,
+   39.86,
+   -75.0,
+   40.26
+  ],
+  "detail": "local"
+ },
+ {
+  "id": "valley-forge-camp",
+  "bbox": [
+   -75.475,
+   40.078,
+   -75.415,
+   40.116
+  ],
+  "detail": "local"
+ }
+]

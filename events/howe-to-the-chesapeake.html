@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Howe sails for Philadelphia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="howe-to-the-chesapeake">
+<main>
+  <header class="event-head">
+    <h1>Howe sails for Philadelphia</h1>
+    <p class="meta">July – September 1777 · New York, the Atlantic coast and the head of the Chesapeake Bay</p>
+  </header>
+
+  <figure class="map">
+    <h2>The long way round: Howe's voyage and Washington's march</h2>
+    <div class="map-canvas" id="map-voyage"></div>
+    <figcaption>
+      Howe embarked about 15,000 troops at New York and dropped out of sight at sea for weeks, leaving Washington to guess between the Hudson, Philadelphia and points south. The fleet looked into the Delaware, judged its defenses too risky, and sailed on around to the Chesapeake. Howe landed only about 55 miles from Philadelphia, a month after leaving New York.
+      <ol>
+        <li>Jul 23: the fleet of over 260 ships clears Sandy Hook.</li>
+        <li>Jul 30–31: off Cape Henlopen, Howe turns away from the Delaware.</li>
+        <li>Aug 15–25: the fleet works up the Chesapeake and lands at the head of the Elk River.</li>
+        <li>Washington waits at camps north of Philadelphia, then marches through the city on Aug 24 to Wilmington.</li>
+      </ol>
+      <span class="note-approx">The fleet's offshore track is schematic.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>From the Elk to the Brandywine, August 25 – September 9</h2>
+    <div class="map-canvas" id="map-elk"></div>
+    <figcaption>
+      Howe's army came ashore weak from the voyage and spent days gathering horses and wagons before advancing. Washington blocked the direct road to Philadelphia behind Red Clay Creek, but Howe marched north around his right, and the Americans fell back to the Brandywine.
+      <ol>
+        <li>Aug 25: the British land on Elk Neck. Knyphausen's division crosses to the east shore and comes up by a separate road.</li>
+        <li>Sep 3: at Cooch's Bridge, Maxwell's light infantry skirmish with the British and Hessian advance guard, then fall back.</li>
+        <li>Sep 8: Howe swings north through Newark toward Kennett Square. That night Washington moves to Chadds Ford.</li>
+      </ol>
+      <span class="note-approx">Landing places, Knyphausen's road and the march routes are approximate.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+HMap.render('#map-voyage', {
+  geo: 'howe-to-the-chesapeake-voyage',
+  bbox: [-77.6, 36.2, -72.7, 41.0],
+  alt: 'Map of the coast from New York to the Virginia Capes showing Howe\'s sea route to the head of the Chesapeake and Washington\'s march south',
+  water: { hide: ['Lake Gaston'] },
+  towns: [
+    { place: 'new-york', label: { dx: 9, dy: 4 } },
+    { place: 'philadelphia', label: { dx: 9, dy: 8 } },
+    { place: 'head-of-elk', label: { dx: 0, dy: 16, anchor: 'middle' } },
+    { place: 'wilmington', label: { dx: 9, dy: 10 } },
+    { place: 'baltimore', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { place: 'annapolis', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { place: 'middlebrook', label: { dx: 9, dy: 4 } },
+    { name: 'Neshaminy camp', coords: [-75.095, 40.228], kind: 'village', label: { dx: -9, dy: -4, anchor: 'end' } },
+    { name: 'Cape Henlopen', coords: [-75.09, 38.80], kind: 'village', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { place: 'cape-henry', label: { dx: 9, dy: 10 } },
+    { place: 'cape-charles', label: { dx: 9, dy: 4 } },
+    { place: 'sandy-hook', label: { dx: 9, dy: 8 } }
+  ],
+  moves: [
+    { side: 'british', kind: 'naval', label: 'Jul 23–30', labelAt: 0.5, coords: [[-73.98, 40.44], [-73.70, 39.90], [-74.05, 39.25], [-74.65, 38.82]] },
+    { side: 'british', kind: 'naval', label: 'Jul 31 – Aug 15', labelAt: 0.45, coords: [[-74.60, 38.72], [-74.55, 38.20], [-74.95, 37.45], [-75.55, 37.00], [-75.93, 37.00]] },
+    { side: 'british', kind: 'naval', label: 'Aug 15–25', labelAt: 0.5, coords: [[-76.05, 37.08], [-76.18, 37.50], [-76.24, 38.00], [-76.32, 38.45], [-76.42, 38.85], [-76.36, 39.12], [-76.15, 39.35], [-75.95, 39.50]] },
+    { side: 'continental', kind: 'march', label: 'Jul–Aug', labelAt: 0.5, coords: [[-74.56, 40.57], [-74.80, 40.42], [-74.95, 40.36], [-75.08, 40.25]] },
+    { side: 'continental', kind: 'march', label: 'Aug 23–25', labelAt: 0.6, coords: [[-75.11, 40.20], [-75.14, 40.02], [-75.25, 39.88], [-75.53, 39.75]] }
+  ],
+  callouts: [
+    { coords: [-73.62, 40.30], n: 1 },
+    { coords: [-74.30, 38.62], n: 2 },
+    { coords: [-76.62, 38.60], n: 3 },
+    { coords: [-75.40, 40.45], n: 4 }
+  ],
+  labels: [
+    { coords: [-73.6, 38.4], text: 'ATLANTIC OCEAN', kind: 'water', size: 17 },
+    { coords: [-76.13, 38.22], text: 'Chesapeake Bay', kind: 'water', size: 12, angle: -84 },
+    { coords: [-75.20, 39.05], text: 'Delaware\nBay', kind: 'water', size: 12 },
+    { coords: [-76.9, 40.55], text: 'PENNSYLVANIA', kind: 'region' },
+    { coords: [-74.62, 39.72], text: 'NEW JERSEY', kind: 'region', size: 12 },
+    { coords: [-77.15, 38.95], text: 'MARYLAND', kind: 'region' },
+    { coords: [-77.0, 37.35], text: 'VIRGINIA', kind: 'region' },
+    { coords: [-75.45, 38.55], text: 'DELAWARE', kind: 'region', size: 12 }
+  ]
+});
+
+HMap.render('#map-elk', {
+  geo: 'howe-to-the-chesapeake-elk',
+  bbox: [-76.02, 39.43, -75.48, 39.92],
+  alt: 'Map of the country between the head of the Elk River, Wilmington and the Brandywine, showing the British landing and advance and the American positions',
+  water: { hideUnnamed: true },
+  rivers: { only: ['Christina Riv', 'White Clay Crk', 'Red Clay Crk', 'Brandywine Crk', 'Big Elk Crk', 'Little Elk Crk', 'Mill Crk', 'Pike Crk', 'East Branch White Clay Crk', 'Middle Branch White Clay Crk', 'West Branch Red Clay Crk', 'East Branch Red Clay Crk'] },
+  towns: [
+    { name: 'Head of Elk', coords: [-75.833, 39.6065], kind: 'village', label: { dx: 8, dy: -6 } },
+    { name: 'Cecil Court House', coords: [-75.866, 39.518], kind: 'village', label: { dx: 8, dy: 10 } },
+    { name: 'Aiken\'s Tavern', coords: [-75.7382, 39.5993], kind: 'village', label: { dx: 8, dy: 12 } },
+    { name: 'Newark', coords: [-75.752, 39.683], kind: 'village', label: { dx: -8, dy: -4, anchor: 'end' } },
+    { name: 'Christiana Bridge', coords: [-75.659, 39.665], kind: 'village', label: { dx: 8, dy: 10 } },
+    { name: 'Newport', coords: [-75.609, 39.714], kind: 'village', label: { dx: 8, dy: 12 } },
+    { place: 'wilmington', label: { dx: 8, dy: 12 } },
+    { name: 'Hockessin', coords: [-75.688, 39.787], kind: 'village', label: { dx: 8, dy: 4 } },
+    { name: 'Kennett Square', coords: [-75.7117, 39.8467], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { place: 'chadds-ford', label: { dx: 9, dy: 4 } }
+  ],
+  roads: [
+    { coords: [[-75.833, 39.6065], [-75.790, 39.603], [-75.7382, 39.5993]] },
+    { coords: [[-75.7382, 39.5993], [-75.736, 39.640], [-75.752, 39.683], [-75.659, 39.665], [-75.609, 39.714], [-75.547, 39.746]] },
+    { coords: [[-75.547, 39.746], [-75.570, 39.800], [-75.594, 39.873]] }
+  ],
+  moves: [
+    { side: 'british', kind: 'naval', coords: [[-75.945, 39.495], [-75.920, 39.513], [-75.900, 39.530]] },
+    { side: 'british', kind: 'march', label: 'Howe, Aug 28 – Sep 3', labelAt: 0.3, coords: [[-75.905, 39.545], [-75.875, 39.590], [-75.835, 39.612], [-75.790, 39.607], [-75.748, 39.602]] },
+    { side: 'hessian', kind: 'march', approx: true, label: 'Knyphausen', labelAt: 0.5, coords: [[-75.860, 39.522], [-75.820, 39.545], [-75.780, 39.570], [-75.748, 39.592]] },
+    { side: 'british', kind: 'attack', coords: [[-75.737, 39.606], [-75.736, 39.632]] },
+    { side: 'continental', kind: 'retreat', label: 'Maxwell', labelAt: 0.5, coords: [[-75.731, 39.645], [-75.715, 39.665], [-75.700, 39.690]] },
+    { side: 'british', kind: 'march', label: 'Sep 8–10', labelAt: 0.45, coords: [[-75.752, 39.650], [-75.752, 39.690], [-75.735, 39.740], [-75.700, 39.790], [-75.708, 39.838]] },
+    { side: 'continental', kind: 'march', label: 'night of Sep 8–9', labelAt: 0.5, coords: [[-75.615, 39.735], [-75.585, 39.780], [-75.585, 39.830], [-75.592, 39.862]] },
+    { side: 'continental', kind: 'march', label: 'Aug 24–25', labelAt: 0.5, coords: [[-75.482, 39.835], [-75.510, 39.790], [-75.540, 39.752]] }
+  ],
+  units: [
+    { side: 'continental', coords: [-75.638, 39.728], angle: -60, label: 'Washington, Sep 6–8', labelPos: { dx: -12, dy: 16, anchor: 'end' } },
+    { side: 'continental', coords: [-75.620, 39.722], angle: -60 }
+  ],
+  battles: [ { coords: [-75.7343, 39.6395], label: 'Cooch\'s Bridge', labelPos: { dx: 14, dy: -6, anchor: 'start' } } ],
+  callouts: [
+    { coords: [-75.935, 39.555], n: 1 },
+    { coords: [-75.700, 39.630], n: 2 },
+    { coords: [-75.770, 39.760], n: 3 }
+  ],
+  labels: [
+    { coords: [-75.900, 39.700], text: 'MARYLAND', kind: 'region' },
+    { coords: [-75.680, 39.565], text: 'DELAWARE', kind: 'region' },
+    { coords: [-75.800, 39.885], text: 'PENNSYLVANIA', kind: 'region' },
+    { coords: [-75.560, 39.530], text: 'NEW JERSEY', kind: 'region', size: 12 },
+    { coords: [-75.880, 39.490], text: 'Elk River', kind: 'water', size: 12, angle: -50 },
+    { coords: [-75.560, 39.640], text: 'Delaware River', kind: 'water', angle: -55 },
+    { coords: [-75.610, 39.685], text: 'Christina R.', kind: 'water', size: 11, angle: -30 },
+    { coords: [-75.772, 39.632], text: 'Iron Hill', kind: 'terrain', size: 11 },
+    { coords: [-75.920, 39.590], text: 'Elk Neck', kind: 'terrain', size: 11 }
+  ]
+});
+</script>
+</body>
+</html>

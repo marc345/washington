@@ -128,5 +128,8 @@ figure.map .note-approx { color: var(--ink-soft); font-style: italic; font-size:
 @media (max-width: 640px) {
   body { font-size: 17px; }
   figure.map { padding: 8px; margin: 0 calc(-1 * var(--gutter) + 4px) 28px; }
-  .site-header .pager { width: 100%; justify-content: space-between; }
+  .site-header .pager, .site-footer .pager { width: 100%; justify-content: space-between; }
+  .pager { gap: 10px; }
+  .pager a { white-space: normal; max-width: 48%; font-size: 15px; line-height: 1.25; }
+  .pager a[rel="next"] { text-align: right; margin-left: auto; }
 }

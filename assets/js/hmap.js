@@ -135,7 +135,12 @@
     const water = topojson.feature(topo, topo.objects.water);
     const rivers = topojson.feature(topo, topo.objects.rivers);
     const corr = cfg.corrections || {};
-    const poly = rings => ({ type: 'Polygon', coordinates: [rings.map(at).concat([at(rings[0])])] });
+    // d3-geo needs clockwise rings; a counter-clockwise ring would fill the whole globe minus the ring.
+    const poly = rings => {
+      const g = { type: 'Polygon', coordinates: [rings.map(at).concat([at(rings[0])])] };
+      if (d3.geoArea(g) > 2 * Math.PI) g.coordinates[0].reverse();
+      return g;
+    };
 
     // land clip (for terrain)
     const landClip = el(defs, 'clipPath', { id: uid + '-land' });
