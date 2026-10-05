@@ -7,7 +7,9 @@ Read first: `SPEC.md` (goals, rules, process), `docs/AUTHORING.md` (page/map aut
 ## Status (2026-10-05)
 
 - Process steps 1–3 of SPEC are done. All 36 event pages are built.
-- **Review loop (SPEC steps 4–6):** round 1 reviews are in `docs/reviews/round1-visual.md` and `docs/reviews/round1-history.md`. Round 1 fixes are applied: library items 1–4 below plus the overview map, and per-page fixes on all 36 pages. **Next: round 2 reviews** (`docs/reviews/round2-*.md`). If those files are missing, round 2 didn't finish: re-run both reviews (visual/UX and historical accuracy) with subagents.
+- **Review loop (SPEC steps 4–6):** round 1 is done (reviews in `docs/reviews/round1-*.md`, fixes in commit 901d045). **Now: round 2.** Six reviewers (visual and history × pages 1–12, 13–24, 25–36) write to `docs/reviews/round2-visual.md` and `docs/reviews/round2-history.md`; each file lists which page ranges are saved.
+  - To continue: re-run any review whose page range is missing from those files (subagents; see round 1 prompts' scope: per-map screenshots at both widths, check round-1 findings and regressions; history reviewers check `git diff 5b6e5c8 -- events/<id>.html data/`). Then run the fix phase: one subagent per page range (pages only; shared-file requests come back to the coordinator), apply library/data requests yourself, screenshot all pages, commit, push.
+  - Then round 3 only if round 2 found bugs, factual errors or inconsistencies.
 - Stopping rule: repeat review → fix only while reviews find bugs, factual errors or inconsistencies. Cosmetic nitpicks alone don't trigger another round. Maximum 4 rounds, then report what remains.
 
 ## Done in round 1 (library, see docs/AUTHORING.md)
