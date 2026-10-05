@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stony Point &amp; Paulus Hook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="stony-point">
+<main>
+  <header class="event-head">
+    <h1>Stony Point &amp; Paulus Hook</h1>
+    <p class="meta">July 15–16 and August 19, 1779 · Hudson Highlands, New York, and Paulus Hook, New Jersey</p>
+  </header>
+
+  <figure class="map">
+    <h2>The Hudson Highlands, summer 1779</h2>
+    <div class="map-canvas" id="map-highlands"></div>
+    <figcaption>
+      At the end of May Clinton came up the Hudson and took Stony Point and Verplanck's Point, closing King's Ferry, the army's main crossing below the Highlands. Washington answered by sending Wayne's light infantry on a roundabout march through the hills to storm Stony Point at night.
+      <ol>
+        <li>Clinton's forces seize both points, May 31 – June 1.</li>
+        <li>Wayne's 1,350 men leave Sandy Beach at noon on July 15 and reach Springsteel's farm, about 1.5 miles west of the fort, by 8 p.m.</li>
+        <li>West Point, the key fortress of the Highlands. Washington moves his headquarters here from New Windsor in late July.</li>
+      </ol>
+      <span class="note-approx">Wayne's route through the hills is approximate. Modern reservoirs and dammed lakes are omitted.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>The storming of Stony Point, midnight July 15–16</h2>
+    <div class="map-canvas" id="map-assault"></div>
+    <figcaption>
+      Two columns with unloaded muskets went in with the bayonet from north and south while a third drew fire on the causeway in the center. The fort fell in about half an hour, with some 550 of the garrison taken prisoner.
+      <ol>
+        <li>Wayne's column wades the flooded marsh south of the point and climbs to the upper works. Wayne is grazed in the head.</li>
+        <li>Butler's column comes in along the north shore.</li>
+        <li>Murfree's North Carolinians fire from the causeway to hold the defenders' attention.</li>
+      </ol>
+      <span class="note-approx">The lines of abatis and the column routes are schematic.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>The raid on Paulus Hook, August 18–19</h2>
+    <div class="map-canvas" id="map-paulus"></div>
+    <figcaption>
+      Henry Lee marched about 400 men from New Bridge through the night. A wrong turn cost three hours, so the attack went in near dawn: his men waded the ditch, took the outer works and marched off with about 150 prisoners before the British in New York could respond.
+      <ol>
+        <li>Lee leaves New Bridge on the afternoon of August 18.</li>
+        <li>The guides lose the way; the column reaches Paulus Hook about 3:30 a.m. on August 19.</li>
+        <li>The boats meant to carry them across the Hackensack at Dow's Ferry are gone, so they march back north along the ridge, met by troops sent out by Stirling.</li>
+      </ol>
+      <span class="note-approx">Routes are approximate. The waterfronts of Jersey City, Hoboken and lower Manhattan have been pulled back roughly to their 18th-century lines; Paulus Hook itself was a sandy rise cut off by marsh and a tidal ditch.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+const noSeams = ({ root }) => root.selectAll('path.hm-water').style('stroke', 'none');
+const cw = r => d3.geoArea({ type: 'Polygon', coordinates: [[...r, r[0]]] }) > 2 * Math.PI ? r.slice().reverse() : r;
+const modernRivers = ['Catskill Aqueduct', 'Jersey City Aqueduct', 'Sewer R O W', 'Hudson River Phl'];
+
+HMap.render('#map-highlands', {
+  geo: 'stony-point-highlands',
+  bbox: [-74.10, 41.20, -73.86, 41.41],
+  alt: 'Map of the Hudson Highlands in 1779 showing West Point, King\'s Ferry between Stony and Verplanck\'s Points, and Wayne\'s approach march',
+  water: { hide: ['Tiorati Lk', 'Welch Lk', 'Popolopen Lk', 'Stillwell Lk', 'Forest Lk', 'Lk Mohegan', 'Silver Mine Lk', 'Lk Meahagh', 'Breakneck Pond', 'Lk Peekskill', 'Bog Meadow Pond', 'Indian Lk', 'Dickerson Pond', 'Turkey Hill Pond', 'Cranberry Lk', 'Oscawana Lk'], hideUnnamed: true },
+  rivers: { hide: modernRivers },
+  terrain: { exaggeration: 2.5 },
+  towns: [
+    { place: 'west-point', side: 'continental', label: { dx: -12, dy: 4, anchor: 'end' } },
+    { place: 'stony-point', side: 'british', label: { dx: 12, dy: 4, anchor: 'start' } },
+    { place: 'verplancks-point', side: 'british', label: { dx: 12, dy: 12, anchor: 'start' } },
+    { place: 'peekskill', label: { dx: 8, dy: 4 } },
+    { name: 'Fort Montgomery (ruins)', coords: [-73.9875, 41.3235], kind: 'fort', label: { dx: -12, dy: 4, anchor: 'end' } },
+    { name: 'Sandy Beach', coords: [-73.9720, 41.3440], kind: 'village', label: { dx: 8, dy: 4 } },
+    { name: 'Springsteel\'s', coords: [-73.9990, 41.2405], kind: 'building', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Haverstraw', coords: [-73.9650, 41.2040], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } }
+  ],
+  lines: [ { coords: [[-73.9700, 41.2450], [-73.9620, 41.2490]], color: '#3a2f24', width: 1.6, dash: '4 3', legend: 'King\'s Ferry' } ],
+  moves: [
+    { side: 'british', kind: 'naval', label: 'Clinton, from New York', labelAt: 0.58, coords: [[-73.9020, 41.2130], [-73.9300, 41.2250], [-73.9575, 41.2385]] },
+    { side: 'continental', kind: 'march', approx: true, label: 'Wayne, July 15', labelAt: 0.35, coords: [[-73.9740, 41.3420], [-74.0050, 41.3300], [-74.0280, 41.3070], [-74.0170, 41.2850], [-73.9970, 41.2650], [-73.9995, 41.2440]] }
+  ],
+  ships: [ { side: 'british', coords: [-73.9530, 41.2215], label: 'Vulture', labelPos: { dx: -18, dy: 4, anchor: 'end' } } ],
+  callouts: [
+    { coords: [-73.9200, 41.2330], n: 1 },
+    { coords: [-74.0450, 41.3050], n: 2 },
+    { coords: [-73.9690, 41.3830], n: 3 }
+  ],
+  labels: [
+    { coords: [-73.9580, 41.3550], text: 'Hudson River', kind: 'water', size: 13, angle: -68 },
+    { coords: [-73.9330, 41.2070], text: 'Haverstraw\nBay', kind: 'water', size: 13 },
+    { coords: [-74.0200, 41.2580], text: 'Dunderberg', kind: 'terrain' },
+    { coords: [-74.0150, 41.3150], text: 'Queensboro', kind: 'note', size: 10.5, anchor: 'end' },
+    { coords: [-73.9420, 41.4010], text: 'Constitution I.', kind: 'note', size: 10.5, anchor: 'start' },
+    { coords: [-73.8900, 41.3300], text: 'HIGHLANDS', kind: 'region' }
+  ],
+  after: noSeams
+});
+
+HMap.render('#map-assault', {
+  geo: 'stony-point-assault',
+  bbox: [-74.01, 41.226, -73.955, 41.256],
+  alt: 'Map of the Stony Point peninsula showing the British works and the three American columns on the night of July 15–16, 1779',
+  water: { hideUnnamed: true, hide: ['Lk Boyce'] },
+  terrain: { contours: 10 },
+  areas: [
+    { coords: [[-73.9815, 41.2450], [-73.9790, 41.2448], [-73.9775, 41.2410], [-73.9785, 41.2380], [-73.9810, 41.2378], [-73.9822, 41.2410]], side: 'neutral', opacity: 0.18, legend: 'Marsh, flooded at high tide (approximate)' }
+  ],
+  roads: [ { coords: [[-73.9990, 41.2405], [-73.9900, 41.2410], [-73.9820, 41.2414], [-73.9765, 41.2416]] } ],
+  works: [
+    { coords: [[-73.9768, 41.2440], [-73.9772, 41.2425], [-73.9766, 41.2405], [-73.9770, 41.2392]], side: 'british' },
+    { coords: [[-73.9748, 41.2428], [-73.9725, 41.2428], [-73.9715, 41.2416], [-73.9725, 41.2405], [-73.9748, 41.2405], [-73.9754, 41.2416]], side: 'british', closed: true }
+  ],
+  towns: [
+    { name: 'Springsteel\'s farm', coords: [-73.9990, 41.2405], kind: 'building', label: { dx: 0, dy: 18, anchor: 'middle' } },
+    { name: 'Fort Lafayette', coords: [-73.9610, 41.2505], kind: 'fort', side: 'british', label: { dx: -12, dy: 4, anchor: 'end' } }
+  ],
+  lines: [ { coords: [[-73.9720, 41.2442], [-73.9640, 41.2475]], color: '#3a2f24', width: 1.6, dash: '4 3', legend: 'King\'s Ferry' } ],
+  moves: [
+    { side: 'continental', kind: 'attack', label: 'Wayne, Febiger', labelAt: 0.45, coords: [[-73.9975, 41.2395], [-73.9880, 41.2370], [-73.9800, 41.2372], [-73.9755, 41.2398]] },
+    { side: 'continental', kind: 'attack', label: 'Butler', labelAt: 0.45, coords: [[-73.9975, 41.2418], [-73.9880, 41.2450], [-73.9800, 41.2458], [-73.9752, 41.2432]] },
+    { side: 'continental', kind: 'march', label: 'Murfree', labelAt: 0.5, coords: [[-73.9900, 41.2414], [-73.9840, 41.2415], [-73.9800, 41.2415]] }
+  ],
+  units: [
+  ],
+  ships: [ { side: 'british', coords: [-73.9640, 41.2340], label: 'Vulture', labelPos: { dx: 18, dy: 4, anchor: 'start' } } ],
+  callouts: [
+    { coords: [-73.9850, 41.2350], n: 1 },
+    { coords: [-73.9850, 41.2478], n: 2 },
+    { coords: [-73.9870, 41.2432], n: 3 }
+  ],
+  labels: [
+    { coords: [-73.9698, 41.2388], text: 'Stony Point\n(17th Foot)', kind: 'region', size: 11, anchor: 'start' },
+    { coords: [-73.9600, 41.2478], text: 'Verplanck\'s Point', kind: 'note', size: 11 },
+    { coords: [-73.9690, 41.2300], text: 'Haverstraw Bay', kind: 'water' },
+    { coords: [-73.9690, 41.2500], text: 'Hudson River', kind: 'water', size: 13, angle: -60 }
+  ],
+  after: noSeams
+});
+
+// 18th-century waterfronts (approximate): Jersey City and Communipaw cove, lower Manhattan's Hudson shore
+const jerseyShore = cw([[-74.0285, 40.7420], [-74.0300, 40.7320], [-74.0370, 40.7280], [-74.0420, 40.7230], [-74.0385, 40.7185], [-74.0335, 40.7170], [-74.0328, 40.7148], [-74.0365, 40.7115], [-74.0460, 40.7095], [-74.0560, 40.7040], [-74.0610, 40.6950], [-74.0650, 40.6880], [-74.0350, 40.6880], [-74.0270, 40.7050], [-74.0245, 40.7420]]);
+const manhattanShore = cw([[-74.0150, 40.7025], [-74.0128, 40.7100], [-74.0105, 40.7200], [-74.0090, 40.7300], [-74.0085, 40.7420], [-74.0160, 40.7420], [-74.0200, 40.7200], [-74.0230, 40.7020]]);
+
+HMap.render('#map-paulus', {
+  geo: 'stony-point-paulus-hook',
+  bbox: [-74.17, 40.69, -73.937, 40.92],
+  alt: 'Map of Bergen Neck and the Hudson shore showing Henry Lee\'s march from New Bridge to Paulus Hook and back',
+  rivers: { hide: modernRivers },
+  water: { hideUnnamed: true },
+  corrections: { water: [jerseyShore, manhattanShore] },
+  areas: [
+    { coords: [[-74.0420, 40.7270], [-74.0360, 40.7200], [-74.0400, 40.7130], [-74.0500, 40.7120], [-74.0540, 40.7200], [-74.0500, 40.7280]], side: 'neutral', opacity: 0.18, legend: 'Salt marsh (approximate)' },
+    { coords: [[-74.0150, 40.7020], [-74.0060, 40.7020], [-74.0030, 40.7120], [-74.0100, 40.7160]], side: 'british', opacity: 0.25, label: '', legend: 'British-held New York' }
+  ],
+  roads: [
+    { coords: [[-74.0300, 40.9130], [-74.0120, 40.8800], [-74.0020, 40.8400], [-74.0180, 40.8000], [-74.0340, 40.7700], [-74.0500, 40.7450], [-74.0640, 40.7270], [-74.0760, 40.7050]], name: 'Bergen road', labelAt: 0.25 }
+  ],
+  towns: [
+    { name: 'New Bridge', coords: [-74.0300, 40.9130], kind: 'village', label: { dx: 8, dy: 12 } },
+    { name: 'Paulus Hook', coords: [-74.0340, 40.7160], kind: 'fort', side: 'british', label: { dx: 12, dy: 14, anchor: 'start' } },
+    { name: 'Bergen', coords: [-74.0700, 40.7250], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Dow\'s Ferry', coords: [-74.0900, 40.7580], kind: 'ferry', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { name: 'Hoboken', coords: [-74.0300, 40.7450], kind: 'village', label: { dx: 8, dy: -4 } },
+    { place: 'new-york', name: 'New York', label: { dx: 10, dy: 14 } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', approx: true, label: 'Lee, Aug 18', labelAt: 0.25, coords: [[-74.0320, 40.9070], [-74.0170, 40.8780], [-74.0080, 40.8400], [-74.0250, 40.8000], [-74.0410, 40.7700], [-74.0560, 40.7430], [-74.0530, 40.7280], [-74.0450, 40.7210], [-74.0370, 40.7172]] },
+    { side: 'continental', kind: 'retreat', approx: true, label: 'withdrawal, Aug 19', labelAt: 0.55, coords: [[-74.0375, 40.7205], [-74.0440, 40.7420], [-74.0280, 40.7720], [-74.0110, 40.8020], [-73.9960, 40.8400], [-74.0050, 40.8800], [-74.0250, 40.9050]] }
+  ],
+  callouts: [
+    { coords: [-74.0520, 40.9080], n: 1 },
+    { coords: [-74.0560, 40.7750], n: 2 },
+    { coords: [-74.0900, 40.7740], n: 3 }
+  ],
+  labels: [
+    { coords: [-73.9950, 40.7750], text: 'Hudson River', kind: 'water', angle: -62 },
+    { coords: [-73.9650, 40.7900], text: 'MANHATTAN', kind: 'region', size: 13, angle: -62 },
+    { coords: [-74.0950, 40.8250], text: 'Hackensack\nmeadows', kind: 'note', size: 11 },
+    { coords: [-74.0660, 40.8740], text: 'Hackensack R.', kind: 'water', size: 12, angle: -80 },
+    { coords: [-74.0450, 40.6960], text: 'Communipaw\ncove', kind: 'note', size: 10.5 },
+    { coords: [-74.1050, 40.8800], text: 'NEW JERSEY', kind: 'region' }
+  ],
+  after: noSeams
+});
+</script>
+</body>
+</html>

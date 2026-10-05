@@ -103,7 +103,7 @@ function countiesIn(bbox) {
 
 // Man-made water features that did not exist in the 18th century (canals, reservoirs, ditches).
 // Dammed lakes without these words (e.g. "Carnegie Lk") must be hidden per map via water.hide.
-const MODERN = /\b(Cnl|Canal|Resr|Resv|Reservoir|Ditch|Artificial|Impoundment)\b/i;
+const MODERN = /\b(Cnl|Ca|Canal|Resr|Resv|Reservoir|Ditch|Artificial|Impoundment|Aqueduct|Sewer|R O W)\b/i;
 
 const emptyFC = '{"type":"FeatureCollection","features":[]}';
 

@@ -110,5 +110,6 @@
   "barren-hill": {"name": "Barren Hill", "coords": [-75.2575, 40.0855], "kind": "village"},
   "cliveden": {"name": "Cliveden", "coords": [-75.1812, 40.0474], "kind": "building"},
   "billingsport": {"name": "Billingsport", "coords": [-75.2418, 39.847], "kind": "fort"},
-  "valley-forge-hq": {"name": "Washington's HQ, Valley Forge", "coords": [-75.4594, 40.1017], "kind": "hq"}
+  "valley-forge-hq": {"name": "Washington's HQ, Valley Forge", "coords": [-75.4594, 40.1017], "kind": "hq"},
+  "robinson-house": {"name": "Robinson House", "coords": [-73.9498, 41.3649], "kind": "building"}
 }

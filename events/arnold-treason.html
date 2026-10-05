@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arnold's treason at West Point</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="arnold-treason">
+<main>
+  <header class="event-head">
+    <h1>Arnold's treason at West Point</h1>
+    <p class="meta">September 18–25, 1780 · Hudson Highlands and Westchester, New York</p>
+  </header>
+
+  <figure class="map">
+    <h2>Washington's journey to Hartford and back</h2>
+    <div class="map-canvas" id="map-ride"></div>
+    <figcaption>
+      Washington crossed King's Ferry on September 18, with Arnold riding along as far as Peekskill, and rode across Connecticut to meet Rochambeau and Admiral Ternay at Hartford on September 21–22. On the way home he took the upper road through Litchfield and Fishkill, so a messenger sent to meet him on the lower road through Danbury missed him.
+      <ol>
+        <li>The Hartford conference with the French commanders.</li>
+        <li>Night of September 24 at Fishkill; Washington reaches the Robinson House the next morning.</li>
+      </ol>
+      <span class="note-approx">The route between the Hudson and Litchfield is approximate.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>The plot unravels, September 21–25</h2>
+    <div class="map-canvas" id="map-plot"></div>
+    <figcaption>
+      André came ashore from the <i>Vulture</i> to meet Arnold at night. When American guns drove the ship downriver, he had to return to New York by land in civilian clothes, carrying papers on the West Point defenses in his boot.
+      <ol>
+        <li>Arnold and André meet on the shore below Long Clove, night of September 21–22, then go to Joshua Hett Smith's house.</li>
+        <li>Guns on Teller's Point fire on the <i>Vulture</i>, September 22.</li>
+        <li>André and Smith cross King's Ferry that evening and spend the night near Crompond. Smith leaves him at Pines Bridge on the 23rd.</li>
+        <li>Three militiamen stop André just north of Tarrytown, about 9 a.m. on September 23, and find the papers.</li>
+        <li>On the 25th, warned at breakfast that André has been taken, Arnold flees by barge down the river to the <i>Vulture</i>.</li>
+      </ol>
+      <span class="note-approx">André's route through the neutral ground and the meeting place are approximate. Modern reservoirs are omitted.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>West Point and the Robinson House</h2>
+    <div class="map-canvas" id="map-westpoint"></div>
+    <figcaption>
+      West Point's forts and the Great Chain across the river's sharp bend were what Arnold offered to hand over. He kept his headquarters across the river at Beverley Robinson's house, where Washington arrived on the morning of September 25, shortly after Arnold had gone.
+      <ol>
+        <li>Arnold leaves the house and goes down to his barge, about 10 a.m.</li>
+        <li>Washington crosses to West Point, finds that Arnold has not been there, and returns in the afternoon, when the captured papers reach him.</li>
+      </ol>
+      <span class="note-approx">Fort and redoubt positions are approximate; only the main works are shown.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+const noSeams = ({ root }) => root.selectAll('path.hm-water').style('stroke', 'none');
+
+HMap.render('#map-ride', {
+  geo: 'arnold-treason-ride',
+  bbox: [-74.25, 40.95, -72.45, 42.05],
+  alt: 'Map of southern New York and Connecticut showing Washington\'s route between the Hudson Highlands and Hartford in September 1780',
+  water: { hide: ['Lk Candlewood', 'Rye Lk', 'Lk Gaillard', 'Deforest Lk', 'Lk Tappan'], hideUnnamed: false },
+  terrain: { contours: false, exaggeration: 5 },
+  towns: [
+    { place: 'hartford', label: { dx: 10, dy: -6 } },
+    { place: 'west-point', side: 'continental', label: { dx: -12, dy: 4, anchor: 'end' } },
+    { place: 'peekskill', label: { dx: 8, dy: 12 } },
+    { name: 'Fishkill', coords: [-73.899, 41.535], kind: 'village', label: { dx: 8, dy: -4 } },
+    { name: 'Litchfield', coords: [-73.189, 41.747], kind: 'village', label: { dx: 0, dy: -10, anchor: 'middle' } },
+    { name: 'Farmington', coords: [-72.832, 41.720], kind: 'village', label: { dx: 0, dy: 16, anchor: 'middle' } },
+    { name: 'Danbury', coords: [-73.454, 41.394], kind: 'village', label: { dx: 8, dy: 4 } },
+    { name: 'New Milford', coords: [-73.408, 41.577], kind: 'village', label: { dx: 8, dy: 10 } },
+    { name: 'North Castle', coords: [-73.705, 41.130], kind: 'village', label: { dx: 8, dy: 4 } },
+    { place: 'new-haven', label: { dx: 8, dy: 10 } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', approx: true, label: 'Washington, Sept 18–25', labelAt: 0.45, coords: [[-73.940, 41.270], [-73.900, 41.470], [-73.700, 41.560], [-73.480, 41.650], [-73.300, 41.720], [-73.190, 41.750], [-72.840, 41.722], [-72.690, 41.760]] },
+    { side: 'french', kind: 'march', coords: [[-72.450, 41.620], [-72.560, 41.700], [-72.660, 41.755]] },
+    { side: 'continental', kind: 'march', approx: true, label: 'messenger misses him', labelAt: 0.5, coords: [[-73.700, 41.140], [-73.560, 41.280], [-73.460, 41.385]] }
+  ],
+  callouts: [
+    { coords: [-72.640, 41.640], n: 1 },
+    { coords: [-74.040, 41.570], n: 2 }
+  ],
+  labels: [
+    { coords: [-73.300, 41.180], text: 'Long Island Sound', kind: 'water' },
+    { coords: [-74.010, 41.700], text: 'Hudson R.', kind: 'water', size: 12, angle: -85 },
+    { coords: [-72.560, 41.500], text: 'Connecticut R.', kind: 'water', size: 11, angle: -70 },
+    { coords: [-73.150, 41.450], text: 'CONNECTICUT', kind: 'region' },
+    { coords: [-73.950, 41.900], text: 'NEW YORK', kind: 'region' },
+    { coords: [-72.640, 41.880], text: 'Rochambeau and Ternay\nfrom Newport', kind: 'note', size: 10.5 }
+  ],
+  after: noSeams
+});
+
+HMap.render('#map-plot', {
+  geo: 'arnold-treason-plot',
+  bbox: [-74.06, 41.04, -73.66, 41.42],
+  alt: 'Map of the lower Hudson Highlands and Westchester showing the Vulture\'s anchorage, André\'s route to his capture near Tarrytown, and Arnold\'s escape',
+  water: { hide: ["Woodcliff Lk", "Silver Lk", "Lk Tappan", "Dickerson Pond", "St Marys Lk", "Tercia Pond", "Heaptaugua Lk", "Lk Shenorock", "Teatown Lk", "Quarry Lk", "Howlands Lk", "Gregory Pond", "Petersons Pond", "Furnace Brk", "Woodlands Lk", "Pocantico Lk", "Swan Lk", "Echo Lk", "Whippoorwill Lk", "Long Pond", "Lk Mohegan", "Mohansic Lk", "Wallace Pond", "Timber Lk", "Lk Lincolndale", "Journeys End Lk", "Lk Marie", "Dickiebusch Lk", "Lounsbury Pond", "Lk Meahagh", "Rye Lk", "Racker Valley", "Still Lk", "North Lk", "Giffords Lk", "Calder Lk", "Sparkle Lk", "Twin Lks", "Tarrytown Resv", "Forest Lk", "Lk Katonah", "Lk Fremont", "Campfire Lk", "Cockrene Pond", "Oceola Lk", "Crom Pond", "Vernay Lk", "Cortlandt Lk", "Hartsdale Lk", "Hemingways Lk", "Oliver Pond", "Cobamong Pond", "Shrub Oak Brk", "Mill Pond", "Cross Riv", "Blue Lk", "Frankcrest Pond", "Glendale Lk", "Nelson Pond", "Cranberry Lk", "Windmill Lk", "Converse Lk", "Byram Riv", "Shadow Lk", "Furnace Brook Lk", "Colabaugh Pond", "Lk Shoreline Sion Boundary", "Gedney Brk", "Dream Lk", "Arthurs Pond", "Garrison Pond", "Crystal Lk", "Lk Te-Ate", "Upper Twin Lk", "Lk Nawahunta", "Brooks Lk", "Benedicts Pond", "Queensboro Lk", "Barnes Lk", "Tamarack Pond", "Sutherland Pond", "Popolopen Lk", "Round Pond", "Stillwell Lk", "Turkey Hill Pond", "Cranberry Pond", "Bull Pond", "Mine Lk", "Roe Pond", "Dassori Pond", "Cragston Lk", "Lower Twin Lk", "Sphagnum Pond", "Jims Pond", "Bog Meadow Pond", "Hessian Lk", "Tiorati Lk", "Lk Massawippa", "Silver Mine Lk", "Byram Hbr", "Wooley Pond", "West Fork Pond", "Indian Spring Pond", "Topping Pond", "Toll Gate Pond", "Putnam Lk", "Rockwood Lk", "Closes Pond", "Wilshire Pond", "Barrett Pond", "Palmer Lk", "Clear Lk", "Lk Peekskill", "Kirk Lk", "Lk Ossi", "Lk Casse", "Catfish Pond", "Loch Lyall", "Indian Lk", "Stillwater Pond", "King Pond", "Lk Mac Gregor", "Lk Carmel", "Bloomer Pond", "Mud Pond", "Lk Tibet", "Lk Celeste", "Barger Pond", "Wixon Pond", "Lk Baldwin", "Teakettle Spout Lk", "China Pond", "Laths Pond", "Secor Lk", "Jacox Pond", "Duck Pond", "Dixon Lk", "Wawayanda Lk", "Mud Lk", "Roaring Brook Lk", "Lockwood Pond", "Glencoma Lk", "Jordan Pond", "Bryant Pond", "Lk Lucille", "Cedar Pond Brk", "Lk Boyce", "Tappan Lk", "Tomkins Lk", "Swartwont Lk", "Lk Welch", "Lk Suzanne", "De Forest Lk", "Congers Lk", "Welch Lk", "Bullowa Lk", "Snake Hole Crk", "Deforest Lk"], hideUnnamed: true },
+  rivers: { hide: ['Catskill Aqueduct', 'Old Croton Aqueduct', 'New Croton Aqueduct', 'Delaware Aqueduct'] },
+  terrain: { contours: false, exaggeration: 3 },
+  towns: [
+    { place: 'west-point', side: 'continental', label: { dx: -12, dy: 4, anchor: 'end' } },
+    { name: 'Robinson House', coords: [-73.9498, 41.3649], kind: 'hq', label: { dx: 10, dy: 4 } },
+    { place: 'stony-point', side: 'continental', label: { dx: -12, dy: 10, anchor: 'end' } },
+    { place: 'verplancks-point', side: 'continental', label: { dx: 12, dy: 0, anchor: 'start' } },
+    { place: 'peekskill', label: { dx: 8, dy: -4 } },
+    { name: 'Smith\'s house', coords: [-73.9880, 41.2085], kind: 'building', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Crompond', coords: [-73.8400, 41.2940], kind: 'village', label: { dx: 8, dy: -4 } },
+    { name: 'Pines Bridge', coords: [-73.7980, 41.2290], kind: 'ferry', label: { dx: 9, dy: 4 } },
+    { name: 'Tarrytown', coords: [-73.8590, 41.0760], kind: 'village', label: { dx: 8, dy: 12 } },
+    { name: 'North Castle', coords: [-73.7050, 41.1300], kind: 'village', label: { dx: -8, dy: 14, anchor: 'end' } }
+  ],
+  lines: [ { coords: [[-73.9700, 41.2450], [-73.9620, 41.2490]], color: '#3a2f24', width: 1.6, dash: '4 3', legend: 'King\'s Ferry' } ],
+  ships: [ { side: 'british', coords: [-73.9060, 41.1700], angle: 0, label: 'Vulture', labelPos: { dx: 0, dy: 24, anchor: 'middle' } } ],
+  moves: [
+    { side: 'british', kind: 'march', approx: true, coords: [[-73.9500, 41.1760], [-73.9700, 41.1950], [-73.9860, 41.2070]] },
+    { side: 'british', kind: 'march', approx: true, label: 'André, Sept 22–23', labelAt: 0.68, coords: [[-73.9860, 41.2100], [-73.9720, 41.2390], [-73.9600, 41.2500], [-73.9200, 41.2700], [-73.8450, 41.2900], [-73.8000, 41.2350], [-73.8100, 41.1800], [-73.8400, 41.1200], [-73.8580, 41.0880]] },
+    { side: 'continental', kind: 'march', approx: true, label: 'to Jameson', labelAt: 0.5, coords: [[-73.8520, 41.0880], [-73.7800, 41.1100], [-73.7120, 41.1280]] },
+    { side: 'continental', kind: 'naval', label: 'Arnold\'s flight, Sept 25', labelAt: 0.35, coords: [[-73.9560, 41.3650], [-73.9620, 41.3300], [-73.9420, 41.2900], [-73.9450, 41.2600], [-73.9300, 41.2200], [-73.9080, 41.1760]] }
+  ],
+  battles: [ { coords: [-73.8585, 41.0862], label: 'André taken', labelPos: { dx: -14, dy: 4, anchor: 'end' } } ],
+  callouts: [
+    { coords: [-73.9680, 41.1750], n: 1 },
+    { coords: [-73.8700, 41.1720], n: 2 },
+    { coords: [-73.8050, 41.2700], n: 3 },
+    { coords: [-73.8850, 41.0700], n: 4 },
+    { coords: [-73.9250, 41.3420], n: 5 }
+  ],
+  labels: [
+    { coords: [-73.8850, 41.1830], text: 'Teller\'s Point', kind: 'note', size: 10.5, anchor: 'start' },
+    { coords: [-73.9000, 41.1300], text: 'Tappan Zee', kind: 'water', size: 12, angle: -80 },
+    { coords: [-73.9450, 41.2050], text: 'Haverstraw\nBay', kind: 'water', size: 12 },
+    { coords: [-73.7700, 41.1700], text: 'NEUTRAL GROUND', kind: 'region', size: 11 },
+    { coords: [-73.8350, 41.2150], text: 'Croton R.', kind: 'water', size: 11, angle: -20 }
+  ],
+  after: noSeams
+});
+
+HMap.render('#map-westpoint', {
+  geo: 'arnold-treason-westpoint',
+  bbox: [-73.99, 41.355, -73.92, 41.41],
+  alt: 'Map of West Point, the Great Chain to Constitution Island, and the Robinson House across the river',
+  water: { hideUnnamed: true, hide: ['Dassori Pond', 'Crystal Lk', 'Cragston Lk', 'Cranberry Lk'] },
+  terrain: { contours: 10, exaggeration: 2 },
+  lines: [ { coords: [[-73.9512, 41.3938], [-73.9447, 41.3962]], color: '#1b3466', width: 3.2, dash: '2 1.5', legend: 'The Great Chain' } ],
+  towns: [
+    { name: 'Fort Arnold', coords: [-73.9550, 41.3930], kind: 'fort', side: 'continental', label: { dx: -12, dy: -8, anchor: 'end' } },
+    { name: 'Fort Putnam', coords: [-73.9622, 41.3878], kind: 'fort', side: 'continental', label: { dx: -12, dy: 4, anchor: 'end' } },
+    { name: 'Fort Webb', coords: [-73.9605, 41.3830], kind: 'fort', side: 'continental', label: { dx: -12, dy: 6, anchor: 'end' } },
+    { name: 'Redoubt No. 4', coords: [-73.9690, 41.3850], kind: 'fort', side: 'continental', label: { dx: -12, dy: 4, anchor: 'end' } },
+    { name: 'Marine Battery', coords: [-73.9460, 41.3990], kind: 'fort', side: 'continental', label: { dx: 12, dy: -6, anchor: 'start' } },
+    { name: 'Robinson House', coords: [-73.9498, 41.3649], kind: 'hq', label: { dx: 10, dy: 4 } },
+    { name: 'Beverley dock', coords: [-73.9555, 41.3662], kind: 'ferry', label: { dx: -9, dy: 4, anchor: 'end' } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'naval', label: 'Arnold\'s barge', labelAt: 0.65, coords: [[-73.9505, 41.3655], [-73.9540, 41.3662], [-73.9585, 41.3600], [-73.9610, 41.3560]] },
+    { side: 'continental', kind: 'march', approx: true, label: 'Washington, from Fishkill', labelAt: 0.45, coords: [[-73.9280, 41.4080], [-73.9330, 41.3900], [-73.9420, 41.3750], [-73.9485, 41.3665]] },
+    { side: 'continental', kind: 'naval', coords: [[-73.9545, 41.3680], [-73.9530, 41.3780], [-73.9535, 41.3895]] }
+  ],
+  callouts: [
+    { coords: [-73.9500, 41.3590], n: 1 },
+    { coords: [-73.9480, 41.3800], n: 2 }
+  ],
+  labels: [
+    { coords: [-73.9600, 41.3960], text: 'WEST POINT', kind: 'region', size: 11.5, dx: -10, dy: 0 },
+    { coords: [-73.9475, 41.4045], text: 'Constitution\nIsland', kind: 'region', size: 11 },
+    { coords: [-73.9590, 41.3720], text: 'Hudson River', kind: 'water', size: 13, angle: -75 }
+  ],
+  after: noSeams
+});
+</script>
+</body>
+</html>

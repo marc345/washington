@@ -1,0 +1,6 @@
+[
+  { "id": "charleston-camden-campaign", "bbox": [-82.7, 32.5, -78.9, 36.5], "detail": "campaign" },
+  { "id": "charleston-camden-siege", "bbox": [-80.02, 32.70, -79.82, 32.86], "detail": "local" },
+  { "id": "charleston-camden-camden", "bbox": [-80.675, 34.238, -80.535, 34.378], "detail": "local" },
+  { "id": "charleston-camden-kings-mountain", "bbox": [-81.392, 35.133, -81.370, 35.150], "detail": "local" }
+]

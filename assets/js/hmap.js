@@ -158,6 +158,7 @@
     const inBox = (f, b) => { const c = d3.geoCentroid(f); return c[0] >= b[0] && c[0] <= b[2] && c[1] >= b[1] && c[1] <= b[3]; };
     const wf = { type: 'FeatureCollection', features: water.features.filter(f =>
       !whide.has(f.properties.name) &&
+      !(wopt.only && f.properties.name && !wopt.only.includes(f.properties.name)) &&
       !(wopt.hideUnnamed && !f.properties.name) &&
       !(wopt.hideIn || []).some(b => inBox(f, b))) };
     el(root, 'path', { d: path(wf), class: 'hm-water' });
@@ -350,8 +351,11 @@
     const width = fs(mv.width || kind.width);
     const dash = mv.approx ? `${fs(2)} ${fs(4.5)}` : kind.dash ? kind.dash.split(' ').map(x => fs(+x)).join(' ') : null;
     // white casing for legibility
-    el(g, 'path', { d, class: 'hm-move-casing', 'stroke-width': width + fs(2.4) });
-    const p = el(g, 'path', { d, fill: 'none', stroke: side.stroke === '#2b3f7a' ? side.stroke : side.fill,
+    const french = (mv.side === 'french');
+    const color = french ? side.fill : side.fill;
+    el(g, 'path', { d, class: 'hm-move-casing', 'stroke-width': width + fs(french ? 3.2 : 2.4),
+      style: french ? `stroke:${side.stroke};stroke-opacity:1` : null });
+    const p = el(g, 'path', { d, fill: 'none', stroke: color,
       'stroke-width': width, 'stroke-dasharray': dash, 'stroke-linecap': mv.approx ? 'round' : 'butt', class: 'hm-move' });
     // arrowhead aligned with the final direction of the rendered path
     const node = p.node();
@@ -360,8 +364,8 @@
     const ang = Math.atan2(tip.y - back.y, tip.x - back.x) * 180 / Math.PI;
     const hs = fs(mv.kind === 'attack' ? 6 : 5) + width * 0.6;
     el(g, 'path', { d: `M${hs},0 L${-hs},${-hs * 0.85} L${-hs * 0.45},0 L${-hs},${hs * 0.85} Z`,
-      transform: `translate(${tip.x},${tip.y}) rotate(${ang})`, fill: side.stroke === '#2b3f7a' ? side.stroke : side.fill,
-      stroke: '#fffaf0', 'stroke-width': fs(0.8), class: 'hm-move-head' });
+      transform: `translate(${tip.x},${tip.y}) rotate(${ang})`, fill: color,
+      stroke: french ? side.stroke : '#fffaf0', 'stroke-width': fs(french ? 1.4 : 0.8), class: 'hm-move-head' });
     if (mv.label) {
       // label runs along the path, flipped so it is never upside down
       const a = pts[0], b = pts[pts.length - 1];

@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Charleston &amp; Camden</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="charleston-camden">
+<main>
+  <header class="event-head">
+    <h1>Charleston &amp; Camden</h1>
+    <p class="meta">February – October 1780 · South Carolina and the North Carolina border</p>
+  </header>
+
+  <figure class="map">
+    <h2>The southern campaign of 1780</h2>
+    <div class="map-canvas" id="map-campaign"></div>
+    <figcaption>
+      After taking Charleston, the British spread a chain of posts inland. Gates marched a new southern army down from North Carolina and was routed at Camden in August. In October, backcountry militia from beyond the mountains destroyed Ferguson's Loyalists at King's Mountain.
+      <ol>
+        <li>Clinton's army lands south of Charleston, February 11.</li>
+        <li>Tarleton overtakes Buford's Virginians at the Waxhaws, May 29.</li>
+        <li>Gates takes command at the Deep River in late July and marches straight for Camden through barren pine country.</li>
+        <li>The Overmountain men gather at Sycamore Shoals on September 25 and ride via Quaker Meadows, Gilbert Town and the Cowpens.</li>
+      </ol>
+      <span class="note-approx">Routes are approximate. Modern reservoirs (Lakes Marion, Moultrie, Murray, Wateree and others) are omitted.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>The siege of Charleston, March 29 – May 12</h2>
+    <div class="map-canvas" id="map-siege"></div>
+    <figcaption>
+      Clinton crossed the Ashley above the town and dug his way down the Neck toward Lincoln's lines, while the fleet ran past Fort Moultrie into the harbor. Once British troops closed the country east of the Cooper, the garrison was trapped, and Lincoln surrendered about 5,500 men on May 12.
+      <ol>
+        <li>Clinton's army crosses the Ashley, March 29, and opens its first siege line about April 1.</li>
+        <li>Arbuthnot's ships pass Fort Moultrie under fire, April 8.</li>
+        <li>American ships are sunk across the mouth of the Cooper to keep the fleet out of it.</li>
+        <li>After Tarleton's raid on Monck's Corner (April 14), Cornwallis's troops close the east side of the Cooper.</li>
+      </ol>
+      <span class="note-approx">Siege lines are schematic. The peninsula's shores have been pulled back to suggest the smaller 1780 town; much of today's waterfront is later fill. Fort Sumter's island did not exist yet.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>Camden, dawn of August 16</h2>
+    <div class="map-canvas" id="map-camden"></div>
+    <figcaption>
+      Both armies set out on night marches along the same road and blundered into each other about 2 a.m. At dawn Cornwallis's regulars charged the militia on the American left, who fled almost at once. The Maryland and Delaware Continentals fought on until they were surrounded, and de Kalb was mortally wounded.
+      <ol>
+        <li>Gates marches south from Rugeley's Mill at 10 p.m.; Cornwallis marches north from Camden at the same hour.</li>
+        <li>Webster's regulars break the Virginia and North Carolina militia.</li>
+        <li>Tarleton's dragoons pursue the fugitives for some 20 miles up the road.</li>
+      </ol>
+      <span class="note-approx">The battle lines are drawn larger than scale; their positions and the course of the road are approximate. Modern ponds are omitted.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>King's Mountain, October 7</h2>
+    <div class="map-canvas" id="map-km"></div>
+    <figcaption>
+      Ferguson camped on a narrow, wooded ridge he thought too strong to attack. About 900 mounted riflemen left their horses below, surrounded the ridge and climbed it from all sides, falling back before bayonet charges and coming on again. In about an hour Ferguson was dead and his Loyalists had surrendered.
+      <ol>
+        <li>Campbell and Shelby lead the first attack on the southwest end, around 3 p.m.</li>
+        <li>Ferguson falls while trying to break out; his men surrender at the camp on the northeast end.</li>
+      </ol>
+      <span class="note-approx">The ridge outline follows modern elevation data; column positions are schematic.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+const noSeams = ({ root }) => root.selectAll('path.hm-water').style('stroke', 'none');
+const cw = r => d3.geoArea({ type: 'Polygon', coordinates: [[...r, r[0]]] }) > 2 * Math.PI ? r.slice().reverse() : r;
+
+HMap.render('#map-campaign', {
+  geo: 'charleston-camden-campaign',
+  bbox: [-82.7, 32.5, -78.9, 36.5],
+  alt: 'Map of the Carolinas showing the British advance from Charleston, Gates\'s march to Camden and the Overmountain men\'s route to King\'s Mountain',
+  water: { hide: ['J. Strom Thurmond Lake', 'Lake Marion', 'Lake Moultrie', 'Hartwell Lake', 'Lake Murray'] },
+  terrain: { contours: false, exaggeration: 6 },
+  towns: [
+    { place: 'charleston', label: { dx: -8, dy: 14, anchor: 'end' } },
+    { place: 'camden', name: 'Camden', kind: 'town', label: { dx: -9, dy: 14, anchor: 'end' } },
+    { place: 'hillsborough', label: { dx: 8, dy: -6 } },
+    { name: 'Charlotte', coords: [-80.843, 35.227], kind: 'village', label: { dx: 8, dy: -6 } },
+    { name: 'Ninety Six', coords: [-82.024, 34.147], kind: 'fort', side: 'british', label: { dx: -10, dy: 4, anchor: 'end' } },
+    { name: 'Augusta', coords: [-81.975, 33.474], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Sycamore Shoals', coords: [-82.249, 36.343], kind: 'village', label: { dx: 8, dy: 4 } },
+    { name: 'Quaker Meadows', coords: [-81.690, 35.748], kind: 'village', label: { dx: 8, dy: 4 } },
+    { name: 'Gilbert Town', coords: [-81.925, 35.362], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { place: 'cowpens', label: { dx: -8, dy: 14, anchor: 'end' } },
+    { name: 'Deep River', coords: [-79.640, 35.730], kind: 'village', label: { dx: 8, dy: 4 } },
+    { name: 'Rugeley\'s Mill', coords: [-80.580, 34.440], kind: 'building', label: { dx: 8, dy: 0 } }
+  ],
+  battles: [
+    { coords: [-80.010, 33.195], label: 'Monck\'s Corner, Apr 14', labelPos: { dx: 12, dy: 4, anchor: 'start' } },
+    { coords: [-80.670, 34.800], label: 'Waxhaws, May 29', labelPos: { dx: 12, dy: 4, anchor: 'start' } },
+    { coords: [-80.605, 34.330], label: 'Aug 16', labelPos: { dx: 12, dy: 2, anchor: 'start' } },
+    { coords: [-81.377, 35.142], label: 'King\'s Mountain, Oct 7', labelPos: { dx: 10, dy: 24, anchor: 'start' } }
+  ],
+  moves: [
+    { side: 'british', kind: 'naval', label: 'Feb 11', labelAt: 0.5, coords: [[-79.950, 32.520], [-80.100, 32.560], [-80.170, 32.610]] },
+    { side: 'british', kind: 'march', label: 'Cornwallis, June', labelAt: 0.5, coords: [[-79.990, 32.900], [-80.150, 33.300], [-80.450, 33.850], [-80.590, 34.210]] },
+    { side: 'continental', kind: 'march', label: 'Gates', labelAt: 0.4, coords: [[-79.640, 35.700], [-79.920, 35.000], [-80.250, 34.620], [-80.560, 34.420]] },
+    { side: 'continental', kind: 'retreat', label: 'flight to Charlotte', labelAt: 0.75, coords: [[-80.625, 34.360], [-80.745, 34.750], [-80.830, 35.190]] },
+    { side: 'militia', kind: 'march', approx: true, label: 'Overmountain men', labelAt: 0.17, coords: [[-82.220, 36.320], [-81.950, 36.050], [-81.700, 35.760], [-81.900, 35.380], [-81.820, 35.160], [-81.420, 35.140]] },
+    { side: 'loyalist', kind: 'march', approx: true, label: 'Ferguson', labelAt: 0.55, coords: [[-81.900, 35.340], [-81.650, 35.280], [-81.400, 35.160]] }
+  ],
+  callouts: [
+    { coords: [-80.300, 32.640], n: 1 },
+    { coords: [-80.900, 34.700], n: 2 },
+    { coords: [-79.550, 35.950], n: 3 },
+    { coords: [-82.450, 36.200], n: 4 }
+  ],
+  labels: [
+    { coords: [-81.600, 33.300], text: 'SOUTH CAROLINA', kind: 'region' },
+    { coords: [-79.300, 35.300], text: 'NORTH CAROLINA', kind: 'region' },
+    { coords: [-82.400, 33.200], text: 'GEORGIA', kind: 'region' },
+    { coords: [-82.300, 35.800], text: 'BLUE RIDGE', kind: 'terrain', angle: -40 },
+    { coords: [-79.200, 32.900], text: 'Atlantic\nOcean', kind: 'water' },
+    { coords: [-80.900, 34.030], text: 'Wateree R.', kind: 'water', size: 11, angle: -75 },
+    { coords: [-79.620, 34.300], text: 'Pee Dee R.', kind: 'water', size: 11, angle: -60 }
+  ],
+  after: noSeams
+});
+
+// 1780 shorelines: the peninsula's Ashley-side marshes and the Cooper wharves were later filled (approximate)
+const ashleyFill = cw([[-79.9290, 32.7718], [-79.9335, 32.7712], [-79.9385, 32.7735], [-79.9430, 32.7765], [-79.9455, 32.7810], [-79.9480, 32.7860], [-79.9510, 32.7920], [-79.9600, 32.7950], [-79.9650, 32.7650], [-79.9290, 32.7650]]);
+const cooperFill = cw([[-79.9290, 32.7718], [-79.9268, 32.7760], [-79.9270, 32.7820], [-79.9290, 32.7880], [-79.9300, 32.7960], [-79.9180, 32.7960], [-79.9180, 32.7690]]);
+const sumter = cw([[-79.8768, 32.7508], [-79.8728, 32.7508], [-79.8728, 32.7540], [-79.8768, 32.7540]]);
+const morris = cw([[-79.8712, 32.7412], [-79.8665, 32.7330], [-79.8705, 32.7100], [-79.8730, 32.6990], [-79.8840, 32.6990], [-79.8830, 32.7000], [-79.8770, 32.7220]]);
+
+HMap.render('#map-siege', {
+  geo: 'charleston-camden-siege',
+  bbox: [-80.02, 32.70, -79.82, 32.86],
+  alt: 'Map of Charleston and its harbor during the 1780 siege, showing the American lines across the Neck, the British siege lines and the fleet\'s passage',
+  water: { hide: ['Intracostal Waterway', 'Intracoastal Waterway'] },
+  corrections: { water: [ashleyFill, cooperFill, sumter], land: [morris] },
+  areas: [ { coords: [[-79.9300, 32.7890], [-79.9265, 32.7760], [-79.9290, 32.7720], [-79.9380, 32.7740], [-79.9440, 32.7800], [-79.9460, 32.7880]], side: 'continental', opacity: 0.18, legend: 'Town of Charleston' } ],
+  works: [
+    { coords: [[-79.9295, 32.7898], [-79.9340, 32.7905], [-79.9365, 32.7918], [-79.9390, 32.7905], [-79.9465, 32.7895]], side: 'continental' },
+    { coords: [[-79.9310, 32.7975], [-79.9400, 32.7990], [-79.9500, 32.7985]], side: 'british' },
+    { coords: [[-79.9310, 32.7950], [-79.9400, 32.7960], [-79.9490, 32.7952]], side: 'british' },
+    { coords: [[-79.9320, 32.7928], [-79.9400, 32.7936], [-79.9470, 32.7928]], side: 'british' }
+  ],
+  lines: [ { coords: [[-79.9265, 32.7790], [-79.9190, 32.7765], [-79.9120, 32.7745]], color: '#2f5597', width: 2, dash: '2 3', legend: 'Sunken ships and boom' } ],
+  towns: [
+    { place: 'charleston', label: { dx: -12, dy: 4, anchor: 'end' } },
+    { place: 'fort-moultrie', name: 'Fort Moultrie', side: 'continental', label: { dx: 10, dy: 18, anchor: 'start' } },
+    { name: 'Fort Johnson', coords: [-79.8995, 32.7525], kind: 'fort', side: 'british', label: { dx: -10, dy: 20, anchor: 'middle' } },
+    { name: 'Haddrell\'s Point', coords: [-79.8665, 32.7735], kind: 'village', label: { dx: -8, dy: -8, anchor: 'end' } }
+  ],
+  ships: [ { side: 'british', coords: [-79.8880, 32.7620], label: 'Arbuthnot', labelPos: { dx: -16, dy: -10, anchor: 'end' } } ],
+  moves: [
+    { side: 'british', kind: 'march', label: 'Clinton, Mar 29', labelAt: 0.5, coords: [[-80.0150, 32.8580], [-79.9850, 32.8350], [-79.9600, 32.8150], [-79.9420, 32.8020]] },
+    { side: 'british', kind: 'naval', label: 'Apr 8', labelAt: 0.45, coords: [[-79.8350, 32.7120], [-79.8520, 32.7380], [-79.8620, 32.7540], [-79.8820, 32.7605]] },
+    { side: 'british', kind: 'march', label: 'Cornwallis, late April', labelAt: 0.5, coords: [[-79.8600, 32.8580], [-79.8700, 32.8250], [-79.8700, 32.7900]] }
+  ],
+  units: [
+    { side: 'continental', coords: [-79.9370, 32.7850], label: 'Lincoln', labelPos: { dx: 18, dy: 4, anchor: 'start' } },
+    { side: 'british', coords: [-79.9400, 32.8040], label: 'Clinton', labelPos: { dx: 18, dy: 4, anchor: 'start' } }
+  ],
+  callouts: [
+    { coords: [-79.9800, 32.8500], n: 1 },
+    { coords: [-79.8350, 32.7300], n: 2 },
+    { coords: [-79.9080, 32.7820], n: 3 },
+    { coords: [-79.8450, 32.8500], n: 4 }
+  ],
+  labels: [
+    { coords: [-79.9780, 32.7930], text: 'Ashley R.', kind: 'water', size: 12, angle: -40 },
+    { coords: [-79.9100, 32.8250], text: 'Cooper R.', kind: 'water', size: 12, angle: -80 },
+    { coords: [-79.9420, 32.8160], text: 'THE NECK', kind: 'region', size: 11, angle: -60 },
+    { coords: [-79.9150, 32.7690], text: 'Charleston Harbor', kind: 'water', size: 12 },
+    { coords: [-79.9500, 32.7300], text: 'JAMES ISLAND', kind: 'region', size: 12 },
+    { coords: [-79.8330, 32.7695], text: 'Sullivan\'s Island', kind: 'region', size: 10.5, angle: -25 }
+  ],
+  after: noSeams
+});
+
+HMap.render('#map-camden', {
+  geo: 'charleston-camden-camden',
+  bbox: [-80.675, 34.238, -80.535, 34.378],
+  alt: 'Map of the road north of Camden showing the night marches of both armies and their lines at dawn on August 16, 1780',
+  water: { hide: ['Hermitage Mill Pond', 'Colonial Lk', 'Kendall Lk', 'Adams Mill Pond', 'Vaughns Mill Pond', 'Lk Shamokin'], hideUnnamed: true },
+  roads: [ { coords: [[-80.6070, 34.2500], [-80.6040, 34.2900], [-80.6060, 34.3300], [-80.6020, 34.3780]], name: 'Waxhaw road', labelAt: 0.82 } ],
+  towns: [ { name: 'Camden', coords: [-80.6070, 34.2470], kind: 'town', label: { dx: 10, dy: 5 } } ],
+  moves: [
+    { side: 'continental', kind: 'march', label: 'Gates, from Rugeley\'s', labelAt: 0.45, coords: [[-80.5975, 34.3760], [-80.5995, 34.3580], [-80.6010, 34.3390]] },
+    { side: 'british', kind: 'march', label: 'Cornwallis, from Camden', labelAt: 0.5, coords: [[-80.6000, 34.2560], [-80.5980, 34.2900], [-80.6000, 34.3200]] },
+    { side: 'british', kind: 'attack', coords: [[-80.5965, 34.3265], [-80.5960, 34.3320]] },
+    { side: 'militia', kind: 'retreat', coords: [[-80.5940, 34.3360], [-80.5900, 34.3550], [-80.5880, 34.3740]] },
+    { side: 'loyalist', kind: 'attack', label: 'Tarleton', labelAt: 0.5, coords: [[-80.6215, 34.3230], [-80.6235, 34.3500], [-80.6160, 34.3760]] }
+  ],
+  units: [
+    { side: 'continental', coords: [-80.6145, 34.3335], w: 22, label: 'de Kalb, Gist', labelPos: { dx: -16, dy: 4, anchor: 'end' } },
+    { side: 'militia', coords: [-80.6050, 34.3335], w: 22, label: '' },
+    { side: 'militia', coords: [-80.5960, 34.3335], w: 22, label: 'Stevens, Caswell', labelPos: { dx: 16, dy: -8, anchor: 'start' } },
+    { side: 'continental', coords: [-80.6080, 34.3420], w: 20, label: 'Smallwood', labelPos: { dx: 14, dy: -6, anchor: 'start' } },
+    { side: 'british', coords: [-80.5960, 34.3265], w: 22, label: 'Webster', labelPos: { dx: 16, dy: 10, anchor: 'start' } },
+    { side: 'loyalist', coords: [-80.6145, 34.3265], w: 22, label: 'Rawdon', labelPos: { dx: -16, dy: 4, anchor: 'end' } },
+    { side: 'british', coords: [-80.6060, 34.3195], w: 20, label: '71st', labelPos: { dx: 14, dy: 10, anchor: 'start' } }
+  ],
+  battles: [ { coords: [-80.6050, 34.3300], label: '' } ],
+  callouts: [
+    { coords: [-80.5850, 34.3680], n: 1 },
+    { coords: [-80.5800, 34.3200], n: 2 },
+    { coords: [-80.6400, 34.3550], n: 3 }
+  ],
+  labels: [
+    { coords: [-80.6550, 34.2700], text: 'Wateree R.', kind: 'water', size: 12, angle: -55 },
+    { coords: [-80.5550, 34.3600], text: 'Gum Swamp', kind: 'note', size: 10.5 },
+    { coords: [-80.6420, 34.3140], text: 'Sanders Cr.', kind: 'note', size: 10.5 },
+    { coords: [-80.5700, 34.2650], text: 'pine barrens', kind: 'terrain', size: 11 }
+  ],
+  after: noSeams
+});
+
+// ridge crest from the elevation data: high "heel" at the southwest, Ferguson's camp on the broader northeast end
+HMap.render('#map-km', {
+  geo: 'charleston-camden-kings-mountain',
+  bbox: [-81.392, 35.133, -81.370, 35.150],
+  alt: 'Map of the King\'s Mountain ridge showing Ferguson\'s Loyalists on the crest surrounded by the Patriot militia columns',
+  terrain: { contours: 5, exaggeration: 2 },
+  areas: [ { coords: [[-81.3880, 35.1370], [-81.3866, 35.1373], [-81.3852, 35.1385], [-81.3836, 35.1397], [-81.3815, 35.1409], [-81.3798, 35.1419], [-81.3793, 35.1432], [-81.3808, 35.1437], [-81.3830, 35.1421], [-81.3848, 35.1405], [-81.3862, 35.1391], [-81.3879, 35.1382]], side: 'loyalist', opacity: 0.3, legend: 'Loyalist position on the crest' } ],
+  towns: [ { name: 'Ferguson\'s camp', coords: [-81.3805, 35.1429], kind: 'building', label: { dx: 10, dy: -8, anchor: 'start' } } ],
+  moves: [
+    { side: 'militia', kind: 'attack', label: 'Campbell', labelAt: 0.4, coords: [[-81.3893, 35.1352], [-81.3881, 35.1361], [-81.3871, 35.1370]] },
+    { side: 'militia', kind: 'attack', label: 'Shelby', labelAt: 0.4, coords: [[-81.3915, 35.1405], [-81.3896, 35.1392], [-81.3881, 35.1381]] },
+    { side: 'militia', kind: 'attack', label: 'Sevier', labelAt: 0.45, coords: [[-81.3860, 35.1340], [-81.3852, 35.1362], [-81.3847, 35.1384]] },
+    { side: 'militia', kind: 'attack', label: 'McDowell', labelAt: 0.45, coords: [[-81.3818, 35.1350], [-81.3816, 35.1378], [-81.3818, 35.1402]] },
+    { side: 'militia', kind: 'attack', label: 'Winston', labelAt: 0.45, coords: [[-81.3752, 35.1378], [-81.3773, 35.1400], [-81.3790, 35.1420]] },
+    { side: 'militia', kind: 'attack', label: 'Williams, Lacey', labelAt: 0.45, coords: [[-81.3888, 35.1462], [-81.3864, 35.1432], [-81.3851, 35.1408]] },
+    { side: 'militia', kind: 'attack', label: 'Cleveland', labelAt: 0.45, coords: [[-81.3836, 35.1478], [-81.3829, 35.1452], [-81.3824, 35.1426]] },
+    { side: 'militia', kind: 'attack', label: 'Chronicle, Hambright', labelAt: 0.4, coords: [[-81.3745, 35.1472], [-81.3772, 35.1454], [-81.3795, 35.1438]] }
+  ],
+  battles: [ { coords: [-81.3818, 35.1410], label: '' } ],
+  callouts: [
+    { coords: [-81.3908, 35.1362], n: 1 },
+    { coords: [-81.3768, 35.1425], n: 2 }
+  ],
+  labels: [
+    { coords: [-81.3905, 35.1470], text: 'horses left\nbelow the ridge', kind: 'note', size: 10.5 }
+  ],
+  after: noSeams
+});
+</script>
+</body>
+</html>

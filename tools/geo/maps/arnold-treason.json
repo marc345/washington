@@ -1,0 +1,5 @@
+[
+  { "id": "arnold-treason-ride", "bbox": [-74.25, 40.95, -72.45, 42.05], "detail": "regional" },
+  { "id": "arnold-treason-plot", "bbox": [-74.06, 41.04, -73.66, 41.42], "detail": "local" },
+  { "id": "arnold-treason-westpoint", "bbox": [-73.99, 41.355, -73.92, 41.41], "detail": "local" }
+]

@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sullivan's Island</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="charleston-1776">
+<main>
+  <header class="event-head">
+    <h1>Sullivan's Island</h1>
+    <p class="meta">June 1–28, 1776 · Charleston harbor, South Carolina</p>
+  </header>
+
+  <figure class="map">
+    <h2>Charleston harbor, June 1776</h2>
+    <div class="map-canvas" id="map-harbor"></div>
+    <figcaption>
+      Sir Peter Parker's squadron worked its ships over the bar into Five Fathom Hole in early June, while Clinton landed his troops on Long Island, northeast of Sullivan's Island. The unfinished palmetto-log fort covered the main channel into the harbor.
+      <ol>
+        <li>The fleet crosses the bar, June 7–10, and waits in Five Fathom Hole for a favorable wind.</li>
+        <li>About 2,200 British troops land on Long Island (today's Isle of Palms) from June 9.</li>
+        <li>Charles Lee keeps a post at Haddrell's Point and tries to bridge the Cove with boats as an escape route for the fort.</li>
+      </ol>
+      <span class="note-approx">The bar, the anchorage and the shoals are placed approximately. Fort Sumter's island did not exist yet and is omitted; Morris Island has been widened to suggest its larger 18th-century extent.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>The bombardment, June 28</h2>
+    <div class="map-canvas" id="map-fort"></div>
+    <figcaption>
+      Four warships anchored a few hundred yards off the fort and fired from late morning until dark; the spongy palmetto logs and sand absorbed the shot. Three frigates sent around to fire into the fort's open rear ran aground on the Middle Ground shoal.
+      <ol>
+        <li>Moultrie's garrison, about 435 men, answers slowly to save powder.</li>
+        <li><i>Sphinx</i>, <i>Syren</i> and <i>Actaeon</i> go aground; <i>Actaeon</i> is stuck and burned by her crew the next morning.</li>
+        <li>At Breach Inlet, Thomson's riflemen and a few guns stop Clinton's troops, who find the inlet too deep to wade and their boats exposed to fire.</li>
+      </ol>
+      <span class="note-approx">Ship positions are schematic. The island's channel shore has been pulled back toward the fort; sand has built up there since the 1800s.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+// Correction rings must wind clockwise for d3-geo; this flips any that don't.
+const cw = r => d3.geoArea({ type: 'Polygon', coordinates: [[...r, r[0]]] }) > 2 * Math.PI ? r.slice().reverse() : r;
+// Fort Sumter's island was built after 1829; cover it with water.
+const sumter = cw([[-79.8768, 32.7508], [-79.8728, 32.7508], [-79.8728, 32.7540], [-79.8768, 32.7540]]);
+// Channel shore in front of the fort: sand has built up there since the 19th-century jetties.
+const fortShore = cw([[-79.8790, 32.7625], [-79.8720, 32.7628], [-79.8640, 32.7605], [-79.8575, 32.7585], [-79.8500, 32.7572], [-79.8420, 32.7568], [-79.8340, 32.7572], [-79.8300, 32.7500], [-79.8800, 32.7480]]);
+// Morris Island has eroded heavily (its 1876 lighthouse now stands offshore).
+const morris = cw([[-79.8712, 32.7412], [-79.8665, 32.7330], [-79.8705, 32.7100], [-79.8775, 32.6880], [-79.8815, 32.6800], [-79.8890, 32.6800], [-79.8830, 32.7000], [-79.8770, 32.7220]]);
+// Modern water features: the Intracoastal Waterway cut behind the barrier islands.
+const modernWater = ['Intracostal Waterway', 'Intracoastal Waterway'];
+// Water-polygon seams (county and name boundaries) are not coastlines.
+const noSeams = ({ root }) => root.selectAll('path.hm-water').style('stroke', 'none');
+const middleGround = [[-79.8820, 32.7540], [-79.8740, 32.7568], [-79.8650, 32.7545], [-79.8625, 32.7500], [-79.8700, 32.7465], [-79.8810, 32.7490]];
+
+HMap.render('#map-harbor', {
+  geo: 'charleston-1776-harbor',
+  bbox: [-79.98, 32.68, -79.76, 32.84],
+  alt: 'Map of Charleston harbor in June 1776 showing the British fleet anchorage, the landing on Long Island and the American posts',
+  water: { hide: modernWater },
+  corrections: { water: [sumter, fortShore], land: [morris] },
+  areas: [
+    { coords: [[-79.835, 32.6990], [-79.815, 32.7020], [-79.795, 32.7050], [-79.795, 32.6990], [-79.815, 32.6950], [-79.835, 32.6930]], side: 'neutral', opacity: 0.15, legend: 'Shoal (approximate)' }
+  ],
+  towns: [
+    { place: 'charleston', label: { dx: -8, dy: -8, anchor: 'end' } },
+    { place: 'fort-moultrie', name: 'Fort Sullivan', side: 'continental', label: { dx: -8, dy: -10, anchor: 'end' } },
+    { name: 'Fort Johnson', coords: [-79.8995, 32.7525], kind: 'fort', side: 'continental', label: { dx: -8, dy: 20, anchor: 'end' } },
+    { name: 'Haddrell\'s Point', coords: [-79.8665, 32.7735], kind: 'village', label: { dx: -6, dy: -9, anchor: 'end' } }
+  ],
+  ships: [
+    { side: 'british', coords: [-79.8505, 32.7170], angle: -20, label: 'Parker\'s squadron', labelPos: { dx: 16, dy: 4, anchor: 'start' } }
+  ],
+  moves: [
+    { side: 'british', kind: 'naval', label: 'June 7–10', labelAt: 0.45, coords: [[-79.790, 32.6870], [-79.815, 32.6985], [-79.840, 32.7110]] },
+    { side: 'british', kind: 'naval', label: 'June 28', labelAt: 0.5, coords: [[-79.848, 32.7240], [-79.851, 32.7400], [-79.855, 32.7540]] },
+    { side: 'british', kind: 'naval', label: 'June 9', labelAt: 0.45, coords: [[-79.770, 32.7600], [-79.783, 32.7750], [-79.795, 32.7860]] }
+  ],
+  units: [
+    { side: 'british', coords: [-79.7935, 32.7935], angle: -35, label: 'Clinton', labelPos: { dx: -16, dy: 4, anchor: 'end' } },
+    { side: 'militia', coords: [-79.8175, 32.7745], angle: -35, label: 'Thomson', labelPos: { dx: -16, dy: -8, anchor: 'end' } }
+  ],
+  callouts: [
+    { coords: [-79.8505, 32.7060], n: 1 },
+    { coords: [-79.8000, 32.7760], n: 2 },
+    { coords: [-79.8630, 32.7880], n: 3 }
+  ],
+  labels: [
+    { coords: [-79.912, 32.7635], text: 'Charleston\nHarbor', kind: 'water' },
+    { coords: [-79.800, 32.7400], text: 'Atlantic Ocean', kind: 'water' },
+    { coords: [-79.818, 32.6880], text: 'the bar', kind: 'note' },
+    { coords: [-79.8370, 32.7290], text: 'Five Fathom\nHole', kind: 'water', size: 12, anchor: 'start' },
+    { coords: [-79.8350, 32.7555], text: 'Sullivan\'s Island', kind: 'region', size: 11.5, angle: -24 },
+    { coords: [-79.7760, 32.8110], text: 'Long\nIsland', kind: 'region', size: 11 },
+    { coords: [-79.9300, 32.7280], text: 'JAMES ISLAND', kind: 'region', size: 13 },
+    { coords: [-79.8730, 32.7140], text: 'Morris Island', kind: 'region', size: 11, angle: -72 },
+    { coords: [-79.8600, 32.8150], text: 'CHRIST CHURCH\nPARISH', kind: 'region', size: 12 },
+    { coords: [-79.9600, 32.8220], text: 'Ashley R.', kind: 'water', size: 12, angle: -60 },
+    { coords: [-79.9120, 32.8180], text: 'Cooper R.', kind: 'water', size: 12, angle: -75 }
+  ],
+  after: noSeams
+});
+
+HMap.render('#map-fort', {
+  geo: 'charleston-1776-fort',
+  bbox: [-79.89, 32.733, -79.792, 32.795],
+  alt: 'Close-up of Sullivan\'s Island on June 28, 1776, with the British warships before the fort and the stand-off at Breach Inlet',
+  water: { hide: modernWater },
+  corrections: { water: [sumter, fortShore], land: [morris] },
+  areas: [ { coords: middleGround, side: 'neutral', opacity: 0.15, legend: 'Shoal (approximate)' } ],
+  works: [
+    { coords: [[-79.8582, 32.7604], [-79.8566, 32.7608], [-79.8562, 32.7596], [-79.8578, 32.7592]], side: 'continental', closed: true },
+    { coords: [[-79.8168, 32.7722], [-79.8155, 32.7742], [-79.8142, 32.7760]], side: 'continental' }
+  ],
+  towns: [
+    { place: 'fort-moultrie', name: 'Fort Sullivan', side: 'continental', label: { dx: -12, dy: 5, anchor: 'end' } },
+    { name: 'Haddrell\'s Point', coords: [-79.8665, 32.7735], kind: 'village', label: { dx: -8, dy: -7, anchor: 'end' } }
+  ],
+  ships: [
+    { side: 'british', coords: [-79.8640, 32.7560] },
+    { side: 'british', coords: [-79.8595, 32.7553] },
+    { side: 'british', coords: [-79.8550, 32.7550] },
+    { side: 'british', coords: [-79.8505, 32.7550] },
+    { side: 'british', coords: [-79.8400, 32.7455], label: 'Thunder (bomb)', labelPos: { dx: 18, dy: 4, anchor: 'start' } },
+    { side: 'british', coords: [-79.8800, 32.7520], angle: -10 },
+    { side: 'british', coords: [-79.8760, 32.7497], angle: -10 },
+    { side: 'british', coords: [-79.8720, 32.7515], angle: -10 }
+  ],
+  moves: [
+    { side: 'british', kind: 'naval', label: 'to enfilade the fort', labelAt: 0.45, coords: [[-79.8450, 32.7448], [-79.8570, 32.7465], [-79.8680, 32.7490]] },
+    { side: 'british', kind: 'attack', label: 'boats repulsed', labelAt: 0.5, coords: [[-79.8035, 32.7880], [-79.8080, 32.7830], [-79.8118, 32.7782]], width: 3 }
+  ],
+  units: [
+    { side: 'militia', coords: [-79.8180, 32.7755], angle: -55, label: 'Thomson', labelPos: { dx: -4, dy: -16, anchor: 'middle' } },
+    { side: 'british', coords: [-79.8010, 32.7850], angle: -50, label: 'Clinton', labelPos: { dx: 0, dy: 24, anchor: 'middle' } }
+  ],
+  callouts: [
+    { coords: [-79.8600, 32.7650], n: 1 },
+    { coords: [-79.8860, 32.7560], n: 2 },
+    { coords: [-79.8150, 32.7695], n: 3 }
+  ],
+  labels: [
+    { coords: [-79.8470, 32.7535], text: 'Bristol, Experiment,\nActive, Solebay', kind: 'note', size: 11, anchor: 'start' },
+    { coords: [-79.8375, 32.7655], text: 'Sullivan\'s Island', kind: 'region', size: 11, angle: -26 },
+    { coords: [-79.7965, 32.7790], text: 'Long\nIsland', kind: 'region', size: 11.5 },
+    { coords: [-79.8040, 32.7720], text: 'Breach\nInlet', kind: 'water', size: 12 },
+    { coords: [-79.8600, 32.7700], text: 'The Cove', kind: 'water', size: 12 },
+    { coords: [-79.8120, 32.7525], text: 'Atlantic Ocean', kind: 'water' },
+    { coords: [-79.8720, 32.7440], text: 'Middle Ground', kind: 'note', size: 10.5 }
+  ],
+  after: noSeams
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+[
+  { "id": "savannah-1778", "bbox": [-81.112, 32.052, -81.038, 32.096], "detail": "local" },
+  { "id": "savannah-region", "bbox": [-81.30, 31.85, -80.60, 32.50], "detail": "regional" },
+  { "id": "savannah-assault", "bbox": [-81.115, 32.060, -81.070, 32.090], "detail": "local" }
+]

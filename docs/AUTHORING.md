@@ -24,7 +24,7 @@ If you need a change in a shared file (library feature, bug, wrong event summary
    - **Manhattan 1776:** the shoreline lay well inland of today's on both rivers, especially lower Manhattan and the East River side. Battery Park City and the edges of the FDR Drive are landfill.
    - Check other places too (Philadelphia waterfront, Charleston, Yorktown, Newport, etc.).
 5. **Write the page and render configs**, then screenshot:
-   `node tools/shot.mjs <scratch-dir> events/<event-id>.html`
+   `node tools/shot.mjs <scratch-dir> events/<event-id>.html` (use your own scratch subdirectory for any helper scripts)
    This prints console/HTTP errors and writes desktop and phone PNGs. **Look at both screenshots** (Read the PNG) and iterate until labels don't collide, nothing important is clipped, and the map reads clearly at phone width.
 
 ## Page rules
@@ -46,9 +46,9 @@ All coordinates are `[lon, lat]`. Anywhere a coordinate is accepted, you can pas
   bbox: [w, s, e, n],              // view extent (normally identical to the build spec)
   alt: 'description for screen readers',
   terrain: { contours: 5 | false, hillshade: true, exaggeration: 4, shadeOpacity: 0.55 } | false,
-  water: { hide: ['Carnegie Lk'], hideIn: [[w,s,e,n]], hideUnnamed: false },
+  water: { hide: ['Carnegie Lk'], hideIn: [[w,s,e,n]], hideUnnamed: false, only: ['Hudson Riv', ...] /* named polygons not listed are hidden; unnamed kept */ },
   rivers: { hide: ['Name'], only: ['Name', ...] },
-  corrections: { water: [ [[lon,lat], ...] ], land: [ [[lon,lat], ...] ] }, // period shoreline fixes (rings)
+  corrections: { water: [ [[lon,lat], ...] ], land: [ [[lon,lat], ...] ] }, // period shoreline fixes (rings, any winding)
   roads:   [{ coords: [...], name: 'Post Road', kind: 'road'|'track', labelAt: 0.5 }],
   areas:   [{ coords: [...ring], side, label, opacity, legend: 'Legend text', smooth: true }],
   lines:   [{ coords: [...], color, width, dash: '6 4', legend }],

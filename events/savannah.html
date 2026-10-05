@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Savannah</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="savannah">
+<main>
+  <header class="event-head">
+    <h1>Savannah</h1>
+    <p class="meta">December 29, 1778 and September 12 – October 9, 1779 · Savannah, Georgia</p>
+  </header>
+
+  <figure class="map">
+    <h2>The British take Savannah, December 29, 1778</h2>
+    <div class="map-canvas" id="map-1778"></div>
+    <figcaption>
+      Campbell's 3,100 men landed below the town and found Robert Howe's 850 Americans drawn up across the road with swamp on both flanks. An enslaved man, Quamino Dolly, led a British force along a hidden path through the swamp around Howe's right.
+      <ol>
+        <li>Landing at Girardeau's plantation on Brewton Hill, morning of December 29.</li>
+        <li>Baird's light infantry and the New York Volunteers come out of the swamp behind the American right, while Campbell attacks in front.</li>
+        <li>The Americans break and run through and around the town. Many are taken at Musgrove Creek; others drown in Yamacraw Creek or escape upriver to South Carolina.</li>
+      </ol>
+      <span class="note-approx">The American line, the swamp path and the town's extent are approximate. The riverbank shown is modern.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>The allies close in, September 1779</h2>
+    <div class="map-canvas" id="map-region"></div>
+    <figcaption>
+      D'Estaing's French troops came ashore south of the city and Lincoln's Americans crossed the Savannah from South Carolina. Prevost asked for a truce to consider surrender, and used it to bring in Maitland's 800 men from Beaufort by a back route through the coastal creeks.
+      <ol>
+        <li>French landing at Beaulieu, September 12–16.</li>
+        <li>Lincoln crosses at Zubly's Ferry and joins d'Estaing before Savannah on September 16.</li>
+        <li>Maitland's boats slip past the French through Skull Creek and Wall's Cut, reaching Savannah September 16–17.</li>
+      </ol>
+      <span class="note-approx">Routes are approximate. Marshes are shown as land.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>The assault, dawn of October 9, 1779</h2>
+    <div class="map-canvas" id="map-assault"></div>
+    <figcaption>
+      After a five-day bombardment failed to break the defenses, d'Estaing stormed the British right at the Spring Hill redoubt. The columns came under fire in the open and in the swampy ground west of the line, and fell back in about an hour.
+      <ol>
+        <li>French and American columns, with Laurens's Continentals and Pulaski's cavalry, strike Spring Hill. Pulaski is mortally wounded.</li>
+        <li>Dillon's column loses its way in the swamp and is caught in the open.</li>
+        <li>Huger's feint against the British left is easily turned back.</li>
+      </ol>
+      <span class="note-approx">The line of the British works, the allied trenches and the column routes are schematic.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+const noSeams = ({ root }) => root.selectAll('path.hm-water').style('stroke', 'none');
+// modern slips, canal remnants and ponds (all unnamed)
+const localWater = { hideUnnamed: true };
+const localRivers = { hide: ['Savannah Ogeechee Ca'] };
+// town of Savannah as laid out by 1779 (between West and East Broad, Bay to South Broad)
+const town = [[-81.0985, 32.0812], [-81.0855, 32.0800], [-81.0855, 32.0755], [-81.0985, 32.0755]];
+
+HMap.render('#map-1778', {
+  geo: 'savannah-1778',
+  bbox: [-81.112, 32.052, -81.038, 32.096],
+  alt: 'Map of the eastern approaches to Savannah showing the British landing at Brewton Hill, the American line and the flanking path through the swamp',
+  water: localWater, rivers: localRivers,
+  areas: [
+    { coords: town, side: 'neutral', opacity: 0.25, smooth: false, label: 'Savannah', size: 13 },
+    { coords: [[-81.0930, 32.0715], [-81.0860, 32.0700], [-81.0760, 32.0700], [-81.0680, 32.0690], [-81.0660, 32.0640], [-81.0760, 32.0615], [-81.0880, 32.0625], [-81.0950, 32.0670]], side: 'neutral', opacity: 0.12, legend: 'Swamp and rice fields (approximate)' },
+    { coords: [[-81.0735, 32.0790], [-81.0640, 32.0785], [-81.0640, 32.0745], [-81.0735, 32.0750]], side: 'neutral', opacity: 0.12 }
+  ],
+  roads: [
+    { coords: [[-81.0855, 32.0770], [-81.0750, 32.0740], [-81.0640, 32.0725], [-81.0535, 32.0715]] },
+    { coords: [[-81.0985, 32.0780], [-81.1080, 32.0790], [-81.1200, 32.0800]] }
+  ],
+  lines: [ { coords: [[-81.1035, 32.0858], [-81.1045, 32.0820], [-81.1060, 32.0785]], color: '#6f9298', width: 1.3 } ],
+  works: [ { coords: [[-81.0770, 32.0775], [-81.0755, 32.0745], [-81.0755, 32.0715]], side: 'continental' } ],
+  towns: [
+    { name: 'Girardeau\'s (Brewton Hill)', coords: [-81.0535, 32.0715], kind: 'building', label: { dx: 0, dy: 18, anchor: 'middle' } },
+    { name: 'Barracks', coords: [-81.0935, 32.0745], kind: 'building', label: { dx: -8, dy: 14, anchor: 'end' } }
+  ],
+  moves: [
+    { side: 'british', kind: 'naval', label: 'landing', labelAt: 0.4, coords: [[-81.0400, 32.0870], [-81.0480, 32.0815], [-81.0525, 32.0770]] },
+    { side: 'british', kind: 'march', label: 'Campbell', labelAt: 0.55, coords: [[-81.0540, 32.0720], [-81.0640, 32.0728], [-81.0730, 32.0740]] },
+    { side: 'british', kind: 'attack', label: 'Baird', labelAt: 0.5, coords: [[-81.0660, 32.0715], [-81.0700, 32.0665], [-81.0800, 32.0650], [-81.0890, 32.0665], [-81.0925, 32.0725]] },
+    { side: 'continental', kind: 'retreat', coords: [[-81.0800, 32.0750], [-81.0920, 32.0770], [-81.1040, 32.0800]] },
+    { side: 'continental', kind: 'retreat', coords: [[-81.1040, 32.0800], [-81.1120, 32.0850], [-81.1190, 32.0920]] }
+  ],
+  units: [
+    { side: 'continental', coords: [-81.0790, 32.0765], angle: -75, label: 'Elbert', labelPos: { dx: -14, dy: -12, anchor: 'end' } },
+    { side: 'continental', coords: [-81.0785, 32.0722], angle: -75, label: 'Huger', labelPos: { dx: -14, dy: 14, anchor: 'end' } }
+  ],
+  battles: [ { coords: [-81.0870, 32.0738], label: '' } ],
+  callouts: [
+    { coords: [-81.0450, 32.0760], n: 1 },
+    { coords: [-81.0800, 32.0615], n: 2 },
+    { coords: [-81.1000, 32.0710], n: 3 }
+  ],
+  labels: [
+    { coords: [-81.0680, 32.0835], text: 'Savannah River', kind: 'water', angle: 4 },
+    { coords: [-81.0700, 32.0905], text: 'Hutchinson Island', kind: 'region', size: 11, angle: 12 },
+    { coords: [-81.1000, 32.0920], text: 'to Zubly\'s Ferry\nand South Carolina', kind: 'note', size: 10.5, anchor: 'start' },
+    { coords: [-81.0430, 32.0600], text: 'Wilmington R.', kind: 'water', size: 12, angle: -55 },
+    { coords: [-81.1070, 32.0800], text: 'Musgrove Cr.', kind: 'note', size: 10.5, anchor: 'end' }
+  ],
+  after: noSeams
+});
+
+HMap.render('#map-region', {
+  geo: 'savannah-region',
+  bbox: [-81.30, 31.85, -80.60, 32.50],
+  alt: 'Regional map of the Savannah River estuary showing the French landing at Beaulieu, Lincoln\'s crossing at Zubly\'s Ferry and Maitland\'s route from Beaufort',
+  towns: [
+    { place: 'savannah', label: { dx: -10, dy: -8, anchor: 'end' } },
+    { name: 'Beaufort', coords: [-80.670, 32.432], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Beaulieu', coords: [-81.098, 31.980], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Zubly\'s Ferry', coords: [-81.135, 32.268], kind: 'ferry', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { name: 'Purrysburg', coords: [-81.108, 32.302], kind: 'village', label: { dx: 8, dy: 0 } },
+    { name: 'Ebenezer', coords: [-81.178, 32.372], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Thunderbolt', coords: [-81.050, 32.033], kind: 'village', label: { dx: 8, dy: 4 } }
+  ],
+  ships: [
+    { side: 'french', coords: [-80.780, 31.965], label: 'd\'Estaing\'s fleet', labelPos: { dx: 0, dy: 22, anchor: 'middle' } },
+    { side: 'french', coords: [-80.810, 31.935] }
+  ],
+  moves: [
+    { side: 'french', kind: 'naval', label: 'Sept 12', labelAt: 0.5, coords: [[-80.860, 31.920], [-80.960, 31.930], [-81.060, 31.945], [-81.090, 31.972]] },
+    { side: 'french', kind: 'march', label: 'Sept 16', labelAt: 0.5, coords: [[-81.098, 31.988], [-81.105, 32.030], [-81.098, 32.065]] },
+    { side: 'continental', kind: 'march', label: 'Lincoln, from Charleston', labelAt: 0.35, coords: [[-80.900, 32.480], [-81.030, 32.360], [-81.110, 32.290], [-81.135, 32.268]] },
+    { side: 'continental', kind: 'march', approx: true, label: 'Sept 16', labelAt: 0.5, coords: [[-81.140, 32.262], [-81.170, 32.200], [-81.160, 32.130], [-81.110, 32.088]] },
+    { side: 'british', kind: 'naval', approx: true, label: 'Maitland', labelAt: 0.25, coords: [[-80.672, 32.420], [-80.690, 32.330], [-80.740, 32.265], [-80.790, 32.210], [-80.835, 32.150], [-80.900, 32.105], [-80.970, 32.090], [-81.075, 32.088]] }
+  ],
+  callouts: [
+    { coords: [-81.060, 31.995], n: 1 },
+    { coords: [-81.105, 32.235], n: 2 },
+    { coords: [-80.795, 32.250], n: 3 }
+  ],
+  labels: [
+    { coords: [-80.720, 32.060], text: 'Atlantic Ocean', kind: 'water' },
+    { coords: [-81.250, 32.200], text: 'GEORGIA', kind: 'region' },
+    { coords: [-80.930, 32.200], text: 'SOUTH CAROLINA', kind: 'region' },
+    { coords: [-81.215, 32.300], text: 'Savannah R.', kind: 'water', size: 12, angle: -75 },
+    { coords: [-80.760, 32.170], text: 'Hilton Head I.', kind: 'region', size: 11, angle: -50 },
+    { coords: [-80.828, 32.012], text: 'Tybee I.', kind: 'region', size: 11, anchor: 'start' },
+    { coords: [-80.920, 32.130], text: 'Wall\'s Cut', kind: 'note', size: 10.5 }
+  ],
+  after: noSeams
+});
+
+HMap.render('#map-assault', {
+  geo: 'savannah-assault',
+  bbox: [-81.115, 32.060, -81.070, 32.090],
+  alt: 'Map of the British lines around Savannah on October 9, 1779, showing the allied attack on the Spring Hill redoubt',
+  water: localWater, rivers: localRivers,
+  areas: [
+    { coords: town, side: 'neutral', opacity: 0.25, smooth: false, label: 'Savannah', size: 13, labelAt: [-81.0905, 32.0790] },
+    { coords: [[-81.1150, 32.0800], [-81.1060, 32.0790], [-81.1030, 32.0740], [-81.1060, 32.0690], [-81.1150, 32.0680]], side: 'neutral', opacity: 0.12, legend: 'Swamp (approximate)' },
+  ],
+  works: [
+    { coords: [[-81.1035, 32.0850], [-81.1015, 32.0815], [-81.1008, 32.0780], [-81.0997, 32.0748], [-81.0960, 32.0726], [-81.0905, 32.0716], [-81.0850, 32.0718], [-81.0812, 32.0738], [-81.0792, 32.0770], [-81.0785, 32.0802]], side: 'british' },
+    { coords: [[-81.0997, 32.0748]], side: 'british', kind: 'redoubt', size: 7 },
+    { coords: [[-81.0905, 32.0716]], side: 'british', kind: 'redoubt', size: 6 },
+    { coords: [[-81.0812, 32.0738]], side: 'british', kind: 'redoubt', size: 6 },
+    { coords: [[-81.0935, 32.0680], [-81.0880, 32.0670], [-81.0830, 32.0680]], side: 'french' },
+    { coords: [[-81.0885, 32.0640], [-81.0880, 32.0670]], side: 'french' }
+  ],
+  towns: [
+    { name: 'Spring Hill redoubt', coords: [-81.0997, 32.0748], kind: 'building', label: { dx: 10, dy: -8, anchor: 'start' } }
+  ],
+  moves: [
+    { side: 'french', kind: 'attack', label: 'd\'Estaing', labelAt: 0.5, coords: [[-81.1040, 32.0660], [-81.1020, 32.0700], [-81.1003, 32.0738]] },
+    { side: 'continental', kind: 'attack', label: 'Laurens, McIntosh', labelAt: 0.4, coords: [[-81.1120, 32.0700], [-81.1070, 32.0730], [-81.1010, 32.0752]] },
+    { side: 'french', kind: 'attack', approx: true, label: 'Dillon (French)', labelAt: 0.45, coords: [[-81.1130, 32.0730], [-81.1090, 32.0770], [-81.1040, 32.0785]] },
+    { side: 'militia', kind: 'attack', label: 'Huger (feint)', labelAt: 0.5, coords: [[-81.0740, 32.0650], [-81.0770, 32.0690], [-81.0800, 32.0725]] },
+  ],
+  units: [
+    { side: 'british', coords: [-81.0935, 32.0737], angle: 8, label: 'Maitland', labelPos: { dx: 16, dy: 4, anchor: 'start' } },
+    { side: 'continental', type: 'cavalry', coords: [-81.1075, 32.0685], angle: 40, label: 'Pulaski', labelPos: { dx: -16, dy: 4, anchor: 'end' } }
+  ],
+  battles: [ { coords: [-81.1003, 32.0732], label: '' } ],
+  callouts: [
+    { coords: [-81.0950, 32.0700], n: 1 },
+    { coords: [-81.1100, 32.0800], n: 2 },
+    { coords: [-81.0760, 32.0630], n: 3 }
+  ],
+  labels: [
+    { coords: [-81.0850, 32.0840], text: 'Savannah River', kind: 'water', angle: 12 },
+    { coords: [-81.0840, 32.0878], text: 'Hutchinson Island', kind: 'region', size: 10 },
+    { coords: [-81.0950, 32.0628], text: 'allied siege trenches', kind: 'note', size: 10.5, anchor: 'end' }
+  ],
+  after: noSeams
+});
+</script>
+</body>
+</html>
