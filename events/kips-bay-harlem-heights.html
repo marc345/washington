@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kip's Bay &amp; Harlem Heights</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="kips-bay-harlem-heights">
+<main>
+  <header class="event-head">
+    <h1>Kip's Bay &amp; Harlem Heights</h1>
+    <p class="meta">September 15–16, 1776 · Manhattan Island</p>
+  </header>
+
+  <figure class="map">
+    <h2>September 15: the landing at Kip's Bay</h2>
+    <div class="map-canvas" id="map-landing"></div>
+    <figcaption>
+      After an hour's bombardment from five warships, about 4,000 British and Hessian troops rowed across from the mouth of Newtown Creek and landed at Kip's Bay. The militia in the shore trenches fled. The landing cut Manhattan in two, but Howe halted at Inclenberg, and Putnam's division escaped from the city up the west side.
+      <ol>
+        <li>Landing, late morning. Washington rides down from Harlem and fails to rally the retreating brigades near the Post Road.</li>
+        <li>Howe halts at Robert Murray's house on Inclenberg (Murray Hill) to wait for the second wave.</li>
+        <li>Putnam's men take back roads near the Hudson to Harlem Heights, guided by his aide Aaron Burr.</li>
+        <li>By evening the British hold a line across the island from Horn's Hook to Bloomingdale; a brigade enters the city.</li>
+      </ol>
+      <span class="note-approx">Road lines, Putnam's route and the British evening line are approximate.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>September 16: the fight at Harlem Heights</h2>
+    <div class="map-canvas" id="map-battle"></div>
+    <figcaption>
+      A dawn scouting party under Knowlton ran into British light infantry near the Jones farm and fell back across the Hollow Way, while a British bugler sounded a fox-hunting call. Washington answered with a feint from the front and a flanking party sent around the British right. Reinforced, the Americans drove the British back across a buckwheat field before Washington called them off in the early afternoon.
+      <ol>
+        <li>Dawn skirmish near the Jones farm; Knowlton's rangers withdraw.</li>
+        <li>Feint into the Hollow Way draws the British down from the heights.</li>
+        <li>Knowlton and Leitch strike the British flank too soon; both are mortally wounded.</li>
+        <li>Fighting in the buckwheat field; the British fall back as Hessian and Highland reinforcements arrive.</li>
+      </ol>
+      <span class="note-approx">The American lines are schematic; all positions are approximate.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+// New York harbor in 1776: shared period-shoreline corrections (data/geo/new-york-defenses-1776.json),
+// salt marsh, and water drawn without the modern county seams.
+const NY1776 = fetch('../data/geo/new-york-defenses-1776.json').then(r => r.json());
+// later dams, reservoirs and park lakes
+const NY_HIDE = ['Rye Lk', 'Deforest Lk', 'De Forest Lk', 'Lk Tappan', 'Tappan Lk', 'Congers Lk', 'Swartwont Lk', 'Splitrock Resv',
+  'Echo Lk', 'Pompton Lk', 'Lk Parsippany', 'Pines Lk', 'Pinecliff Lk', 'Duhernal Lk', 'Stickle Pond', 'Glen Wild Lk', 'Cranberry Pond',
+  'Farrington Lk', 'Hempstead Lk', 'Hillview Resv', 'Tarrytown Resv', 'Putnam Lk', 'Converse Lk', 'Rockwood Lk', 'Twin Lake No 1',
+  'Pocantico Lk', 'Lk Shoreline Sion Boundary', 'Sheldrake Lk', 'East Basin', 'The Lake', 'Woodcliff Lk', 'Schlegel Lk', 'North Hudson Lk',
+  'Tibbetts Lk', 'Green Brook Pond', 'Indian Lk', 'Duck Pond', 'Hartsdale Lk', 'Prospect Park Lk', 'Willow Lk', 'East Pond', 'West Pond'];
+// On narrow screens symbols and text grow relative to the map, so items can carry phone-only
+// tweaks: `ph: {...}` is merged in, and `phone: false` drops the item.
+const NY_PHONE = window.matchMedia('(max-width: 640px)').matches;
+function nyRender(sel, cfg) {
+  ['towns', 'labels', 'units', 'battles', 'ships', 'moves', 'callouts', 'roads'].forEach(k => {
+    if (!cfg[k]) return;
+    cfg[k] = cfg[k].filter(it => !(NY_PHONE && it.phone === false)).map(it => NY_PHONE && it.ph ? Object.assign({}, it, it.ph) : it);
+  });
+  const w = cfg.water || {};
+  // river centrelines drawn inside the big water polygons, and modern conduits
+  const rv = cfg.rivers || {};
+  if (!rv.only) cfg.rivers = Object.assign({}, rv, { hide: ['Hudson Riv', 'Hudson River Phl', 'East Riv', 'Harlem Riv', 'Jersey City Aqueduct', 'Sewer R O W'].concat(rv.hide || []) });
+  cfg.water = Object.assign({}, w, { hide: NY_HIDE.concat(w.hide || []), hideIn: [[-73.676, 40.964, -73.664, 40.978]].concat(w.hideIn || []) });
+  return NY1776.then(c => {
+    const own = cfg.corrections || {};
+    cfg.corrections = { water: c.water.concat(own.water || []), land: c.land.concat(own.land || []) };
+    const marsh = c.marsh.concat(cfg.marsh || []);
+    const user = cfg.after;
+    cfg.legendExtra = (cfg.noMarsh ? [] : [{ svg: '<svg viewBox="0 0 26 12"><rect x="1" y="1" width="24" height="10" fill="#d3dcc4"/><path d="M4,10 l1.5,-5 M7,10 v-6 M10,10 l-1.5,-5 M16,10 l1.5,-5 M19,10 v-6 M22,10 l-1.5,-5" stroke="#5e8466" stroke-width="1"/></svg>', text: 'Salt marsh' }]).concat(cfg.legendExtra || []);
+    cfg.after = ctx => {
+      const { root, defs, proj, fs } = ctx;
+      // all water shapes merged into one group (kept together so the marsh mask can reuse them)
+      const ws = root.selectAll('path.hm-water').nodes();
+      const wd = ws.map(n => n.getAttribute('d'));
+      if (ws.length) {
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        ws[0].parentNode.insertBefore(g, ws[0]);
+        const G = d3.select(g);
+        ws.forEach(n => G.append('path').attr('d', n.getAttribute('d')).attr('fill', '#bccfd0'));
+        ws.forEach(n => n.remove());
+      }
+      if (!cfg.noMarsh) {
+        const id = 'marsh' + Math.random().toString(36).slice(2, 7), s = fs(8);
+        const pat = defs.append('pattern').attr('id', id).attr('patternUnits', 'userSpaceOnUse').attr('width', s).attr('height', s);
+        pat.append('rect').attr('width', s).attr('height', s).attr('fill', '#d3dcc4').attr('fill-opacity', 0.75);
+        pat.append('path').attr('d', `M${s*.2},${s*.55} l${s*.08},-${s*.3} M${s*.32},${s*.55} v-${s*.36} M${s*.44},${s*.55} l-${s*.08},-${s*.3} M${s*.7},${s*.95} l${s*.08},-${s*.3} M${s*.82},${s*.95} v-${s*.36} M${s*.94},${s*.95} l-${s*.08},-${s*.3}`)
+          .attr('stroke', '#5e8466').attr('stroke-width', fs(0.7)).attr('fill', 'none');
+        const mg = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        // marsh only on land: masked by the land shape minus every water shape (period corrections included)
+        const mid = id + 'm';
+        const mask = defs.append('mask').attr('id', mid).attr('maskUnits', 'userSpaceOnUse');
+        mask.append('path').attr('d', root.select('path.hm-land').attr('d')).attr('fill', '#fff');
+        wd.forEach(d => mask.append('path').attr('d', d).attr('fill', '#000'));
+        mg.setAttribute('mask', `url(#${mid})`);
+        const rv = root.select('g.hm-rivers').node();
+        rv.parentNode.insertBefore(mg, rv);
+        const path = d3.geoPath(proj);
+        marsh.forEach(r => d3.select(mg).append('path').attr('d', path({ type: 'Polygon', coordinates: [r.concat([r[0]])] })).attr('fill', `url(#${id})`));
+      }
+      if (user) user(ctx);
+    };
+    return HMap.render(sel, cfg);
+  });
+}
+// passes through a ridge, drawn as )( marks: after-hook factory + legend entry
+const NY_PASS_LEGEND = { svg: '<svg viewBox="-13 -7 26 14"><path d="M-7,-6 Q-2,0 -7,6 M7,-6 Q2,0 7,6" fill="none" stroke="#5a3d1e" stroke-width="1.8"/></svg>', text: 'Pass through the heights' };
+function nyPasses(list) {
+  return ({ root, P, u }) => list.forEach(p => {
+    const c = P(p.coords);
+    root.append('path').attr('d', 'M-7,-7 Q-2,0 -7,7 M7,-7 Q2,0 7,7')
+      .attr('transform', `translate(${c[0]},${c[1]}) rotate(${p.angle || 0}) scale(${u})`)
+      .attr('fill', 'none').attr('stroke', '#fffaf0').attr('stroke-width', 4.2).attr('stroke-linecap', 'round');
+    root.append('path').attr('d', 'M-7,-7 Q-2,0 -7,7 M7,-7 Q2,0 7,7')
+      .attr('transform', `translate(${c[0]},${c[1]}) rotate(${p.angle || 0}) scale(${u})`)
+      .attr('fill', 'none').attr('stroke', '#5a3d1e').attr('stroke-width', 2).attr('stroke-linecap', 'round');
+  });
+}
+
+const POST_ROAD = [[-74.0000, 40.7150], [-73.9900, 40.7300], [-73.9830, 40.7420], [-73.9790, 40.7520], [-73.9720, 40.7650], [-73.9630, 40.7780], [-73.9550, 40.7900], [-73.9525, 40.7960], [-73.9460, 40.8030], [-73.9420, 40.8070]];
+const BLOOMINGDALE = [[-73.9900, 40.7400], [-73.9860, 40.7600], [-73.9830, 40.7750], [-73.9760, 40.7900], [-73.9690, 40.8000], [-73.9650, 40.8080]];
+const KINGSBRIDGE_RD = [[-73.9420, 40.8070], [-73.9450, 40.8180], [-73.9440, 40.8280], [-73.9405, 40.8380], [-73.9370, 40.8480]];
+const AM_LINES = [
+  { side: 'continental', coords: [[-73.9515, 40.8283], [-73.9480, 40.8270], [-73.9420, 40.8247], [-73.9372, 40.8228]] },
+  { side: 'continental', coords: [[-73.9488, 40.8328], [-73.9450, 40.8312], [-73.9395, 40.8292], [-73.9348, 40.8275]] }
+];
+
+nyRender('#map-landing', {
+  geo: 'kips-bay-harlem-heights-landing',
+  bbox: [-74.06, 40.695, -73.88, 40.845],
+  terrain: { contours: 10, exaggeration: 5 },
+  alt: 'Map of Manhattan showing the British landing at Kip\'s Bay and the American escape north to Harlem Heights',
+  roads: [
+    { name: 'Post Road', coords: POST_ROAD, labelAt: 0.62, ph: { name: null } },
+    { name: 'Bloomingdale Road', coords: BLOOMINGDALE, labelAt: 0.35, ph: { name: null } },
+    { coords: KINGSBRIDGE_RD }
+  ],
+  works: AM_LINES,
+  lines: [ { coords: [[-73.9440, 40.7770], [-73.9520, 40.7800], [-73.9610, 40.7840], [-73.9700, 40.7880], [-73.9760, 40.7900]], color: '#b8312f', width: 2.4, dash: '7 4', legend: 'British line, evening of Sept. 15' } ],
+  ships: [
+    { side: 'british', coords: [-73.9665, 40.7420], angle: 60 },
+    { side: 'british', coords: [-73.9645, 40.7465], angle: 60 },
+    { side: 'british', coords: [-73.9625, 40.7510], angle: 60 },
+    { side: 'british', coords: [-73.9930, 40.7880], angle: 60 },
+    { side: 'british', coords: [-73.9880, 40.7955], angle: 60 }
+  ],
+  moves: [
+    { side: 'british', kind: 'naval', coords: [[-73.9560, 40.7365], [-73.9640, 40.7420], [-73.9715, 40.7455]], width: 3 },
+    { side: 'british', kind: 'march', coords: [[-73.9730, 40.7465], [-73.9765, 40.7480], [-73.9790, 40.7492]] },
+    { side: 'british', kind: 'march', coords: [[-73.9790, 40.7530], [-73.9720, 40.7660], [-73.9630, 40.7760]], label: 'afternoon', labelAt: 0.5, ph: { label: '' } },
+    { side: 'british', kind: 'march', coords: [[-73.9830, 40.7440], [-73.9900, 40.7310], [-73.9980, 40.7170]], label: 'into the city', labelAt: 0.5, approx: true, ph: { label: '' } },
+    { side: 'militia', kind: 'retreat', coords: [[-73.9760, 40.7520], [-73.9700, 40.7640], [-73.9610, 40.7800], [-73.9545, 40.7980], [-73.9490, 40.8150]] },
+    { side: 'continental', kind: 'retreat', approx: true, coords: [[-74.0060, 40.7130], [-74.0040, 40.7280], [-73.9990, 40.7450], [-73.9930, 40.7600], [-73.9890, 40.7760], [-73.9810, 40.7900], [-73.9720, 40.8020], [-73.9600, 40.8160], [-73.9545, 40.8240]], label: 'Putnam', labelAt: 0.32 }
+  ],
+  units: [
+    { side: 'militia', coords: [-73.9768, 40.7440], angle: 60, w: 20 },
+    { side: 'british', coords: [-73.9805, 40.7505], label: 'Howe', labelPos: { dx: 17, dy: -5, anchor: 'start' } }
+  ],
+  battles: [ { coords: [-73.9740, 40.7460], label: "Kip's Bay", labelPos: { dx: 16, dy: 18, anchor: 'start' } } ],
+  towns: [
+    { name: 'New York', coords: [-74.0080, 40.7100], kind: 'town', label: { dx: 10, dy: -6 } },
+    { name: 'Inclenberg', coords: [-73.9800, 40.7495], kind: 'building', label: { dx: -9, dy: 14, anchor: 'end' }, ph: { name: '' } },
+    { name: 'Harlem', coords: [-73.9420, 40.8070], kind: 'village', label: { dx: 8, dy: 4 } },
+    { name: 'Bloomingdale', coords: [-73.9670, 40.8030], kind: 'village', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { name: "McGown's Pass", coords: [-73.9525, 40.7960], kind: 'building', label: { dx: 8, dy: 10 } },
+    { name: "Horn's Hook", coords: [-73.9430, 40.7760], kind: 'fort', side: 'continental', label: { dx: 10, dy: 6 } },
+    { name: 'Morris house (HQ)', coords: [-73.9387, 40.8345], kind: 'hq', label: { dx: 10, dy: 4 } },
+    { name: 'Paulus Hook', coords: [-74.0345, 40.7155], kind: 'fort', side: 'continental', label: { dx: -10, dy: 4, anchor: 'end' }, ph: { name: '' } }
+  ],
+  callouts: [
+    { coords: [-73.9645, 40.7560], n: 1 },
+    { coords: [-73.9860, 40.7565], n: 2 },
+    { coords: [-73.9990, 40.7640], n: 3 },
+    { coords: [-73.9400, 40.7830], n: 4 }
+  ],
+  labels: [
+    { coords: [-73.9600, 40.7330], text: 'East River', kind: 'water', angle: -62, size: 13 },
+    { coords: [-74.0160, 40.7550], text: 'Hudson River', kind: 'water', angle: -60 },
+    { coords: [-73.9310, 40.8250], text: 'Harlem River', kind: 'water', angle: -80, size: 12 },
+    { coords: [-73.9440, 40.8195], text: 'HARLEM HEIGHTS', kind: 'terrain', size: 11, angle: -22 , phone: false },
+    { coords: [-73.9255, 40.7965], text: "Montresor's\nIsland", kind: 'terrain', size: 10 , phone: false },
+    { coords: [-73.9720, 40.7270], text: 'MANHATTAN', kind: 'region', size: 12, angle: -60 , phone: false },
+    { coords: [-74.0400, 40.7700], text: 'NEW JERSEY', kind: 'region', size: 13 },
+    { coords: [-73.9120, 40.7400], text: 'LONG ISLAND', kind: 'region', size: 13 }
+  ]
+});
+
+nyRender('#map-battle', {
+  geo: 'kips-bay-harlem-heights-battle',
+  bbox: [-73.99, 40.79, -73.925, 40.84],
+  terrain: { contours: 5, exaggeration: 4 },
+  alt: 'Map of the Battle of Harlem Heights showing the Hollow Way, the American lines and the fighting around the buckwheat field',
+  roads: [ { coords: POST_ROAD }, { coords: BLOOMINGDALE }, { coords: KINGSBRIDGE_RD } ],
+  works: AM_LINES,
+  moves: [
+    { side: 'continental', kind: 'march', approx: true, coords: [[-73.9580, 40.8225], [-73.9625, 40.8150], [-73.9660, 40.8085], [-73.9680, 40.8040]], label: 'Knowlton, dawn', labelAt: 0.5, ph: { label: '' } },
+    { side: 'british', kind: 'attack', coords: [[-73.9705, 40.7985], [-73.9670, 40.8060], [-73.9625, 40.8125]], label: 'light infantry', labelAt: 0.45, ph: { label: '' } },
+    { side: 'continental', kind: 'attack', coords: [[-73.9520, 40.8195], [-73.9545, 40.8160]], label: 'feint', labelAt: 0.4 },
+    { side: 'continental', kind: 'attack', coords: [[-73.9490, 40.8200], [-73.9485, 40.8130], [-73.9520, 40.8075], [-73.9575, 40.8070]], label: 'Knowlton & Leitch', labelAt: 0.5, ph: { label: '' } },
+    { side: 'continental', kind: 'attack', coords: [[-73.9560, 40.8150], [-73.9585, 40.8100], [-73.9620, 40.8045]] },
+    { side: 'british', kind: 'retreat', coords: [[-73.9615, 40.8085], [-73.9650, 40.8030], [-73.9690, 40.7990]] },
+    { side: 'hessian', kind: 'march', approx: true, coords: [[-73.9545, 40.7940], [-73.9600, 40.7975], [-73.9655, 40.7995]], label: 'reinforcements', labelAt: 0.5 }
+  ],
+  battles: [
+    { coords: [-73.9680, 40.8025], label: 'dawn skirmish', labelPos: { dx: -12, dy: 18, anchor: 'end' }, ph: { label: '' } },
+    { coords: [-73.9615, 40.8085], label: 'Buckwheat field', labelPos: { dx: -14, dy: 4, anchor: 'end' }, ph: { label: '' } },
+    { coords: [-73.9560, 40.8080] }
+  ],
+  towns: [
+    { name: 'Morris house (HQ)', coords: [-73.9387, 40.8345], kind: 'hq', label: { dx: 10, dy: 4 } },
+    { name: 'Point of Rocks', coords: [-73.9520, 40.8120], kind: 'building', label: { dx: 9, dy: 4 } },
+    { name: 'Jones farm', coords: [-73.9690, 40.8010], kind: 'building', label: { dx: -9, dy: 14, anchor: 'end' } },
+    { name: 'Harlem', coords: [-73.9420, 40.8070], kind: 'village', label: { dx: 8, dy: 4 } },
+    { name: "McGown's Pass", coords: [-73.9525, 40.7960], kind: 'building', label: { dx: 9, dy: 4 } }
+  ],
+  callouts: [
+    { coords: [-73.9720, 40.8050], n: 1 },
+    { coords: [-73.9505, 40.8165], n: 2 },
+    { coords: [-73.9530, 40.8040], n: 3 },
+    { coords: [-73.9580, 40.8120], n: 4 }
+  ],
+  labels: [
+    { coords: [-73.9600, 40.8185], text: 'Hollow Way', kind: 'terrain', size: 12, angle: -30 },
+    { coords: [-73.9660, 40.8120], text: 'Claremont\nheights', kind: 'terrain', size: 11, dx: -24 , phone: false },
+    { coords: [-73.9480, 40.8265], text: 'HARLEM HEIGHTS', kind: 'terrain', size: 11.5, angle: -22, dy: 16 },
+    { coords: [-73.9370, 40.8030], text: 'Harlem Plains', kind: 'terrain', size: 11 },
+    { coords: [-73.9780, 40.8150], text: 'Hudson River', kind: 'water', angle: -58 },
+    { coords: [-73.9310, 40.8170], text: 'Harlem River', kind: 'water', angle: -85, size: 12 }
+  ]
+});
+</script>
+</body>
+</html>

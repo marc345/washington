@@ -1,0 +1,5 @@
+[
+  { "id": "long-island-positions", "bbox": [-74.06, 40.565, -73.84, 40.715], "detail": "local" },
+  { "id": "long-island-battle", "bbox": [-74.035, 40.615, -73.855, 40.71], "detail": "local" },
+  { "id": "long-island-retreat", "bbox": [-74.03, 40.67, -73.96, 40.725], "detail": "local" }
+]

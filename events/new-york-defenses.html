@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Defending New York</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="new-york-defenses">
+<main>
+  <header class="event-head">
+    <h1>Defending New York</h1>
+    <p class="meta">April – August 1776 · New York City, Brooklyn and the harbor</p>
+  </header>
+
+  <figure class="map">
+    <h2>The works around the city and Brooklyn, summer 1776</h2>
+    <div class="map-canvas" id="map-works"></div>
+    <figcaption>
+      Batteries ringed the tip of Manhattan, and barricades blocked the streets. Across the East River a line of forts sealed off Brooklyn Heights from Wallabout Bay to the Gowanus marshes, with outlying works on Governors Island and Red Hook.
+      <ol>
+        <li>Fort George and the Grand Battery at the tip of the island.</li>
+        <li>The Brooklyn line: Fort Putnam, the Oblong Redoubt, Fort Greene and Fort Box.</li>
+        <li>Fort Stirling on the Heights covered the city across the river.</li>
+      </ol>
+      <span class="note-approx">The 1776 shoreline follows the Ratzer maps and modern reconstructions; it and the positions of the smaller works are approximate.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>The British arrive, June 29 – August 18</h2>
+    <div class="map-canvas" id="map-fleet"></div>
+    <figcaption>
+      Howe's fleet gathered inside Sandy Hook and landed the army on Staten Island in early July. On July 12 the <i>Phoenix</i> and <i>Rose</i> ran past the American batteries up the Hudson, showing that the forts could not close the river. By mid-August reinforcements from Charleston and Europe had brought the British force to about 32,000.
+      <ol>
+        <li>June 29: the first ships anchor off Sandy Hook. Troops land at the Watering Place on Staten Island on July 2–3.</li>
+        <li>July 12: <i>Phoenix</i> and <i>Rose</i> run up to the Tappan Zee. In the city, several American guns burst while firing at them.</li>
+        <li>August 16: American fire ships attack the two warships and burn a tender. The ships come back down on August 18.</li>
+        <li>August 1 and 12: Clinton's troops from the south and the first Hessians arrive.</li>
+      </ol>
+      <span class="note-approx">Ship tracks and anchorages are schematic.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+// New York harbor in 1776: shared period-shoreline corrections (data/geo/new-york-defenses-1776.json),
+// salt marsh, and water drawn without the modern county seams.
+const NY1776 = fetch('../data/geo/new-york-defenses-1776.json').then(r => r.json());
+// later dams, reservoirs and park lakes
+const NY_HIDE = ['Rye Lk', 'Deforest Lk', 'De Forest Lk', 'Lk Tappan', 'Tappan Lk', 'Congers Lk', 'Swartwont Lk', 'Splitrock Resv',
+  'Echo Lk', 'Pompton Lk', 'Lk Parsippany', 'Pines Lk', 'Pinecliff Lk', 'Duhernal Lk', 'Stickle Pond', 'Glen Wild Lk', 'Cranberry Pond',
+  'Farrington Lk', 'Hempstead Lk', 'Hillview Resv', 'Tarrytown Resv', 'Putnam Lk', 'Converse Lk', 'Rockwood Lk', 'Twin Lake No 1',
+  'Pocantico Lk', 'Lk Shoreline Sion Boundary', 'Sheldrake Lk', 'East Basin', 'The Lake', 'Woodcliff Lk', 'Schlegel Lk', 'North Hudson Lk',
+  'Tibbetts Lk', 'Green Brook Pond', 'Indian Lk', 'Duck Pond', 'Hartsdale Lk', 'Prospect Park Lk', 'Willow Lk', 'East Pond', 'West Pond'];
+// On narrow screens symbols and text grow relative to the map, so items can carry phone-only
+// tweaks: `ph: {...}` is merged in, and `phone: false` drops the item.
+const NY_PHONE = window.matchMedia('(max-width: 640px)').matches;
+function nyRender(sel, cfg) {
+  ['towns', 'labels', 'units', 'battles', 'ships', 'moves', 'callouts', 'roads'].forEach(k => {
+    if (!cfg[k]) return;
+    cfg[k] = cfg[k].filter(it => !(NY_PHONE && it.phone === false)).map(it => NY_PHONE && it.ph ? Object.assign({}, it, it.ph) : it);
+  });
+  const w = cfg.water || {};
+  // river centrelines drawn inside the big water polygons, and modern conduits
+  const rv = cfg.rivers || {};
+  if (!rv.only) cfg.rivers = Object.assign({}, rv, { hide: ['Hudson Riv', 'Hudson River Phl', 'East Riv', 'Harlem Riv', 'Jersey City Aqueduct', 'Sewer R O W'].concat(rv.hide || []) });
+  cfg.water = Object.assign({}, w, { hide: NY_HIDE.concat(w.hide || []), hideIn: [[-73.676, 40.964, -73.664, 40.978]].concat(w.hideIn || []) });
+  return NY1776.then(c => {
+    const own = cfg.corrections || {};
+    cfg.corrections = { water: c.water.concat(own.water || []), land: c.land.concat(own.land || []) };
+    const marsh = c.marsh.concat(cfg.marsh || []);
+    const user = cfg.after;
+    cfg.legendExtra = (cfg.noMarsh ? [] : [{ svg: '<svg viewBox="0 0 26 12"><rect x="1" y="1" width="24" height="10" fill="#d3dcc4"/><path d="M4,10 l1.5,-5 M7,10 v-6 M10,10 l-1.5,-5 M16,10 l1.5,-5 M19,10 v-6 M22,10 l-1.5,-5" stroke="#5e8466" stroke-width="1"/></svg>', text: 'Salt marsh' }]).concat(cfg.legendExtra || []);
+    cfg.after = ctx => {
+      const { root, defs, proj, fs } = ctx;
+      // all water shapes merged into one group (kept together so the marsh mask can reuse them)
+      const ws = root.selectAll('path.hm-water').nodes();
+      const wd = ws.map(n => n.getAttribute('d'));
+      if (ws.length) {
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        ws[0].parentNode.insertBefore(g, ws[0]);
+        const G = d3.select(g);
+        ws.forEach(n => G.append('path').attr('d', n.getAttribute('d')).attr('fill', '#bccfd0'));
+        ws.forEach(n => n.remove());
+      }
+      if (!cfg.noMarsh) {
+        const id = 'marsh' + Math.random().toString(36).slice(2, 7), s = fs(8);
+        const pat = defs.append('pattern').attr('id', id).attr('patternUnits', 'userSpaceOnUse').attr('width', s).attr('height', s);
+        pat.append('rect').attr('width', s).attr('height', s).attr('fill', '#d3dcc4').attr('fill-opacity', 0.75);
+        pat.append('path').attr('d', `M${s*.2},${s*.55} l${s*.08},-${s*.3} M${s*.32},${s*.55} v-${s*.36} M${s*.44},${s*.55} l-${s*.08},-${s*.3} M${s*.7},${s*.95} l${s*.08},-${s*.3} M${s*.82},${s*.95} v-${s*.36} M${s*.94},${s*.95} l-${s*.08},-${s*.3}`)
+          .attr('stroke', '#5e8466').attr('stroke-width', fs(0.7)).attr('fill', 'none');
+        const mg = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        // marsh only on land: masked by the land shape minus every water shape (period corrections included)
+        const mid = id + 'm';
+        const mask = defs.append('mask').attr('id', mid).attr('maskUnits', 'userSpaceOnUse');
+        mask.append('path').attr('d', root.select('path.hm-land').attr('d')).attr('fill', '#fff');
+        wd.forEach(d => mask.append('path').attr('d', d).attr('fill', '#000'));
+        mg.setAttribute('mask', `url(#${mid})`);
+        const rv = root.select('g.hm-rivers').node();
+        rv.parentNode.insertBefore(mg, rv);
+        const path = d3.geoPath(proj);
+        marsh.forEach(r => d3.select(mg).append('path').attr('d', path({ type: 'Polygon', coordinates: [r.concat([r[0]])] })).attr('fill', `url(#${id})`));
+      }
+      if (user) user(ctx);
+    };
+    return HMap.render(sel, cfg);
+  });
+}
+// passes through a ridge, drawn as )( marks: after-hook factory + legend entry
+const NY_PASS_LEGEND = { svg: '<svg viewBox="-13 -7 26 14"><path d="M-7,-6 Q-2,0 -7,6 M7,-6 Q2,0 7,6" fill="none" stroke="#5a3d1e" stroke-width="1.8"/></svg>', text: 'Pass through the heights' };
+function nyPasses(list) {
+  return ({ root, P, u }) => list.forEach(p => {
+    const c = P(p.coords);
+    root.append('path').attr('d', 'M-7,-7 Q-2,0 -7,7 M7,-7 Q2,0 7,7')
+      .attr('transform', `translate(${c[0]},${c[1]}) rotate(${p.angle || 0}) scale(${u})`)
+      .attr('fill', 'none').attr('stroke', '#fffaf0').attr('stroke-width', 4.2).attr('stroke-linecap', 'round');
+    root.append('path').attr('d', 'M-7,-7 Q-2,0 -7,7 M7,-7 Q2,0 7,7')
+      .attr('transform', `translate(${c[0]},${c[1]}) rotate(${p.angle || 0}) scale(${u})`)
+      .attr('fill', 'none').attr('stroke', '#5a3d1e').attr('stroke-width', 2).attr('stroke-linecap', 'round');
+  });
+}
+
+nyRender('#map-works', {
+  geo: 'new-york-defenses-works',
+  bbox: [-74.06, 40.665, -73.955, 40.735],
+  terrain: { contours: 5, exaggeration: 5 },
+  alt: 'Map of lower Manhattan and Brooklyn in 1776 showing the American forts and batteries',
+  works: [
+    { side: 'continental', coords: [[-73.9702, 40.6990], [-73.9730, 40.6955], [-73.9757, 40.6914], [-73.9790, 40.6896], [-73.9822, 40.6886], [-73.9853, 40.6862], [-73.9886, 40.6836]] },
+    { side: 'continental', coords: [[-74.0158, 40.7046], [-74.0148, 40.7030], [-74.0128, 40.7022]] },
+    { side: 'continental', kind: 'redoubt', coords: [[-73.9990, 40.7195]] },
+    { side: 'continental', kind: 'redoubt', coords: [[-73.9935, 40.6893]] },
+    { side: 'continental', kind: 'redoubt', coords: [[-73.9790, 40.6896]] }
+  ],
+  towns: [
+    { name: 'New York', coords: [-74.0080, 40.7100], kind: 'town', label: { dx: 10, dy: 5 } },
+    { name: 'Brooklyn', coords: [-73.9880, 40.6930], kind: 'village', label: { dx: 0, dy: -9, anchor: 'middle' } },
+    { name: 'Fort George', coords: [-74.0138, 40.7040], kind: 'fort', side: 'continental', label: { dx: -12, dy: -6, anchor: 'end' } },
+    { name: 'Fort Stirling', coords: [-73.9966, 40.6980], kind: 'fort', side: 'continental', label: { dx: -10, dy: 4, anchor: 'end' } },
+    { name: 'Fort Putnam', coords: [-73.9757, 40.6914], kind: 'fort', side: 'continental', label: { dx: 10, dy: 4 }, ph: { label: { dx: 12, dy: -6 } } },
+    { name: 'Fort Greene', coords: [-73.9822, 40.6886], kind: 'fort', side: 'continental', label: { dx: 9, dy: 13 }, ph: { name: '' } },
+    { name: 'Fort Box', coords: [-73.9853, 40.6862], kind: 'fort', side: 'continental', label: { dx: 9, dy: 13 }, ph: { name: '' } },
+    { name: 'Cobble Hill', coords: [-73.9935, 40.6893], kind: 'building', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { name: 'Governors Island', coords: [-74.0160, 40.6905], kind: 'fort', side: 'continental', label: { dx: -12, dy: 4, anchor: 'end' } },
+    { name: 'Fort Defiance', coords: [-74.0148, 40.6768], kind: 'fort', side: 'continental', label: { dx: -12, dy: 4, anchor: 'end' } },
+    { name: 'Paulus Hook', coords: [-74.0345, 40.7155], kind: 'fort', side: 'continental', label: { dx: -12, dy: 4, anchor: 'end' } },
+    { name: "Bayard's Hill", coords: [-73.9990, 40.7195], kind: 'building', label: { dx: 10, dy: 4 } },
+    { name: 'Richmond Hill (HQ)', coords: [-74.0058, 40.7268], kind: 'hq', label: { dx: 10, dy: 4 } },
+    { name: 'Brooklyn ferry', coords: [-73.9946, 40.7034], kind: 'ferry', label: { dx: 8, dy: -6 } }
+  ],
+  lines: [
+    { coords: [[-74.0035, 40.6688], [-74.0005, 40.6715], [-73.9975, 40.6745], [-73.9955, 40.6772], [-73.9935, 40.6800], [-73.9910, 40.6828]], color: '#6f9298', width: 1.8 }
+  ],
+  callouts: [
+    { coords: [-74.0195, 40.7095], n: 1 },
+    { coords: [-73.9715, 40.6900], n: 2 },
+    { coords: [-74.0005, 40.7012], n: 3 }
+  ],
+  labels: [
+    { coords: [-73.9800, 40.7135], text: 'East River', kind: 'water', angle: -8 },
+    { coords: [-74.0245, 40.7250], text: 'Hudson (North) River', kind: 'water', angle: -78 },
+    { coords: [-74.0390, 40.6835], text: 'Upper Bay', kind: 'water' },
+    { coords: [-73.9680, 40.7020], text: 'Wallabout\nBay', kind: 'water', size: 12 },
+    { coords: [-73.9925, 40.6762], text: 'Gowanus\nmarsh', kind: 'terrain', size: 11.5 },
+    { coords: [-74.0108, 40.6740], text: 'Red Hook', kind: 'terrain', size: 11.5 },
+    { coords: [-74.0005, 40.7180], text: 'Collect\nPond', kind: 'water', size: 10.5, dx: -32, phone: false },
+    { coords: [-73.9930, 40.6985], text: 'Brooklyn\nHeights', kind: 'terrain', size: 11, dx: 30, dy: -24, phone: false },
+    { coords: [-74.0465, 40.7225], text: 'NEW JERSEY', kind: 'region', size: 13 },
+    { coords: [-73.9690, 40.6780], text: 'LONG ISLAND', kind: 'region', size: 13 }
+  ]
+});
+
+nyRender('#map-fleet', {
+  geo: 'new-york-defenses-fleet',
+  bbox: [-74.40, 40.41, -73.66, 41.10],
+  terrain: { contours: false, exaggeration: 3 },
+  alt: 'Map of New York harbor and the lower Hudson showing the British fleet at Staten Island and the run of the Phoenix and Rose up the river',
+  noMarsh: true,
+  moves: [
+    { side: 'british', kind: 'naval', coords: [[-73.990, 40.475], [-74.030, 40.540], [-74.060, 40.600], [-74.075, 40.632]], label: 'July 2–3', labelAt: 0.5 },
+    { side: 'british', kind: 'naval', coords: [[-74.045, 40.640], [-74.040, 40.690], [-74.025, 40.745], [-73.990, 40.810], [-73.950, 40.870], [-73.920, 40.950], [-73.905, 41.020], [-73.895, 41.062]], label: 'Phoenix & Rose up the Hudson, July 12', labelAt: 0.8, ph: { labelAt: 0.74, label: 'Phoenix & Rose, July 12' } },
+    { side: 'british', kind: 'naval', coords: [[-73.660, 40.450], [-73.800, 40.445], [-73.930, 40.455]], label: 'Aug 1 & 12', labelAt: 0.5 }
+  ],
+  ships: [
+    { side: 'british', coords: [-74.005, 40.462], angle: 0 },
+    { side: 'british', coords: [-74.050, 40.590], angle: 10 },
+    { side: 'british', coords: [-74.040, 40.612], angle: -20 },
+    { side: 'british', coords: [-73.892, 41.070], angle: 70 }
+  ],
+  units: [
+    { side: 'british', coords: [-74.130, 40.572], label: 'Howe\'s army', labelPos: { dx: 0, dy: 20, anchor: 'middle' } },
+    { side: 'continental', coords: [-73.945, 40.688], label: 'Greene', labelPos: { dx: 18, dy: 4 } },
+    { side: 'continental', coords: [-74.005, 40.735], label: 'Putnam', labelPos: { dx: 18, dy: 4 } },
+    { side: 'continental', coords: [-73.860, 40.898], label: 'Heath', labelPos: { dx: 18, dy: 4 } },
+    { side: 'militia', coords: [-74.260, 40.530], label: 'Flying Camp', labelPos: { dx: 0, dy: -12, anchor: 'middle' } }
+  ],
+  battles: [ { coords: [-73.905, 41.048], label: 'Aug 16', labelPos: { dx: -14, dy: 4, anchor: 'end' } } ],
+  towns: [
+    { place: 'new-york', label: { dx: -10, dy: 4, anchor: 'end' } },
+    { place: 'brooklyn', label: { dx: 0, dy: 16, anchor: 'middle' }, ph: { name: '' } },
+    { place: 'fort-washington', side: 'continental', label: { dx: 10, dy: 6 }, ph: { label: { dx: 4, dy: 24, anchor: 'middle' } } },
+    { place: 'fort-lee', side: 'continental', label: { dx: -10, dy: 4, anchor: 'end' } },
+    { place: 'kingsbridge', label: { dx: 8, dy: 4 }, ph: { name: '' } },
+    { place: 'perth-amboy', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { place: 'elizabethtown', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { place: 'newark', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { place: 'tarrytown', label: { dx: 8, dy: 4 }, phone: false },
+    { place: 'sandy-hook', label: { dx: 12, dy: 4 } },
+    { name: 'Watering Place', coords: [-74.077, 40.637], kind: 'village', label: { dx: -8, dy: -6, anchor: 'end' } },
+    { name: 'Horn\'s Hook', coords: [-73.943, 40.776], kind: 'fort', side: 'continental', label: { dx: 10, dy: 8 } }
+  ],
+  callouts: [
+    { coords: [-74.040, 40.470], n: 1 },
+    { coords: [-74.030, 40.800], n: 2 },
+    { coords: [-73.935, 41.070], n: 3 },
+    { coords: [-73.740, 40.480], n: 4 }
+  ],
+  labels: [
+    { coords: [-74.130, 40.495], text: 'Lower Bay', kind: 'water' },
+    { coords: [-74.030, 40.665], text: 'Upper Bay', kind: 'water', size: 12, dx: 30 },
+    { coords: [-74.045, 40.608], text: 'The Narrows', kind: 'water', size: 11, dx: 62 },
+    { coords: [-73.725, 40.880], text: 'Long Island Sound', kind: 'water', size: 12.5, angle: -28 },
+    { coords: [-73.870, 41.090], text: 'Tappan Zee', kind: 'water', size: 11.5, dx: 40, phone: false },
+    { coords: [-74.175, 40.612], text: 'STATEN\nISLAND', kind: 'region', size: 12 },
+    { coords: [-73.790, 40.650], text: 'LONG ISLAND', kind: 'region' },
+    { coords: [-74.270, 40.850], text: 'NEW JERSEY', kind: 'region' },
+    { coords: [-73.800, 41.000], text: 'WESTCHESTER', kind: 'region', size: 13 },
+    { coords: [-73.880, 40.540], text: 'Atlantic Ocean', kind: 'water' }
+  ]
+});
+</script>
+</body>
+</html>

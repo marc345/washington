@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fall of Fort Washington &amp; Fort Lee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="fort-washington">
+<main>
+  <header class="event-head">
+    <h1>Fall of Fort Washington &amp; Fort Lee</h1>
+    <p class="meta">November 16–20, 1776 · Northern Manhattan and the Palisades, New Jersey</p>
+  </header>
+
+  <figure class="map">
+    <h2>November 16: four attacks on Fort Washington</h2>
+    <div class="map-canvas" id="map-assault"></div>
+    <figcaption>
+      Howe attacked the fort's outer defenses from three sides at once. By early afternoon the defenders had been driven from the outworks into the crowded fort, and Magaw surrendered about 2,800 men. That morning Washington, Greene, Putnam and Mercer had crossed from Fort Lee to the Morris house, leaving shortly before the British arrived there.
+      <ol>
+        <li>Knyphausen's Hessians climb the steep wooded slopes north of the fort against Rawlings's riflemen.</li>
+        <li>Guards and light infantry under Mathew, followed by Cornwallis, row across the Harlem River and take Laurel Hill.</li>
+        <li>The 42nd Highlanders land lower down the Harlem and climb toward the rear of the southern lines.</li>
+        <li>Percy advances from the south against Cadwalader, who falls back to the fort.</li>
+      </ol>
+      <span class="note-approx">The outworks, lines and attack routes are approximate.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>November 20: Fort Lee abandoned</h2>
+    <div class="map-canvas" id="map-fort-lee"></div>
+    <figcaption>
+      Four days later Cornwallis crossed the Hudson by night with about 5,000 men, landed below the Palisades at Lower Closter Landing and climbed a steep path to the top. Warned in time, Washington led the Fort Lee garrison west to the bridge over the Hackensack, leaving behind tents, cannon and stores.<br>
+      <span class="note-approx">The crossing point, the British route south and the garrison's road west are approximate.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+// New York harbor in 1776: shared period-shoreline corrections (data/geo/new-york-defenses-1776.json),
+// salt marsh, and water drawn without the modern county seams.
+const NY1776 = fetch('../data/geo/new-york-defenses-1776.json').then(r => r.json());
+// later dams, reservoirs and park lakes
+const NY_HIDE = ['Rye Lk', 'Deforest Lk', 'De Forest Lk', 'Lk Tappan', 'Tappan Lk', 'Congers Lk', 'Swartwont Lk', 'Splitrock Resv',
+  'Echo Lk', 'Pompton Lk', 'Lk Parsippany', 'Pines Lk', 'Pinecliff Lk', 'Duhernal Lk', 'Stickle Pond', 'Glen Wild Lk', 'Cranberry Pond',
+  'Farrington Lk', 'Hempstead Lk', 'Hillview Resv', 'Tarrytown Resv', 'Putnam Lk', 'Converse Lk', 'Rockwood Lk', 'Twin Lake No 1',
+  'Pocantico Lk', 'Lk Shoreline Sion Boundary', 'Sheldrake Lk', 'East Basin', 'The Lake', 'Woodcliff Lk', 'Schlegel Lk', 'North Hudson Lk',
+  'Tibbetts Lk', 'Green Brook Pond', 'Indian Lk', 'Duck Pond', 'Hartsdale Lk', 'Prospect Park Lk', 'Willow Lk', 'East Pond', 'West Pond'];
+// On narrow screens symbols and text grow relative to the map, so items can carry phone-only
+// tweaks: `ph: {...}` is merged in, and `phone: false` drops the item.
+const NY_PHONE = window.matchMedia('(max-width: 640px)').matches;
+function nyRender(sel, cfg) {
+  ['towns', 'labels', 'units', 'battles', 'ships', 'moves', 'callouts', 'roads'].forEach(k => {
+    if (!cfg[k]) return;
+    cfg[k] = cfg[k].filter(it => !(NY_PHONE && it.phone === false)).map(it => NY_PHONE && it.ph ? Object.assign({}, it, it.ph) : it);
+  });
+  const w = cfg.water || {};
+  // river centrelines drawn inside the big water polygons, and modern conduits
+  const rv = cfg.rivers || {};
+  if (!rv.only) cfg.rivers = Object.assign({}, rv, { hide: ['Hudson Riv', 'Hudson River Phl', 'East Riv', 'Harlem Riv', 'Jersey City Aqueduct', 'Sewer R O W'].concat(rv.hide || []) });
+  cfg.water = Object.assign({}, w, { hide: NY_HIDE.concat(w.hide || []), hideIn: [[-73.676, 40.964, -73.664, 40.978]].concat(w.hideIn || []) });
+  return NY1776.then(c => {
+    const own = cfg.corrections || {};
+    cfg.corrections = { water: c.water.concat(own.water || []), land: c.land.concat(own.land || []) };
+    const marsh = c.marsh.concat(cfg.marsh || []);
+    const user = cfg.after;
+    cfg.legendExtra = (cfg.noMarsh ? [] : [{ svg: '<svg viewBox="0 0 26 12"><rect x="1" y="1" width="24" height="10" fill="#d3dcc4"/><path d="M4,10 l1.5,-5 M7,10 v-6 M10,10 l-1.5,-5 M16,10 l1.5,-5 M19,10 v-6 M22,10 l-1.5,-5" stroke="#5e8466" stroke-width="1"/></svg>', text: 'Salt marsh' }]).concat(cfg.legendExtra || []);
+    cfg.after = ctx => {
+      const { root, defs, proj, fs } = ctx;
+      // all water shapes merged into one group (kept together so the marsh mask can reuse them)
+      const ws = root.selectAll('path.hm-water').nodes();
+      const wd = ws.map(n => n.getAttribute('d'));
+      if (ws.length) {
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        ws[0].parentNode.insertBefore(g, ws[0]);
+        const G = d3.select(g);
+        ws.forEach(n => G.append('path').attr('d', n.getAttribute('d')).attr('fill', '#bccfd0'));
+        ws.forEach(n => n.remove());
+      }
+      if (!cfg.noMarsh) {
+        const id = 'marsh' + Math.random().toString(36).slice(2, 7), s = fs(8);
+        const pat = defs.append('pattern').attr('id', id).attr('patternUnits', 'userSpaceOnUse').attr('width', s).attr('height', s);
+        pat.append('rect').attr('width', s).attr('height', s).attr('fill', '#d3dcc4').attr('fill-opacity', 0.75);
+        pat.append('path').attr('d', `M${s*.2},${s*.55} l${s*.08},-${s*.3} M${s*.32},${s*.55} v-${s*.36} M${s*.44},${s*.55} l-${s*.08},-${s*.3} M${s*.7},${s*.95} l${s*.08},-${s*.3} M${s*.82},${s*.95} v-${s*.36} M${s*.94},${s*.95} l-${s*.08},-${s*.3}`)
+          .attr('stroke', '#5e8466').attr('stroke-width', fs(0.7)).attr('fill', 'none');
+        const mg = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        // marsh only on land: masked by the land shape minus every water shape (period corrections included)
+        const mid = id + 'm';
+        const mask = defs.append('mask').attr('id', mid).attr('maskUnits', 'userSpaceOnUse');
+        mask.append('path').attr('d', root.select('path.hm-land').attr('d')).attr('fill', '#fff');
+        wd.forEach(d => mask.append('path').attr('d', d).attr('fill', '#000'));
+        mg.setAttribute('mask', `url(#${mid})`);
+        const rv = root.select('g.hm-rivers').node();
+        rv.parentNode.insertBefore(mg, rv);
+        const path = d3.geoPath(proj);
+        marsh.forEach(r => d3.select(mg).append('path').attr('d', path({ type: 'Polygon', coordinates: [r.concat([r[0]])] })).attr('fill', `url(#${id})`));
+      }
+      if (user) user(ctx);
+    };
+    return HMap.render(sel, cfg);
+  });
+}
+// passes through a ridge, drawn as )( marks: after-hook factory + legend entry
+const NY_PASS_LEGEND = { svg: '<svg viewBox="-13 -7 26 14"><path d="M-7,-6 Q-2,0 -7,6 M7,-6 Q2,0 7,6" fill="none" stroke="#5a3d1e" stroke-width="1.8"/></svg>', text: 'Pass through the heights' };
+function nyPasses(list) {
+  return ({ root, P, u }) => list.forEach(p => {
+    const c = P(p.coords);
+    root.append('path').attr('d', 'M-7,-7 Q-2,0 -7,7 M7,-7 Q2,0 7,7')
+      .attr('transform', `translate(${c[0]},${c[1]}) rotate(${p.angle || 0}) scale(${u})`)
+      .attr('fill', 'none').attr('stroke', '#fffaf0').attr('stroke-width', 4.2).attr('stroke-linecap', 'round');
+    root.append('path').attr('d', 'M-7,-7 Q-2,0 -7,7 M7,-7 Q2,0 7,7')
+      .attr('transform', `translate(${c[0]},${c[1]}) rotate(${p.angle || 0}) scale(${u})`)
+      .attr('fill', 'none').attr('stroke', '#5a3d1e').attr('stroke-width', 2).attr('stroke-linecap', 'round');
+  });
+}
+
+nyRender('#map-assault', {
+  geo: 'fort-washington-assault',
+  bbox: [-73.99, 40.815, -73.895, 40.89],
+  terrain: { contours: 10, exaggeration: 3 },
+  alt: 'Map of northern Manhattan showing the four British and Hessian attacks on Fort Washington',
+  roads: [ { coords: [[-73.9440, 40.8170], [-73.9420, 40.8280], [-73.9395, 40.8380], [-73.9340, 40.8480], [-73.9300, 40.8560], [-73.9265, 40.8640], [-73.9200, 40.8720], [-73.9120, 40.8770], [-73.9080, 40.8790]], labelAt: 0.15 } ],
+  works: [
+    { side: 'continental', coords: [[-73.9515, 40.8283], [-73.9480, 40.8270], [-73.9420, 40.8247], [-73.9372, 40.8228]] },
+    { side: 'continental', coords: [[-73.9488, 40.8328], [-73.9450, 40.8312], [-73.9395, 40.8292], [-73.9348, 40.8275]] },
+    { side: 'continental', kind: 'redoubt', coords: [[-73.9468, 40.8503]] }
+  ],
+  lines: [ { coords: [[-73.9475, 40.8505], [-73.9530, 40.8512], [-73.9590, 40.8520]], color: '#3a2f24', width: 2, dash: '2 3', legend: 'Sunken river obstructions' } ],
+  moves: [
+    { side: 'hessian', kind: 'attack', coords: [[-73.9150, 40.8755], [-73.9220, 40.8695], [-73.9285, 40.8645]], label: 'Knyphausen', labelAt: 0.4 },
+    { side: 'hessian', kind: 'attack', coords: [[-73.9200, 40.8785], [-73.9270, 40.8730], [-73.9325, 40.8668]], label: 'Rall', labelAt: 0.35 },
+    { side: 'british', kind: 'attack', coords: [[-73.9110, 40.8610], [-73.9190, 40.8590], [-73.9245, 40.8580]], label: 'Mathew', labelAt: 0.35 },
+    { side: 'british', kind: 'attack', coords: [[-73.9200, 40.8380], [-73.9290, 40.8395], [-73.9355, 40.8405]], label: '42nd', labelAt: 0.35 },
+    { side: 'british', kind: 'attack', coords: [[-73.9500, 40.8160], [-73.9475, 40.8205], [-73.9455, 40.8245]], label: 'Percy', labelAt: 0.4 },
+    { side: 'continental', kind: 'retreat', coords: [[-73.9325, 40.8605], [-73.9345, 40.8570], [-73.9365, 40.8530]] },
+    { side: 'continental', kind: 'retreat', coords: [[-73.9440, 40.8305], [-73.9425, 40.8400], [-73.9395, 40.8480]] }
+  ],
+  units: [
+    { side: 'continental', coords: [-73.9315, 40.8625], angle: -60, label: 'Rawlings', labelPos: { dx: -16, dy: 4, anchor: 'end' } },
+    { side: 'militia', coords: [-73.9265, 40.8565], angle: -60, w: 20, label: 'Baxter', labelPos: { dx: 14, dy: 14 } },
+    { side: 'continental', coords: [-73.9480, 40.8255], angle: -22, label: 'Cadwalader', labelPos: { dx: -18, dy: 4, anchor: 'end' } }
+  ],
+  ships: [ { side: 'british', coords: [-73.9555, 40.8330], angle: 60, label: 'Pearl', labelPos: { dx: -16, dy: 4, anchor: 'end' } } ],
+  towns: [
+    { place: 'fort-washington', side: 'continental', label: { dx: 12, dy: 6 } },
+    { place: 'fort-lee', side: 'continental', label: { dx: -12, dy: 4, anchor: 'end' } },
+    { name: 'Morris house', coords: [-73.9387, 40.8345], kind: 'building', label: { dx: 9, dy: 4 } },
+    { name: "Jeffrey's Hook", coords: [-73.9468, 40.8503], kind: 'building', label: { dx: -10, dy: 18, anchor: 'end' }, ph: { name: '' } },
+    { name: 'Laurel Hill', coords: [-73.9250, 40.8580], kind: 'building', label: { dx: -9, dy: -7, anchor: 'end' } },
+    { name: 'Cock Hill', coords: [-73.9255, 40.8735], kind: 'building', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { name: "King's Bridge", coords: [-73.9080, 40.8786], kind: 'building', label: { dx: 9, dy: -5 } }
+  ],
+  callouts: [
+    { coords: [-73.9160, 40.8690], n: 1 },
+    { coords: [-73.9105, 40.8565], n: 2 },
+    { coords: [-73.9185, 40.8340], n: 3 },
+    { coords: [-73.9425, 40.8175], n: 4 }
+  ],
+  labels: [
+    { coords: [-73.9560, 40.8640], text: 'Hudson River', kind: 'water', angle: -60 },
+    { coords: [-73.9325, 40.8195], text: 'Harlem River', kind: 'water', angle: -84, size: 11 },
+    { coords: [-73.9150, 40.8825], text: 'Spuyten Duyvil', kind: 'water', size: 10.5, angle: -15 },
+    { coords: [-73.9755, 40.8700], text: 'THE PALISADES', kind: 'terrain', size: 11, angle: -62 },
+    { coords: [-73.9800, 40.8250], text: 'NEW JERSEY', kind: 'region', size: 12 },
+    { coords: [-73.9050, 40.8450], text: 'WESTCHESTER', kind: 'region', size: 11 }
+  ]
+});
+
+nyRender('#map-fort-lee', {
+  geo: 'fort-washington-fort-lee',
+  bbox: [-74.10, 40.80, -73.85, 41.00],
+  terrain: { contours: false, exaggeration: 4 },
+  noMarsh: true,
+  alt: 'Map of the Hudson and Hackensack rivers showing Cornwallis\'s crossing to the Palisades and the retreat of the Fort Lee garrison',
+  roads: [ { coords: [[-73.9640, 40.8510], [-73.9800, 40.8650], [-73.9750, 40.8900], [-74.0000, 40.9050], [-74.0290, 40.9130], [-74.0420, 40.8950], [-74.0430, 40.8870]] } ],
+  moves: [
+    { side: 'british', kind: 'naval', coords: [[-73.8990, 40.9330], [-73.9100, 40.9390], [-73.9195, 40.9435]], label: 'Nov 19–20', labelAt: 0.5 },
+    { side: 'british', kind: 'march', approx: true, coords: [[-73.9240, 40.9445], [-73.9420, 40.9390], [-73.9600, 40.9230], [-73.9690, 40.8980], [-73.9690, 40.8720], [-73.9650, 40.8560]], label: 'Cornwallis', labelAt: 0.4 },
+    { side: 'continental', kind: 'retreat', coords: [[-73.9660, 40.8525], [-73.9800, 40.8655], [-73.9770, 40.8880], [-74.0000, 40.9045], [-74.0270, 40.9125]], label: 'garrison', labelAt: 0.55 },
+    { side: 'continental', kind: 'retreat', approx: true, coords: [[-74.0300, 40.9110], [-74.0410, 40.8960], [-74.0430, 40.8890]] }
+  ],
+  towns: [
+    { place: 'fort-lee', side: 'continental', label: { dx: -12, dy: 4, anchor: 'end' } },
+    { place: 'fort-washington', side: 'british', label: { dx: 12, dy: 6 } },
+    { place: 'hackensack', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { place: 'kingsbridge', label: { dx: 9, dy: 4 } },
+    { name: 'New Bridge', coords: [-74.0290, 40.9130], kind: 'building', label: { dx: -9, dy: -6, anchor: 'end' } },
+    { name: 'Liberty Pole', coords: [-73.9770, 40.8880], kind: 'village', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { name: 'Lower Closter Landing', coords: [-73.9215, 40.9440], kind: 'ferry', label: { dx: 9, dy: -8 } },
+    { name: 'Closter', coords: [-73.9620, 40.9730], kind: 'village', label: { dx: 8, dy: 4 } },
+    { name: 'Philipse Manor (Yonkers)', coords: [-73.8990, 40.9330], kind: 'village', label: { dx: 8, dy: 14 } }
+  ],
+  labels: [
+    { coords: [-73.9330, 40.9000], text: 'Hudson River', kind: 'water', angle: -62 },
+    { coords: [-74.0520, 40.8380], text: 'Hackensack River', kind: 'water', angle: -80, size: 12 },
+    { coords: [-73.9330, 40.9780], text: 'THE PALISADES', kind: 'terrain', size: 11, angle: -62 },
+    { coords: [-74.0700, 40.9600], text: 'NEW JERSEY', kind: 'region' },
+    { coords: [-73.8800, 40.8250], text: 'WESTCHESTER', kind: 'region', size: 11 },
+    { coords: [-73.9450, 40.8250], text: 'MANHATTAN', kind: 'region', size: 11, angle: -62 }
+  ]
+});
+</script>
+</body>
+</html>
