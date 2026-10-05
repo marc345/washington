@@ -92,7 +92,8 @@ figure.map .note-approx { color: var(--ink-soft); font-style: italic; font-size:
 .hm-land { fill: var(--land); stroke: #8c7a5c; stroke-width: .6; }
 .hm-land-fix { stroke: none; }
 /* no outline: TIGER water is split along county lines, which would show as seams */
-.hm-water { fill: var(--sea); stroke: none; }
+.hm-water { fill: var(--sea); stroke: var(--sea); stroke-width: 1; }  /* the edge hides hairline seams between abutting pieces */
+.hm-coast { fill: none; stroke: var(--sea-edge); }
 .hm-rivers path { fill: none; stroke: var(--river); stroke-linecap: round; stroke-linejoin: round; }
 .hm-contour { fill: none; stroke: var(--contour); stroke-opacity: .55; }
 .hm-contour-index { stroke-opacity: .85; }

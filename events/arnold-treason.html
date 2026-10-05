@@ -64,7 +64,6 @@
 </main>
 
 <script>
-const noSeams = ({ root }) => root.selectAll('path.hm-water').style('stroke', 'none');
 
 HMap.render('#map-ride', {
   geo: 'arnold-treason-ride',
@@ -85,7 +84,8 @@ HMap.render('#map-ride', {
     { place: 'new-haven', label: { dx: 8, dy: 10 } }
   ],
   moves: [
-    { side: 'continental', kind: 'march', approx: true, label: 'Washington, Sept 18–25', labelAt: 0.45, coords: [[-73.940, 41.270], [-73.900, 41.470], [-73.700, 41.560], [-73.480, 41.650], [-73.300, 41.720], [-73.190, 41.750], [-72.840, 41.722], [-72.690, 41.760]] },
+    { side: 'continental', kind: 'march', approx: true, label: 'Washington, Sept 18–25', labelAt: 0.72, coords: [[-73.940, 41.270], [-73.900, 41.470], [-73.700, 41.560], [-73.480, 41.650], [-73.300, 41.720], [-73.190, 41.750]] },
+    { side: 'continental', kind: 'march', coords: [[-73.190, 41.750], [-72.840, 41.722], [-72.690, 41.760]] },
     { side: 'french', kind: 'march', coords: [[-72.450, 41.620], [-72.560, 41.700], [-72.660, 41.755]] },
     { side: 'continental', kind: 'march', approx: true, label: 'messenger misses him', labelAt: 0.5, coords: [[-73.700, 41.140], [-73.560, 41.280], [-73.460, 41.385]] }
   ],
@@ -94,14 +94,13 @@ HMap.render('#map-ride', {
     { coords: [-74.040, 41.570], n: 2 }
   ],
   labels: [
-    { coords: [-73.300, 41.180], text: 'Long Island Sound', kind: 'water' },
+    { coords: [-72.950, 41.080], text: 'Long Island Sound', kind: 'water' },
     { coords: [-74.010, 41.700], text: 'Hudson R.', kind: 'water', size: 12, angle: -85 },
     { coords: [-72.560, 41.500], text: 'Connecticut R.', kind: 'water', size: 11, angle: -70 },
     { coords: [-73.150, 41.450], text: 'CONNECTICUT', kind: 'region' },
     { coords: [-73.950, 41.900], text: 'NEW YORK', kind: 'region' },
     { coords: [-72.640, 41.880], text: 'Rochambeau and Ternay\nfrom Newport', kind: 'note', size: 10.5 }
-  ],
-  after: noSeams
+  ]
 });
 
 HMap.render('#map-plot', {
@@ -121,17 +120,16 @@ HMap.render('#map-plot', {
     { name: 'Crompond', coords: [-73.8400, 41.2940], kind: 'village', label: { dx: 8, dy: -4 } },
     { name: 'Pines Bridge', coords: [-73.7980, 41.2290], kind: 'ferry', label: { dx: 9, dy: 4 } },
     { name: 'Tarrytown', coords: [-73.8590, 41.0760], kind: 'village', label: { dx: 8, dy: 12 } },
-    { name: 'North Castle', coords: [-73.7050, 41.1300], kind: 'village', label: { dx: -8, dy: 14, anchor: 'end' } }
+    { name: 'North Castle', coords: [-73.7050, 41.1300], kind: 'village', label: { dx: 0, dy: -12, anchor: 'middle' } }
   ],
   lines: [ { coords: [[-73.9700, 41.2450], [-73.9620, 41.2490]], color: '#3a2f24', width: 1.6, dash: '4 3', legend: 'King\'s Ferry' } ],
   ships: [ { side: 'british', coords: [-73.9060, 41.1700], angle: 0, label: 'Vulture', labelPos: { dx: 0, dy: 24, anchor: 'middle' } } ],
   moves: [
     { side: 'british', kind: 'march', approx: true, coords: [[-73.9500, 41.1760], [-73.9700, 41.1950], [-73.9860, 41.2070]] },
     { side: 'british', kind: 'march', approx: true, label: 'André, Sept 22–23', labelAt: 0.68, coords: [[-73.9860, 41.2100], [-73.9720, 41.2390], [-73.9600, 41.2500], [-73.9200, 41.2700], [-73.8450, 41.2900], [-73.8000, 41.2350], [-73.8100, 41.1800], [-73.8400, 41.1200], [-73.8580, 41.0880]] },
-    { side: 'continental', kind: 'march', approx: true, label: 'to Jameson', labelAt: 0.5, coords: [[-73.8520, 41.0880], [-73.7800, 41.1100], [-73.7120, 41.1280]] },
-    { side: 'continental', kind: 'naval', label: 'Arnold\'s flight, Sept 25', labelAt: 0.35, coords: [[-73.9560, 41.3650], [-73.9620, 41.3300], [-73.9420, 41.2900], [-73.9450, 41.2600], [-73.9300, 41.2200], [-73.9080, 41.1760]] }
+    { side: 'continental', kind: 'march', approx: true, label: 'to Jameson', labelAt: 0.38, coords: [[-73.8520, 41.0880], [-73.7800, 41.1100], [-73.7120, 41.1280]] },
+    { side: 'british', kind: 'naval', label: 'Arnold\'s flight, Sept 25', labelAt: 0.35, ph: { label: 'Arnold, Sept 25', labelAt: 0.22 }, coords: [[-73.9560, 41.3650], [-73.9620, 41.3300], [-73.9420, 41.2900], [-73.9450, 41.2600], [-73.9300, 41.2200], [-73.9080, 41.1760]] }
   ],
-  battles: [ { coords: [-73.8585, 41.0862], label: 'André taken', labelPos: { dx: -14, dy: 4, anchor: 'end' } } ],
   callouts: [
     { coords: [-73.9680, 41.1750], n: 1 },
     { coords: [-73.8700, 41.1720], n: 2 },
@@ -143,10 +141,10 @@ HMap.render('#map-plot', {
     { coords: [-73.8850, 41.1830], text: 'Teller\'s Point', kind: 'note', size: 10.5, anchor: 'start' },
     { coords: [-73.9000, 41.1300], text: 'Tappan Zee', kind: 'water', size: 12, angle: -80 },
     { coords: [-73.9450, 41.2050], text: 'Haverstraw\nBay', kind: 'water', size: 12 },
-    { coords: [-73.7700, 41.1700], text: 'NEUTRAL GROUND', kind: 'region', size: 11 },
+    { coords: [-73.7300, 41.1950], text: 'NEUTRAL\nGROUND', kind: 'region', size: 11 },
+    { coords: [-73.8640, 41.0880], text: 'André captured ×', kind: 'note', size: 12, anchor: 'end' },
     { coords: [-73.8350, 41.2150], text: 'Croton R.', kind: 'water', size: 11, angle: -20 }
-  ],
-  after: noSeams
+  ]
 });
 
 HMap.render('#map-westpoint', {
@@ -155,18 +153,18 @@ HMap.render('#map-westpoint', {
   alt: 'Map of West Point, the Great Chain to Constitution Island, and the Robinson House across the river',
   water: { hideUnnamed: true, hide: ['Dassori Pond', 'Crystal Lk', 'Cragston Lk', 'Cranberry Lk'] },
   terrain: { contours: 10, exaggeration: 2 },
-  lines: [ { coords: [[-73.9512, 41.3938], [-73.9447, 41.3962]], color: '#1b3466', width: 3.2, dash: '2 1.5', legend: 'The Great Chain' } ],
+  lines: [ { coords: [[-73.9508, 41.3955], [-73.9462, 41.3996]], color: '#1b3466', width: 3.2, dash: '2 1.5', legend: 'The Great Chain' } ],
   towns: [
     { name: 'Fort Arnold', coords: [-73.9550, 41.3930], kind: 'fort', side: 'continental', label: { dx: -12, dy: -8, anchor: 'end' } },
     { name: 'Fort Putnam', coords: [-73.9622, 41.3878], kind: 'fort', side: 'continental', label: { dx: -12, dy: 4, anchor: 'end' } },
     { name: 'Fort Webb', coords: [-73.9605, 41.3830], kind: 'fort', side: 'continental', label: { dx: -12, dy: 6, anchor: 'end' } },
     { name: 'Redoubt No. 4', coords: [-73.9690, 41.3850], kind: 'fort', side: 'continental', label: { dx: -12, dy: 4, anchor: 'end' } },
-    { name: 'Marine Battery', coords: [-73.9460, 41.3990], kind: 'fort', side: 'continental', label: { dx: 12, dy: -6, anchor: 'start' } },
+    { name: 'Marine Battery', coords: [-73.9458, 41.4000], kind: 'fort', side: 'continental', label: { dx: 12, dy: -6, anchor: 'start' } },
     { name: 'Robinson House', coords: [-73.9498, 41.3649], kind: 'hq', label: { dx: 10, dy: 4 } },
     { name: 'Beverley dock', coords: [-73.9555, 41.3662], kind: 'ferry', label: { dx: -9, dy: 4, anchor: 'end' } }
   ],
   moves: [
-    { side: 'continental', kind: 'naval', label: 'Arnold\'s barge', labelAt: 0.65, coords: [[-73.9505, 41.3655], [-73.9540, 41.3662], [-73.9585, 41.3600], [-73.9610, 41.3560]] },
+    { side: 'british', kind: 'naval', label: 'Arnold\'s barge', labelAt: 0.65, coords: [[-73.9505, 41.3655], [-73.9540, 41.3662], [-73.9585, 41.3600], [-73.9610, 41.3560]] },
     { side: 'continental', kind: 'march', approx: true, label: 'Washington, from Fishkill', labelAt: 0.45, coords: [[-73.9280, 41.4080], [-73.9330, 41.3900], [-73.9420, 41.3750], [-73.9485, 41.3665]] },
     { side: 'continental', kind: 'naval', coords: [[-73.9545, 41.3680], [-73.9530, 41.3780], [-73.9535, 41.3895]] }
   ],
@@ -178,8 +176,7 @@ HMap.render('#map-westpoint', {
     { coords: [-73.9600, 41.3960], text: 'WEST POINT', kind: 'region', size: 11.5, dx: -10, dy: 0 },
     { coords: [-73.9475, 41.4045], text: 'Constitution\nIsland', kind: 'region', size: 11 },
     { coords: [-73.9590, 41.3720], text: 'Hudson River', kind: 'water', size: 13, angle: -75 }
-  ],
-  after: noSeams
+  ]
 });
 </script>
 </body>

@@ -28,7 +28,7 @@
       <ol>
         <li>About 10 p.m.: the troops embark at the foot of Boston Common and land at Lechmere Point, then wade the marshes to the road.</li>
         <li>Revere is rowed to Charlestown and rides by way of Medford. Dawes leaves over Boston Neck.</li>
-        <li>About 1 a.m.: Revere and Dawes reach Lexington and ride on toward Concord. Revere is caught by a patrol in Lincoln, but Dr. Samuel Prescott gets through.</li>
+        <li>About midnight: Revere reaches Lexington, and Dawes about half an hour later. They ride on toward Concord about 1 a.m. Revere is caught by a patrol in Lincoln, but Dr. Samuel Prescott gets through.</li>
         <li>About 5 a.m.: the advance guard meets Parker's militia company on Lexington Green. Eight militiamen are killed.</li>
         <li>About 8 a.m.: Smith's column enters Concord.</li>
       </ol>
@@ -56,7 +56,7 @@
     <h2>June 17: Breed's Hill and Bunker Hill</h2>
     <div class="map-canvas" id="map-bunker"></div>
     <figcaption>
-      On the night of June 16–17 Col. William Prescott's men built a redoubt on Breed's Hill, closer to Boston than the Bunker Hill they had been sent to fortify. Next afternoon Howe landed at Moulton's Point and attacked. Two assaults were thrown back. The third, after the defenders ran short of powder, took the redoubt.
+      On the night of June 16–17 Col. William Prescott's men built a redoubt on Breed's Hill, closer to Boston than the Bunker Hill they had been sent to fortify. Next afternoon Howe landed at Moulton's Point and attacked. Two assaults were thrown back, and the third took the redoubt after the defenders ran short of powder.
       <ol>
         <li>Light infantry attack along the Mystic beach and are cut down at Stark's stone wall.</li>
         <li>Grenadiers attack the rail fence held by Knowlton and the New Hampshire men.</li>
@@ -70,15 +70,7 @@
 
 <script>
 (function () {
-  // Period (1795) shoreline: water from data/geo/<map>.shore.json, drawn without seams, plus the period coastline as one edge line.
-  const shore = id => fetch('../data/geo/' + id + '.shore.json').then(r => r.json());
-  const periodShore = c => ({ root, proj, d3 }) => {
-    root.selectAll('path.hm-water').filter((d, i) => i > 0).style('stroke', 'var(--sea)').style('stroke-width', 1.3);
-    root.insert('path', '.hm-rivers').attr('d', d3.geoPath(proj)({ type: 'MultiLineString', coordinates: c.coast }))
-      .attr('fill', 'none').style('stroke', 'var(--sea-edge)').style('stroke-width', 0.6);
-  };
-  // label offsets scaled like the library's symbols, so they clear symbols at phone width too
-  const U = sel => Math.pow(Math.max(1, 1000 / (document.querySelector(sel).clientWidth || 1000)), 0.82);
+  // Period (1795) shoreline: corrections from data/geo/<map>.shore.json (Leventhal Center survey), coast drawn by the library.
   const RIVERS = { hide: ['Charles Riv', 'Mystic Riv', 'Malden Riv', 'Chelsea Riv', 'Muddy Riv', 'Mill Crk'] };
   // the Charles River below Watertown and the Mystic lakes are natural; Lake Cochituate and the Cambridge
   // and Hobbs Brook reservoirs are later impoundments
@@ -97,23 +89,22 @@
     { coords: [[-71.3488, 42.4605], [-71.3500, 42.4650], [-71.3506, 42.4690]] }
   ];
 
-  const u1 = U('#map-march');
-  shore('lexington-concord-bunker-hill-road').then(corrections => HMap.render('#map-march', {
+  HMap.render('#map-march', {
     geo: 'lexington-concord-bunker-hill-road',
     bbox: ROAD_BBOX,
     alt: 'Map from Boston to Concord showing the British march out on the night of April 18–19, 1775, and the routes of the riders who raised the alarm',
-    corrections, after: periodShore(corrections), rivers: RIVERS, water: ROAD_WATER,
+    corrections: 'data/geo/lexington-concord-bunker-hill-road.shore.json', rivers: RIVERS, water: ROAD_WATER,
     roads: roadsCommon,
     towns: [
-      { place: 'boston', coords: [-71.0590, 42.3595], label: { dx: 0, dy: 17 * u1, anchor: 'middle' } },
-      { place: 'cambridge', label: { dx: -7 * u1, dy: 14 * u1, anchor: 'end' } },
-      { place: 'charlestown', coords: [-71.0620, 42.3740], label: { dx: 0, dy: -9 * u1, anchor: 'middle' } },
-      { place: 'lexington', coords: [-71.2307, 42.4493], label: { dx: 0, dy: -15 * u1, anchor: 'middle' } },
-      { place: 'concord', coords: [-71.3488, 42.4605], label: { dx: 7 * u1, dy: 15 * u1 } },
-      { name: 'Menotomy', coords: [-71.1560, 42.4150], kind: 'village', label: { dx: 7 * u1, dy: 13 * u1 } },
-      { name: 'Medford', coords: [-71.1070, 42.4185], kind: 'village', label: { dx: 7 * u1, dy: -3 * u1 } },
-      { name: 'Roxbury', coords: [-71.0910, 42.3300], kind: 'village', label: { dx: 0, dy: 15 * u1, anchor: 'middle' } },
-      { name: 'Lincoln', coords: [-71.3040, 42.4260], kind: 'village', label: { dx: 0, dy: 15 * u1, anchor: 'middle' } }
+      { place: 'boston', coords: [-71.0590, 42.3595], label: { dx: 0, dy: 17, anchor: 'middle' } },
+      { place: 'cambridge', label: { dx: -7, dy: 14, anchor: 'end' } },
+      { place: 'charlestown', coords: [-71.0620, 42.3740], label: { dx: 0, dy: -9, anchor: 'middle' } },
+      { place: 'lexington', coords: [-71.2307, 42.4493], label: { dx: 0, dy: -15, anchor: 'middle' } },
+      { place: 'concord', coords: [-71.3488, 42.4605], label: { dx: 7, dy: 15 } },
+      { name: 'Menotomy', coords: [-71.1560, 42.4150], kind: 'village', label: { dx: 7, dy: 13 } },
+      { name: 'Medford', coords: [-71.1070, 42.4185], kind: 'village', label: { dx: 7, dy: -3 } },
+      { name: 'Roxbury', coords: [-71.0910, 42.3300], kind: 'village', label: { dx: 0, dy: 15, anchor: 'middle' } },
+      { name: 'Lincoln', coords: [-71.3040, 42.4260], kind: 'village', label: { dx: 0, dy: 15, anchor: 'middle' } }
     ],
     moves: [
       { side: 'british', kind: 'naval', coords: [[-71.0700, 42.3545], [-71.0760, 42.3610], [-71.0800, 42.3685]] },
@@ -127,43 +118,43 @@
       { coords: [-71.2307, 42.4493], label: '' }
     ],
     labels: [
-      { coords: [-71.2758, 42.4425], text: '× Revere captured', kind: 'note', size: 11, anchor: 'middle', dy: 0 },
+      { coords: [-71.2785, 42.4495], text: '×', kind: 'note', size: 17, anchor: 'middle', dy: 5 },
+      { coords: [-71.2785, 42.4495], text: 'Revere captured', kind: 'note', size: 11, anchor: 'middle', dy: 19 },
       { coords: [-71.2250, 42.3550], text: 'Charles River', kind: 'water', size: 12, angle: -5 },
-      { coords: [-71.3640, 42.4230], text: 'Sudbury R.', kind: 'water', size: 11, angle: -80 }
+      { coords: [-71.3520, 42.4100], text: 'Sudbury R.', kind: 'water', size: 11, angle: -80 }
     ],
     callouts: [
       { coords: [-71.0890, 42.3610], n: 1 },
       { coords: [-71.0900, 42.3975], n: 2 },
       { coords: [-71.2280, 42.4700], n: 3 },
-      { coords: [-71.2307, 42.4330], n: 4 },
+      { coords: [-71.2180, 42.4330], n: 4 },
       { coords: [-71.3488, 42.4430], n: 5 }
     ]
-  }));
+  });
 
-  const u2 = U('#map-retreat');
-  shore('lexington-concord-bunker-hill-road').then(corrections => HMap.render('#map-retreat', {
+  HMap.render('#map-retreat', {
     geo: 'lexington-concord-bunker-hill-road',
     bbox: ROAD_BBOX,
     alt: 'Map of the British retreat from Concord on April 19, 1775, with Percy\'s relief march and the main fighting sites along the road to Charlestown',
-    corrections, after: periodShore(corrections), rivers: RIVERS, water: ROAD_WATER,
+    corrections: 'data/geo/lexington-concord-bunker-hill-road.shore.json', rivers: RIVERS, water: ROAD_WATER,
     roads: roadsCommon,
     towns: [
-      { place: 'boston', coords: [-71.0590, 42.3595], label: { dx: 0, dy: 17 * u2, anchor: 'middle' } },
-      { place: 'cambridge', label: { dx: -7 * u2, dy: 14 * u2, anchor: 'end' } },
-      { place: 'charlestown', coords: [-71.0620, 42.3740], label: { dx: 0, dy: -9 * u2, anchor: 'middle' } },
-      { place: 'lexington', coords: [-71.2307, 42.4493], label: { dx: 0, dy: -12 * u2, anchor: 'middle' } },
-      { place: 'concord', coords: [-71.3488, 42.4605], label: { dx: 0, dy: 17 * u2, anchor: 'middle' } },
-      { name: 'Menotomy', coords: [-71.1560, 42.4150], kind: 'village', label: { dx: -9 * u2, dy: 15 * u2, anchor: 'end' } },
-      { name: 'Roxbury', coords: [-71.0910, 42.3300], kind: 'village', label: { dx: 0, dy: 15 * u2, anchor: 'middle' } },
-      { name: 'Munroe Tavern', coords: [-71.2164, 42.4413], kind: 'building', label: { dx: 0, dy: 15 * u2, anchor: 'middle' } }
+      { place: 'boston', coords: [-71.0590, 42.3595], label: { dx: 0, dy: 17, anchor: 'middle' } },
+      { place: 'cambridge', label: { dx: -7, dy: 14, anchor: 'end' } },
+      { place: 'charlestown', coords: [-71.0620, 42.3740], label: { dx: 0, dy: -9, anchor: 'middle' } },
+      { place: 'lexington', coords: [-71.2307, 42.4493], label: { dx: 0, dy: -12, anchor: 'middle' } },
+      { place: 'concord', coords: [-71.3488, 42.4605], label: { dx: 0, dy: 17, anchor: 'middle' } },
+      { name: 'Menotomy', coords: [-71.1560, 42.4150], kind: 'village', label: { dx: -9, dy: 15, anchor: 'end' } },
+      { name: 'Roxbury', coords: [-71.0910, 42.3300], kind: 'village', label: { dx: 0, dy: 15, anchor: 'middle' } },
+      { name: 'Munroe Tavern', coords: [-71.2164, 42.4413], kind: 'building', label: { dx: 0, dy: 15, anchor: 'middle' } }
     ],
     moves: [
       { side: 'british', kind: 'retreat', coords: [[-71.3460, 42.4590], [-71.3244, 42.4580], [-71.2933, 42.4525], [-71.2760, 42.4487], [-71.2587, 42.4467], [-71.2400, 42.4470], [-71.2200, 42.4420]] },
       { side: 'british', kind: 'march', label: 'Percy, from 9 a.m.', labelAt: 0.3, coords: [[-71.0670, 42.3450], [-71.0910, 42.3300], [-71.1200, 42.3340], [-71.1400, 42.3480], [-71.1300, 42.3640], [-71.1205, 42.3700], [-71.1190, 42.3800], [-71.1300, 42.3950], [-71.1560, 42.4130], [-71.1950, 42.4330], [-71.2120, 42.4395]] },
-      { side: 'british', kind: 'retreat', label: 'Percy and Smith', labelAt: 0.78, coords: [[-71.2130, 42.4420], [-71.1950, 42.4365], [-71.1750, 42.4270], [-71.1560, 42.4170], [-71.1350, 42.4020], [-71.1220, 42.3935], [-71.1050, 42.3875], [-71.0900, 42.3825], [-71.0760, 42.3838]] }
+      { side: 'british', kind: 'retreat', label: 'Percy and Smith', labelAt: 0.78, ph: { labelAt: 0.62 }, coords: [[-71.2130, 42.4420], [-71.1950, 42.4365], [-71.1750, 42.4270], [-71.1560, 42.4170], [-71.1350, 42.4020], [-71.1220, 42.3935], [-71.1050, 42.3875], [-71.0900, 42.3825], [-71.0760, 42.3838]] }
     ],
     battles: [
-      { coords: [-71.3506, 42.4690], label: 'North Bridge', labelPos: { dx: 12 * u2, dy: 5 * u2, anchor: 'start' } },
+      { coords: [-71.3506, 42.4690], label: 'North Bridge', labelPos: { dx: 12, dy: 5, anchor: 'start' }, ph: { labelPos: { dx: 12, dy: -6, anchor: 'start' } } },
       { coords: [-71.3244, 42.4594], label: '' },
       { coords: [-71.3000, 42.4550], label: '' },
       { coords: [-71.2520, 42.4480], label: '' },
@@ -179,14 +170,13 @@
       { coords: [-71.1450, 42.4280], n: 4 },
       { coords: [-71.0700, 42.3960], n: 5 }
     ]
-  }));
+  });
 
-  const u3 = U('#map-bunker');
-  shore('lexington-concord-bunker-hill-charlestown').then(corrections => HMap.render('#map-bunker', {
+  HMap.render('#map-bunker', {
     geo: 'lexington-concord-bunker-hill-charlestown',
     bbox: [-71.085, 42.359, -71.043, 42.391],
     alt: 'Map of the Charlestown peninsula on June 17, 1775, showing the American redoubt on Breed\'s Hill, the British landing at Moulton\'s Point and the three assaults',
-    corrections, after: periodShore(corrections), rivers: RIVERS,
+    corrections: 'data/geo/lexington-concord-bunker-hill-charlestown.shore.json', rivers: RIVERS,
     terrain: { contours: 5 },
     works: [
       { side: 'continental', coords: [[-71.0612, 42.3760], [-71.0603, 42.3760], [-71.0603, 42.3768], [-71.0612, 42.3768]], closed: true },
@@ -194,9 +184,9 @@
       { side: 'continental', coords: [[-71.0632, 42.3781], [-71.0620, 42.3803], [-71.0616, 42.3812]] }
     ],
     towns: [
-      { name: 'Charlestown', coords: [-71.0635, 42.3728], kind: 'town', label: { dx: 0, dy: 17 * u3, anchor: 'middle' } },
-      { name: 'Copp\'s Hill battery', coords: [-71.0559, 42.3674], kind: 'fort', side: 'british', label: { dx: 9 * u3, dy: 4 * u3 } },
-      { name: 'Boston (North End)', coords: [-71.0560, 42.3635], kind: 'village', label: { dx: 0, dy: 15 * u3, anchor: 'middle' } }
+      { name: 'Charlestown', coords: [-71.0635, 42.3728], kind: 'town', label: { dx: 0, dy: 17, anchor: 'middle' } },
+      { name: 'Copp\'s Hill battery', coords: [-71.0559, 42.3674], kind: 'fort', side: 'british', label: { dx: 9, dy: 4 } },
+      { name: 'Boston (North End)', coords: [-71.0560, 42.3635], kind: 'village', label: { dx: 0, dy: 15, anchor: 'middle' } }
     ],
     moves: [
       { side: 'british', kind: 'naval', coords: [[-71.0540, 42.3690], [-71.0525, 42.3720], [-71.0518, 42.3752]] },
@@ -208,22 +198,22 @@
     ],
     units: [
       { side: 'british', coords: [-71.0515, 42.3762], angle: 20, label: 'Howe, ~1 p.m.' },
-      { side: 'continental', coords: [-71.0625, 42.3770], angle: -70, label: 'Prescott', labelPos: { dx: -15 * u3, dy: 4 * u3, anchor: 'end' } },
-      { side: 'continental', coords: [-71.0632, 42.3793], angle: -60, label: 'Knowlton', labelPos: { dx: -15 * u3, dy: 4 * u3, anchor: 'end' } },
-      { side: 'continental', coords: [-71.0626, 42.3810], angle: -60, label: 'Stark', labelPos: { dx: -15 * u3, dy: -4 * u3, anchor: 'end' } },
-      { side: 'continental', coords: [-71.0688, 42.3815], label: 'Putnam', labelPos: { dx: 0, dy: -11 * u3, anchor: 'middle' } }
+      { side: 'continental', coords: [-71.0625, 42.3770], angle: -70, label: 'Prescott', labelPos: { dx: -15, dy: 4, anchor: 'end' } },
+      { side: 'continental', coords: [-71.0632, 42.3793], angle: -60, label: 'Knowlton', labelPos: { dx: -15, dy: 4, anchor: 'end' } },
+      { side: 'continental', coords: [-71.0626, 42.3810], angle: -60, label: 'Stark', labelPos: { dx: -15, dy: -4, anchor: 'end' } },
+      { side: 'continental', coords: [-71.0688, 42.3815], label: 'Putnam', labelPos: { dx: 0, dy: -11, anchor: 'middle' } }
     ],
     ships: [
-      { side: 'british', coords: [-71.0575, 42.3700], angle: 0, label: 'Lively', labelPos: { dx: 0, dy: 18 * u3, anchor: 'middle' } },
-      { side: 'british', coords: [-71.0475, 42.3725], angle: 20, label: 'Falcon', labelPos: { dx: 0, dy: 18 * u3, anchor: 'middle' } },
-      { side: 'british', coords: [-71.0742, 42.3735], angle: -20, label: 'Glasgow', labelPos: { dx: 0, dy: -12 * u3, anchor: 'middle' } }
+      { side: 'british', coords: [-71.0575, 42.3700], angle: 0, label: 'Lively', labelPos: { dx: 0, dy: 18, anchor: 'middle' } },
+      { side: 'british', coords: [-71.0475, 42.3725], angle: 20, label: 'Falcon', labelPos: { dx: 0, dy: 18, anchor: 'middle' } },
+      { side: 'british', coords: [-71.0742, 42.3735], angle: -20, label: 'Glasgow', labelPos: { dx: 0, dy: -12, anchor: 'middle' } }
     ],
     battles: [ { coords: [-71.0607, 42.3764], label: '' } ],
     labels: [
       { coords: [-71.0630, 42.3752], text: 'Breed\'s Hill', kind: 'terrain', size: 12, anchor: 'end' },
       { coords: [-71.0680, 42.3800], text: 'Bunker Hill', kind: 'terrain', size: 12, anchor: 'end' },
       { coords: [-71.0500, 42.3787], text: 'Moulton\'s\nPoint', kind: 'terrain', size: 11, anchor: 'start' },
-      { coords: [-71.0745, 42.3858], text: 'Charlestown Neck', kind: 'terrain', size: 11, anchor: 'end' },
+      { coords: [-71.0712, 42.3856], text: 'Charlestown Neck', kind: 'terrain', size: 11, anchor: 'middle', angle: -28 },
       { coords: [-71.0560, 42.3860], text: 'Mystic River', kind: 'water', size: 14, angle: -20 },
       { coords: [-71.0700, 42.3660], text: 'Charles River', kind: 'water', size: 14, angle: 20 },
       { coords: [-71.0500, 42.3680], text: 'Boston Harbor', kind: 'water', size: 13 }
@@ -232,9 +222,9 @@
       { coords: [-71.0560, 42.3812], n: 1 },
       { coords: [-71.0548, 42.3790], n: 2 },
       { coords: [-71.0575, 42.3735], n: 3 },
-      { coords: [-71.0700, 42.3845], n: 4 }
+      { coords: [-71.0765, 42.3828], n: 4 }
     ]
-  }));
+  });
 })();
 </script>
 </body>

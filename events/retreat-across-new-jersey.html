@@ -31,7 +31,7 @@
         <li>The Americans cross the Passaic at Acquackanonk, November 21, and break up the bridge behind them.</li>
         <li>The army rests at Newark until November 28, then leaves as the British march in from the north.</li>
       </ol>
-      <span class="note-approx">Road lines are approximate. Shorelines and marshes are modern; Manhattan's 1776 shoreline lay inland of today's.</span>
+      <span class="note-approx">Road lines are approximate. Manhattan's shoreline follows a 1776 reconstruction; the extent of the Hackensack meadows is approximate.</span>
     </figcaption>
   </figure>
 
@@ -54,7 +54,7 @@
     <h2>Lee's march and capture, December 2–20</h2>
     <div class="map-canvas" id="map-lee"></div>
     <figcaption>
-      Charles Lee was slow to bring his division across from New York. While it camped at Vealtown, he spent the night at a tavern in Basking Ridge, about three miles away. A British cavalry patrol captured him there on the morning of December 13. Sullivan then led his troops by a northern route to join Washington on the Pennsylvania bank.
+      Charles Lee was slow to bring his division across from New York, and while it camped at Vealtown he spent the night at a tavern in Basking Ridge, about three miles away. A British cavalry patrol captured him there on the morning of December 13. Sullivan then led his troops by a northern route to join Washington on the Pennsylvania bank.
       <ol>
         <li>Lee's division, coming from North Castle, crosses the Hudson at King's Ferry, December 2–4.</li>
         <li>White's tavern, Basking Ridge: Lee is taken by about 25 dragoons under Harcourt, with Banastre Tarleton among them.</li>
@@ -78,12 +78,24 @@ const HACK_LAKES = ["Baker Pond","Barbour Pond","Cable Lk","Crystal Lk","Duck Po
 const POST_ROAD = [[-74.172, 40.736], [-74.192, 40.708], [-74.215, 40.662], [-74.260, 40.643], [-74.285, 40.616], [-74.291, 40.592],
   [-74.349, 40.554], [-74.375, 40.535], [-74.410, 40.510], [-74.447, 40.497], [-74.482, 40.482], [-74.546, 40.434], [-74.585, 40.418],
   [-74.596, 40.386], [-74.614, 40.375], [-74.659, 40.349], [-74.710, 40.311], [-74.734, 40.292], [-74.741, 40.250], [-74.766, 40.222]];
+// shift a line by (dx, dy) degrees: parallel American and British tracks along one road
+const shift = (pts, dx, dy) => pts.map(([x, y]) => [x + dx, y + dy]);
+// Hackensack meadows (salt marsh and cedar swamp before 19th–20th-century drainage and fill), approximate
+const MEADOWS = [[-74.128, 40.736], [-74.112, 40.762], [-74.098, 40.790], [-74.084, 40.818], [-74.066, 40.842], [-74.046, 40.862], [-74.024, 40.866],
+  [-74.012, 40.846], [-74.030, 40.825], [-74.040, 40.800], [-74.052, 40.775], [-74.072, 40.748], [-74.092, 40.728], [-74.112, 40.722]];
 const NORTH_ROAD = [[-73.961, 40.851], [-73.990, 40.880], [-74.028, 40.905], [-74.043, 40.886], [-74.085, 40.872], [-74.128, 40.857],
   [-74.150, 40.810], [-74.160, 40.770], [-74.172, 40.736]];
 
 HMap.render('#map-hackensack', {
   geo: 'retreat-across-new-jersey-hackensack',
   bbox: [-74.24, 40.70, -73.86, 40.99],
+  preset: 'ny1776',
+  marsh: [MEADOWS],
+  // modern drainage ditches in the meadows: keep only the natural rivers and creeks
+  rivers: { only: ['Hackensack Riv', 'Passaic Riv', 'Passic Riv', 'Saddle Riv', 'Overpeck Crk', 'Pascack Brk', 'Hohokus Brk', 'Ho-Ho-Kus Brk', 'Tenakill Brk',
+    'Cresskill Brk', 'Pompton Riv', '2nd Riv', '3rd Riv', 'Rahway Riv', 'Elizabeth Riv', 'Bronx Riv', 'Saw Mill Riv', 'Wolf Crk', 'Berrys Crk', 'Teaneck Crk',
+    'Peckman Riv', 'Goffle Brk', 'Molly Ann Brk', 'Singac Brk', 'Sparkill Crk', 'Musquapsink Brk', 'Dwars Kill', 'Westchester Crk', 'Kingsland Crk',
+    'Sprain Brk', 'Grassy Sprain Brk', 'Van Saun Mill Brk', 'Coles Brk', 'Hirschfield Brk', 'Metzlers Brk', 'Naachpunkt Brk', 'Bellmans Crk', 'Penhorn Crk'] },
   water: { hide: HACK_LAKES, hideIn: [box(-74.083, 40.905, 0.008), box(-74.093, 40.935, 0.008), box(-74.098, 40.948, 0.008), box(-74.171, 40.954, 0.008),
     box(-74.090, 40.917, 0.006), box(-74.027, 40.950, 0.006), box(-74.182, 40.755, 0.006)] },
   terrain: { exaggeration: 3 },
@@ -92,21 +104,22 @@ HMap.render('#map-hackensack', {
   towns: [
     { place: 'fort-lee', side: 'continental', label: { dx: -11, dy: 2, anchor: 'end' } },
     { place: 'fort-washington', side: 'british', label: { dx: 10, dy: 16 } },
-    { name: 'Closter landing', coords: [-73.918, 40.957], kind: 'ferry', label: { dx: 10, dy: 4 } },
+    { place: 'lower-closter-landing', label: { dx: 10, dy: 4 }, ph: { name: 'Closter Landing' } },
     { name: 'New Bridge', coords: [-74.028, 40.913], kind: 'village', label: { dx: 9, dy: -4 } },
     { place: 'hackensack', label: { dx: -8, dy: -8, anchor: 'end' } },
     { name: 'Acquackanonk', coords: [-74.128, 40.857], kind: 'village', label: { dx: -9, dy: -6, anchor: 'end' } },
     { place: 'newark', label: { dx: -10, dy: 4, anchor: 'end' } }
   ],
   moves: [
-    { side: 'british', kind: 'march', label: 'Cornwallis', labelAt: 0.5, coords: [[-73.922, 40.955], [-73.942, 40.905], [-73.957, 40.866]] },
-    { side: 'british', kind: 'march', coords: [[-73.960, 40.868], [-73.985, 40.890], [-74.021, 40.919], [-74.052, 40.900], [-74.090, 40.886], [-74.133, 40.870], [-74.137, 40.832], [-74.146, 40.792], [-74.160, 40.756]] },
+    { side: 'british', kind: 'march', label: 'Cornwallis', labelAt: 0.5, coords: [[-73.9235, 40.942], [-73.942, 40.900], [-73.957, 40.866]] },
+    { side: 'british', kind: 'march', coords: [[-73.960, 40.868], [-73.985, 40.890], [-74.021, 40.919], [-74.052, 40.900], [-74.090, 40.886], [-74.133, 40.870], [-74.137, 40.832], [-74.146, 40.792], [-74.160, 40.756]],
+      ph: { coords: [[-73.960, 40.868], [-73.985, 40.890], [-74.021, 40.922], [-74.052, 40.906], [-74.090, 40.894], [-74.140, 40.878], [-74.150, 40.832], [-74.158, 40.792], [-74.168, 40.758]] } },
     { side: 'continental', kind: 'retreat', label: 'Nov 20', labelAt: 0.28, coords: [[-73.966, 40.846], [-73.992, 40.870], [-74.026, 40.900], [-74.038, 40.886]] },
     { side: 'continental', kind: 'retreat', label: 'Nov 21', labelAt: 0.5, coords: [[-74.048, 40.878], [-74.085, 40.864], [-74.120, 40.850]] },
     { side: 'continental', kind: 'retreat', label: 'Nov 22', labelAt: 0.5, coords: [[-74.132, 40.848], [-74.150, 40.812], [-74.160, 40.775], [-74.170, 40.746]] },
   ],
   callouts: [
-    { coords: [-73.955, 40.968], n: 1 },
+    { coords: [-73.950, 40.955], n: 1 },
     { coords: [-74.010, 40.930], n: 2 },
     { coords: [-74.108, 40.875], n: 3 },
     { coords: [-74.200, 40.752], n: 4 }
@@ -114,8 +127,8 @@ HMap.render('#map-hackensack', {
   labels: [
     { coords: [-73.925, 40.890], text: 'Hudson River', kind: 'water', size: 13, angle: -70 },
     { coords: [-74.060, 40.840], text: 'Hackensack R.', kind: 'water', size: 12, angle: -75 },
-    { coords: [-74.155, 40.820], text: 'Passaic R.', kind: 'water', size: 12, angle: -78 },
-    { coords: [-73.975, 40.800], text: 'MANHATTAN', kind: 'region', size: 12, angle: -62 },
+    { coords: [-74.155, 40.820], text: 'Passaic R.', kind: 'water', size: 12, angle: -78, ph: { coords: [-74.128, 40.800], angle: -70 } },
+    { coords: [-73.953, 40.797], text: 'MANHATTAN', kind: 'region', size: 12, angle: -62 },
     { coords: [-73.990, 40.975], text: 'Palisades', kind: 'terrain', size: 12, angle: -70 },
     { coords: [-74.200, 40.900], text: 'NEW JERSEY', kind: 'region' }
   ]
@@ -124,6 +137,7 @@ HMap.render('#map-hackensack', {
 HMap.render('#map-route', {
   geo: 'retreat-across-new-jersey-route',
   bbox: [-75.00, 40.08, -73.98, 40.80],
+  preset: 'ny1776',
   water: { hide: MODERN_LAKES, hideIn: MODERN_UNNAMED },
   alt: 'Map of New Jersey from Newark to Trenton showing Washington\'s retreat along the post road and Cornwallis\'s pursuit',
   roads: [{ coords: POST_ROAD }, { coords: [[-74.172, 40.736], [-74.160, 40.770], [-74.150, 40.800]] }],
@@ -138,19 +152,19 @@ HMap.render('#map-route', {
     { place: 'trenton', label: { dx: 10, dy: 12 } }
   ],
   moves: [
-    { side: 'continental', kind: 'retreat', label: 'Nov 28–29', labelAt: 0.45, coords: POST_ROAD.slice(0, 10).map(([x, y]) => [x - 0.010, y - 0.008]) },
-    { side: 'continental', kind: 'retreat', label: 'Dec 1–2', labelAt: 0.45, coords: POST_ROAD.slice(9, 16).map(([x, y]) => [x - 0.010, y - 0.010]) },
-    { side: 'continental', kind: 'retreat', label: 'Dec 2–3', labelAt: 0.5, coords: POST_ROAD.slice(15, 20).map(([x, y]) => [x - 0.012, y - 0.004]) },
+    { side: 'continental', kind: 'retreat', label: 'Nov 28–29', labelAt: 0.45, coords: shift(POST_ROAD.slice(0, 10), 0.010, 0.008), ph: { labelAt: 0.4, coords: shift(POST_ROAD.slice(0, 10), 0.018, 0.016) } },
+    { side: 'continental', kind: 'retreat', label: 'Dec 1–2', labelAt: 0.45, coords: shift(POST_ROAD.slice(9, 16), 0.010, 0.010), ph: { labelAt: 0.62, coords: shift(POST_ROAD.slice(9, 16), 0.018, 0.020) } },
+    { side: 'continental', kind: 'retreat', label: 'Dec 2–3', labelAt: 0.5, coords: shift(POST_ROAD.slice(15, 20), 0.006, 0.010), ph: { coords: shift(POST_ROAD.slice(15, 20), 0.012, 0.020) } },
     { side: 'continental', kind: 'retreat', coords: [[-74.780, 40.216], [-74.805, 40.205], [-74.830, 40.196]] },
-    { side: 'british', kind: 'march', coords: POST_ROAD.slice(0, 10).map(([x, y]) => [x + 0.010, y + 0.008]) },
-    { side: 'british', kind: 'march', coords: POST_ROAD.slice(9, 19).map(([x, y]) => [x + 0.010, y + 0.010]).concat([[-74.752, 40.236]]) }
+    { side: 'british', kind: 'march', coords: shift(POST_ROAD.slice(0, 10), -0.010, -0.008), ph: { coords: shift(POST_ROAD.slice(0, 10), -0.018, -0.016) } },
+    { side: 'british', kind: 'march', coords: shift(POST_ROAD.slice(9, 19), -0.010, -0.010).concat([[-74.762, 40.226]]), ph: { coords: shift(POST_ROAD.slice(9, 19), -0.018, -0.020).concat([[-74.770, 40.226]]) } }
   ],
   units: [
-    { side: 'british', coords: [-74.430, 40.470], label: 'Cornwallis' }
+    { side: 'british', coords: [-74.430, 40.470], label: 'Cornwallis', ph: { coords: [-74.415, 40.462] } }
   ],
   callouts: [
     { coords: [-74.470, 40.525], n: 1 },
-    { coords: [-74.395, 40.450], n: 2 },
+    { coords: [-74.395, 40.450], n: 2, ph: { coords: [-74.445, 40.420] } },
     { coords: [-74.640, 40.318], n: 3 },
     { coords: [-74.840, 40.240], n: 4 }
   ],
@@ -167,6 +181,7 @@ HMap.render('#map-route', {
 HMap.render('#map-lee', {
   geo: 'retreat-across-new-jersey-lee',
   bbox: [-75.30, 40.00, -73.60, 41.33],
+  preset: 'ny1776',
   water: { hide: MODERN_LAKES, hideIn: MODERN_UNNAMED },
   alt: 'Map of northern New Jersey showing Charles Lee\'s march from the Hudson, his capture at Basking Ridge and Sullivan\'s march to join Washington on the Delaware',
   areas: [
@@ -193,13 +208,13 @@ HMap.render('#map-lee', {
       coords: [[-73.705, 41.140], [-73.850, 41.230], [-73.957, 41.252], [-73.975, 41.215], [-74.040, 41.150], [-74.150, 41.090], [-74.250, 41.030], [-74.300, 40.985], [-74.400, 40.880], [-74.475, 40.805]] },
     { side: 'continental', kind: 'march', coords: [[-74.485, 40.790], [-74.530, 40.755], [-74.563, 40.724]] },
     { side: 'british', kind: 'attack', approx: true, label: 'Harcourt\'s patrol', labelAt: 0.5, coords: [[-74.785, 40.340], [-74.700, 40.440], [-74.610, 40.540], [-74.560, 40.640], [-74.550, 40.698]] },
-    { side: 'british', kind: 'march', label: 'Lee taken away', labelAt: 0.55, coords: [[-74.538, 40.700], [-74.495, 40.610], [-74.455, 40.510]] },
-    { side: 'continental', kind: 'march', approx: true, label: 'Sullivan, Dec 14–16', labelAt: 0.45, coords: [[-74.578, 40.714], [-74.700, 40.660], [-74.850, 40.610], [-74.958, 40.592], [-75.100, 40.650], [-75.195, 40.680]] },
+    { side: 'british', kind: 'march', label: 'Lee taken away', labelAt: 0.66, coords: [[-74.538, 40.700], [-74.495, 40.610], [-74.455, 40.510]] },
+    { side: 'continental', kind: 'march', approx: true, label: 'Sullivan, Dec 14–16', labelAt: 0.32, coords: [[-74.578, 40.714], [-74.700, 40.660], [-74.850, 40.610], [-74.958, 40.592], [-75.100, 40.650], [-75.195, 40.680]] },
     { side: 'continental', kind: 'march', approx: true, label: 'Dec 17–20', labelAt: 0.5, coords: [[-75.215, 40.668], [-75.150, 40.560], [-75.060, 40.450], [-74.990, 40.385]] }
   ],
   callouts: [
     { coords: [-74.070, 41.250], n: 1 },
-    { coords: [-74.500, 40.680], n: 2 },
+    { coords: [-74.430, 40.750], n: 2 },
     { coords: [-75.250, 40.740], n: 3 }
   ],
   labels: [
@@ -208,7 +223,7 @@ HMap.render('#map-lee', {
     { coords: [-75.120, 40.260], text: 'PENN.', kind: 'region' },
     { coords: [-74.550, 41.230], text: 'NEW YORK', kind: 'region' },
     { coords: [-74.700, 41.010], text: 'Highlands', kind: 'terrain', size: 13 },
-    { coords: [-75.105, 40.500], text: 'Delaware R.', kind: 'water', size: 12, angle: -62 }
+    { coords: [-75.125, 40.440], text: 'Delaware R.', kind: 'water', size: 12, angle: -62, ph: { coords: [-75.200, 40.390] } }
   ]
 });
 </script>

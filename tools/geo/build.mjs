@@ -123,7 +123,8 @@ function buildVectors(spec, tmp) {
   sh(['-i', ensureShp(SRC.states), '-clip', cb, '-dissolve', '-o', 'format=geojson', usLand]);
   sh(['-i', ensureShp(SRC.countries), '-filter', "ADMIN == 'Canada'", '-clip', cb, '-dissolve', '-o', 'format=geojson', caLand]);
   files.land = path.join(tmp, 'land.json');
-  sh(['-i', usLand, caLand, 'combine-files', '-merge-layers', 'force', ...simp, '-rename-layers', 'land', '-o', 'format=geojson', files.land]);
+  // dissolve2 + gap fill removes the seam where the two sources meet at the border
+  sh(['-i', usLand, caLand, 'combine-files', '-merge-layers', 'force', '-dissolve2', 'gap-fill-area=2km2', ...simp, '-rename-layers', 'land', '-o', 'format=geojson', files.land]);
 
   // water polygons
   files.water = path.join(tmp, 'water.json');
@@ -150,7 +151,9 @@ function buildVectors(spec, tmp) {
   // Natural Earth centrelines are too coarse for local maps (TIGER streams + water polygons are used instead)
   for (const key of d.streams ? [] : ['rivers', 'riversNA']) {
     const f = path.join(tmp, `ne_${key}.json`);
-    sh(['-i', ensureShp(SRC[key]), '-clip', cb, '-o', 'format=geojson', f]);
+    // Natural Earth names the James River main stem (rivernum 789) "Cowpasture"
+    const fix = key === 'rivers' ? ['-each', "if (name == 'Cowpasture' && rivernum == 789) name = 'James'"] : [];
+    sh(['-i', ensureShp(SRC[key]), '-clip', cb, ...fix, '-o', 'format=geojson', f]);
     riverParts.push(f);
   }
   if (d.streams) {

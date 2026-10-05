@@ -38,7 +38,7 @@
     <h2>The storming of Stony Point, midnight July 15–16</h2>
     <div class="map-canvas" id="map-assault"></div>
     <figcaption>
-      Two columns with unloaded muskets went in with the bayonet from north and south while a third drew fire on the causeway in the center. The fort fell in about half an hour, with some 550 of the garrison taken prisoner.
+      Two columns with unloaded muskets went in with the bayonet from north and south while a third drew fire on the causeway in the center. The fort fell in about half an hour, with about 470–540 of the garrison taken prisoner.
       <ol>
         <li>Wayne's column wades the flooded marsh south of the point and climbs to the upper works. Wayne is grazed in the head.</li>
         <li>Butler's column comes in along the north shore.</li>
@@ -64,8 +64,6 @@
 </main>
 
 <script>
-const noSeams = ({ root }) => root.selectAll('path.hm-water').style('stroke', 'none');
-const cw = r => d3.geoArea({ type: 'Polygon', coordinates: [[...r, r[0]]] }) > 2 * Math.PI ? r.slice().reverse() : r;
 const modernRivers = ['Catskill Aqueduct', 'Jersey City Aqueduct', 'Sewer R O W', 'Hudson River Phl'];
 
 HMap.render('#map-highlands', {
@@ -80,15 +78,15 @@ HMap.render('#map-highlands', {
     { place: 'stony-point', side: 'british', label: { dx: 12, dy: 4, anchor: 'start' } },
     { place: 'verplancks-point', side: 'british', label: { dx: 12, dy: 12, anchor: 'start' } },
     { place: 'peekskill', label: { dx: 8, dy: 4 } },
-    { name: 'Fort Montgomery (ruins)', coords: [-73.9875, 41.3235], kind: 'fort', label: { dx: -12, dy: 4, anchor: 'end' } },
+    { name: 'Fort Montgomery (ruins)', coords: [-73.9875, 41.3235], kind: 'fort', label: { dx: 12, dy: 4, anchor: 'start' } },
     { name: 'Sandy Beach', coords: [-73.9720, 41.3440], kind: 'village', label: { dx: 8, dy: 4 } },
     { name: 'Springsteel\'s', coords: [-73.9990, 41.2405], kind: 'building', label: { dx: -8, dy: 4, anchor: 'end' } },
     { name: 'Haverstraw', coords: [-73.9650, 41.2040], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } }
   ],
   lines: [ { coords: [[-73.9700, 41.2450], [-73.9620, 41.2490]], color: '#3a2f24', width: 1.6, dash: '4 3', legend: 'King\'s Ferry' } ],
   moves: [
-    { side: 'british', kind: 'naval', label: 'Clinton, from New York', labelAt: 0.58, coords: [[-73.9020, 41.2130], [-73.9300, 41.2250], [-73.9575, 41.2385]] },
-    { side: 'continental', kind: 'march', approx: true, label: 'Wayne, July 15', labelAt: 0.35, coords: [[-73.9740, 41.3420], [-74.0050, 41.3300], [-74.0280, 41.3070], [-74.0170, 41.2850], [-73.9970, 41.2650], [-73.9995, 41.2440]] }
+    { side: 'british', kind: 'naval', label: 'Clinton, from New York', labelAt: 0.5, ph: { label: 'Clinton' }, coords: [[-73.8800, 41.2045], [-73.9020, 41.2130], [-73.9300, 41.2250], [-73.9575, 41.2385]] },
+    { side: 'continental', kind: 'march', approx: true, label: 'Wayne, July 15', labelAt: 0.72, coords: [[-73.9740, 41.3420], [-74.0050, 41.3300], [-74.0280, 41.3070], [-74.0170, 41.2850], [-73.9970, 41.2650], [-73.9995, 41.2440]] }
   ],
   ships: [ { side: 'british', coords: [-73.9530, 41.2215], label: 'Vulture', labelPos: { dx: -18, dy: 4, anchor: 'end' } } ],
   callouts: [
@@ -97,14 +95,13 @@ HMap.render('#map-highlands', {
     { coords: [-73.9690, 41.3830], n: 3 }
   ],
   labels: [
-    { coords: [-73.9580, 41.3550], text: 'Hudson River', kind: 'water', size: 13, angle: -68 },
+    { coords: [-73.9560, 41.2960], text: 'Hudson River', kind: 'water', size: 13, angle: -72 },
     { coords: [-73.9330, 41.2070], text: 'Haverstraw\nBay', kind: 'water', size: 13 },
     { coords: [-74.0200, 41.2580], text: 'Dunderberg', kind: 'terrain' },
-    { coords: [-74.0150, 41.3150], text: 'Queensboro', kind: 'note', size: 10.5, anchor: 'end' },
+    { coords: [-74.0300, 41.2980], text: 'Queensboro', kind: 'note', size: 10.5, anchor: 'end' },
     { coords: [-73.9420, 41.4010], text: 'Constitution I.', kind: 'note', size: 10.5, anchor: 'start' },
     { coords: [-73.8900, 41.3300], text: 'HIGHLANDS', kind: 'region' }
-  ],
-  after: noSeams
+  ]
 });
 
 HMap.render('#map-assault', {
@@ -122,7 +119,7 @@ HMap.render('#map-assault', {
     { coords: [[-73.9748, 41.2428], [-73.9725, 41.2428], [-73.9715, 41.2416], [-73.9725, 41.2405], [-73.9748, 41.2405], [-73.9754, 41.2416]], side: 'british', closed: true }
   ],
   towns: [
-    { name: 'Springsteel\'s farm', coords: [-73.9990, 41.2405], kind: 'building', label: { dx: 0, dy: 18, anchor: 'middle' } },
+    { name: 'Springsteel\'s farm', coords: [-73.9990, 41.2405], kind: 'building', label: { dx: -14, dy: 4, anchor: 'end' } },
     { name: 'Fort Lafayette', coords: [-73.9610, 41.2505], kind: 'fort', side: 'british', label: { dx: -12, dy: 4, anchor: 'end' } }
   ],
   lines: [ { coords: [[-73.9720, 41.2442], [-73.9640, 41.2475]], color: '#3a2f24', width: 1.6, dash: '4 3', legend: 'King\'s Ferry' } ],
@@ -137,51 +134,47 @@ HMap.render('#map-assault', {
   callouts: [
     { coords: [-73.9850, 41.2350], n: 1 },
     { coords: [-73.9850, 41.2478], n: 2 },
-    { coords: [-73.9870, 41.2432], n: 3 }
+    { coords: [-73.9922, 41.2418], n: 3 }
   ],
   labels: [
     { coords: [-73.9698, 41.2388], text: 'Stony Point\n(17th Foot)', kind: 'region', size: 11, anchor: 'start' },
     { coords: [-73.9600, 41.2478], text: 'Verplanck\'s Point', kind: 'note', size: 11 },
     { coords: [-73.9690, 41.2300], text: 'Haverstraw Bay', kind: 'water' },
-    { coords: [-73.9690, 41.2500], text: 'Hudson River', kind: 'water', size: 13, angle: -60 }
-  ],
-  after: noSeams
+    { coords: [-73.9745, 41.2495], text: 'Hudson River', kind: 'water', size: 12, angle: -60 }
+  ]
 });
-
-// 18th-century waterfronts (approximate): Jersey City and Communipaw cove, lower Manhattan's Hudson shore
-const jerseyShore = cw([[-74.0285, 40.7420], [-74.0300, 40.7320], [-74.0370, 40.7280], [-74.0420, 40.7230], [-74.0385, 40.7185], [-74.0335, 40.7170], [-74.0328, 40.7148], [-74.0365, 40.7115], [-74.0460, 40.7095], [-74.0560, 40.7040], [-74.0610, 40.6950], [-74.0650, 40.6880], [-74.0350, 40.6880], [-74.0270, 40.7050], [-74.0245, 40.7420]]);
-const manhattanShore = cw([[-74.0150, 40.7025], [-74.0128, 40.7100], [-74.0105, 40.7200], [-74.0090, 40.7300], [-74.0085, 40.7420], [-74.0160, 40.7420], [-74.0200, 40.7200], [-74.0230, 40.7020]]);
 
 HMap.render('#map-paulus', {
   geo: 'stony-point-paulus-hook',
   bbox: [-74.17, 40.69, -73.937, 40.92],
   alt: 'Map of Bergen Neck and the Hudson shore showing Henry Lee\'s march from New Bridge to Paulus Hook and back',
+  preset: 'ny1776',
   rivers: { hide: modernRivers },
   water: { hideUnnamed: true },
-  corrections: { water: [jerseyShore, manhattanShore] },
+  // marsh and tidal ditch cutting Paulus Hook off from the mainland (approximate)
+  marsh: [[[-74.0420, 40.7270], [-74.0360, 40.7200], [-74.0400, 40.7130], [-74.0500, 40.7120], [-74.0540, 40.7200], [-74.0500, 40.7280]]],
   areas: [
-    { coords: [[-74.0420, 40.7270], [-74.0360, 40.7200], [-74.0400, 40.7130], [-74.0500, 40.7120], [-74.0540, 40.7200], [-74.0500, 40.7280]], side: 'neutral', opacity: 0.18, legend: 'Salt marsh (approximate)' },
     { coords: [[-74.0150, 40.7020], [-74.0060, 40.7020], [-74.0030, 40.7120], [-74.0100, 40.7160]], side: 'british', opacity: 0.25, label: '', legend: 'British-held New York' }
   ],
   roads: [
-    { coords: [[-74.0300, 40.9130], [-74.0120, 40.8800], [-74.0020, 40.8400], [-74.0180, 40.8000], [-74.0340, 40.7700], [-74.0500, 40.7450], [-74.0640, 40.7270], [-74.0760, 40.7050]], name: 'Bergen road', labelAt: 0.25 }
+    { coords: [[-74.0300, 40.9130], [-74.0120, 40.8800], [-74.0020, 40.8400], [-74.0180, 40.8000], [-74.0340, 40.7700], [-74.0500, 40.7450], [-74.0640, 40.7270], [-74.0760, 40.7050]], name: 'Bergen road', labelAt: 0.62 }
   ],
   towns: [
     { name: 'New Bridge', coords: [-74.0300, 40.9130], kind: 'village', label: { dx: 8, dy: 12 } },
     { name: 'Paulus Hook', coords: [-74.0340, 40.7160], kind: 'fort', side: 'british', label: { dx: 12, dy: 14, anchor: 'start' } },
     { name: 'Bergen', coords: [-74.0700, 40.7250], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
-    { name: 'Dow\'s Ferry', coords: [-74.0900, 40.7580], kind: 'ferry', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { name: 'Dow\'s Ferry', coords: [-74.0960, 40.7400], kind: 'ferry', label: { dx: -9, dy: 4, anchor: 'end' } },
     { name: 'Hoboken', coords: [-74.0300, 40.7450], kind: 'village', label: { dx: 8, dy: -4 } },
     { place: 'new-york', name: 'New York', label: { dx: 10, dy: 14 } }
   ],
   moves: [
-    { side: 'continental', kind: 'march', approx: true, label: 'Lee, Aug 18', labelAt: 0.25, coords: [[-74.0320, 40.9070], [-74.0170, 40.8780], [-74.0080, 40.8400], [-74.0250, 40.8000], [-74.0410, 40.7700], [-74.0560, 40.7430], [-74.0530, 40.7280], [-74.0450, 40.7210], [-74.0370, 40.7172]] },
-    { side: 'continental', kind: 'retreat', approx: true, label: 'withdrawal, Aug 19', labelAt: 0.55, coords: [[-74.0375, 40.7205], [-74.0440, 40.7420], [-74.0280, 40.7720], [-74.0110, 40.8020], [-73.9960, 40.8400], [-74.0050, 40.8800], [-74.0250, 40.9050]] }
+    { side: 'continental', kind: 'march', approx: true, label: 'Lee, Aug 18', labelAt: 0.25, coords: [[-74.0260, 40.9070], [-74.0060, 40.8780], [-73.9950, 40.8400], [-74.0100, 40.8000], [-74.0270, 40.7700], [-74.0430, 40.7450], [-74.0450, 40.7290], [-74.0400, 40.7215], [-74.0365, 40.7172]] },
+    { side: 'continental', kind: 'retreat', approx: true, label: 'withdrawal, Aug 19', labelAt: 0.55, coords: [[-74.0390, 40.7190], [-74.0560, 40.7270], [-74.0760, 40.7330], [-74.0930, 40.7395], [-74.0820, 40.7450], [-74.0660, 40.7550], [-74.0540, 40.7720], [-74.0320, 40.8020], [-74.0160, 40.8400], [-74.0200, 40.8800], [-74.0320, 40.9050]] }
   ],
   callouts: [
     { coords: [-74.0520, 40.9080], n: 1 },
-    { coords: [-74.0560, 40.7750], n: 2 },
-    { coords: [-74.0900, 40.7740], n: 3 }
+    { coords: [-74.0600, 40.7120], n: 2 },
+    { coords: [-74.1100, 40.7540], n: 3 }
   ],
   labels: [
     { coords: [-73.9950, 40.7750], text: 'Hudson River', kind: 'water', angle: -62 },
@@ -190,8 +183,7 @@ HMap.render('#map-paulus', {
     { coords: [-74.0660, 40.8740], text: 'Hackensack R.', kind: 'water', size: 12, angle: -80 },
     { coords: [-74.0450, 40.6960], text: 'Communipaw\ncove', kind: 'note', size: 10.5 },
     { coords: [-74.1050, 40.8800], text: 'NEW JERSEY', kind: 'region' }
-  ],
-  after: noSeams
+  ]
 });
 </script>
 </body>

@@ -24,7 +24,7 @@
     <h2>Watching Philadelphia: the winter of 1777–78</h2>
     <div class="map-canvas" id="map-region"></div>
     <figcaption>
-      Valley Forge lay about 20 miles from Philadelphia: close enough to watch Howe and shield the country to the west, far enough to make a surprise attack difficult. The British held the city behind a line of redoubts while patrols and foragers from both sides contested the ground between.
+      Valley Forge lay about 18 miles from Philadelphia: close enough to watch Howe and shield the country to the west, far enough to make a surprise attack difficult. The British held the city behind a line of redoubts while patrols and foragers from both sides contested the ground between.
       <ol>
         <li>May 1: British raiders surprise Lacey's Pennsylvania militia at the Crooked Billet tavern.</li>
         <li>May 20: Lafayette, sent forward to Barren Hill with about 2,200 men, nearly has his retreat cut off by converging British columns. He escapes over Matson's Ford.</li>
@@ -63,21 +63,21 @@ HMap.render('#map-region', {
     { place: 'philadelphia', label: { dx: 9, dy: 10 } },
     { place: 'germantown', label: { dx: 9, dy: 4 } },
     { name: 'Valley Forge', coords: [-75.4594, 40.1017], kind: 'hq', label: { dx: -9, dy: -6, anchor: 'end' } },
-    { name: 'Barren Hill', coords: [-75.2575, 40.0855], kind: 'church', label: { dx: -8, dy: -6, anchor: 'end' } },
+    { name: 'Barren Hill', coords: [-75.2575, 40.0855], kind: 'church', label: { dx: -8, dy: -6, anchor: 'end' }, ph: { label: { dx: 2, dy: -12, anchor: 'middle' } } },
     { name: 'Matson\'s Ford', coords: [-75.304, 40.074], kind: 'ferry', label: { dx: 8, dy: 15 } },
     { name: 'Whitemarsh', coords: [-75.215, 40.125], kind: 'village', label: { dx: 8, dy: -4 } },
-    { name: 'Crooked Billet', coords: [-75.107, 40.175], kind: 'building', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Crooked Billet', coords: [-75.107, 40.175], kind: 'building', label: { dx: -8, dy: 4, anchor: 'end' }, ph: { label: { dx: -10, dy: 14, anchor: 'end' } } },
     { name: 'Darby', coords: [-75.259, 39.918], kind: 'village' },
     { name: 'Frankford', coords: [-75.087, 40.020], kind: 'village', label: { dx: 8, dy: 10 } },
     { name: 'Gloucester', coords: [-75.128, 39.892], kind: 'village', label: { dx: -8, dy: 12, anchor: 'end' } }
   ],
   moves: [
-    { side: 'continental', kind: 'march', label: 'May 18', labelAt: 0.4, coords: [[-75.440, 40.098], [-75.380, 40.090], [-75.320, 40.085], [-75.268, 40.087]] },
+    { side: 'continental', kind: 'march', label: 'May 18', labelAt: 0.4, ph: { labelAt: 0.3 }, coords: [[-75.440, 40.098], [-75.380, 40.090], [-75.320, 40.085], [-75.268, 40.087]] },
     { side: 'continental', kind: 'retreat', coords: [[-75.262, 40.080], [-75.285, 40.072], [-75.305, 40.068], [-75.345, 40.078]] },
     { side: 'british', kind: 'march', label: 'Grant', labelAt: 0.35, coords: [[-75.140, 39.972], [-75.105, 40.030], [-75.150, 40.100], [-75.215, 40.112], [-75.250, 40.098]] },
     { side: 'british', kind: 'march', label: 'Grey', labelAt: 0.5, coords: [[-75.160, 39.975], [-75.200, 40.010], [-75.235, 40.050], [-75.252, 40.075]] },
     { side: 'british', kind: 'retreat', label: 'Clinton, Jun 18', labelAt: 0.4, coords: [[-75.142, 39.945], [-75.128, 39.915], [-75.095, 39.893], [-75.040, 39.885], [-75.005, 39.880]] },
-    { side: 'continental', kind: 'march', label: 'to New Jersey, Jun 19', labelAt: 0.55, coords: [[-75.430, 40.110], [-75.330, 40.170], [-75.200, 40.220], [-75.010, 40.245]] }
+    { side: 'continental', kind: 'march', label: 'to New Jersey, Jun 19', labelAt: 0.55, coords: [[-75.430, 40.110], [-75.330, 40.170], [-75.200, 40.220], [-75.040, 40.240]], ph: { coords: [[-75.430, 40.110], [-75.330, 40.170], [-75.200, 40.215], [-75.080, 40.228]] } }
   ],
   units: [
     { side: 'continental', coords: [-75.360, 40.028], label: 'Radnor outposts', w: 20, labelPos: { dx: 14, dy: 4 } },
@@ -88,7 +88,7 @@ HMap.render('#map-region', {
   ],
   callouts: [
     { coords: [-75.070, 40.185], n: 1 },
-    { coords: [-75.275, 40.105], n: 2 },
+    { coords: [-75.275, 40.105], n: 2, ph: { coords: [-75.215, 40.085] } },
     { coords: [-75.100, 39.872], n: 3 }
   ],
   labels: [
@@ -130,7 +130,7 @@ HMap.render('#map-camp', {
   ],
   towns: [
     { name: 'Washington\'s HQ (Potts house)', coords: [-75.4594, 40.1017], kind: 'hq', label: { dx: -9, dy: -8, anchor: 'end' } },
-    { name: 'Steuben', coords: [-75.4698, 40.0991], kind: 'building', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Steuben', coords: [-75.4698, 40.0991], kind: 'building', label: { dx: 8, dy: 4 } },
     { name: 'Fatland Ford', coords: [-75.4445, 40.1140], kind: 'ferry', label: { dx: 9, dy: 4 } },
     { name: 'Star Redoubt', coords: [-75.4438, 40.1046], kind: 'building', label: { dx: 9, dy: -4 } }
   ],

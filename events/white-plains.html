@@ -17,11 +17,11 @@
 <main>
   <header class="event-head">
     <h1>Throg's Neck to White Plains</h1>
-    <p class="meta">October 12–28, 1776 · Westchester County, New York</p>
+    <p class="meta">October 12 – November 5, 1776 · Westchester County, New York</p>
   </header>
 
   <figure class="map">
-    <h2>October 12 – November 1: the race up Westchester</h2>
+    <h2>October 12 – November 5: the race up Westchester</h2>
     <div class="map-canvas" id="map-westchester"></div>
     <figcaption>
       Howe moved by water through Hell Gate to land behind the American army. Washington left a garrison in Fort Washington and marched the rest north along the hills west of the Bronx River, reaching White Plains ahead of the British.
@@ -51,69 +51,6 @@
 </main>
 
 <script>
-// New York harbor in 1776: shared period-shoreline corrections (data/geo/new-york-defenses-1776.json),
-// salt marsh, and water drawn without the modern county seams.
-const NY1776 = fetch('../data/geo/new-york-defenses-1776.json').then(r => r.json());
-// later dams, reservoirs and park lakes
-const NY_HIDE = ['Rye Lk', 'Deforest Lk', 'De Forest Lk', 'Lk Tappan', 'Tappan Lk', 'Congers Lk', 'Swartwont Lk', 'Splitrock Resv',
-  'Echo Lk', 'Pompton Lk', 'Lk Parsippany', 'Pines Lk', 'Pinecliff Lk', 'Duhernal Lk', 'Stickle Pond', 'Glen Wild Lk', 'Cranberry Pond',
-  'Farrington Lk', 'Hempstead Lk', 'Hillview Resv', 'Tarrytown Resv', 'Putnam Lk', 'Converse Lk', 'Rockwood Lk', 'Twin Lake No 1',
-  'Pocantico Lk', 'Lk Shoreline Sion Boundary', 'Sheldrake Lk', 'East Basin', 'The Lake', 'Woodcliff Lk', 'Schlegel Lk', 'North Hudson Lk',
-  'Tibbetts Lk', 'Green Brook Pond', 'Indian Lk', 'Duck Pond', 'Hartsdale Lk', 'Prospect Park Lk', 'Willow Lk', 'East Pond', 'West Pond'];
-// On narrow screens symbols and text grow relative to the map, so items can carry phone-only
-// tweaks: `ph: {...}` is merged in, and `phone: false` drops the item.
-const NY_PHONE = window.matchMedia('(max-width: 640px)').matches;
-function nyRender(sel, cfg) {
-  ['towns', 'labels', 'units', 'battles', 'ships', 'moves', 'callouts', 'roads'].forEach(k => {
-    if (!cfg[k]) return;
-    cfg[k] = cfg[k].filter(it => !(NY_PHONE && it.phone === false)).map(it => NY_PHONE && it.ph ? Object.assign({}, it, it.ph) : it);
-  });
-  const w = cfg.water || {};
-  // river centrelines drawn inside the big water polygons, and modern conduits
-  const rv = cfg.rivers || {};
-  if (!rv.only) cfg.rivers = Object.assign({}, rv, { hide: ['Hudson Riv', 'Hudson River Phl', 'East Riv', 'Harlem Riv', 'Jersey City Aqueduct', 'Sewer R O W'].concat(rv.hide || []) });
-  cfg.water = Object.assign({}, w, { hide: NY_HIDE.concat(w.hide || []), hideIn: [[-73.676, 40.964, -73.664, 40.978]].concat(w.hideIn || []) });
-  return NY1776.then(c => {
-    const own = cfg.corrections || {};
-    cfg.corrections = { water: c.water.concat(own.water || []), land: c.land.concat(own.land || []) };
-    const marsh = c.marsh.concat(cfg.marsh || []);
-    const user = cfg.after;
-    cfg.legendExtra = (cfg.noMarsh ? [] : [{ svg: '<svg viewBox="0 0 26 12"><rect x="1" y="1" width="24" height="10" fill="#d3dcc4"/><path d="M4,10 l1.5,-5 M7,10 v-6 M10,10 l-1.5,-5 M16,10 l1.5,-5 M19,10 v-6 M22,10 l-1.5,-5" stroke="#5e8466" stroke-width="1"/></svg>', text: 'Salt marsh' }]).concat(cfg.legendExtra || []);
-    cfg.after = ctx => {
-      const { root, defs, proj, fs } = ctx;
-      // all water shapes merged into one group (kept together so the marsh mask can reuse them)
-      const ws = root.selectAll('path.hm-water').nodes();
-      const wd = ws.map(n => n.getAttribute('d'));
-      if (ws.length) {
-        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        ws[0].parentNode.insertBefore(g, ws[0]);
-        const G = d3.select(g);
-        ws.forEach(n => G.append('path').attr('d', n.getAttribute('d')).attr('fill', '#bccfd0'));
-        ws.forEach(n => n.remove());
-      }
-      if (!cfg.noMarsh) {
-        const id = 'marsh' + Math.random().toString(36).slice(2, 7), s = fs(8);
-        const pat = defs.append('pattern').attr('id', id).attr('patternUnits', 'userSpaceOnUse').attr('width', s).attr('height', s);
-        pat.append('rect').attr('width', s).attr('height', s).attr('fill', '#d3dcc4').attr('fill-opacity', 0.75);
-        pat.append('path').attr('d', `M${s*.2},${s*.55} l${s*.08},-${s*.3} M${s*.32},${s*.55} v-${s*.36} M${s*.44},${s*.55} l-${s*.08},-${s*.3} M${s*.7},${s*.95} l${s*.08},-${s*.3} M${s*.82},${s*.95} v-${s*.36} M${s*.94},${s*.95} l-${s*.08},-${s*.3}`)
-          .attr('stroke', '#5e8466').attr('stroke-width', fs(0.7)).attr('fill', 'none');
-        const mg = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        // marsh only on land: masked by the land shape minus every water shape (period corrections included)
-        const mid = id + 'm';
-        const mask = defs.append('mask').attr('id', mid).attr('maskUnits', 'userSpaceOnUse');
-        mask.append('path').attr('d', root.select('path.hm-land').attr('d')).attr('fill', '#fff');
-        wd.forEach(d => mask.append('path').attr('d', d).attr('fill', '#000'));
-        mg.setAttribute('mask', `url(#${mid})`);
-        const rv = root.select('g.hm-rivers').node();
-        rv.parentNode.insertBefore(mg, rv);
-        const path = d3.geoPath(proj);
-        marsh.forEach(r => d3.select(mg).append('path').attr('d', path({ type: 'Polygon', coordinates: [r.concat([r[0]])] })).attr('fill', `url(#${id})`));
-      }
-      if (user) user(ctx);
-    };
-    return HMap.render(sel, cfg);
-  });
-}
 // passes through a ridge, drawn as )( marks: after-hook factory + legend entry
 const NY_PASS_LEGEND = { svg: '<svg viewBox="-13 -7 26 14"><path d="M-7,-6 Q-2,0 -7,6 M7,-6 Q2,0 7,6" fill="none" stroke="#5a3d1e" stroke-width="1.8"/></svg>', text: 'Pass through the heights' };
 function nyPasses(list) {
@@ -128,23 +65,25 @@ function nyPasses(list) {
   });
 }
 
-nyRender('#map-westchester', {
+HMap.render('#map-westchester', {
+  preset: 'ny1776',
   geo: 'white-plains-westchester',
   bbox: [-74.0, 40.78, -73.62, 41.14],
   terrain: { contours: false, exaggeration: 3 },
-  noMarsh: true,
+  marsh: false,
+  scale: 'top-left',
   alt: 'Map of Westchester County showing the British landings at Throg\'s Neck and Pell\'s Point and the American march north to White Plains',
   moves: [
-    { side: 'british', kind: 'naval', coords: [[-73.9000, 40.7900], [-73.8800, 40.7930], [-73.8300, 40.7990], [-73.8000, 40.8040]], label: 'Oct 12', labelAt: 0.45, ph: { label: '' } },
+    { side: 'british', kind: 'naval', coords: [[-73.9000, 40.7900], [-73.8800, 40.7930], [-73.8300, 40.7990], [-73.8000, 40.8040]], label: 'Oct 12', labelAt: 0.45, phone: false },
     { side: 'british', kind: 'march', coords: [[-73.7960, 40.8100], [-73.8150, 40.8250], [-73.8370, 40.8350]] },
     { side: 'british', kind: 'naval', coords: [[-73.7900, 40.8120], [-73.7850, 40.8330], [-73.7960, 40.8530]], label: 'Oct 18', labelAt: 0.5 },
-    { side: 'british', kind: 'march', coords: [[-73.8030, 40.8620], [-73.8050, 40.8850], [-73.7880, 40.9080], [-73.7880, 40.9500], [-73.7950, 40.9850], [-73.7900, 41.0080]], label: 'Howe, Oct 19–28', labelAt: 0.62 },
-    { side: 'british', kind: 'march', approx: true, coords: [[-73.8000, 41.0130], [-73.8350, 41.0120], [-73.8650, 41.0130]], label: 'Nov 4–5', labelAt: 0.5, ph: { label: '' } },
-    { side: 'continental', kind: 'march', coords: [[-73.9080, 40.8800], [-73.8850, 40.9150], [-73.8550, 40.9550], [-73.8250, 40.9950], [-73.7900, 41.0280]], label: 'Washington, Oct 17–23', labelAt: 0.45 },
-    { side: 'continental', kind: 'retreat', coords: [[-73.7700, 41.0420], [-73.7720, 41.0700], [-73.7700, 41.0950]], label: 'Nov 1', labelAt: 0.5 }
+    { side: 'british', kind: 'march', coords: [[-73.8030, 40.8620], [-73.8050, 40.8850], [-73.7880, 40.9080], [-73.7880, 40.9500], [-73.7950, 40.9850], [-73.7900, 41.0080]], label: 'Howe, Oct 19–28', labelAt: 0.62, approx: true },
+    { side: 'british', kind: 'march', approx: true, coords: [[-73.8000, 41.0130], [-73.8350, 41.0120], [-73.8650, 41.0130]], label: 'Nov 4–5', labelAt: 0.5, phone: false },
+    { side: 'continental', kind: 'march', coords: [[-73.9080, 40.8800], [-73.8850, 40.9150], [-73.8550, 40.9550], [-73.8250, 40.9950], [-73.7900, 41.0280]], label: 'Washington, Oct 17–23', labelAt: 0.45, approx: true },
+    { side: 'continental', kind: 'retreat', coords: [[-73.7700, 41.0420], [-73.7720, 41.0700], [-73.7700, 41.0950]], label: 'Nov 1', labelAt: 0.5, approx: true }
   ],
   units: [
-    { side: 'continental', coords: [-73.9180, 40.8510], label: 'Magaw', labelPos: { dx: 17, dy: 4 }, ph: { label: '' } }
+    { side: 'continental', coords: [-73.9345, 40.8560], label: 'Magaw', labelPos: { dx: -17, dy: 4, anchor: 'end' }, phone: false }
   ],
   battles: [
     { coords: [-73.8420, 40.8380], label: 'Westchester\ncauseway', labelPos: { dx: -14, dy: 0, anchor: 'end' } },
@@ -155,27 +94,27 @@ nyRender('#map-westchester', {
   towns: [
     { place: 'white-plains', label: { dx: 9, dy: 4 } },
     { place: 'kingsbridge', label: { dx: 9, dy: 4 } },
-    { place: 'fort-washington', side: 'continental', label: { dx: 2, dy: 20, anchor: 'start' }, ph: { name: '' } },
-    { place: 'fort-lee', side: 'continental', label: { dx: -10, dy: 4, anchor: 'end' }, ph: { name: '' } },
+    { place: 'fort-washington', side: 'continental', label: { dx: -10, dy: 18, anchor: 'end' }, ph: { name: 'Ft. Washington', label: { dx: 10, dy: -6 } } },
+    { place: 'fort-lee', side: 'continental', label: { dx: -10, dy: 4, anchor: 'end' } },
     { place: 'dobbs-ferry', label: { dx: -8, dy: -6, anchor: 'end' } },
     { place: 'tarrytown', label: { dx: 8, dy: 4 } },
     { name: 'New Rochelle', coords: [-73.7825, 40.9115], kind: 'village', label: { dx: 8, dy: 4 } },
     { name: 'Eastchester', coords: [-73.8270, 40.8930], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
     { name: 'Scarsdale', coords: [-73.7960, 40.9890], kind: 'village', label: { dx: 8, dy: 4 } },
-    { name: 'Westchester', coords: [-73.8440, 40.8420], kind: 'village', label: { dx: -8, dy: -6, anchor: 'end' }, ph: { name: '' } },
+    { name: 'Westchester', coords: [-73.8440, 40.8420], kind: 'village', label: { dx: -8, dy: -6, anchor: 'end' }, phone: false },
     { name: 'North Castle', coords: [-73.7700, 41.1000], kind: 'village', label: { dx: 8, dy: 4 } },
-    { name: "Throg's Point", coords: [-73.7940, 40.8050], kind: 'village', label: { dx: 8, dy: 12 } },
+    { name: "Throg's Point", coords: [-73.7940, 40.8050], kind: 'village', label: { dx: 8, dy: 12 }, ph: { label: { dx: -8, dy: 12, anchor: 'end' } } },
     { name: "Pell's Point", coords: [-73.8020, 40.8580], kind: 'village', label: { dx: 8, dy: 4 } }
   ],
   callouts: [
     { coords: [-73.7700, 40.8130], n: 1 },
-    { coords: [-73.7800, 40.8620], n: 2 },
+    { coords: [-73.7800, 40.8620], n: 2, ph: { coords: [-73.7700, 40.8800] } },
     { coords: [-73.7150, 40.9380], n: 3 },
     { coords: [-73.7450, 41.0800], n: 4 }
   ],
   labels: [
     { coords: [-73.7000, 40.8700], text: 'Long Island Sound', kind: 'water', angle: -35 },
-    { coords: [-73.9330, 41.0000], text: 'Hudson River', kind: 'water', angle: -80, size: 13 },
+    { coords: [-73.9330, 41.0000], text: 'Hudson River', kind: 'water', angle: -80, size: 13, ph: { coords: [-73.9380, 40.9500] } },
     { coords: [-73.9100, 41.1000], text: 'Tappan\nZee', kind: 'water', size: 12 },
     { coords: [-73.8450, 40.9420], text: 'Bronx River', kind: 'water', angle: -60, size: 11.5, dx: 18 },
     { coords: [-73.8200, 40.8180], text: "Throg's Neck", kind: 'terrain', size: 11, angle: -30 , phone: false },
@@ -185,11 +124,12 @@ nyRender('#map-westchester', {
   ]
 });
 
-nyRender('#map-chatterton', {
+HMap.render('#map-chatterton', {
+  preset: 'ny1776',
   geo: 'white-plains-chatterton',
   bbox: [-73.805, 41.0, -73.74, 41.05],
   terrain: { contours: 5, exaggeration: 3 },
-  noMarsh: true,
+  marsh: false,
   alt: 'Map of the Battle of White Plains showing the British and Hessian attack on Chatterton\'s Hill west of the Bronx River',
   roads: [
     { coords: [[-73.7720, 41.0000], [-73.7700, 41.0150], [-73.7670, 41.0300], [-73.7640, 41.0500]] },
@@ -201,7 +141,7 @@ nyRender('#map-chatterton', {
   moves: [
     { side: 'continental', kind: 'retreat', coords: [[-73.7870, 41.0065], [-73.7890, 41.0110], [-73.7915, 41.0160], [-73.7915, 41.0205]], label: 'Spencer', labelAt: 0.35 },
     { side: 'british', kind: 'march', coords: [[-73.7720, 41.0010], [-73.7700, 41.0110], [-73.7715, 41.0175]], label: 'Clinton', labelAt: 0.4 },
-    { side: 'hessian', kind: 'march', coords: [[-73.7825, 41.0030], [-73.7820, 41.0070], [-73.7835, 41.0105]], label: 'Heister', labelAt: 0.3, ph: { label: '' } },
+    { side: 'hessian', kind: 'march', coords: [[-73.7825, 41.0030], [-73.7820, 41.0070], [-73.7835, 41.0105]], label: 'Heister', labelAt: 0.3, phone: false },
     { side: 'british', kind: 'attack', coords: [[-73.7755, 41.0210], [-73.7800, 41.0235], [-73.7855, 41.0252]], label: 'Leslie', labelAt: 0.35 },
     { side: 'hessian', kind: 'attack', coords: [[-73.7840, 41.0120], [-73.7900, 41.0150], [-73.7945, 41.0195]], label: 'Rall', labelAt: 0.5 },
     { side: 'continental', kind: 'retreat', coords: [[-73.7895, 41.0285], [-73.7860, 41.0335], [-73.7800, 41.0380]], label: 'McDougall withdraws', labelAt: 0.45 }

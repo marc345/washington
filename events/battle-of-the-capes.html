@@ -57,11 +57,11 @@ HMap.render('#map-battle', {
   terrain: false,
   water: { hide: ['Atlantic Ocean', 'Chesapeake Bay'] },
   towns: [
-    { place: 'cape-henry', label: { dx: 2, dy: 20 } },
+    { place: 'cape-henry', label: { dx: -6, dy: 18, anchor: 'end' } },
     { name: 'Cape Charles', coords: [-75.975, 37.11], kind: 'village', label: { dx: -9, dy: -4, anchor: 'end' } }
   ],
   moves: [
-    { side: 'british', kind: 'naval', label: 'British approach, morning', labelAt: 0.5, coords: [[-75.40, 37.24], [-75.55, 37.13], [-75.70, 37.05]] },
+    { side: 'british', kind: 'naval', label: 'British approach, morning', labelAt: 0.5, coords: [[-75.47, 37.22], [-75.58, 37.12], [-75.70, 37.05]] },
     { side: 'french', kind: 'naval', coords: [[-76.07, 36.935], [-75.99, 36.95], [-75.94, 36.925]] },
     { side: 'british', kind: 'naval', approx: true, coords: [[-75.70, 37.05], [-75.80, 37.04], [-75.86, 37.02]], width: 1.8 }
   ],
@@ -72,7 +72,7 @@ HMap.render('#map-battle', {
   ],
   battles: [ { coords: [-75.605, 36.895], label: 'vans engage', labelPos: { dx: 16, dy: 22, anchor: 'start' } } ],
   callouts: [
-    { coords: [-76.065, 36.965], n: 1 },
+    { coords: [-76.03, 36.975], n: 1 },
     { coords: [-75.575, 36.93], n: 2 }
   ],
   labels: [
@@ -83,7 +83,7 @@ HMap.render('#map-battle', {
     { coords: [-76.13, 37.17], text: 'Chesapeake Bay', kind: 'water' },
     { coords: [-76.03, 37.02], text: 'Middle Ground\n(shoal)', kind: 'note', size: 10.5 },
     { coords: [-75.55, 36.76], text: 'ATLANTIC OCEAN', kind: 'water', size: 14 },
-    { coords: [-76.12, 36.88], text: 'Lynnhaven Bay', kind: 'note', size: 10.5 },
+    { coords: [-76.18, 36.952], text: 'Lynnhaven Bay', kind: 'water', size: 10.5 },
     { coords: [-75.47, 37.06], text: 'wind from\nthe NNE ↙', kind: 'note', size: 11 },
     { coords: [-76.17, 36.85], text: 'VIRGINIA', kind: 'region', size: 13 }
   ]
@@ -96,14 +96,14 @@ HMap.render('#map-after', {
   terrain: false,
   water: { hide: ['Atlantic Ocean', 'Chesapeake Bay'] },
   towns: [
-    { place: 'cape-henry', label: { dx: 8, dy: 14 } },
+    { place: 'cape-henry', label: { dx: -8, dy: 14, anchor: 'end' } },
     { place: 'yorktown', label: { dx: -8, dy: -6, anchor: 'end' } }
   ],
   moves: [
     { side: 'french', kind: 'naval', label: 'both fleets drift, Sep 6–9', labelAt: 0.5, coords: [[-75.70, 36.86], [-75.45, 36.55], [-75.20, 36.20], [-75.05, 36.00]] },
     { side: 'british', kind: 'naval', coords: [[-75.62, 36.95], [-75.33, 36.62], [-75.08, 36.30], [-74.92, 36.08]] },
     { side: 'french', kind: 'naval', label: 'de Grasse returns, Sep 11', labelAt: 0.45, coords: [[-75.10, 35.95], [-75.55, 36.30], [-75.85, 36.75], [-75.98, 36.97]] },
-    { side: 'french', kind: 'naval', label: 'de Barras, Sep 10', labelAt: 0.5, coords: [[-74.25, 37.65], [-75.10, 37.30], [-75.85, 37.04]] },
+    { side: 'french', kind: 'naval', label: 'de Barras, Sep 10', labelAt: 0.5, coords: [[-74.45, 37.50], [-75.10, 37.27], [-75.85, 37.04]] },
     { side: 'british', kind: 'naval', label: 'Graves to New York', labelAt: 0.5, coords: [[-74.85, 36.15], [-74.65, 36.70], [-74.55, 37.30], [-74.50, 37.68]] }
   ],
   ships: [

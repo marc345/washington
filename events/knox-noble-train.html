@@ -31,15 +31,13 @@
         <li>Mid-January: the climb over the Berkshires by Great Barrington, Monterey, Otis and Blandford, the hardest stretch.</li>
         <li>By January 25: the train reaches Framingham, where the guns are left before going to the siege lines.</li>
       </ol>
-      <span class="note-approx">The route follows the towns marked on the Henry Knox Trail; the exact roads between them are approximate.</span>
+      <span class="note-approx">The route follows the towns marked on the Henry Knox Trail; the exact roads between them are approximate (dotted).</span>
     </figcaption>
   </figure>
 </main>
 
 <script>
 (function () {
-  const U = sel => Math.pow(Math.max(1, 1000 / (document.querySelector(sel).clientWidth || 1000)), 0.82);
-  const u = U('#map-route');
   HMap.render('#map-route', {
     geo: 'knox-noble-train-route',
     bbox: [-74.05, 41.65, -70.95, 44.0],
@@ -48,41 +46,40 @@
     terrain: { contours: false, exaggeration: 3 },
     moves: [
       { side: 'continental', kind: 'naval', coords: [[-73.425, 43.848], [-73.470, 43.780], [-73.497, 43.735], [-73.560, 43.660], [-73.655, 43.560], [-73.705, 43.430]] },
-      { side: 'continental', kind: 'march', coords: [[-73.387, 43.842], [-73.425, 43.848]] },
-      { side: 'continental', kind: 'march', width: 3, coords: [[-73.712, 43.418], [-73.644, 43.310], [-73.585, 43.267], [-73.570, 43.160], [-73.581, 43.100], [-73.653, 42.940],
+      { side: 'continental', kind: 'march', width: 3, approx: true, coords: [[-73.712, 43.418], [-73.644, 43.310], [-73.585, 43.267], [-73.570, 43.160], [-73.581, 43.100], [-73.653, 42.940],
         [-73.680, 42.790], [-73.740, 42.700], [-73.755, 42.651], [-73.740, 42.640], [-73.698, 42.395], [-73.727, 42.227], [-73.530, 42.180],
         [-73.362, 42.196], [-73.215, 42.180], [-73.090, 42.190], [-72.930, 42.180], [-72.750, 42.120], [-72.590, 42.101], [-72.330, 42.160],
         [-72.100, 42.210], [-71.990, 42.244], [-71.802, 42.262], [-71.710, 42.296], [-71.552, 42.346], [-71.436, 42.296]] },
       { side: 'continental', kind: 'march', approx: true, coords: [[-71.436, 42.296], [-71.300, 42.367], [-71.183, 42.370], [-71.119, 42.375]] }
     ],
     towns: [
-      { place: 'fort-ticonderoga', name: 'Fort Ticonderoga, Dec 5', side: 'continental', label: { dx: 10 * u, dy: 5 * u } },
-      { name: 'Fort George', coords: [-73.712, 43.418], kind: 'fort', side: 'continental', label: { dx: -10 * u, dy: 5 * u, anchor: 'end' } },
-      { name: 'Fort Edward', coords: [-73.585, 43.267], kind: 'village', label: { dx: 7 * u, dy: 4 * u } },
-      { name: 'Saratoga', coords: [-73.581, 43.100], kind: 'village', label: { dx: 7 * u, dy: 4 * u } },
-      { place: 'albany', name: 'Albany, Dec 26 – Jan 9', label: { dx: 8 * u, dy: 4 * u } },
-      { name: 'Kinderhook', coords: [-73.698, 42.395], kind: 'village', label: { dx: 7 * u, dy: 4 * u } },
-      { name: 'Claverack', coords: [-73.727, 42.227], kind: 'village', label: { dx: -7 * u, dy: 4 * u, anchor: 'end' } },
-      { name: 'Great Barrington', coords: [-73.362, 42.196], kind: 'village', label: { dx: 0, dy: 16 * u, anchor: 'middle' } },
-      { name: 'Blandford', coords: [-72.930, 42.180], kind: 'village', label: { dx: 0, dy: -9 * u, anchor: 'middle' } },
-      { place: 'springfield-ma', label: { dx: 0, dy: 16 * u, anchor: 'middle' } },
-      { place: 'worcester', label: { dx: 0, dy: -10 * u, anchor: 'middle' } },
-      { name: 'Framingham, Jan 25', coords: [-71.436, 42.296], kind: 'village', label: { dx: 0, dy: 16 * u, anchor: 'middle' } },
-      { place: 'cambridge', label: { dx: 0, dy: -10 * u, anchor: 'end' } }
+      { place: 'fort-ticonderoga', name: 'Fort Ticonderoga, Dec 5', side: 'continental', label: { dx: 10, dy: 5 } },
+      { name: 'Fort George', coords: [-73.712, 43.418], kind: 'fort', side: 'continental', label: { dx: -10, dy: 5, anchor: 'end' }, ph: { label: { dx: 10, dy: 5 } } },
+      { name: 'Fort Edward', coords: [-73.585, 43.267], kind: 'village', label: { dx: 7, dy: 4 } },
+      { name: 'Saratoga', coords: [-73.581, 43.100], kind: 'village', label: { dx: 7, dy: 4 } },
+      { place: 'albany', name: 'Albany, late Dec – Jan 9', label: { dx: 8, dy: 4 } },
+      { name: 'Kinderhook', coords: [-73.698, 42.395], kind: 'village', label: { dx: 7, dy: 4 } },
+      { name: 'Claverack', coords: [-73.727, 42.227], kind: 'village', label: { dx: -7, dy: 4, anchor: 'end' } },
+      { name: 'Great Barrington', coords: [-73.362, 42.196], kind: 'village', label: { dx: 0, dy: 16, anchor: 'middle' } },
+      { name: 'Blandford', coords: [-72.930, 42.180], kind: 'village', label: { dx: 0, dy: -9, anchor: 'middle' } },
+      { place: 'springfield-ma', label: { dx: 0, dy: 16, anchor: 'middle' } },
+      { place: 'worcester', label: { dx: 0, dy: -10, anchor: 'middle' } },
+      { name: 'Framingham, Jan 25', coords: [-71.436, 42.296], kind: 'village', label: { dx: 0, dy: 16, anchor: 'middle' } },
+      { place: 'cambridge', label: { dx: 0, dy: -10, anchor: 'end' } }
     ],
     labels: [
       { coords: [-73.300, 43.930], text: 'Lake Champlain', kind: 'water', size: 12, anchor: 'start' },
-      { coords: [-73.560, 43.640], text: 'Lake George', kind: 'water', size: 12, angle: -55 },
+      { coords: [-73.690, 43.690], text: 'Lake George', kind: 'water', size: 12, angle: -55 },
       { coords: [-72.555, 42.540], text: 'Connecticut R.', kind: 'water', size: 12, angle: -85 },
-      { coords: [-73.170, 42.420], text: 'BERKSHIRES', kind: 'region', size: 13 },
+      { coords: [-73.170, 42.420], text: 'BERKSHIRES', kind: 'region', size: 13, phone: false },
       { coords: [-73.900, 43.050], text: 'N.Y.', kind: 'region', size: 13 },
-      { coords: [-72.700, 43.450], text: 'NEW HAMPSHIRE GRANTS', kind: 'region', size: 13 },
-      { coords: [-72.000, 42.550], text: 'MASSACHUSETTS', kind: 'region' },
+      { coords: [-72.700, 43.450], text: 'NEW HAMPSHIRE GRANTS', kind: 'region', size: 13, ph: { coords: [-72.350, 43.350] } },
+      { coords: [-72.000, 42.550], text: 'MASSACHUSETTS', kind: 'region', ph: { coords: [-71.750, 42.850] } },
       { coords: [-72.250, 41.800], text: 'CONNECTICUT', kind: 'region', size: 13 }
     ],
     callouts: [
       { coords: [-73.400, 43.640], n: 1 },
-      { coords: [-73.930, 42.760], n: 2 },
+      { coords: [-73.480, 42.840], n: 2 },
       { coords: [-73.150, 42.060], n: 3 },
       { coords: [-71.600, 42.130], n: 4 }
     ]

@@ -38,8 +38,12 @@
     <h2>The race to the Dan, January 17 – February 14</h2>
     <div class="map-canvas" id="map-dan"></div>
     <figcaption>
-      After Cowpens, Morgan hurried northeast with his prisoners. Cornwallis burned his baggage at Ramsour's Mill to move faster and forced the Catawba at Cowan's Ford on February 1. Greene joined Morgan, brought up the main army from its camp near Cheraw to Guilford Courthouse, and then raced for the Dan. Rising rivers and a shortage of boats held the British back each time.
-      At Trading Ford the Americans crossed the Yadkin on February 2–3 and the river rose behind them, sending Cornwallis upstream to the Shallow Ford. Greene's army crossed into Virginia at Irwin's and Boyd's ferries on February 13–14, just ahead of the British.
+      After Cowpens, Morgan hurried northeast with his prisoners while Greene brought the main army up from its camp near Cheraw. The two joined at Guilford Courthouse and raced Cornwallis, who had burned his baggage to move faster, for the Dan. Rising rivers and a shortage of boats held the British back each time.
+      <ol>
+        <li>Cornwallis burns his baggage at Ramsour's Mill, then forces the Catawba at Cowan's Ford, February 1.</li>
+        <li>The Americans cross the Yadkin at Trading Ford, February 2–3. The river rises behind them and sends Cornwallis upstream to the Shallow Ford.</li>
+        <li>Greene's army crosses into Virginia at Irwin's and Boyd's ferries, February 13–14, just ahead of the British.</li>
+      </ol>
       <span class="note-approx">Routes are simplified from period accounts and are approximate. The modern reservoirs on these rivers are not shown.</span>
     </figcaption>
   </figure>
@@ -79,7 +83,7 @@ HMap.render('#map-cowpens', {
   bbox: [-81.825, 35.1315, -81.809, 35.143],
   terrain: { contours: 2, exaggeration: 6 },
   alt: 'Map of the Cowpens battlefield showing Morgan\'s three lines across the Green River road and Tarleton\'s attack from the southeast',
-  roads: [ { name: 'Green River road', coords: [CP(-900, 0), CP(-300, 0), CP(300, 0), CP(900, 30)], labelAt: 0.72 } ],
+  roads: [ { name: 'Green River road', coords: [CP(-900, 0), CP(-300, 0), CP(300, 0), CP(900, 30)], labelAt: 0.1 } ],
   units: [
     { side: 'militia', coords: CP(-230, -70), angle: -45, w: 14, h: 6 },
     { side: 'militia', coords: CP(-230, 70), angle: -45, w: 14, h: 6, },
@@ -120,21 +124,22 @@ HMap.render('#map-dan', {
     { name: 'Hicks Creek camp', coords: [-79.88, 34.70], kind: 'village', label: { dx: 9, dy: 4 } },
   ],
   moves: [
-    { side: 'continental', kind: 'march', label: 'Morgan', labelAt: 0.35, coords: [[-81.80, 35.16], [-81.62, 35.33], [-81.30, 35.56], [-80.97, 35.62], [-80.70, 35.66], [-80.48, 35.68], [-80.36, 35.75], [-80.10, 35.98], [-79.86, 36.12]] },
-    { side: 'continental', kind: 'march', label: 'Huger (main army)', labelAt: 0.5, coords: [[-79.88, 34.72], [-79.95, 35.15], [-79.90, 35.65], [-79.86, 36.10]] },
-    { side: 'continental', kind: 'retreat', label: 'Greene, Feb 10–14', labelAt: 0.5, coords: [[-79.82, 36.14], [-79.55, 36.38], [-79.20, 36.58], [-78.96, 36.66]] },
-    { side: 'british', kind: 'march', label: 'Cornwallis', labelAt: 0.12, coords: [[-81.45, 34.88], [-81.33, 35.20], [-81.27, 35.45], [-81.05, 35.44], [-80.95, 35.44], [-80.70, 35.58], [-80.48, 35.66], [-80.40, 35.70]] },
-    { side: 'british', kind: 'march', coords: [[-80.42, 35.73], [-80.55, 35.90], [-80.50, 36.06], [-80.25, 36.10], [-79.95, 36.30], [-79.55, 36.52], [-79.10, 36.66]] },
-    { side: 'british', kind: 'retreat', label: 'Feb 20', labelAt: 0.5, coords: [[-79.08, 36.62], [-79.15, 36.35], [-79.11, 36.10]] }
+    { side: 'continental', kind: 'march', approx: true, label: 'Morgan', labelAt: 0.35, coords: [[-81.80, 35.16], [-81.62, 35.33], [-81.30, 35.56], [-80.97, 35.62], [-80.70, 35.66], [-80.48, 35.68], [-80.36, 35.75], [-80.10, 35.98], [-79.86, 36.12]] },
+    { side: 'continental', kind: 'march', approx: true, label: 'Huger (main army)', labelAt: 0.28, coords: [[-79.88, 34.72], [-79.95, 35.15], [-79.90, 35.65], [-79.86, 36.10]] },
+    { side: 'continental', kind: 'retreat', approx: true, label: 'Greene, Feb 10–14', labelAt: 0.5, ph: { label: 'Greene', labelAt: 0.35 }, coords: [[-79.82, 36.14], [-79.55, 36.38], [-79.20, 36.58], [-78.96, 36.66]] },
+    { side: 'british', kind: 'march', approx: true, label: 'Cornwallis', labelAt: 0.12, coords: [[-81.45, 34.88], [-81.33, 35.20], [-81.27, 35.45], [-81.05, 35.44], [-80.95, 35.44], [-80.70, 35.58], [-80.48, 35.66], [-80.40, 35.70]] },
+    { side: 'british', kind: 'march', approx: true, coords: [[-80.42, 35.73], [-80.55, 35.90], [-80.50, 36.06], [-80.25, 36.10], [-79.95, 36.30], [-79.55, 36.52], [-79.10, 36.66]] },
+    { side: 'british', kind: 'retreat', approx: true, label: 'Feb 20', labelAt: 0.5, coords: [[-79.08, 36.62], [-79.15, 36.35], [-79.11, 36.10]] }
   ],
   battles: [ { coords: [-81.817, 35.138] } ],
+  callouts: [ { coords: [-81.05, 35.20], n: 1 }, { coords: [-80.28, 35.52], n: 2 }, { coords: [-78.85, 36.55], n: 3, ph: { coords: [-78.75, 36.30] } } ],
   labels: [
-    { coords: [-80.55, 34.85], text: 'SOUTH CAROLINA', kind: 'region', size: 13 },
-    { coords: [-80.90, 36.30], text: 'NORTH CAROLINA', kind: 'region', size: 13 },
+    { coords: [-80.95, 34.85], text: 'SOUTH CAROLINA', kind: 'region', size: 13 },
+    { coords: [-81.35, 36.35], text: 'NORTH CAROLINA', kind: 'region', size: 13 },
     { coords: [-80.30, 36.80], text: 'VIRGINIA', kind: 'region', size: 13 },
     { coords: [-79.45, 36.66], text: 'Dan River', kind: 'water', size: 11.5 },
     { coords: [-80.62, 35.40], text: 'Catawba R.', kind: 'water', size: 11.5, angle: -60 },
-    { coords: [-80.20, 35.45], text: 'Yadkin R.', kind: 'water', size: 11.5, angle: -60 }
+    { coords: [-80.15, 35.28], text: 'Yadkin R.', kind: 'water', size: 11.5, angle: -60 }
   ]
 });
 
@@ -146,36 +151,34 @@ HMap.render('#map-guilford', {
   water: { hideUnnamed: true },
   alt: 'Map of the Guilford Courthouse battlefield showing Greene\'s three lines along the New Garden road and the British attack from the west',
   roads: [
-    { name: 'New Garden road', coords: [[-79.866, 36.1230], [-79.8590, 36.1265], GC.hoskins, GC.line2, GC.ch], labelAt: 0.15 },
-    { coords: [GC.ch, [-79.8370, 36.1400], [-79.8330, 36.1440]], labelAt: 0.5 }
+    { coords: [[-79.866, 36.1230], [-79.8590, 36.1265], GC.hoskins, GC.line2, GC.ch] },
+    { coords: [GC.ch, [-79.8370, 36.1400], [-79.8330, 36.1440]] }
   ],
   towns: [
     { name: 'Guilford Courthouse', coords: GC.ch, kind: 'building', label: { dx: 9, dy: 12 } },
-    { name: 'Hoskins farm', coords: GC.hoskins, kind: 'building', label: { dx: 0, dy: 18, anchor: 'middle' } }
+    { name: 'Hoskins farm', coords: GC.hoskins, kind: 'building', label: { dx: 4, dy: 18, anchor: 'start' } }
   ],
+  // the three American lines stand across the road (which runs WSW-ENE)
   units: [
-    { side: 'militia', coords: [-79.8505, 36.1330], angle: -60, w: 34, h: 8 },
-    { side: 'militia', coords: [-79.8485, 36.1293], angle: -60, w: 34, h: 8, },
-    { side: 'militia', coords: [-79.8470, 36.1348], angle: -60, w: 34, h: 8, },
-    { side: 'militia', coords: [-79.8452, 36.1307], angle: -60, w: 34, h: 8 },
-    { side: 'continental', coords: [-79.8428, 36.1372], angle: -40, w: 34, h: 10 },
-    { side: 'continental', coords: [-79.8410, 36.1330], angle: -80, w: 34, h: 10, label: 'Continentals', labelPos: { dx: 18, dy: 14 } },
-    { side: 'continental', type: 'cavalry', coords: [-79.8520, 36.1352], angle: -60, w: 18, h: 8, label: 'Washington', labelPos: { dx: -14, dy: -6, anchor: 'end' } },
-    { side: 'continental', type: 'cavalry', coords: [-79.8478, 36.1270], angle: -60, w: 18, h: 8, label: 'Lee', labelPos: { dx: 14, dy: 10 } },
-    { side: 'british', coords: [-79.8545, 36.1320], angle: -60, w: 30, h: 10, label: 'Webster', labelPos: { dx: -18, dy: -4, anchor: 'end' } },
-    { side: 'british', coords: [-79.8530, 36.1280], angle: -60, w: 30, h: 10, label: 'Leslie', labelPos: { dx: -18, dy: 12, anchor: 'end' } },
-    { side: 'hessian', coords: [-79.8515, 36.1262], angle: -60, w: 18, h: 9 }
+    { side: 'militia', coords: GC.line1, angle: 60, w: 150, h: 9, ph: { w: 75 } },
+    { side: 'militia', coords: GC.line2, angle: 60, w: 150, h: 9, ph: { w: 75 } },
+    { side: 'continental', coords: [-79.8420, 36.1352], angle: 52, w: 110, h: 11, label: 'Continentals', labelPos: { dx: 22, dy: 4 }, ph: { w: 55, labelPos: { dx: 8, dy: 30 } } },
+    { side: 'continental', type: 'cavalry', coords: [-79.8513, 36.1341], angle: 60, w: 18, h: 8, label: 'Washington', labelPos: { dx: -14, dy: -4, anchor: 'end' } },
+    { side: 'continental', type: 'cavalry', coords: [-79.8476, 36.1283], angle: 60, w: 18, h: 8, label: 'Lee', labelPos: { dx: 14, dy: 8 } },
+    { side: 'british', coords: [-79.8540, 36.1318], angle: 60, w: 34, h: 10, label: 'Webster', labelPos: { dx: -18, dy: -6, anchor: 'end' } },
+    { side: 'british', coords: [-79.8527, 36.1283], angle: 60, w: 34, h: 10, label: 'Leslie', labelPos: { dx: -18, dy: 8, anchor: 'end' } },
+    { side: 'hessian', coords: [-79.8514, 36.1264], angle: 60, w: 20, h: 9, label: 'Bose', labelPos: { dx: -14, dy: 12, anchor: 'end' } }
   ],
   moves: [
-    { side: 'british', kind: 'attack', coords: [[-79.8535, 36.1325], [-79.8480, 36.1345], [-79.8435, 36.1360]] },
-    { side: 'british', kind: 'attack', coords: [[-79.8520, 36.1288], [-79.8470, 36.1305], [-79.8430, 36.1325]] },
-    { side: 'hessian', kind: 'attack', coords: [[-79.8505, 36.1262], [-79.8470, 36.1245], [-79.8440, 36.1235]] },
+    { side: 'british', kind: 'attack', coords: [[-79.8532, 36.1322], [-79.8488, 36.1338], [-79.8438, 36.1362]] },
+    { side: 'british', kind: 'attack', coords: [[-79.8519, 36.1287], [-79.8475, 36.1302], [-79.8433, 36.1330]] },
+    { side: 'hessian', kind: 'attack', coords: [[-79.8505, 36.1260], [-79.8470, 36.1245], [-79.8440, 36.1235]] },
     { side: 'continental', kind: 'retreat', coords: [[-79.8392, 36.1365], [-79.8370, 36.1400], [-79.8335, 36.1435]] }
   ],
   battles: [ { coords: [-79.8430, 36.1230], label: 'Bose vs. Lee & Campbell', labelPos: { dx: 0, dy: 22, anchor: 'middle' } } ],
-  callouts: [ { coords: [-79.8468, 36.1288], n: 1 }, { coords: [-79.8435, 36.1302], n: 2 }, { coords: [-79.8450, 36.1386], n: 3 } ],
+  callouts: [ { coords: [-79.8483, 36.1322], n: 1 }, { coords: [-79.8449, 36.1340], n: 2 }, { coords: [-79.8412, 36.1376], n: 3 } ],
   labels: [
-    { coords: [-79.8605, 36.1328], text: 'from New Garden\nMeeting House', kind: 'note', size: 11, anchor: 'start' },
+    { coords: [-79.8600, 36.1243], text: 'New Garden road, from\nNew Garden Meeting House', kind: 'note', size: 11, anchor: 'start' },
     { coords: [-79.8350, 36.1400], text: 'to Troublesome Creek', kind: 'note', size: 11, anchor: 'end', dx: -14, dy: 14 }
   ]
 });
@@ -188,7 +191,7 @@ HMap.render('#map-wilmington', {
   towns: [
     { place: 'guilford-courthouse', label: { dx: -9, dy: -6, anchor: 'end' } },
     { name: 'Ramsey\'s Mill', coords: [-79.07, 35.62], kind: 'village', label: { dx: 9, dy: 4 } },
-    { name: 'Cross Creek', coords: [-78.88, 35.05], kind: 'village', label: { dx: 9, dy: 4 } },
+    { name: 'Cross Creek', coords: [-78.88, 35.05], kind: 'village', label: { dx: -9, dy: 4, anchor: 'end' } },
     { place: 'wilmington-nc', label: { dx: 9, dy: 10 } },
     { name: 'Halifax', coords: [-77.59, 36.33], kind: 'village', label: { dx: 9, dy: 4 } },
     { place: 'petersburg', label: { dx: -10, dy: 4, anchor: 'end' } },
@@ -196,18 +199,18 @@ HMap.render('#map-wilmington', {
     { place: 'hillsborough', label: { dx: 9, dy: -6 } }
   ],
   moves: [
-    { side: 'british', kind: 'march', label: 'Mar 18 – Apr 7', labelAt: 0.4, coords: [[-79.84, 36.12], [-79.70, 35.95], [-79.30, 35.75], [-79.07, 35.62], [-78.88, 35.07], [-78.40, 34.60], [-77.98, 34.27]] },
+    { side: 'british', kind: 'march', label: 'Mar 18 – Apr 7', labelAt: 0.6, coords: [[-79.84, 36.12], [-79.70, 35.95], [-79.30, 35.75], [-79.07, 35.62], [-78.88, 35.07], [-78.40, 34.60], [-77.98, 34.27]] },
     { side: 'british', kind: 'march', approx: true, label: 'Apr 25 – May 20', labelAt: 0.5, coords: [[-77.92, 34.30], [-77.95, 34.95], [-77.62, 35.30], [-77.62, 35.90], [-77.59, 36.31], [-77.48, 36.80], [-77.42, 37.20]] },
     { side: 'continental', kind: 'march', label: 'Greene', labelAt: 0.4, coords: [[-79.80, 36.18], [-79.55, 35.95], [-79.15, 35.66], [-79.35, 35.30], [-79.85, 34.75], [-80.55, 34.28]] }
   ],
-  units: [ { side: 'british', coords: [-76.95, 37.22], label: 'Phillips & Arnold', labelPos: { dx: 0, dy: 26, anchor: 'middle' } } ],
+  units: [ { side: 'british', coords: [-77.27, 37.17], label: 'Arnold\'s force', labelPos: { dx: 0, dy: 22, anchor: 'middle' } } ],
   battles: [ { coords: [-80.607, 34.29], label: 'Hobkirk\'s Hill (Camden), Apr 25', labelPos: { dx: 16, dy: -10, anchor: 'start' } } ],
   labels: [
     { coords: [-79.75, 34.20], text: 'SOUTH\nCAROLINA', kind: 'region', size: 12 },
     { coords: [-79.40, 36.30], text: 'NORTH CAROLINA', kind: 'region', size: 12 },
     { coords: [-78.80, 37.20], text: 'VIRGINIA', kind: 'region', size: 12 },
     { coords: [-77.10, 33.80], text: 'ATLANTIC OCEAN', kind: 'water', size: 13 },
-    { coords: [-78.55, 34.75], text: 'Cape Fear R.', kind: 'water', size: 11.5, angle: 50 }
+    { coords: [-78.62, 34.62], text: 'Cape Fear R.', kind: 'water', size: 11.5, angle: 45 }
   ]
 });
 </script>

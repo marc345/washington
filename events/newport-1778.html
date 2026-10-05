@@ -26,7 +26,7 @@
     <figcaption>
       The British held Newport and all of Aquidneck Island with about 6,700 men. D'Estaing's fleet was to force its way into the bay and land French troops while Sullivan crossed onto the island from the east, so that Newport would be attacked from two sides.
       <ol>
-        <li>Jul 29: the French fleet arrives off Point Judith. Frigates enter the western and Sakonnet passages, and the British burn or scuttle their own warships to keep them from being captured.</li>
+        <li>Jul 29: the French fleet arrives off Point Judith. From Jul 30 to Aug 5 French ships push into the Sakonnet and western passages, and the British burn or scuttle their own warships to keep them from being captured.</li>
         <li>Aug 8: d'Estaing runs past the Newport batteries into the bay. The British pull back into their lines around the town.</li>
         <li>Aug 9: Sullivan crosses from Tiverton at Howland's Ferry. The same day Howe's relief fleet appears off Point Judith.</li>
         <li>Aug 10: d'Estaing sails out to fight Howe. A great gale on Aug 11–12 scatters and damages both fleets before they can engage.</li>
@@ -67,12 +67,10 @@
 </main>
 
 <script>
-const SMALL = () => window.innerWidth < 600;
-
 HMap.render('#map-bay', {
   geo: 'newport-1778-bay',
   bbox: [-71.6, 41.3, -71.05, 41.78],
-  get textScale() { return SMALL() ? 0.85 : 1; },
+  ph: { textScale: 0.85 },
   alt: 'Map of Narragansett Bay showing the French fleet forcing the passage into the bay, Sullivan crossing onto Aquidneck Island, and the British fleet arriving off Point Judith',
   towns: [
     { place: 'newport', side: 'british', label: { dx: -8, dy: 14, anchor: 'end' } },
@@ -89,7 +87,7 @@ HMap.render('#map-bay', {
     { side: 'british', coords: [-71.28, 41.316], angle: 160, label: 'Howe, Aug 9', labelPos: { dx: 22, dy: 4, anchor: 'start' } }
   ],
   moves: [
-    { side: 'french', kind: 'naval', label: 'into the bay, Aug 8', labelAt: 0.55, coords: [[-71.40, 41.405], [-71.375, 41.44], [-71.355, 41.462], [-71.348, 41.49], [-71.345, 41.52]] },
+    { side: 'french', kind: 'naval', label: 'into the bay, Aug 8', labelAt: 0.2, ph: { label: 'Aug 8' }, coords: [[-71.418, 41.383], [-71.40, 41.405], [-71.381, 41.44], [-71.355, 41.462], [-71.348, 41.49], [-71.345, 41.52]] },
     { side: 'french', kind: 'naval', coords: [[-71.36, 41.52], [-71.363, 41.47], [-71.37, 41.42], [-71.355, 41.37], [-71.335, 41.338]] },
     { side: 'french', kind: 'naval', coords: [[-71.43, 41.41], [-71.43, 41.46], [-71.425, 41.50]], width: 1.6 },
     { side: 'french', kind: 'naval', coords: [[-71.20, 41.42], [-71.215, 41.47], [-71.222, 41.51]], width: 1.6 },
@@ -118,7 +116,7 @@ HMap.render('#map-bay', {
 HMap.render('#map-siege', {
   geo: 'newport-1778-siege',
   bbox: [-71.36, 41.46, -71.24, 41.56],
-  get textScale() { return SMALL() ? 0.85 : 1; },
+  ph: { textScale: 0.85 },
   terrain: { contours: 10 },
   // Newport's water-supply reservoirs (19th–20th century) on the line of the siege works
   water: { hide: ['Green End Pond', 'Gardiner Pond', 'Nelson Pond', 'Saint Marys Pond', 'Sisson Pond', 'Lawton Valley Resr'] },
@@ -136,7 +134,7 @@ HMap.render('#map-siege', {
   ],
   towns: [
     { place: 'newport', label: { dx: -10, dy: 4, anchor: 'end' } },
-    { name: 'Green End', coords: [-71.2937, 41.5044], kind: 'building', label: { dx: 10, dy: 16 } },
+    { name: 'Green End', coords: [-71.2937, 41.5044], kind: 'building', label: { dx: -10, dy: 16, anchor: 'end' } },
     { name: 'Tonomy Hill', coords: [-71.3030, 41.5075], kind: 'building', label: { dx: -4, dy: -12, anchor: 'end' } }
   ],
   units: [
@@ -146,7 +144,7 @@ HMap.render('#map-siege', {
     { side: 'militia', coords: [-71.2735, 41.5185], angle: 80 }
   ],
   moves: [
-    { side: 'continental', kind: 'march', label: 'Aug 15', labelAt: 0.5, coords: [[-71.2760, 41.5580], [-71.2770, 41.5400], [-71.2765, 41.5230]] },
+    { side: 'continental', kind: 'march', label: 'Aug 15', labelAt: 0.5, coords: [[-71.2725, 41.5580], [-71.2735, 41.5400], [-71.2735, 41.5230]] },
     { side: 'continental', kind: 'retreat', label: 'Aug 28, to Butts Hill', labelAt: 0.5, coords: [[-71.2700, 41.5200], [-71.2670, 41.5400], [-71.2650, 41.5590]] }
   ],
   callouts: [
@@ -166,7 +164,7 @@ HMap.render('#map-siege', {
 HMap.render('#map-battle', {
   geo: 'newport-1778-battle',
   bbox: [-71.29, 41.575, -71.20, 41.645],
-  get textScale() { return SMALL() ? 0.85 : 1; },
+  ph: { textScale: 0.85, scale: 'bottom-right' },
   terrain: { contours: 10 },
   alt: 'Map of the north end of Aquidneck Island showing the British and Hessian columns attacking up the East and West roads and the American line on Butts Hill',
   works: [
@@ -195,8 +193,8 @@ HMap.render('#map-battle', {
     { side: 'british', coords: [-71.2820, 41.5930], angle: 70 }
   ],
   moves: [
-    { side: 'continental', kind: 'retreat', label: 'Laurens', labelAt: 0.4, coords: [[-71.2755, 41.5720], [-71.2715, 41.5860], [-71.2655, 41.5990]], width: 2.2 },
-    { side: 'continental', kind: 'retreat', label: 'Livingston', labelAt: 0.4, coords: [[-71.2460, 41.5720], [-71.2510, 41.5850], [-71.2490, 41.6020]], width: 2.2 },
+    { side: 'continental', kind: 'retreat', label: 'Laurens', labelAt: 0.25, coords: [[-71.2755, 41.5720], [-71.2715, 41.5860], [-71.2655, 41.5990]], width: 2.2 },
+    { side: 'continental', kind: 'retreat', label: 'Livingston', labelAt: 0.75, coords: [[-71.2460, 41.5720], [-71.2510, 41.5850], [-71.2490, 41.6020]], width: 2.2 },
     { side: 'hessian', kind: 'attack', coords: [[-71.2690, 41.5945], [-71.2670, 41.5995], [-71.2640, 41.6030]] },
     { side: 'british', kind: 'attack', coords: [[-71.2550, 41.5930], [-71.2530, 41.5990], [-71.2505, 41.6045]] },
     { side: 'continental', kind: 'retreat', label: 'Aug 30, night', labelAt: 0.5, coords: [[-71.2420, 41.6180], [-71.2280, 41.6265], [-71.2095, 41.6315]] }
@@ -204,7 +202,7 @@ HMap.render('#map-battle', {
   battles: [
     { coords: [-71.2630, 41.6020] },
     { coords: [-71.2544, 41.5828], label: 'Quaker Hill', labelPos: { dx: 14, dy: 16, anchor: 'start' } },
-    { coords: [-71.2700, 41.5840], label: 'Turkey Hill', labelPos: { dx: -14, dy: 4, anchor: 'end' } }
+    { coords: [-71.2700, 41.5840], label: 'Turkey Hill', labelPos: { dx: 14, dy: 6, anchor: 'start' } }
   ],
   callouts: [
     { coords: [-71.2380, 41.5880], n: 1 },

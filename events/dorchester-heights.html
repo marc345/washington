@@ -24,7 +24,7 @@
     <h2>The night of March 4–5: fortifying the heights</h2>
     <div class="map-canvas" id="map-night"></div>
     <figcaption>
-      Under cover of two nights of diversionary bombardment, General John Thomas led about 2,000 men and hundreds of ox-carts across Dorchester Neck after dark on March 4. By dawn, prefabricated works stood on the twin hills, with Knox's guns able to reach the town and the anchorage.
+      Under cover of three nights of diversionary bombardment, General John Thomas led about 2,000 men and hundreds of ox-carts across Dorchester Neck after dark on March 4. By dawn, prefabricated works stood on the twin hills, with Knox's guns able to reach the town and the anchorage.
       <ol>
         <li>March 2–4: batteries at Lechmere Point, Cobble Hill and Lamb's Dam fire on Boston to cover the noise of the work.</li>
         <li>Bales of hay screen the road across the exposed Neck.</li>
@@ -53,24 +53,14 @@
 
 <script>
 (function () {
-  // Period (1795) shoreline: water from data/geo/<map>.shore.json, drawn without seams, plus the period coastline as one edge line.
-  const shore = id => fetch('../data/geo/' + id + '.shore.json').then(r => r.json());
-  const periodShore = (c, allWater) => ({ root, proj, d3 }) => {
-    // allWater: also drop the edge strokes of the modern water polygons, whose tiles leave seams in open water
-    root.selectAll('path.hm-water').filter((d, i) => allWater || i > 0).style('stroke', 'var(--sea)').style('stroke-width', 1.3);
-    root.insert('path', '.hm-rivers').attr('d', d3.geoPath(proj)({ type: 'MultiLineString', coordinates: c.coast }))
-      .attr('fill', 'none').style('stroke', 'var(--sea-edge)').style('stroke-width', 0.6);
-  };
-  // label offsets scaled like the library's symbols, so they clear symbols at phone width too
-  const U = sel => Math.pow(Math.max(1, 1000 / (document.querySelector(sel).clientWidth || 1000)), 0.82);
+  // Period (1795) shoreline: corrections from data/geo/<map>.shore.json (Leventhal Center survey), coast drawn by the library.
   const RIVERS = { hide: ['Charles Riv', 'Mystic Riv', 'Malden Riv', 'Chelsea Riv', 'Muddy Riv', 'Mill Crk', 'Neponset Riv'] };
 
-  const u1 = U('#map-night');
-  shore('dorchester-heights-night').then(corrections => HMap.render('#map-night', {
+  HMap.render('#map-night', {
     geo: 'dorchester-heights-night',
     bbox: [-71.115, 42.305, -71.0, 42.385],
     alt: 'Map of Boston and Dorchester Neck on the night of March 4–5, 1776, showing the American column fortifying Dorchester Heights and the diversionary batteries',
-    corrections, after: periodShore(corrections), rivers: RIVERS,
+    corrections: 'data/geo/dorchester-heights-night.shore.json', rivers: RIVERS,
     terrain: { contours: 10 },
     roads: [
       { coords: [[-71.0655, 42.3555], [-71.0668, 42.3480], [-71.0700, 42.3410], [-71.0780, 42.3360], [-71.0850, 42.3310], [-71.0910, 42.3300]] },
@@ -89,11 +79,11 @@
       { side: 'british', coords: [[-71.0712, 42.3447], [-71.0675, 42.3443], [-71.0640, 42.3440]] }
     ],
     towns: [
-      { name: 'Boston', coords: [-71.0590, 42.3595], kind: 'town', label: { dx: 7 * u1, dy: 4 * u1 } },
-      { name: 'Roxbury', coords: [-71.0910, 42.3300], kind: 'village', label: { dx: 0, dy: 15 * u1, anchor: 'middle' } },
-      { name: 'Dorchester', coords: [-71.0660, 42.3140], kind: 'village', label: { dx: 7 * u1, dy: 4 * u1 } },
-      { name: 'Cambridge', coords: [-71.1100, 42.3720], kind: 'town', label: { dx: 0, dy: -9 * u1, anchor: 'middle' } },
-      { name: 'Castle William', coords: [-71.0125, 42.3385], kind: 'fort', side: 'british', label: { dx: 0, dy: 19 * u1, anchor: 'middle' } }
+      { name: 'Boston', coords: [-71.0590, 42.3595], kind: 'town', label: { dx: 7, dy: 4 } },
+      { name: 'Roxbury', coords: [-71.0910, 42.3300], kind: 'village', label: { dx: 0, dy: 15, anchor: 'middle' } },
+      { name: 'Dorchester', coords: [-71.0660, 42.3140], kind: 'village', label: { dx: 7, dy: 4 } },
+      { name: 'Cambridge', coords: [-71.1100, 42.3720], kind: 'town', label: { dx: 0, dy: -9, anchor: 'middle' } },
+      { name: 'Castle William', coords: [-71.0125, 42.3385], kind: 'fort', side: 'british', label: { dx: 0, dy: 19, anchor: 'middle' } }
     ],
     moves: [
       { side: 'continental', kind: 'march', label: 'Thomas, from 7 p.m.', labelAt: 0.35, coords: [[-71.0820, 42.3290], [-71.0700, 42.3255], [-71.0600, 42.3270], [-71.0555, 42.3305], [-71.0505, 42.3322], [-71.0472, 42.3326]] },
@@ -106,7 +96,7 @@
       { side: 'continental', type: 'artillery', coords: [-71.0868, 42.3772] },
       { side: 'continental', type: 'artillery', coords: [-71.0790, 42.3355] },
       { side: 'continental', coords: [-71.1000, 42.3625], label: 'Putnam' },
-      { side: 'british', coords: [-71.0650, 42.3555], label: 'Howe', labelPos: { dx: 0, dy: -11 * u1, anchor: 'middle' } }
+      { side: 'british', coords: [-71.0650, 42.3555], label: 'Howe', labelPos: { dx: 0, dy: -11, anchor: 'middle' } }
     ],
     ships: [
       { side: 'british', coords: [-71.0400, 42.3590], angle: 0 },
@@ -128,14 +118,14 @@
       { coords: [-71.0985, 42.3568], n: 3 },
       { coords: [-71.0250, 42.3430], n: 4 }
     ]
-  }));
+  });
 
-  const u2 = U('#map-evacuation');
-  shore('dorchester-heights-evacuation').then(corrections => HMap.render('#map-evacuation', {
+  HMap.render('#map-evacuation', {
     geo: 'dorchester-heights-evacuation',
     bbox: [-71.10, 42.27, -70.86, 42.40],
     alt: 'Map of Boston Harbor showing the British evacuation of March 17, 1776, the fleet\'s anchorage in Nantasket Road and the American entry into Boston',
-    corrections, after: periodShore(corrections, true), rivers: RIVERS,
+    // Moon Island causeway (19th century) back to water
+    corrections: ['data/geo/dorchester-heights-evacuation.shore.json', { water: [[[-71.0082, 42.3006], [-70.9968, 42.3027], [-70.9966, 42.3058], [-71.0082, 42.3042]]] }], rivers: RIVERS,
     terrain: { contours: 20 },
     works: [
       { side: 'continental', kind: 'redoubt', coords: [[-71.0464, 42.3329]], size: 6 },
@@ -143,11 +133,11 @@
       { side: 'continental', kind: 'redoubt', coords: [[-71.0525, 42.3378]], size: 6 }
     ],
     towns: [
-      { name: 'Boston', coords: [-71.0590, 42.3595], kind: 'town', label: { dx: -7 * u2, dy: -5 * u2, anchor: 'end' } },
-      { name: 'Roxbury', coords: [-71.0910, 42.3300], kind: 'village', label: { dx: 0, dy: 15 * u2, anchor: 'middle' } },
-      { name: 'Charlestown', coords: [-71.0620, 42.3740], kind: 'village', label: { dx: -7 * u2, dy: -3 * u2, anchor: 'end' } },
-      { name: 'Hull', coords: [-70.8990, 42.3020], kind: 'village', label: { dx: 7 * u2, dy: 4 * u2 } },
-      { name: 'Castle William', coords: [-71.0125, 42.3385], kind: 'fort', side: 'british', label: { dx: 9 * u2, dy: 13 * u2 } }
+      { name: 'Boston', coords: [-71.0590, 42.3595], kind: 'town', label: { dx: -7, dy: -5, anchor: 'end' } },
+      { name: 'Roxbury', coords: [-71.0910, 42.3300], kind: 'village', label: { dx: 0, dy: 15, anchor: 'middle' } },
+      { name: 'Charlestown', coords: [-71.0620, 42.3740], kind: 'village', label: { dx: -7, dy: -3, anchor: 'end' } },
+      { name: 'Hull', coords: [-70.8990, 42.3020], kind: 'village', label: { dx: 7, dy: 4 } },
+      { name: 'Castle William', coords: [-71.0125, 42.3385], kind: 'fort', side: 'british', label: { dx: 9, dy: 13 } }
     ],
     moves: [
       { side: 'british', kind: 'naval', label: 'March 17', labelAt: 0.35, coords: [[-71.0480, 42.3600], [-71.0200, 42.3500], [-70.9900, 42.3430], [-70.9620, 42.3380], [-70.9450, 42.3250], [-70.9370, 42.3100]] },
@@ -156,25 +146,25 @@
     ],
     ships: [
       { side: 'british', coords: [-70.9420, 42.3040], angle: 0 },
-      { side: 'british', coords: [-70.9300, 42.3000], angle: 10 },
-      { side: 'british', coords: [-70.9480, 42.2980], angle: -10 }
+      { side: 'british', coords: [-70.9580, 42.3060], angle: 10, phone: false },
+      { side: 'british', coords: [-70.9500, 42.2965], angle: -10, ph: { coords: [-70.9560, 42.2950] } }
     ],
     labels: [
-      { coords: [-70.9400, 42.2930], text: 'Nantasket Road', kind: 'water', size: 13 },
+      { coords: [-70.9420, 42.2850], text: 'Nantasket Road', kind: 'water', size: 13 },
       { coords: [-71.0450, 42.3260], text: 'Dorchester Heights', kind: 'terrain', size: 11 },
       { coords: [-71.0525, 42.3425], text: 'Nook\'s Hill', kind: 'terrain', size: 11 },
       { coords: [-70.9750, 42.3560], text: 'Boston Harbor', kind: 'water', size: 14 },
       { coords: [-71.0350, 42.3010], text: 'Dorchester Bay', kind: 'water', size: 12 },
-      { coords: [-70.9000, 42.3800], text: 'Massachusetts Bay', kind: 'water', size: 14 },
+      { coords: [-70.9000, 42.3800], text: 'Massachusetts Bay', kind: 'water', size: 14, ph: { coords: [-70.9550, 42.3840] } },
       { coords: [-70.9600, 42.3260], text: 'Long I.', kind: 'terrain', size: 11 }
     ],
     callouts: [
       { coords: [-71.0640, 42.3330], n: 1 },
       { coords: [-71.0440, 42.3655], n: 2 },
       { coords: [-71.0900, 42.3470], n: 3 },
-      { coords: [-70.9200, 42.2900], n: 4 }
+      { coords: [-70.9150, 42.2960], n: 4 }
     ]
-  }));
+  });
 })();
 </script>
 </body>

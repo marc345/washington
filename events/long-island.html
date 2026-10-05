@@ -64,69 +64,6 @@
 </main>
 
 <script>
-// New York harbor in 1776: shared period-shoreline corrections (data/geo/new-york-defenses-1776.json),
-// salt marsh, and water drawn without the modern county seams.
-const NY1776 = fetch('../data/geo/new-york-defenses-1776.json').then(r => r.json());
-// later dams, reservoirs and park lakes
-const NY_HIDE = ['Rye Lk', 'Deforest Lk', 'De Forest Lk', 'Lk Tappan', 'Tappan Lk', 'Congers Lk', 'Swartwont Lk', 'Splitrock Resv',
-  'Echo Lk', 'Pompton Lk', 'Lk Parsippany', 'Pines Lk', 'Pinecliff Lk', 'Duhernal Lk', 'Stickle Pond', 'Glen Wild Lk', 'Cranberry Pond',
-  'Farrington Lk', 'Hempstead Lk', 'Hillview Resv', 'Tarrytown Resv', 'Putnam Lk', 'Converse Lk', 'Rockwood Lk', 'Twin Lake No 1',
-  'Pocantico Lk', 'Lk Shoreline Sion Boundary', 'Sheldrake Lk', 'East Basin', 'The Lake', 'Woodcliff Lk', 'Schlegel Lk', 'North Hudson Lk',
-  'Tibbetts Lk', 'Green Brook Pond', 'Indian Lk', 'Duck Pond', 'Hartsdale Lk', 'Prospect Park Lk', 'Willow Lk', 'East Pond', 'West Pond'];
-// On narrow screens symbols and text grow relative to the map, so items can carry phone-only
-// tweaks: `ph: {...}` is merged in, and `phone: false` drops the item.
-const NY_PHONE = window.matchMedia('(max-width: 640px)').matches;
-function nyRender(sel, cfg) {
-  ['towns', 'labels', 'units', 'battles', 'ships', 'moves', 'callouts', 'roads'].forEach(k => {
-    if (!cfg[k]) return;
-    cfg[k] = cfg[k].filter(it => !(NY_PHONE && it.phone === false)).map(it => NY_PHONE && it.ph ? Object.assign({}, it, it.ph) : it);
-  });
-  const w = cfg.water || {};
-  // river centrelines drawn inside the big water polygons, and modern conduits
-  const rv = cfg.rivers || {};
-  if (!rv.only) cfg.rivers = Object.assign({}, rv, { hide: ['Hudson Riv', 'Hudson River Phl', 'East Riv', 'Harlem Riv', 'Jersey City Aqueduct', 'Sewer R O W'].concat(rv.hide || []) });
-  cfg.water = Object.assign({}, w, { hide: NY_HIDE.concat(w.hide || []), hideIn: [[-73.676, 40.964, -73.664, 40.978]].concat(w.hideIn || []) });
-  return NY1776.then(c => {
-    const own = cfg.corrections || {};
-    cfg.corrections = { water: c.water.concat(own.water || []), land: c.land.concat(own.land || []) };
-    const marsh = c.marsh.concat(cfg.marsh || []);
-    const user = cfg.after;
-    cfg.legendExtra = (cfg.noMarsh ? [] : [{ svg: '<svg viewBox="0 0 26 12"><rect x="1" y="1" width="24" height="10" fill="#d3dcc4"/><path d="M4,10 l1.5,-5 M7,10 v-6 M10,10 l-1.5,-5 M16,10 l1.5,-5 M19,10 v-6 M22,10 l-1.5,-5" stroke="#5e8466" stroke-width="1"/></svg>', text: 'Salt marsh' }]).concat(cfg.legendExtra || []);
-    cfg.after = ctx => {
-      const { root, defs, proj, fs } = ctx;
-      // all water shapes merged into one group (kept together so the marsh mask can reuse them)
-      const ws = root.selectAll('path.hm-water').nodes();
-      const wd = ws.map(n => n.getAttribute('d'));
-      if (ws.length) {
-        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        ws[0].parentNode.insertBefore(g, ws[0]);
-        const G = d3.select(g);
-        ws.forEach(n => G.append('path').attr('d', n.getAttribute('d')).attr('fill', '#bccfd0'));
-        ws.forEach(n => n.remove());
-      }
-      if (!cfg.noMarsh) {
-        const id = 'marsh' + Math.random().toString(36).slice(2, 7), s = fs(8);
-        const pat = defs.append('pattern').attr('id', id).attr('patternUnits', 'userSpaceOnUse').attr('width', s).attr('height', s);
-        pat.append('rect').attr('width', s).attr('height', s).attr('fill', '#d3dcc4').attr('fill-opacity', 0.75);
-        pat.append('path').attr('d', `M${s*.2},${s*.55} l${s*.08},-${s*.3} M${s*.32},${s*.55} v-${s*.36} M${s*.44},${s*.55} l-${s*.08},-${s*.3} M${s*.7},${s*.95} l${s*.08},-${s*.3} M${s*.82},${s*.95} v-${s*.36} M${s*.94},${s*.95} l-${s*.08},-${s*.3}`)
-          .attr('stroke', '#5e8466').attr('stroke-width', fs(0.7)).attr('fill', 'none');
-        const mg = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        // marsh only on land: masked by the land shape minus every water shape (period corrections included)
-        const mid = id + 'm';
-        const mask = defs.append('mask').attr('id', mid).attr('maskUnits', 'userSpaceOnUse');
-        mask.append('path').attr('d', root.select('path.hm-land').attr('d')).attr('fill', '#fff');
-        wd.forEach(d => mask.append('path').attr('d', d).attr('fill', '#000'));
-        mg.setAttribute('mask', `url(#${mid})`);
-        const rv = root.select('g.hm-rivers').node();
-        rv.parentNode.insertBefore(mg, rv);
-        const path = d3.geoPath(proj);
-        marsh.forEach(r => d3.select(mg).append('path').attr('d', path({ type: 'Polygon', coordinates: [r.concat([r[0]])] })).attr('fill', `url(#${id})`));
-      }
-      if (user) user(ctx);
-    };
-    return HMap.render(sel, cfg);
-  });
-}
 // passes through a ridge, drawn as )( marks: after-hook factory + legend entry
 const NY_PASS_LEGEND = { svg: '<svg viewBox="-13 -7 26 14"><path d="M-7,-6 Q-2,0 -7,6 M7,-6 Q2,0 7,6" fill="none" stroke="#5a3d1e" stroke-width="1.8"/></svg>', text: 'Pass through the heights' };
 function nyPasses(list) {
@@ -141,6 +78,8 @@ function nyPasses(list) {
   });
 }
 
+// Gowanus Creek, winding through the marsh (the modern canal is straight)
+const GOWANUS_CREEK = [[-74.0040, 40.6682], [-74.0033, 40.6686], [-74.0024, 40.6692], [-74.0014, 40.6698], [-74.0006, 40.6705], [-74.0001, 40.6712], [-73.9998, 40.6720], [-73.9995, 40.6728], [-73.9990, 40.6735], [-73.9982, 40.6741], [-73.9973, 40.6746], [-73.9963, 40.6752], [-73.9955, 40.6758], [-73.9950, 40.6765], [-73.9946, 40.6773], [-73.9943, 40.6781], [-73.9938, 40.6790], [-73.9931, 40.6800], [-73.9923, 40.6811], [-73.9915, 40.6821], [-73.9910, 40.6828]];
 const LINES = [[-73.9702, 40.6990], [-73.9730, 40.6955], [-73.9757, 40.6914], [-73.9790, 40.6896], [-73.9822, 40.6886], [-73.9853, 40.6862], [-73.9886, 40.6836]];
 const ROADS = {
   gowanus: { name: 'Gowanus Road', labelAt: 0.7, ph: { name: null }, coords: [[-74.0100, 40.6160], [-74.0085, 40.6330], [-74.0035, 40.6500], [-73.9985, 40.6600], [-73.9930, 40.6690], [-73.9880, 40.6760], [-73.9862, 40.6830], [-73.9900, 40.6930], [-73.9940, 40.7025]] },
@@ -166,11 +105,12 @@ const PASSES = [
   { coords: [-73.9000, 40.6805], angle: -10 }
 ];
 
-nyRender('#map-positions', {
+HMap.render('#map-positions', {
+  preset: 'ny1776',
   geo: 'long-island-positions',
   bbox: [-74.06, 40.565, -73.84, 40.715],
   terrain: { contours: 10, exaggeration: 7, shadeOpacity: 0.7 },
-  textScale: NY_PHONE ? 0.82 : 1,
+  ph: { textScale: 0.82 },
   alt: 'Map of western Long Island showing the British landing at Gravesend Bay, the British camps, and the American line on the Heights of Guan',
   roads: [ROADS.gowanus, ROADS.martense, ROADS.flatbush, ROADS.bedford, ROADS.jamaica, ROADS.utrecht, ROADS.flatlands, ROADS.gravesend],
   areas: [RIDGE],
@@ -179,7 +119,7 @@ nyRender('#map-positions', {
   moves: [
     { side: 'british', kind: 'naval', coords: [[-74.060, 40.6000], [-74.040, 40.5990], [-74.022, 40.6010]], label: 'Aug 22', labelAt: 0.4 },
     { side: 'british', kind: 'naval', coords: [[-74.060, 40.5880], [-74.030, 40.5850], [-74.006, 40.5920]] },
-    { side: 'british', kind: 'march', coords: [[-74.010, 40.6020], [-74.000, 40.6150], [-73.975, 40.6320], [-73.962, 40.6430]], label: 'Cornwallis to Flatbush', labelAt: 0.55, ph: { label: '' } }
+    { side: 'british', kind: 'march', coords: [[-74.010, 40.6020], [-74.000, 40.6150], [-73.975, 40.6320], [-73.962, 40.6430]], label: 'Cornwallis to Flatbush', labelAt: 0.55, phone: false }
   ],
   units: [
     { side: 'hessian', coords: [-73.9560, 40.6455], label: 'von Heister', labelPos: { dx: 18, dy: 4 } },
@@ -187,9 +127,9 @@ nyRender('#map-positions', {
     { side: 'british', coords: [-73.9300, 40.6190], label: 'Howe, Clinton, Cornwallis', labelPos: { dx: 0, dy: 20, anchor: 'middle' } },
     { side: 'continental', coords: [-74.0010, 40.6575], angle: 70, w: 18 },
     { side: 'continental', coords: [-73.9665, 40.6695], label: 'Sullivan', angle: 30, labelPos: { dx: -17, dy: -6, anchor: 'end' } },
-    { side: 'continental', coords: [-73.9500, 40.6720], w: 20, label: 'Williams', labelPos: { dx: 14, dy: -8 }, ph: { label: '' } },
+    { side: 'continental', coords: [-73.9500, 40.6720], w: 20, label: 'Williams', labelPos: { dx: 14, dy: -8 }, phone: false },
     { side: 'continental', coords: [-73.9290, 40.6745], w: 20, label: 'Miles', labelPos: { dx: 0, dy: -11, anchor: 'middle' } },
-    { side: 'continental', coords: [-73.9800, 40.6940], label: 'Putnam', labelPos: { dx: 0, dy: -11, anchor: 'middle' } }
+    { side: 'continental', coords: [-73.9800, 40.6940], label: 'Putnam', labelPos: { dx: 0, dy: -11, anchor: 'middle' }, ph: { labelPos: { dx: 16, dy: 12 } } }
   ],
   towns: [
     { place: 'brooklyn', label: { dx: -8, dy: -5, anchor: 'end' } },
@@ -199,17 +139,17 @@ nyRender('#map-positions', {
     { name: 'New Utrecht', coords: [-74.0000, 40.6130], kind: 'village', label: { dx: 8, dy: 12 } },
     { name: 'Bedford', coords: [-73.9545, 40.6795], kind: 'village', label: { dx: 8, dy: -5 } },
     { name: "Denyse's Ferry", coords: [-74.0330, 40.6080], kind: 'ferry', label: { dx: 7, dy: -7 } },
-    { name: 'Red Lion', coords: [-74.0035, 40.6500], kind: 'building', label: { dx: -8, dy: 4, anchor: 'end' }, ph: { name: '' } }
+    { name: 'Red Lion', coords: [-74.0035, 40.6500], kind: 'building', label: { dx: -8, dy: 4, anchor: 'end' }, phone: false }
   ],
   callouts: [
     { coords: [-74.0160, 40.5900], n: 1 },
     { coords: [-73.9690, 40.7010], n: 2 }
   ],
   labels: [
-    { coords: [-73.9800, 40.6553], text: 'H E I G H T S   O F   G U A N', kind: 'terrain', size: 11.5, angle: -20 },
-    { coords: [-74.0040, 40.6560], text: 'Gowanus Pass', kind: 'terrain', size: 11, anchor: 'end', dx: -12, dy: -4 , phone: false },
-    { coords: [-73.9655, 40.6650], text: 'Flatbush Pass', kind: 'terrain', size: 11, anchor: 'start', dx: 10, dy: 2 , phone: false },
-    { coords: [-73.9530, 40.6685], text: 'Bedford Pass', kind: 'terrain', size: 11, anchor: 'start', dx: 10, dy: 14 , phone: false },
+    { coords: [-73.9800, 40.6553], text: 'H E I G H T S   O F   G U A N', kind: 'terrain', size: 11.5, angle: -20, ph: { coords: [-73.8800, 40.6790], text: 'HEIGHTS OF GUAN', angle: -14 } },
+    { coords: [-74.0040, 40.6560], text: 'Gowanus Pass', kind: 'terrain', size: 11, anchor: 'end', dx: -12, dy: -4, ph: { text: 'Gowanus P.' } },
+    { coords: [-73.9655, 40.6650], text: 'Flatbush Pass', kind: 'terrain', size: 11, anchor: 'start', dx: 10, dy: 2, ph: { text: 'Flatbush P.', anchor: 'end', dx: -12, dy: 14 } },
+    { coords: [-73.9530, 40.6685], text: 'Bedford Pass', kind: 'terrain', size: 11, anchor: 'start', dx: 10, dy: 14, ph: { text: 'Bedford P.' } },
     { coords: [-73.9000, 40.6805], text: 'Jamaica Pass', kind: 'terrain', size: 11.5, anchor: 'middle', dx: 0, dy: -14 },
     { coords: [-74.0300, 40.5930], text: 'Gravesend\nBay', kind: 'water', size: 12.5 },
     { coords: [-74.0380, 40.6550], text: 'Upper Bay', kind: 'water', size: 13 },
@@ -222,11 +162,12 @@ nyRender('#map-positions', {
   after: nyPasses(PASSES)
 });
 
-nyRender('#map-battle', {
+HMap.render('#map-battle', {
+  preset: 'ny1776',
   geo: 'long-island-battle',
   bbox: [-74.035, 40.615, -73.855, 40.71],
   terrain: { contours: 10, exaggeration: 7, shadeOpacity: 0.7 },
-  textScale: NY_PHONE ? 0.82 : 1,
+  ph: { textScale: 0.82 },
   alt: 'Map of the Battle of Long Island showing the British night march through the Jamaica Pass and the attacks on the American outer line',
   roads: [ROADS.gowanus, ROADS.flatbush, ROADS.bedford, ROADS.jamaica, ROADS.newlots, ROADS.flatlands, Object.assign({}, ROADS.utrecht, { name: null })].map(r => Object.assign({}, r, { name: null })),
   areas: [RIDGE],
@@ -234,7 +175,7 @@ nyRender('#map-battle', {
   works: [{ side: 'continental', coords: LINES }],
   moves: [
     { side: 'british', kind: 'march', coords: [[-73.9330, 40.6230], [-73.9190, 40.6370], [-73.9040, 40.6520], [-73.8955, 40.6670], [-73.8985, 40.6790]], label: 'night march, 9 p.m.–3 a.m.', labelAt: 0.5, width: 3.4 },
-    { side: 'british', kind: 'march', coords: [[-73.9010, 40.6830], [-73.9200, 40.6840], [-73.9400, 40.6828], [-73.9535, 40.6815]], label: 'Howe & Clinton, 8–9 a.m.', labelAt: 0.5, width: 3.4, ph: { label: '8–9 a.m.' } },
+    { side: 'british', kind: 'march', coords: [[-73.9010, 40.6830], [-73.9200, 40.6840], [-73.9400, 40.6828], [-73.9535, 40.6815]], label: 'Howe & Clinton, 8–9 a.m.', labelAt: 0.5, width: 3.4, ph: { label: 'Howe, 8–9 a.m.' } },
     { side: 'british', kind: 'attack', coords: [[-73.9560, 40.6800], [-73.9660, 40.6772], [-73.9760, 40.6748], [-73.9832, 40.6735]], label: 'Cornwallis', labelAt: 0.45, ph: { label: '' } },
     { side: 'british', kind: 'attack', coords: [[-73.9545, 40.6780], [-73.9590, 40.6730], [-73.9630, 40.6700]] },
     { side: 'british', kind: 'attack', coords: [[-74.0110, 40.6260], [-74.0085, 40.6400], [-74.0045, 40.6510], [-74.0005, 40.6585]], label: 'Grant', labelAt: 0.35 },
@@ -246,21 +187,22 @@ nyRender('#map-battle', {
   ],
   units: [
     { side: 'continental', coords: [-73.9955, 40.6612], angle: -12, w: 30, label: 'Stirling', labelPos: { dx: 0, dy: 15, anchor: 'middle' } },
-    { side: 'continental', coords: [-73.9665, 40.6695], angle: 30, label: 'Sullivan', labelPos: { dx: 16, dy: 10 }, ph: { label: '' } },
-    { side: 'british', coords: [-73.9832, 40.6750], w: 20, label: '', angle: 0 },
+    { side: 'continental', coords: [-73.9665, 40.6695], angle: 30, label: 'Sullivan', labelPos: { dx: 16, dy: 10 }, ph: { labelPos: { dx: -16, dy: 4, anchor: 'end' } } },
+    { side: 'british', coords: [-73.9832, 40.6750], w: 20, label: '', angle: 0, ph: { label: 'Cornwallis', labelPos: { dx: 0, dy: -12, anchor: 'middle' } } },
     { side: 'continental', coords: [-73.9800, 40.6940], label: 'Putnam', labelPos: { dx: 0, dy: -11, anchor: 'middle' } }
   ],
   battles: [
-    { coords: [-74.0035, 40.6505], label: 'Red Lion', labelPos: { dx: -14, dy: 4, anchor: 'end' }, ph: { label: '' } },
-    { coords: [-73.9645, 40.6655], label: 'Flatbush Pass', labelPos: { dx: 14, dy: 4, anchor: 'start' }, ph: { label: '' } },
-    { coords: [-73.9846, 40.6726], label: 'Old Stone House', labelPos: { dx: -4, dy: 30, anchor: 'middle' }, ph: { label: '' } }
+    // phones: callouts 2 and 4 name these places; the map is too tight for their labels
+    { coords: [-74.0035, 40.6505], label: 'Red Lion', labelPos: { dx: -14, dy: 4, anchor: 'end' }, phone: false },
+    { coords: [-73.9645, 40.6655], label: 'Flatbush Pass', labelPos: { dx: 14, dy: 4, anchor: 'start' }, ph: { label: 'Flatbush P.' } },
+    { coords: [-73.9846, 40.6726], label: 'Old Stone House', labelPos: { dx: -4, dy: 30, anchor: 'middle' }, phone: false }
   ],
   towns: [
     { place: 'brooklyn', label: { dx: -8, dy: -5, anchor: 'end' } },
     { name: 'Flatbush', coords: [-73.9575, 40.6500], kind: 'village', label: { dx: 8, dy: 4 } },
     { name: 'Flatlands', coords: [-73.9350, 40.6220], kind: 'village', label: { dx: -9, dy: 4, anchor: 'end' } },
     { name: 'Bedford', coords: [-73.9545, 40.6795], kind: 'village', label: { dx: -2, dy: -10, anchor: 'end' } },
-    { name: "Howard's tavern", coords: [-73.9035, 40.6790], kind: 'building', label: { dx: 9, dy: 14 }, ph: { name: '' } }
+    { name: "Howard's tavern", coords: [-73.9035, 40.6790], kind: 'building', label: { dx: 9, dy: 14 }, phone: false }
   ],
   callouts: [
     { coords: [-73.8880, 40.6800], n: 1, ph: { coords: [-73.8890, 40.6720] } },
@@ -279,12 +221,13 @@ nyRender('#map-battle', {
   after: nyPasses(PASSES)
 });
 
-nyRender('#map-retreat', {
+HMap.render('#map-retreat', {
+  preset: 'ny1776',
   geo: 'long-island-retreat',
   bbox: [-74.03, 40.67, -73.96, 40.725],
   terrain: { contours: 5, exaggeration: 5 },
   alt: 'Map of the East River between Brooklyn and lower Manhattan showing the night evacuation of the American army',
-  lines: [ { coords: [[-74.0035, 40.6688], [-74.0005, 40.6715], [-73.9975, 40.6745], [-73.9955, 40.6772], [-73.9935, 40.6800], [-73.9910, 40.6828]], color: '#6f9298', width: 2 } ],
+  lines: [ { coords: GOWANUS_CREEK, color: '#6f9298', width: 2 } ],
   roads: [ { coords: [[-73.9940, 40.7030], [-73.9900, 40.6980], [-73.9850, 40.6930], [-73.9790, 40.6896]] }, { coords: [[-73.9900, 40.6980], [-73.9800, 40.6960], [-73.9700, 40.6890], [-73.9620, 40.6840]] } ],
   works: [
     { side: 'continental', coords: LINES },
@@ -305,19 +248,19 @@ nyRender('#map-retreat', {
   towns: [
     { name: 'New York', coords: [-74.0090, 40.7105], kind: 'town', label: { dx: -10, dy: 5, anchor: 'end' } },
     { name: 'Brooklyn ferry', coords: [-73.9946, 40.7034], kind: 'ferry', label: { dx: 8, dy: -7 } },
-    { name: 'Fort Putnam', coords: [-73.9757, 40.6914], kind: 'fort', side: 'continental', label: { dx: -8, dy: 17, anchor: 'end' } },
-    { name: 'Fort Greene', coords: [-73.9822, 40.6886], kind: 'fort', side: 'continental', label: { dx: -10, dy: -4, anchor: 'end' }, ph: { name: '' } },
-    { name: 'Fort Box', coords: [-73.9853, 40.6862], kind: 'fort', side: 'continental', label: { dx: -10, dy: 4, anchor: 'end' }, ph: { name: '' } },
+    { name: 'Fort Putnam', coords: [-73.9757, 40.6914], kind: 'fort', side: 'continental', label: { dx: -8, dy: 17, anchor: 'end' }, ph: { label: { dx: 10, dy: -9 } } },
+    { name: 'Fort Greene', coords: [-73.9822, 40.6886], kind: 'fort', side: 'continental', label: { dx: -10, dy: -4, anchor: 'end' }, phone: false },
+    { name: 'Fort Box', coords: [-73.9853, 40.6862], kind: 'fort', side: 'continental', label: { dx: -10, dy: 4, anchor: 'end' }, phone: false },
     { name: 'Fort Stirling', coords: [-73.9966, 40.6980], kind: 'fort', side: 'continental', label: { dx: -10, dy: 4, anchor: 'end' } },
     { name: 'Cobble Hill', coords: [-73.9935, 40.6893], kind: 'fort', side: 'continental', label: { dx: -10, dy: 4, anchor: 'end' } },
     { name: 'Fort George', coords: [-74.0138, 40.7040], kind: 'fort', side: 'continental', label: { dx: -10, dy: 4, anchor: 'end' } },
-    { name: 'Governors Island', coords: [-74.0160, 40.6905], kind: 'fort', side: 'continental', label: { dx: -10, dy: 4, anchor: 'end' } },
-    { name: 'Brooklyn', coords: [-73.9880, 40.6930], kind: 'village', label: { dx: -6, dy: -7, anchor: 'end' }, ph: { name: '' } }
+    { name: 'Governors Island', coords: [-74.0160, 40.6905], kind: 'fort', side: 'continental', label: { dx: -10, dy: 4, anchor: 'end' }, ph: { label: { dx: 0, dy: 20, anchor: 'middle' } } },
+    { name: 'Brooklyn', coords: [-73.9880, 40.6930], kind: 'village', label: { dx: -6, dy: -7, anchor: 'end' }, phone: false }
   ],
   callouts: [
     { coords: [-73.9752, 40.6978], n: 1 },
     { coords: [-73.9915, 40.7062], n: 2 },
-    { coords: [-73.9652, 40.6908], n: 3 }
+    { coords: [-73.9652, 40.6908], n: 3, ph: { coords: [-73.9712, 40.6866] } }
   ],
   labels: [
     { coords: [-73.9800, 40.7120], text: 'East River', kind: 'water', angle: -5 },

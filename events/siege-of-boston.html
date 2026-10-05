@@ -28,7 +28,7 @@
       <ol>
         <li>Washington's headquarters in Cambridge, from mid-July 1775.</li>
         <li>Charlestown Neck: British works on Bunker Hill face the American forts on Prospect and Winter Hills.</li>
-        <li>Boston Neck: British lines face the American works at Roxbury, a mile and a half apart.</li>
+        <li>Boston Neck: British lines face the American works at Roxbury across the Neck.</li>
       </ol>
       <span class="note-approx">Shorelines follow a 1795 survey of Boston (earlier than the later landfill). The western edge of the Back Bay and the line of individual earthworks are approximate.</span>
     </figcaption>
@@ -54,23 +54,14 @@
 
 <script>
 (function () {
-  // Period (1795) shoreline: water from data/geo/<map>.shore.json, drawn without seams, plus the period coastline as one edge line.
-  const shore = id => fetch('../data/geo/' + id + '.shore.json').then(r => r.json());
-  const periodShore = c => ({ root, proj, d3 }) => {
-    root.selectAll('path.hm-water').filter((d, i) => i > 0).style('stroke', 'var(--sea)').style('stroke-width', 1.3);
-    root.insert('path', '.hm-rivers').attr('d', d3.geoPath(proj)({ type: 'MultiLineString', coordinates: c.coast }))
-      .attr('fill', 'none').style('stroke', 'var(--sea-edge)').style('stroke-width', 0.6);
-  };
-  // label offsets scaled like the library's symbols, so they clear symbols at phone width too
-  const U = sel => Math.pow(Math.max(1, 1000 / (document.querySelector(sel).clientWidth || 1000)), 0.82);
+  // Period (1795) shoreline: corrections from data/geo/<map>.shore.json (Leventhal Center survey), coast drawn by the library.
   const RIVERS = { hide: ['Charles Riv', 'Mystic Riv', 'Malden Riv', 'Chelsea Riv', 'Muddy Riv', 'Mill Crk'] };
 
-  const u1 = U('#map-lines');
-  shore('siege-of-boston-lines').then(corrections => HMap.render('#map-lines', {
+  HMap.render('#map-lines', {
     geo: 'siege-of-boston-lines',
     bbox: [-71.15, 42.31, -71.0, 42.405],
     alt: 'Map of Boston and its surroundings in 1775 showing the arc of American siege lines from Roxbury to Winter Hill and the British posts on the Boston and Charlestown peninsulas',
-    corrections, after: periodShore(corrections), rivers: RIVERS,
+    corrections: 'data/geo/siege-of-boston-lines.shore.json', rivers: RIVERS,
     terrain: { contours: 10 },
     roads: [
       { coords: [[-71.0655, 42.3555], [-71.0668, 42.3480], [-71.0700, 42.3410], [-71.0780, 42.3360], [-71.0850, 42.3310], [-71.0910, 42.3300]] },
@@ -92,25 +83,25 @@
       { side: 'british', kind: 'redoubt', coords: [[-71.0565, 42.3672]], size: 5 }
     ],
     towns: [
-      { place: 'cambridge', label: { dx: 7 * u1, dy: -3 * u1 } },
-      { place: 'boston', coords: [-71.0590, 42.3595], label: { dx: 7 * u1, dy: 4 * u1 } },
-      { place: 'roxbury', coords: [-71.0910, 42.3300], label: { dx: -7 * u1, dy: 13 * u1, anchor: 'end' } },
-      { name: 'Charlestown (burned)', coords: [-71.0605, 42.3740], kind: 'village', label: { dx: 7 * u1, dy: 4 * u1 } },
-      { name: 'Brookline', coords: [-71.1210, 42.3330], kind: 'village', label: { dx: 0, dy: 15 * u1, anchor: 'middle' } },
-      { name: 'Dorchester', coords: [-71.0660, 42.3140], kind: 'village', label: { dx: -7 * u1, dy: 4 * u1, anchor: 'end' } },
-      { name: 'Chelsea', coords: [-71.0330, 42.3930], kind: 'village', label: { dx: 7 * u1, dy: 4 * u1 } },
-      { name: '', coords: [-71.1263, 42.3771], kind: 'hq' },
-      { name: 'Castle William', coords: [-71.0125, 42.3385], kind: 'fort', side: 'british', label: { dx: 0, dy: 18 * u1, anchor: 'middle' } }
+      { place: 'cambridge', label: { dx: 7, dy: -3 } },
+      { place: 'boston', coords: [-71.0590, 42.3595], label: { dx: 7, dy: 4 } },
+      { place: 'roxbury', coords: [-71.0910, 42.3300], label: { dx: -7, dy: 13, anchor: 'end' } },
+      { name: 'Charlestown (burned)', coords: [-71.0605, 42.3740], kind: 'village', label: { dx: 7, dy: 4 } },
+      { name: 'Brookline', coords: [-71.1210, 42.3330], kind: 'village', label: { dx: 0, dy: 15, anchor: 'middle' } },
+      { name: 'Dorchester', coords: [-71.0660, 42.3140], kind: 'village', label: { dx: -7, dy: 4, anchor: 'end' } },
+      { name: 'Chelsea', coords: [-71.0330, 42.3930], kind: 'village', label: { dx: 7, dy: 4 } },
+      { name: 'Washington\'s HQ', coords: [-71.1263, 42.3771], kind: 'hq', label: { dx: -9, dy: 4, anchor: 'end' }, ph: { name: 'HQ' } },
+      { name: 'Castle William', coords: [-71.0125, 42.3385], kind: 'fort', side: 'british', label: { dx: 0, dy: 18, anchor: 'middle' } }
     ],
     units: [
-      { side: 'continental', coords: [-71.1150, 42.3890], label: 'Lee (left wing)', labelPos: { dx: -21 * u1, dy: 4 * u1, anchor: 'end' } },
-      { side: 'continental', coords: [-71.1130, 42.3670], label: 'Putnam (center)', labelPos: { dx: -21 * u1, dy: 4 * u1, anchor: 'end' } },
+      { side: 'continental', coords: [-71.1070, 42.3900], label: 'Lee (left wing)', labelPos: { dx: -21, dy: 4, anchor: 'end' } },
+      { side: 'continental', coords: [-71.1130, 42.3670], label: 'Putnam (center)', labelPos: { dx: -21, dy: 4, anchor: 'end' } },
       { side: 'continental', coords: [-71.0840, 42.3220], label: 'Ward (right wing)' },
-      { side: 'british', coords: [-71.0660, 42.3555], label: 'Howe\'s garrison', labelPos: { dx: 0, dy: 18 * u1, anchor: 'middle' } },
+      { side: 'british', coords: [-71.0660, 42.3555], label: 'Howe\'s garrison', labelPos: { dx: 0, dy: 18, anchor: 'middle' } },
       { side: 'british', coords: [-71.0640, 42.3785], angle: -20 }
     ],
     ships: [
-      { side: 'british', coords: [-71.0300, 42.3500], angle: -30, label: 'Royal Navy', labelPos: { dx: 0, dy: 18 * u1, anchor: 'middle' } }
+      { side: 'british', coords: [-71.0300, 42.3500], angle: -30, label: 'Royal Navy', labelPos: { dx: 0, dy: 18, anchor: 'middle' } }
     ],
     labels: [
       { coords: [-71.0880, 42.3555], text: 'Back Bay', kind: 'water', size: 13 },
@@ -122,22 +113,21 @@
       { coords: [-71.0130, 42.3790], text: 'Noddle\'s\nIsland', kind: 'terrain', size: 11 },
       { coords: [-71.0975, 42.3790], text: 'Prospect Hill', kind: 'terrain', size: 11, anchor: 'end' },
       { coords: [-71.0995, 42.3975], text: 'Winter Hill', kind: 'terrain', size: 11 },
-      { coords: [-71.0620, 42.3865], text: 'Bunker Hill', kind: 'terrain', size: 11 },
+      { coords: [-71.0600, 42.3818], text: 'Bunker Hill', kind: 'terrain', size: 11, anchor: 'start' },
       { coords: [-71.0742, 42.3405], text: 'Boston Neck', kind: 'terrain', size: 11, angle: -68 }
     ],
     callouts: [
-      { coords: [-71.1340, 42.3800], n: 1 },
+      { coords: [-71.1263, 42.3835], n: 1 },
       { coords: [-71.0805, 42.3880], n: 2 },
       { coords: [-71.0590, 42.3420], n: 3 }
     ]
-  }));
+  });
 
-  const u2 = U('#map-cambridge');
-  shore('siege-of-boston-cambridge').then(corrections => HMap.render('#map-cambridge', {
+  HMap.render('#map-cambridge', {
     geo: 'siege-of-boston-cambridge',
     bbox: [-71.13, 42.352, -71.05, 42.401],
     alt: 'Map of the Cambridge and Charlestown front showing the American works pushed forward between August 1775 and January 1776',
-    corrections, after: periodShore(corrections), rivers: RIVERS,
+    corrections: 'data/geo/siege-of-boston-cambridge.shore.json', rivers: RIVERS,
     terrain: { contours: 5 },
     roads: [
       { coords: [[-71.1190, 42.3740], [-71.1080, 42.3790], [-71.0950, 42.3800], [-71.0820, 42.3815], [-71.0745, 42.3835], [-71.0680, 42.3800]] },
@@ -152,16 +142,16 @@
       { side: 'continental', kind: 'redoubt', coords: [[-71.0845, 42.3905]], size: 6 },
       { side: 'continental', kind: 'redoubt', coords: [[-71.0868, 42.3772]], size: 6 },
       { side: 'continental', kind: 'redoubt', coords: [[-71.0772, 42.3700]], size: 6 },
-      { side: 'continental', kind: 'redoubt', coords: [[-71.1042, 42.3570]], size: 6 },
+      { side: 'continental', kind: 'redoubt', coords: [[-71.1042, 42.3570]], size: 6, phone: false },
       { side: 'british', kind: 'redoubt', coords: [[-71.0660, 42.3800]], size: 7 },
       { side: 'british', coords: [[-71.0712, 42.3790], [-71.0662, 42.3815], [-71.0625, 42.3825]] },
       { side: 'british', kind: 'redoubt', coords: [[-71.0565, 42.3672]], size: 5 }
     ],
     towns: [
-      { place: 'cambridge', coords: [-71.1185, 42.3740], label: { dx: 0, dy: 17 * u2, anchor: 'middle' } },
-      { name: 'Washington\'s HQ', coords: [-71.1263, 42.3771], kind: 'hq', label: { dx: 0, dy: 17 * u2, anchor: 'middle' } },
-      { name: 'Charlestown (ruins)', coords: [-71.0605, 42.3740], kind: 'village', label: { dx: -7 * u2, dy: 4 * u2, anchor: 'end' } },
-      { name: 'Boston', coords: [-71.0590, 42.3595], kind: 'town', label: { dx: -7 * u2, dy: 4 * u2, anchor: 'end' } }
+      { place: 'cambridge', coords: [-71.1185, 42.3740], label: { dx: 9, dy: 5, anchor: 'start' } },
+      { name: 'Washington\'s HQ', coords: [-71.1263, 42.3771], kind: 'hq', label: { dx: 0, dy: 17, anchor: 'middle' } },
+      { name: 'Charlestown (ruins)', coords: [-71.0605, 42.3740], kind: 'village', label: { dx: -7, dy: 4, anchor: 'end' } },
+      { name: 'Boston', coords: [-71.0590, 42.3595], kind: 'town', label: { dx: -7, dy: 4, anchor: 'end' } }
     ],
     moves: [
       { side: 'british', kind: 'attack', approx: true, coords: [[-71.0640, 42.3640], [-71.0700, 42.3670], [-71.0758, 42.3693]] },
@@ -169,7 +159,7 @@
       { side: 'continental', kind: 'attack', approx: true, coords: [[-71.0835, 42.3788], [-71.0775, 42.3800], [-71.0722, 42.3808]] }
     ],
     units: [
-      { side: 'continental', coords: [-71.1225, 42.3780], label: 'Camp on the Common', labelPos: { dx: -13 * u2, dy: -10 * u2, anchor: 'start' } },
+      { side: 'continental', coords: [-71.1225, 42.3780], label: 'Camp on the Common', labelPos: { dx: -13, dy: -10, anchor: 'start' } },
       { side: 'british', coords: [-71.0625, 42.3790], angle: -20 }
     ],
     labels: [
@@ -191,7 +181,7 @@
       { coords: [-71.0920, 42.3850], n: 5 },
       { coords: [-71.0790, 42.3830], n: 6 }
     ]
-  }));
+  });
 })();
 </script>
 </body>

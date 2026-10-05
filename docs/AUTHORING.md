@@ -47,14 +47,17 @@ All coordinates are `[lon, lat]`. Anywhere a coordinate is accepted, you can pas
   alt: 'description for screen readers',
   terrain: { contours: 5 | false, hillshade: true, exaggeration: 4, shadeOpacity: 0.55 } | false,
   water: { hide: ['Carnegie Lk'], hideIn: [[w,s,e,n]], hideUnnamed: false, only: ['Hudson Riv', ...] /* named polygons not listed are hidden; unnamed kept */ },
-  rivers: { hide: ['Name'], only: ['Name', ...] },
-  corrections: { water: [ [[lon,lat], ...] ], land: [ [[lon,lat], ...] ] }, // period shoreline fixes (rings, any winding)
+  rivers: { hide: ['Name'], only: ['Name', ...], major: ['James'] /* drawn wider */ },
+  preset: 'ny1776',                // shared NYC 1776 shoreline, marsh, hidden modern lakes/centrelines (see below)
+  corrections: { water: [ring, ...], land: [...], marsh: [...], coast: [line, ...], baseLand: [...] }
+             | 'data/geo/file.json' | ['data/geo/file.json', { water: [...] }],   // object, URL(s) relative to site root, or a mix
+  marsh: [ring, ...] | false,      // extra salt-marsh rings, or false to hide the corrections' marsh
   roads:   [{ coords: [...], name: 'Post Road', kind: 'road'|'track', labelAt: 0.5 }],
   areas:   [{ coords: [...ring], side, label, opacity, legend: 'Legend text', smooth: true }],
   lines:   [{ coords: [...], color, width, dash: '6 4', legend }],
   works:   [{ coords: [...], side, kind: 'line'|'redoubt', closed: false, size }], // fortifications
   towns:   [{ place: 'trenton' } | { name, coords, kind: 'town'|'village'|'building'|'church'|'ferry'|'fort'|'hq', side, label: { dx, dy, anchor } }],
-  moves:   [{ side, coords: [...], kind: 'march'|'attack'|'retreat'|'naval', label, labelAt: 0.5, approx, straight, width }],
+  moves:   [{ side, coords: [...], kind: 'march'|'attack'|'retreat'|'naval', label, labelAt: 0.5, approx, straight, width, flip: false /* keep label in drawing order */ }],
   units:   [{ side, coords, label, type: 'infantry'|'cavalry'|'artillery', angle, w, h, labelPos: { dx, dy, anchor } }],
   ships:   [{ side, coords, label, angle, labelPos }],
   battles: [{ coords, label, labelPos }],
@@ -64,12 +67,18 @@ All coordinates are `[lon, lat]`. Anywhere a coordinate is accepted, you can pas
   legend: false,                   // to suppress the auto legend
   scale: 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right',   // scale bar position (north arrow is top-right)
   textScale: 1,                    // global label size factor
+  ph: { textScale: 0.85, scale: 'top-left' },   // top-level overrides at phone width (container ≤ 640 px)
   after: ({ svg, root, defs, proj, P, fs, u, d3 }) => { /* one-off custom drawing */ },
 }
 ```
 
 Notes:
-- Label offsets (`dx`/`dy`) are in viewBox units. The map is 1000 units wide.
+- Label offsets (`dx`/`dy`, `labelPos`, town `label`) are in viewBox units at desktop size (the map is 1000 units wide). On narrow screens they scale with the symbols (factor `u`), so set them once for desktop. Don't scale them yourself.
+- **Phone variants** (container ≤ 640 px): any item in `roads`, `areas`, `lines`, `works`, `towns`, `moves`, `units`, `ships`, `battles`, `labels`, `callouts` can carry `ph: {...}` (merged into the item on phones, e.g. other `coords`, `labelAt`, `label`, `labelPos`) or `phone: false` (dropped on phones, symbol and label together). Never hide just a label and leave a bare symbol: use `phone: false`, a shorter `ph` label, or another position. A top-level `ph: {...}` overrides config keys (e.g. `textScale`, `scale`).
+- **Corrections:** `water` rings become water (later landfill), `land` rings become land, `marsh` rings get the salt-marsh pattern (on land only) and a legend entry, `coast` lines draw a period coastline edge, `baseLand` replaces the whole base land outline (for places where the base data is too coarse, e.g. Quebec). All water is drawn as one shape, so pieces show no seams; no `after` hook is needed for that.
+- **Presets:** `preset: 'ny1776'` applies `data/geo/new-york-defenses-1776.json` (shoreline, marsh) plus hidden modern lakes and river centrelines for every map around New York harbor. Your own `water.hide`, `rivers.hide` and `corrections` are added to it.
+- Labels are kept inside the frame and off the north arrow and scale box automatically; labels along paths slide along their path for the same reason, and a label longer than its arrow is extended past the arrow's ends. Towns outside the bbox draw nothing.
+- Move labels: a caption that calls routes approximate needs `approx: true` on those moves (that is what draws them dotted and adds the legend entry).
 - Move paths are smoothed through the points; use `straight: true` for straight segments. Labels follow the path and are flipped automatically so they're never upside down.
 - Point labels are nudged back inside the frame automatically, but place them well yourself.
 - Roads: draw only period roads that matter to the story, from historical maps. Don't trace modern highways.

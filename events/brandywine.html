@@ -83,7 +83,7 @@ HMap.render('#map-flank', {
     { side: 'continental', kind: 'retreat', label: 'Maxwell', labelAt: 0.5, coords: [[-75.668, 39.8640], [-75.650, 39.8690], [-75.628, 39.8725], [-75.604, 39.8735]] }
   ],
   units: [
-    { side: 'continental', coords: [-75.5880, 39.8705], label: 'Wayne', labelPos: { dx: 18, dy: 12 } },
+    { side: 'continental', coords: [-75.5880, 39.8705], label: 'Wayne', labelPos: { dx: 18, dy: 12 }, ph: { labelPos: { dx: 0, dy: 19, anchor: 'middle' } } },
     { side: 'continental', coords: [-75.5820, 39.8800], label: 'Greene', labelPos: { dx: 18, dy: 4 } },
     { side: 'continental', coords: [-75.5960, 39.8880], label: 'Sullivan', labelPos: { dx: 0, dy: -11, anchor: 'middle' } },
     { side: 'continental', coords: [-75.5770, 39.8930], label: 'Stirling, Stephen', labelPos: { dx: 18, dy: 4 } },
@@ -117,7 +117,7 @@ HMap.render('#map-afternoon', {
     { coords: [[-75.6150, 39.9175], [-75.5995, 39.9165], [-75.5800, 39.9180], [-75.5600, 39.9200]] }
   ],
   towns: [
-    { name: 'Birmingham Meeting House', coords: [-75.5939, 39.9059], kind: 'church', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { name: 'Birmingham Meeting House', coords: [-75.5939, 39.9059], kind: 'church', label: { dx: -9, dy: 4, anchor: 'end' }, ph: { label: { dx: -9, dy: -9, anchor: 'end' } } },
     { name: 'Dilworth', coords: [-75.5672, 39.8993], kind: 'village', label: { dx: 8, dy: -5 } },
     { name: 'Chadds Ford', coords: [-75.5960, 39.8710], kind: 'ferry', label: { dx: -9, dy: -6, anchor: 'end' } },
     { name: 'Washington\'s HQ', coords: [-75.5780, 39.8745], kind: 'hq', label: { dx: 9, dy: 12 } }

@@ -55,7 +55,7 @@
     <h2>The Battle of Princeton, morning of January 3</h2>
     <div class="map-canvas" id="map-battle"></div>
     <figcaption>
-      Mawhood had just set out for Trenton with the 17th Foot when he spotted the Americans. He turned back and met Mercer's brigade in William Clarke's orchard. Mercer fell mortally wounded and his men broke. Washington rode in with militia and Continental reinforcements, and the British line gave way.
+      Mawhood had just set out for Trenton with the 17th Foot when he spotted the Americans and turned back to meet Mercer's brigade in William Clarke's orchard. Mercer fell mortally wounded and his men broke. Washington rode in with militia and Continental reinforcements, and the British line gave way.
       <ol>
         <li>Mercer's brigade heads for the Stony Brook bridge on the Post Road.</li>
         <li>Clash in the orchard. Mercer is mortally wounded.</li>
@@ -84,9 +84,10 @@ HMap.render('#map-assunpink', {
   water: { hide: MODERN_LAKES, hideIn: [[-74.83, 40.13, -74.785, 40.185], [-74.80, 40.255, -74.69, 40.31], [-74.73, 40.23, -74.69, 40.255]] },
   terrain: { contours: 5 },
   alt: 'Map of the Post Road from Maidenhead to Trenton showing the British advance and the American line behind Assunpink Creek',
+  scale: 'bottom-right',
   lines: [{ coords: ASSUNPINK_LOWER, color: '#6f9298', width: 1.6 }],
   roads: [
-    { name: 'Post Road', labelAt: 0.8, coords: POST_ROAD.slice(0, 8) },
+    { name: 'Post Road', labelAt: 0.8, ph: { name: null }, coords: POST_ROAD.slice(0, 8) },
     { name: 'Sandtown road', labelAt: 0.6, coords: [[-74.7585, 40.2140], [-74.7500, 40.2195], [-74.7399, 40.2336], [-74.7150, 40.2340], [-74.6880, 40.2366]] },
     { coords: [[-74.7585, 40.2140], [-74.7520, 40.2085], [-74.7350, 40.1990]] },
   ],
@@ -96,21 +97,21 @@ HMap.render('#map-assunpink', {
   towns: [
     { place: 'trenton', label: { dx: -9, dy: 2, anchor: 'end' } },
     { name: 'Maidenhead', coords: [-74.7295, 40.2975], kind: 'village', label: { dx: 8, dy: 4 } },
-    { name: 'Assunpink bridge', coords: [-74.7604, 40.2168], kind: 'building', label: { dx: -10, dy: 8, anchor: 'end' } }
+    { name: 'Assunpink bridge', coords: [-74.7604, 40.2168], kind: 'building', label: { dx: -10, dy: 14, anchor: 'end' } }
   ],
   moves: [
-    { side: 'british', kind: 'attack', label: 'Cornwallis (about 5,500)', labelAt: 0.5,
+    { side: 'british', kind: 'attack', label: 'Cornwallis (about 5,500)', labelAt: 0.5, ph: { labelAt: 0.25 },
       coords: [[-74.7225, 40.3050], [-74.7330, 40.2925], [-74.7322, 40.2746], [-74.7392, 40.2660], [-74.7412, 40.2498], [-74.7540, 40.2348], [-74.7618, 40.2190]] },
     { side: 'continental', kind: 'retreat', label: 'Hand falls back', labelAt: 0.45,
       coords: [[-74.7360, 40.2735], [-74.7432, 40.2655], [-74.7450, 40.2505], [-74.7570, 40.2350], [-74.7612, 40.2240], [-74.7590, 40.2150]] }
   ],
   units: [
-    { side: 'british', coords: [-74.7230, 40.2945], label: 'Leslie', labelPos: { dx: 30, dy: 4 } },
-    { side: 'continental', coords: [-74.7300, 40.2735], angle: -10, label: 'Hand', labelPos: { dx: 30, dy: 4 } },
+    { side: 'british', coords: [-74.7230, 40.2945], label: 'Leslie', labelPos: { dx: 20, dy: 4 } },
+    { side: 'continental', coords: [-74.7300, 40.2735], angle: -10, label: 'Hand', labelPos: { dx: 20, dy: 4 } },
     { side: 'continental', type: 'artillery', coords: [-74.7578, 40.2142], angle: -30, w: 20, h: 9, label: 'Knox\'s guns', labelPos: { dx: 14, dy: 5 } },
     { side: 'continental', coords: [-74.7470, 40.2222], angle: -45, w: 22, h: 9, label: 'Continental brigades', labelPos: { dx: 14, dy: 10 } },
     { side: 'continental', coords: [-74.7375, 40.2300], angle: -60, w: 22, h: 9, label: 'St. Clair at the fords', labelPos: { dx: 14, dy: 6 } },
-    { side: 'militia', coords: [-74.7505, 40.2085], angle: -30, w: 22, h: 9, label: 'Pennsylvania militia', labelPos: { dx: 14, dy: 6 } },
+    { side: 'militia', coords: [-74.7505, 40.2085], angle: -30, w: 22, h: 9, label: 'Pennsylvania militia', labelPos: { dx: -14, dy: 4, anchor: 'end' } },
     { side: 'british', coords: [-74.7660, 40.2290], angle: 20, w: 22, h: 9, label: 'British camp', labelPos: { dx: 0, dy: -11, anchor: 'middle' } }
   ],
   battles: [{ coords: [-74.7612, 40.2182] }],
@@ -127,7 +128,7 @@ HMap.render('#map-assunpink', {
     { coords: [-74.7180, 40.2805], text: 'Five Mile Run', kind: 'water', size: 11, angle: 0 },
     { coords: [-74.7650, 40.2380], text: 'Stockton\nHollow', kind: 'terrain', size: 11 },
     { coords: [-74.6990, 40.2390], text: 'to Sandtown', kind: 'note', size: 10.5 },
-    { coords: [-74.7420, 40.2045], text: 'to Bordentown', kind: 'note', size: 10.5, angle: 30 }
+    { coords: [-74.7395, 40.2045], text: 'to Bordentown', kind: 'note', size: 10.5, angle: 30 }
   ]
 });
 
@@ -155,13 +156,13 @@ HMap.render('#map-night', {
       coords: [[-74.7540, 40.2165], [-74.7420, 40.2320], [-74.7150, 40.2352], [-74.6900, 40.2380], [-74.6838, 40.2525], [-74.6708, 40.2772], [-74.6782, 40.2985], [-74.6836, 40.3060], [-74.6830, 40.3180], [-74.6800, 40.3262]] },
     { side: 'continental', kind: 'march', label: 'to Kingston', labelAt: 0.5,
       coords: [[-74.6620, 40.3505], [-74.6480, 40.3570], [-74.6320, 40.3655]] },
-    { side: 'british', kind: 'march', label: 'Cornwallis returns, Jan 3', labelAt: 0.42,
+    { side: 'british', kind: 'march', label: 'Cornwallis returns, Jan 3', labelAt: 0.42, ph: { label: 'Cornwallis, Jan 3', labelAt: 0.3 },
       coords: [[-74.7560, 40.2290], [-74.7445, 40.2470], [-74.7425, 40.2655], [-74.7355, 40.2755], [-74.7362, 40.2930], [-74.7260, 40.3060], [-74.7110, 40.3130], [-74.6925, 40.3290]] }
   ],
   units: [
     { side: 'continental', coords: [-74.7470, 40.2232], angle: -45 },
-    { side: 'british', coords: [-74.7660, 40.2290], angle: 20, label: 'Cornwallis', labelPos: { dx: -32, dy: -4, anchor: 'end' } },
-    { side: 'british', coords: [-74.7440, 40.2975], label: 'Leslie', labelPos: { dx: -32, dy: 4, anchor: 'end' } }
+    { side: 'british', coords: [-74.7660, 40.2290], angle: 20, label: 'Cornwallis', labelPos: { dx: -20, dy: -4, anchor: 'end' } },
+    { side: 'british', coords: [-74.7440, 40.2975], label: 'Leslie', labelPos: { dx: -20, dy: 4, anchor: 'end' } }
   ],
   battles: [{ coords: [-74.6770, 40.3330] }],
   callouts: [
@@ -183,12 +184,13 @@ HMap.render('#map-battle', {
   geo: 'princeton-battle',
   bbox: [-74.690, 40.3235, -74.654, 40.3505],
   water: { hide: MODERN_LAKES, hideUnnamed: true },
+  ph: { textScale: 0.85 },
   terrain: { contours: 5 },
   alt: 'Map of the Princeton battlefield showing Mercer and Mawhood meeting at the Clarke orchard and the American advance into Princeton',
   roads: [
     { name: 'Post Road', labelAt: 0.82, coords: POST_ROAD.slice(7) },
     { coords: [[-74.6644, 40.3482], [-74.6560, 40.3500], [-74.6440, 40.3570]] },
-    { name: 'Quaker Road', labelAt: 0.35, coords: [[-74.6844, 40.3171], [-74.6833, 40.3205], [-74.6809, 40.3224], [-74.6791, 40.3276], [-74.6805, 40.3310], [-74.6816, 40.3335]] },
+    { name: 'Quaker Road', labelAt: 0.35, ph: { name: null }, coords: [[-74.6844, 40.3171], [-74.6833, 40.3205], [-74.6809, 40.3224], [-74.6791, 40.3276], [-74.6805, 40.3310], [-74.6816, 40.3335]] },
     { name: 'back road', kind: 'track', labelAt: 0.5, coords: [[-74.6791, 40.3276], [-74.6735, 40.3285], [-74.6680, 40.3325], [-74.6630, 40.3390], [-74.6605, 40.3460]] }
   ],
   towns: [
@@ -208,7 +210,7 @@ HMap.render('#map-battle', {
   units: [
     { side: 'british', coords: [-74.6640, 40.3420], angle: -50, label: '40th & 55th', labelPos: { dx: -26, dy: 4, anchor: 'end' } }
   ],
-  battles: [{ coords: [-74.6790, 40.3338], label: 'Clarke\norchard', labelPos: { dx: 12, dy: 18, anchor: 'start' } }, { coords: [-74.6593, 40.3470] }],
+  battles: [{ coords: [-74.6790, 40.3338], label: 'Clarke\norchard', labelPos: { dx: 12, dy: 18, anchor: 'start' }, ph: { labelPos: { dx: 4, dy: 44, anchor: 'start' } } }, { coords: [-74.6593, 40.3470] }],
   callouts: [
     { coords: [-74.6828, 40.3290], n: 1 },
     { coords: [-74.6768, 40.3356], n: 2 },

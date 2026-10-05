@@ -79,8 +79,6 @@
 </main>
 
 <script>
-const noSeams = ({ root }) => root.selectAll('path.hm-water').style('stroke', 'none');
-const cw = r => d3.geoArea({ type: 'Polygon', coordinates: [[...r, r[0]]] }) > 2 * Math.PI ? r.slice().reverse() : r;
 
 HMap.render('#map-campaign', {
   geo: 'charleston-camden-campaign',
@@ -89,7 +87,7 @@ HMap.render('#map-campaign', {
   water: { hide: ['J. Strom Thurmond Lake', 'Lake Marion', 'Lake Moultrie', 'Hartwell Lake', 'Lake Murray'] },
   terrain: { contours: false, exaggeration: 6 },
   towns: [
-    { place: 'charleston', label: { dx: -8, dy: 14, anchor: 'end' } },
+    { place: 'charleston', label: { dx: -10, dy: -2, anchor: 'end' } },
     { place: 'camden', name: 'Camden', kind: 'town', label: { dx: -9, dy: 14, anchor: 'end' } },
     { place: 'hillsborough', label: { dx: 8, dy: -6 } },
     { name: 'Charlotte', coords: [-80.843, 35.227], kind: 'village', label: { dx: 8, dy: -6 } },
@@ -104,7 +102,7 @@ HMap.render('#map-campaign', {
   ],
   battles: [
     { coords: [-80.010, 33.195], label: 'Monck\'s Corner, Apr 14', labelPos: { dx: 12, dy: 4, anchor: 'start' } },
-    { coords: [-80.670, 34.800], label: 'Waxhaws, May 29', labelPos: { dx: 12, dy: 4, anchor: 'start' } },
+    { coords: [-80.626, 34.741], label: 'Waxhaws, May 29', labelPos: { dx: 12, dy: 4, anchor: 'start' } },
     { coords: [-80.605, 34.330], label: 'Aug 16', labelPos: { dx: 12, dy: 2, anchor: 'start' } },
     { coords: [-81.377, 35.142], label: 'King\'s Mountain, Oct 7', labelPos: { dx: 10, dy: 24, anchor: 'start' } }
   ],
@@ -112,33 +110,34 @@ HMap.render('#map-campaign', {
     { side: 'british', kind: 'naval', label: 'Feb 11', labelAt: 0.5, coords: [[-79.950, 32.520], [-80.100, 32.560], [-80.170, 32.610]] },
     { side: 'british', kind: 'march', label: 'Cornwallis, June', labelAt: 0.5, coords: [[-79.990, 32.900], [-80.150, 33.300], [-80.450, 33.850], [-80.590, 34.210]] },
     { side: 'continental', kind: 'march', label: 'Gates', labelAt: 0.4, coords: [[-79.640, 35.700], [-79.920, 35.000], [-80.250, 34.620], [-80.560, 34.420]] },
-    { side: 'continental', kind: 'retreat', label: 'flight to Charlotte', labelAt: 0.75, coords: [[-80.625, 34.360], [-80.745, 34.750], [-80.830, 35.190]] },
-    { side: 'militia', kind: 'march', approx: true, label: 'Overmountain men', labelAt: 0.17, coords: [[-82.220, 36.320], [-81.950, 36.050], [-81.700, 35.760], [-81.900, 35.380], [-81.820, 35.160], [-81.420, 35.140]] },
+    { side: 'continental', kind: 'retreat', label: 'flight to Charlotte', labelAt: 0.78, ph: { label: 'flight', labelAt: 0.22 }, coords: [[-80.625, 34.360], [-80.700, 34.600], [-80.790, 34.950], [-80.835, 35.190]] },
+    { side: 'militia', kind: 'march', approx: true, label: 'Overmountain men', labelAt: 0.3, ph: { label: 'Overmountain', labelAt: 0.22 }, coords: [[-82.220, 36.320], [-81.950, 36.050], [-81.700, 35.760], [-81.900, 35.380], [-81.820, 35.160], [-81.420, 35.140]] },
     { side: 'loyalist', kind: 'march', approx: true, label: 'Ferguson', labelAt: 0.55, coords: [[-81.900, 35.340], [-81.650, 35.280], [-81.400, 35.160]] }
   ],
   callouts: [
-    { coords: [-80.300, 32.640], n: 1 },
+    { coords: [-80.400, 32.580], n: 1 },
     { coords: [-80.900, 34.700], n: 2 },
     { coords: [-79.550, 35.950], n: 3 },
     { coords: [-82.450, 36.200], n: 4 }
   ],
   labels: [
-    { coords: [-81.600, 33.300], text: 'SOUTH CAROLINA', kind: 'region' },
-    { coords: [-79.300, 35.300], text: 'NORTH CAROLINA', kind: 'region' },
+    { coords: [-81.850, 33.800], text: 'SOUTH CAROLINA', kind: 'region' },
+    { coords: [-79.300, 35.480], text: 'NORTH CAROLINA', kind: 'region' },
     { coords: [-82.400, 33.200], text: 'GEORGIA', kind: 'region' },
     { coords: [-82.300, 35.800], text: 'BLUE RIDGE', kind: 'terrain', angle: -40 },
     { coords: [-79.200, 32.900], text: 'Atlantic\nOcean', kind: 'water' },
-    { coords: [-80.900, 34.030], text: 'Wateree R.', kind: 'water', size: 11, angle: -75 },
+    { coords: [-80.930, 33.900], text: 'Wateree R.', kind: 'water', size: 11, angle: -75 },
     { coords: [-79.620, 34.300], text: 'Pee Dee R.', kind: 'water', size: 11, angle: -60 }
-  ],
-  after: noSeams
+  ]
 });
 
 // 1780 shorelines: the peninsula's Ashley-side marshes and the Cooper wharves were later filled (approximate)
-const ashleyFill = cw([[-79.9290, 32.7718], [-79.9335, 32.7712], [-79.9385, 32.7735], [-79.9430, 32.7765], [-79.9455, 32.7810], [-79.9480, 32.7860], [-79.9510, 32.7920], [-79.9600, 32.7950], [-79.9650, 32.7650], [-79.9290, 32.7650]]);
-const cooperFill = cw([[-79.9290, 32.7718], [-79.9268, 32.7760], [-79.9270, 32.7820], [-79.9290, 32.7880], [-79.9300, 32.7960], [-79.9180, 32.7960], [-79.9180, 32.7690]]);
-const sumter = cw([[-79.8768, 32.7508], [-79.8728, 32.7508], [-79.8728, 32.7540], [-79.8768, 32.7540]]);
-const morris = cw([[-79.8712, 32.7412], [-79.8665, 32.7330], [-79.8705, 32.7100], [-79.8730, 32.6990], [-79.8840, 32.6990], [-79.8830, 32.7000], [-79.8770, 32.7220]]);
+// (outer edges run through modern water so no straight edge shows on land)
+const ashleyFill = [[-79.9290, 32.7718], [-79.9335, 32.7728], [-79.9385, 32.7745], [-79.9425, 32.7775], [-79.9450, 32.7815], [-79.9470, 32.7865], [-79.9495, 32.7915], [-79.9530, 32.7950], [-79.9690, 32.7950], [-79.9655, 32.7900], [-79.9610, 32.7860], [-79.9570, 32.7820], [-79.9510, 32.7775], [-79.9465, 32.7735], [-79.9420, 32.7700], [-79.9330, 32.7680], [-79.9290, 32.7690]];
+const cooperFill = ([[-79.9290, 32.7718], [-79.9268, 32.7760], [-79.9270, 32.7820], [-79.9290, 32.7880], [-79.9300, 32.7960], [-79.9180, 32.7960], [-79.9180, 32.7690]]);
+const sumter = ([[-79.8768, 32.7508], [-79.8728, 32.7508], [-79.8728, 32.7540], [-79.8768, 32.7540]]);
+// Morris Island before later erosion: a long beach island from Cummings Point south (approximate)
+const morris = [[-79.8745, 32.7490], [-79.8722, 32.7465], [-79.8708, 32.7430], [-79.8700, 32.7380], [-79.8702, 32.7300], [-79.8712, 32.7200], [-79.8730, 32.7100], [-79.8752, 32.7000], [-79.8770, 32.6950], [-79.8900, 32.6950], [-79.8890, 32.7050], [-79.8850, 32.7150], [-79.8800, 32.7250], [-79.8775, 32.7350], [-79.8780, 32.7420], [-79.8770, 32.7470]];
 
 HMap.render('#map-siege', {
   geo: 'charleston-camden-siege',
@@ -171,20 +170,19 @@ HMap.render('#map-siege', {
     { side: 'british', coords: [-79.9400, 32.8040], label: 'Clinton', labelPos: { dx: 18, dy: 4, anchor: 'start' } }
   ],
   callouts: [
-    { coords: [-79.9800, 32.8500], n: 1 },
+    { coords: [-79.9720, 32.8380], n: 1 },
     { coords: [-79.8350, 32.7300], n: 2 },
     { coords: [-79.9080, 32.7820], n: 3 },
-    { coords: [-79.8450, 32.8500], n: 4 }
+    { coords: [-79.8560, 32.8300], n: 4 }
   ],
   labels: [
     { coords: [-79.9780, 32.7930], text: 'Ashley R.', kind: 'water', size: 12, angle: -40 },
     { coords: [-79.9100, 32.8250], text: 'Cooper R.', kind: 'water', size: 12, angle: -80 },
     { coords: [-79.9420, 32.8160], text: 'THE NECK', kind: 'region', size: 11, angle: -60 },
-    { coords: [-79.9150, 32.7690], text: 'Charleston Harbor', kind: 'water', size: 12 },
+    { coords: [-79.9150, 32.7690], text: 'Charleston Harbor', kind: 'water', size: 12, ph: { coords: [-79.9280, 32.7600] } },
     { coords: [-79.9500, 32.7300], text: 'JAMES ISLAND', kind: 'region', size: 12 },
-    { coords: [-79.8330, 32.7695], text: 'Sullivan\'s Island', kind: 'region', size: 10.5, angle: -25 }
-  ],
-  after: noSeams
+    { coords: [-79.8330, 32.7695], text: 'Sullivan\'s Island', kind: 'region', size: 10.5, angle: -25, ph: { text: 'Sullivan\'s I.', coords: [-79.8400, 32.7700] } }
+  ]
 });
 
 HMap.render('#map-camden', {
@@ -192,7 +190,7 @@ HMap.render('#map-camden', {
   bbox: [-80.675, 34.238, -80.535, 34.378],
   alt: 'Map of the road north of Camden showing the night marches of both armies and their lines at dawn on August 16, 1780',
   water: { hide: ['Hermitage Mill Pond', 'Colonial Lk', 'Kendall Lk', 'Adams Mill Pond', 'Vaughns Mill Pond', 'Lk Shamokin'], hideUnnamed: true },
-  roads: [ { coords: [[-80.6070, 34.2500], [-80.6040, 34.2900], [-80.6060, 34.3300], [-80.6020, 34.3780]], name: 'Waxhaw road', labelAt: 0.82 } ],
+  roads: [ { coords: [[-80.6070, 34.2500], [-80.6040, 34.2900], [-80.6060, 34.3300], [-80.6020, 34.3780]], name: 'Waxhaw road', labelAt: 0.82, ph: { name: '' } } ],
   towns: [ { name: 'Camden', coords: [-80.6070, 34.2470], kind: 'town', label: { dx: 10, dy: 5 } } ],
   moves: [
     { side: 'continental', kind: 'march', label: 'Gates, from Rugeley\'s', labelAt: 0.45, coords: [[-80.5975, 34.3760], [-80.5995, 34.3580], [-80.6010, 34.3390]] },
@@ -221,8 +219,7 @@ HMap.render('#map-camden', {
     { coords: [-80.5550, 34.3600], text: 'Gum Swamp', kind: 'note', size: 10.5 },
     { coords: [-80.6420, 34.3140], text: 'Sanders Cr.', kind: 'note', size: 10.5 },
     { coords: [-80.5700, 34.2650], text: 'pine barrens', kind: 'terrain', size: 11 }
-  ],
-  after: noSeams
+  ]
 });
 
 // ridge crest from the elevation data: high "heel" at the southwest, Ferguson's camp on the broader northeast end
@@ -250,8 +247,7 @@ HMap.render('#map-km', {
   ],
   labels: [
     { coords: [-81.3905, 35.1470], text: 'horses left\nbelow the ridge', kind: 'note', size: 10.5 }
-  ],
-  after: noSeams
+  ]
 });
 </script>
 </body>

@@ -55,7 +55,7 @@
 <script>
 HMap.render('#map-camp', {
   geo: 'morristown-1779-80-camp',
-  bbox: [-74.600, 40.728, -74.455, 40.812],
+  bbox: [-74.600, 40.728, -74.440, 40.812],
   water: { hide: ['Cromwell Lk', 'Osborn Pond', 'Ledells Pond', 'Lk Pocahontas', 'Loantaka Pond', 'Mount Kemble Lk', 'Silver Lk', 'Speedwell Lk'], hideUnnamed: true },
   terrain: { contours: 10, exaggeration: 3 },
   alt: 'Map of Morristown and Jockey Hollow showing Washington\'s headquarters and the approximate brigade hut sites of the 1779–80 encampment',
@@ -77,22 +77,21 @@ HMap.render('#map-camp', {
   ],
   towns: [
     { name: 'Morristown', coords: [-74.4810, 40.7970], kind: 'town', label: { dx: -10, dy: -8, anchor: 'end' } },
-    { name: 'Ford house', coords: [-74.4705, 40.7983], kind: 'hq', label: { dx: 0, dy: 20, anchor: 'middle' } },
+    { name: 'Ford house', coords: [-74.4705, 40.7983], kind: 'hq', label: { dx: 12, dy: 4, anchor: 'start' } },
     { name: '', coords: [-74.4930, 40.7905], kind: 'building' },
     { name: '', coords: [-74.5455, 40.7605], kind: 'building' },
-    { name: '', coords: [-74.4760, 40.7930], kind: 'fort', side: 'continental' }
+    { name: 'Fort Nonsense (1777)', coords: [-74.4777, 40.7922], kind: 'fort', side: 'continental', label: { dx: 10, dy: 14, anchor: 'start' } }
   ],
   callouts: [
-    { coords: [-74.4625, 40.7985], n: 1 },
+    { coords: [-74.4705, 40.8050], n: 1 },
     { coords: [-74.4950, 40.7955], n: 2 },
     { coords: [-74.5520, 40.7580], n: 3 },
-    { coords: [-74.5290, 40.7740], n: 4 },
-    { coords: [-74.5700, 40.7480], n: 5 }
+    { coords: [-74.5372, 40.7762], n: 4 },
+    { coords: [-74.5515, 40.7445], n: 5 }
   ],
   labels: [
     { coords: [-74.5180, 40.7560], text: 'Mt. Kemble', kind: 'terrain', size: 11.5 },
     { coords: [-74.5600, 40.7790], text: 'JOCKEY HOLLOW', kind: 'region', size: 13, angle: -25 },
-    { coords: [-74.4790, 40.7880], text: 'Fort Nonsense (1777)', kind: 'note', size: 10.5 },
     { coords: [-74.5700, 40.7420], text: 'to Basking Ridge', kind: 'note', size: 10.5, angle: -80 },
     { coords: [-74.5760, 40.7810], text: 'to Mendham', kind: 'note', size: 10.5, angle: 25 },
     { coords: [-74.4800, 40.7540], text: 'Great Swamp', kind: 'terrain', size: 12 }
@@ -111,8 +110,8 @@ HMap.render('#map-springfield', {
   terrain: { contours: 20, exaggeration: 3 },
   alt: 'Map of the country between Elizabethtown Point and the Short Hills showing the British advances of June 7 and June 23, 1780 and the American defense at Springfield',
   roads: [
-    { name: 'Galloping Hill road', labelAt: 0.22, coords: GALLOPING },
-    { name: 'Vauxhall road', labelAt: 0.3, coords: VAUXHALL },
+    { coords: GALLOPING },
+    { name: 'Vauxhall road', labelAt: 0.78, coords: VAUXHALL, ph: { name: '' } },
     { coords: [[-74.1880, 40.6460], [-74.2000, 40.6560], [-74.2154, 40.6678]] }
   ],
   towns: [
@@ -124,7 +123,7 @@ HMap.render('#map-springfield', {
     { name: '', coords: [-74.3830, 40.7410], kind: 'village' }
   ],
   moves: [
-    { side: 'british', kind: 'march', approx: true, label: 'June 7', labelAt: 0.75, coords: [[-74.1900, 40.6490], [-74.2140, 40.6640], [-74.2400, 40.6828], [-74.2700, 40.6925], [-74.2900, 40.6975]] },
+    { side: 'british', kind: 'march', approx: true, label: 'June 7', labelAt: 0.75, ph: { labelAt: 0.05 }, coords: [[-74.1900, 40.6490], [-74.2140, 40.6640], [-74.2400, 40.6828], [-74.2700, 40.6925], [-74.2900, 40.6975]] },
     { side: 'british', kind: 'attack', label: 'Knyphausen, June 23', labelAt: 0.4, coords: [[-74.1960, 40.6610], [-74.2190, 40.6740], [-74.2440, 40.6905], [-74.2620, 40.6975], [-74.2860, 40.7035], [-74.2995, 40.7085]] },
     { side: 'british', kind: 'attack', label: 'Mathew', labelAt: 0.6, coords: [[-74.2440, 40.6930], [-74.2600, 40.7010], [-74.2700, 40.7040], [-74.2790, 40.7130], [-74.2845, 40.7195]] }
   ],
@@ -132,14 +131,14 @@ HMap.render('#map-springfield', {
     { side: 'continental', coords: [-74.3010, 40.7095], angle: -70, w: 20, label: 'Angell', labelPos: { dx: 14, dy: 16 } },
     { side: 'continental', coords: [-74.3070, 40.7130], angle: -70, w: 20, label: 'Shreve', labelPos: { dx: 0, dy: -14, anchor: 'middle' } },
     { side: 'continental', type: 'cavalry', coords: [-74.2905, 40.7240], angle: 10, label: 'Lee & Ogden', labelPos: { dx: 0, dy: -14, anchor: 'middle' } },
-    { side: 'continental', coords: [-74.3340, 40.7210], angle: 60, w: 34, label: 'Maxwell & Stark', labelPos: { dx: -20, dy: 18, anchor: 'end' } }
+    { side: 'continental', coords: [-74.3340, 40.7210], angle: 60, w: 34, label: 'Maxwell & Stark', labelPos: { dx: -20, dy: 18, anchor: 'end' }, ph: { labelPos: { dx: 0, dy: 30, anchor: 'middle' } } }
   ],
   battles: [{ coords: [-74.2650, 40.6990] }, { coords: [-74.3020, 40.7076] }, { coords: [-74.2870, 40.7212] }],
   callouts: [
     { coords: [-74.2550, 40.7080], n: 1 },
     { coords: [-74.2995, 40.6990], n: 2 },
-    { coords: [-74.2800, 40.7300], n: 3 },
-    { coords: [-74.3420, 40.7120], n: 4 }
+    { coords: [-74.2740, 40.7275], n: 3 },
+    { coords: [-74.3500, 40.7020], n: 4 }
   ],
   labels: [
     { coords: [-74.3400, 40.6900], text: 'Watchung\nMts.', kind: 'terrain', size: 12 },
@@ -147,8 +146,7 @@ HMap.render('#map-springfield', {
     { coords: [-74.3150, 40.6820], text: 'Rahway R.', kind: 'water', size: 11.5, angle: -80 },
     { coords: [-74.1800, 40.6900], text: 'Newark Bay', kind: 'water', size: 12.5, angle: -60 },
     { coords: [-74.1880, 40.6385], text: 'to Staten Island', kind: 'note', size: 10.5 },
-    
-    { coords: [-74.3500, 40.7380], text: 'to Morristown', kind: 'note', size: 10.5, angle: -25 }
+    { coords: [-74.3500, 40.7380], text: 'to Morristown', kind: 'note', size: 10.5, angle: -25, phone: false }
   ]
 });
 </script>

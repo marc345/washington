@@ -24,7 +24,7 @@
     <h2>Clinton's march across New Jersey and Washington's pursuit</h2>
     <div class="map-canvas" id="map-campaign"></div>
     <figcaption>
-      Clinton left Philadelphia on June 18 with about 17,000 troops and a baggage train some twelve miles long. Washington left Valley Forge the next day, crossed the Delaware above Trenton, and closed in from the north while militia and Maxwell's brigade broke bridges and felled trees in Clinton's path.
+      Clinton left Philadelphia on June 18 with well over 10,000 troops (estimates vary widely) and a baggage train some twelve miles long. Washington left Valley Forge the next day, crossed the Delaware above Trenton, and closed in from the north while militia and Maxwell's brigade broke bridges and felled trees in Clinton's path.
       <ol>
         <li>The British cross the Delaware to Gloucester and gather at Haddonfield.</li>
         <li>At Allentown, Clinton turns east toward Sandy Hook rather than risk the Raritan crossings.</li>
@@ -59,7 +59,7 @@
       <ol>
         <li>Stirling's wing on the left repels the British light infantry and the 42nd.</li>
         <li>Wayne holds the hedgerow and later fights the grenadiers near the parsonage.</li>
-        <li>Greene's guns on Combs Hill fire into the British flank, about 3:45 p.m., ending the duel.</li>
+        <li>Greene's guns on Combs Hill fire into the British flank in the mid-afternoon, ending the duel.</li>
         <li>Lafayette commands the second line behind the hill.</li>
       </ol>
       <span class="note-approx">Positions are schematic. The hedgerow, parsonage and Combs Hill locations follow the state battlefield park.</span>
@@ -84,7 +84,7 @@ HMap.render('#map-campaign', {
     { place: 'philadelphia', label: { dx: -10, dy: 4, anchor: 'end' } },
     { name: 'Haddonfield', coords: [-75.033, 39.892], kind: 'village', label: { dx: 0, dy: 16, anchor: 'middle' } },
     { name: 'Mount Holly', coords: [-74.787, 39.993], kind: 'village', label: { dx: 0, dy: 16, anchor: 'middle' } },
-    { name: 'Crosswicks', coords: [-74.648, 40.155], kind: 'village', label: { dx: -8, dy: 14, anchor: 'end' } },
+    { name: 'Crosswicks', coords: [-74.648, 40.155], kind: 'village', label: { dx: -8, dy: 14, anchor: 'end' }, ph: { label: { dx: -9, dy: 2, anchor: 'end' } } },
     { place: 'allentown-nj', label: { dx: 0, dy: 16, anchor: 'middle' } },
     { place: 'freehold', label: { dx: 0, dy: 22, anchor: 'middle' } },
     { name: 'Middletown', coords: [-74.117, 40.395], kind: 'village', label: { dx: -9, dy: -6, anchor: 'end' } },
@@ -97,7 +97,7 @@ HMap.render('#map-campaign', {
     { name: 'Englishtown', coords: [-74.358, 40.297], kind: 'village', label: { dx: 0, dy: -10, anchor: 'middle' } }
   ],
   moves: [
-    { side: 'british', kind: 'march', label: 'Clinton, June 18–26', labelAt: 0.45,
+    { side: 'british', kind: 'march', label: 'Clinton, June 18–26', labelAt: 0.3,
       coords: [[-75.150, 39.930], [-75.128, 39.900], [-75.033, 39.880], [-74.950, 39.948], [-74.787, 39.980], [-74.712, 40.055], [-74.645, 40.140], [-74.584, 40.165], [-74.515, 40.152], [-74.400, 40.192], [-74.285, 40.248]] },
     { side: 'british', kind: 'march', coords: [[-74.262, 40.268], [-74.200, 40.318], [-74.117, 40.382], [-74.040, 40.410], [-74.012, 40.448]] },
     { side: 'continental', kind: 'march', label: 'Washington', labelAt: 0.2,
@@ -107,16 +107,16 @@ HMap.render('#map-campaign', {
   battles: [{ coords: [-74.300, 40.272] }],
   callouts: [
     { coords: [-75.060, 39.845], n: 1 },
-    { coords: [-74.560, 40.130], n: 2 },
-    { coords: [-74.980, 40.410], n: 3 },
+    { coords: [-74.560, 40.105], n: 2 },
+    { coords: [-74.945, 40.445], n: 3 },
     { coords: [-74.400, 40.270], n: 4 },
     { coords: [-73.965, 40.400], n: 5 }
   ],
   labels: [
-    { coords: [-75.080, 40.250], text: 'PENNSYLVANIA', kind: 'region', size: 13 },
+    { coords: [-75.080, 40.250], text: 'PENNSYLVANIA', kind: 'region', size: 13, ph: { text: 'PENN.', coords: [-75.17, 40.13] } },
     { coords: [-74.550, 39.800], text: 'NEW JERSEY', kind: 'region' },
-    { coords: [-74.860, 40.180], text: 'Delaware R.', kind: 'water', size: 12, angle: -55 },
-    { coords: [-74.200, 40.490], text: 'Raritan Bay', kind: 'water', size: 12 },
+    { coords: [-74.905, 40.100], text: 'Delaware R.', kind: 'water', size: 12, angle: -40 },
+    { coords: [-74.200, 40.490], text: 'Raritan Bay', kind: 'water', size: 12, phone: false },
     { coords: [-73.990, 40.150], text: 'Atlantic\nOcean', kind: 'water', size: 14 }
   ]
 });
@@ -132,7 +132,7 @@ const BATTLE_COMMON = {
   roads: [
     { coords: ROAD_522 },
     { coords: [[-74.3306, 40.2816], [-74.3380, 40.2880], [-74.3400, 40.3000], [-74.3360, 40.3200]] },
-    { name: 'to Middletown', labelAt: 0.6, coords: [[-74.2737, 40.2579], [-74.2650, 40.2640], [-74.2540, 40.2720], [-74.2480, 40.2780]] }
+    { name: 'to Middletown', labelAt: 0.6, ph: { name: null }, coords: [[-74.2737, 40.2579], [-74.2650, 40.2640], [-74.2540, 40.2720], [-74.2480, 40.2780]] }
   ]
 };
 const STREAM_LABELS = [
@@ -145,25 +145,25 @@ HMap.render('#map-morning', Object.assign({}, BATTLE_COMMON, {
   alt: 'Map of the Monmouth battlefield in the morning of June 28, 1778, showing Lee\'s advance from Englishtown and his retreat',
   towns: [
     { name: 'Englishtown', coords: [-74.3584, 40.2955], kind: 'village', label: { dx: 0, dy: -10, anchor: 'middle' } },
-    { place: 'freehold', label: { dx: 0, dy: 18, anchor: 'middle' } },
+    { place: 'freehold', label: { dx: 0, dy: 18, anchor: 'middle' }, ph: { label: { dx: -6, dy: 17, anchor: 'end' } } },
     { name: 'Tennent church', coords: [-74.3380, 40.2862], kind: 'church', label: { dx: -9, dy: -4, anchor: 'end' } },
-    { name: '', coords: [-74.3165, 40.2733], kind: 'building' }
+    { name: 'bridge', coords: [-74.3165, 40.2733], kind: 'building', label: { dx: 0, dy: 15, anchor: 'middle' }, ph: { label: { dx: -8, dy: 4, anchor: 'end' } } }
   ],
   moves: [
     { side: 'continental', kind: 'march', label: 'Lee', labelAt: 0.35, coords: [[-74.3560, 40.2975], [-74.3400, 40.2910], [-74.3270, 40.2805], [-74.3100, 40.2745], [-74.2930, 40.2700]] },
     { side: 'continental', kind: 'attack', label: 'Wayne', labelAt: 0.5, coords: [[-74.2930, 40.2700], [-74.2840, 40.2685], [-74.2790, 40.2665]] },
     { side: 'continental', kind: 'march', approx: true, label: 'flank move', labelAt: 0.5, coords: [[-74.2950, 40.2725], [-74.2900, 40.2800], [-74.2800, 40.2830], [-74.2700, 40.2790]] },
     { side: 'british', kind: 'attack', label: 'Clinton turns back', labelAt: 0.45, coords: [[-74.2640, 40.2700], [-74.2760, 40.2730], [-74.2900, 40.2770], [-74.3020, 40.2790]] },
-    { side: 'continental', kind: 'retreat', label: 'Lee falls back', labelAt: 0.5, coords: [[-74.2960, 40.2672], [-74.3060, 40.2697], [-74.3150, 40.2712], [-74.3240, 40.2748]] },
+    { side: 'continental', kind: 'retreat', label: 'Lee falls back', labelAt: 0.5, ph: { labelAt: 0.3 }, coords: [[-74.2960, 40.2672], [-74.3060, 40.2697], [-74.3150, 40.2712], [-74.3240, 40.2748]] },
     { side: 'british', kind: 'march', coords: [[-74.2720, 40.2605], [-74.2670, 40.2640], [-74.2630, 40.2668]] }
   ],
   units: [
-    { side: 'british', coords: [-74.2770, 40.2640], angle: -20 }
+    { side: 'british', coords: [-74.2770, 40.2640], angle: -20, label: 'rear guard', labelPos: { dx: -18, dy: 6, anchor: 'end' } }
   ],
   battles: [{ coords: [-74.2830, 40.2715] }],
   callouts: [
-    { coords: [-74.2680, 40.2700], n: 1 },
-    { coords: [-74.2905, 40.2630], n: 2 },
+    { coords: [-74.2670, 40.2580], n: 1 },
+    { coords: [-74.2905, 40.2630], n: 2, ph: { coords: [-74.3086, 40.2629] } },
     { coords: [-74.2930, 40.2830], n: 3 },
     { coords: [-74.3200, 40.2690], n: 4 }
   ],
@@ -184,7 +184,7 @@ HMap.render('#map-afternoon', Object.assign({}, BATTLE_COMMON, {
   moves: [
     { side: 'british', kind: 'attack', label: 'grenadiers & guards', labelAt: 0.45, coords: [[-74.2990, 40.2765], [-74.3080, 40.2748], [-74.3150, 40.2738]] },
     { side: 'british', kind: 'attack', label: 'light infantry & 42nd', labelAt: 0.45, coords: [[-74.3000, 40.2875], [-74.3110, 40.2855], [-74.3195, 40.2830]] },
-    { side: 'continental', kind: 'attack', label: '4:45 p.m.', labelAt: 0.5, coords: [[-74.3125, 40.2695], [-74.3085, 40.2668], [-74.3040, 40.2672]] }
+    { side: 'continental', kind: 'attack', coords: [[-74.3125, 40.2695], [-74.3085, 40.2668], [-74.3040, 40.2672]] }
   ],
   units: [
     { side: 'continental', coords: [-74.3225, 40.2810], angle: -60, w: 34, label: 'Stirling', labelPos: { dx: -28, dy: -6, anchor: 'end' } },

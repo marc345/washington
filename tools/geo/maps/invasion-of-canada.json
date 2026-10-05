@@ -1,5 +1,6 @@
 [
   { "id": "invasion-of-canada-routes", "bbox": [-74.3, 43.35, -69.4, 47.05], "detail": "campaign" },
+  { "id": "invasion-of-canada-retreat", "bbox": [-74.35, 43.9, -70.9, 47.0], "detail": "campaign" },
   { "id": "invasion-of-canada-valcour", "bbox": [-73.475, 44.565, -73.37, 44.645], "detail": "local" },
   { "id": "invasion-of-canada-quebec", "bbox": [-71.234, 46.7975, -71.196, 46.8225], "detail": "campaign" }
 ]

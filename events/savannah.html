@@ -64,7 +64,6 @@
 </main>
 
 <script>
-const noSeams = ({ root }) => root.selectAll('path.hm-water').style('stroke', 'none');
 // modern slips, canal remnants and ponds (all unnamed)
 const localWater = { hideUnnamed: true };
 const localRivers = { hide: ['Savannah Ogeechee Ca'] };
@@ -114,8 +113,7 @@ HMap.render('#map-1778', {
     { coords: [-81.1000, 32.0920], text: 'to Zubly\'s Ferry\nand South Carolina', kind: 'note', size: 10.5, anchor: 'start' },
     { coords: [-81.0430, 32.0600], text: 'Wilmington R.', kind: 'water', size: 12, angle: -55 },
     { coords: [-81.1070, 32.0800], text: 'Musgrove Cr.', kind: 'note', size: 10.5, anchor: 'end' }
-  ],
-  after: noSeams
+  ]
 });
 
 HMap.render('#map-region', {
@@ -132,7 +130,7 @@ HMap.render('#map-region', {
     { name: 'Thunderbolt', coords: [-81.050, 32.033], kind: 'village', label: { dx: 8, dy: 4 } }
   ],
   ships: [
-    { side: 'french', coords: [-80.780, 31.965], label: 'd\'Estaing\'s fleet', labelPos: { dx: 0, dy: 22, anchor: 'middle' } },
+    { side: 'french', coords: [-80.780, 31.965], label: 'd\'Estaing\'s fleet', labelPos: { dx: 0, dy: -18, anchor: 'middle' } },
     { side: 'french', coords: [-80.810, 31.935] }
   ],
   moves: [
@@ -151,12 +149,11 @@ HMap.render('#map-region', {
     { coords: [-80.720, 32.060], text: 'Atlantic Ocean', kind: 'water' },
     { coords: [-81.250, 32.200], text: 'GEORGIA', kind: 'region' },
     { coords: [-80.930, 32.200], text: 'SOUTH CAROLINA', kind: 'region' },
-    { coords: [-81.215, 32.300], text: 'Savannah R.', kind: 'water', size: 12, angle: -75 },
+    { coords: [-81.212, 32.440], text: 'Savannah R.', kind: 'water', size: 12, angle: -68 },
     { coords: [-80.760, 32.170], text: 'Hilton Head I.', kind: 'region', size: 11, angle: -50 },
     { coords: [-80.828, 32.012], text: 'Tybee I.', kind: 'region', size: 11, anchor: 'start' },
     { coords: [-80.920, 32.130], text: 'Wall\'s Cut', kind: 'note', size: 10.5 }
-  ],
-  after: noSeams
+  ]
 });
 
 HMap.render('#map-assault', {
@@ -186,7 +183,7 @@ HMap.render('#map-assault', {
     { side: 'militia', kind: 'attack', label: 'Huger (feint)', labelAt: 0.5, coords: [[-81.0740, 32.0650], [-81.0770, 32.0690], [-81.0800, 32.0725]] },
   ],
   units: [
-    { side: 'british', coords: [-81.0935, 32.0737], angle: 8, label: 'Maitland', labelPos: { dx: 16, dy: 4, anchor: 'start' } },
+    { side: 'british', coords: [-81.0950, 32.0740], angle: 14, label: 'Maitland', labelPos: { dx: 16, dy: 4, anchor: 'start' } },
     { side: 'continental', type: 'cavalry', coords: [-81.1075, 32.0685], angle: 40, label: 'Pulaski', labelPos: { dx: -16, dy: 4, anchor: 'end' } }
   ],
   battles: [ { coords: [-81.1003, 32.0732], label: '' } ],
@@ -198,9 +195,8 @@ HMap.render('#map-assault', {
   labels: [
     { coords: [-81.0850, 32.0840], text: 'Savannah River', kind: 'water', angle: 12 },
     { coords: [-81.0840, 32.0878], text: 'Hutchinson Island', kind: 'region', size: 10 },
-    { coords: [-81.0950, 32.0628], text: 'allied siege trenches', kind: 'note', size: 10.5, anchor: 'end' }
-  ],
-  after: noSeams
+    { coords: [-81.0810, 32.0655], text: 'allied siege\ntrenches', kind: 'note', size: 10.5, anchor: 'start' }
+  ]
 });
 </script>
 </body>
