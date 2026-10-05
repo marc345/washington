@@ -102,7 +102,7 @@
   "easton": {"name": "Easton", "coords": [-75.208, 40.688], "kind": "village"},
   "wyoming-valley": {"name": "Wyoming Valley", "coords": [-75.88, 41.25], "kind": "village"},
   "tioga": {"name": "Tioga", "coords": [-76.515, 41.985], "kind": "village"},
-  "newtown-ny": {"name": "Newtown", "coords": [-76.735, 42.04], "kind": "village"},
+  "newtown-ny": {"name": "Newtown battlefield", "coords": [-76.735, 42.04], "kind": "village"},
   "genesee-castle": {"name": "Genesee Castle", "coords": [-77.86, 42.78], "kind": "village"},
   "kennett-square": {"name": "Kennett Square", "coords": [-75.7117, 39.8467], "kind": "village"},
   "birmingham-meeting": {"name": "Birmingham Meeting House", "coords": [-75.5939, 39.9059], "kind": "church"},
