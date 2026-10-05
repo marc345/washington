@@ -2,6 +2,22 @@
 
 Reviews the round-1 fixes (commit 901d045) and re-checks each page. m1, m2… = map number on the page. Sections are added as reviewers finish; a missing page range means that review has not been saved yet.
 
+## Pages 1–12 (lexington-concord-bunker-hill … fort-washington)
+
+Verdict: no ERROR; 1 INCONSISTENCY. All round-1 findings acted on are fixed correctly (E1–E2, I1–I6, U1–U3, N1–N12; N8 Lee ~600 m west of the Winter Hill works, acceptable). N13 (Canada start "Aug 1775") optional, not done.
+
+### INCONSISTENCY
+1. **dorchester-heights m1:** label "Nook's Hill" at [-71.0595, 42.3375], `anchor: 'end'` sits in South Bay water ~0.7 km west of the hill. Map 2 and gazetteer `nooks-hill` use [-71.0525, 42.3378] (B and W. Third Sts, South Boston). → use `'nooks-hill'`, `anchor: 'middle'`.
+
+### UNMARKED-APPROX
+2. **fort-washington m2:** note says crossing point and garrison's road west are approximate, but "garrison" (Fort Lee → New Bridge) and "Nov 19–20" (Philipse Manor → Lower Closter Landing) lack `approx: true`.
+
+### NIT
+3. siege-of-boston m1: "Howe's garrison" on a summer–autumn 1775 map; Gage commanded until Oct 10–11 → "British garrison" or "Gage's (later Howe's) garrison".
+4. knox-noble-train: Lake George boat route crosses ~10 km of land at Tongue Mountain; [-73.560, 43.660] and [-73.655, 43.560] on land. → waypoints [-73.50,43.70],[-73.515,43.66],[-73.55,43.62],[-73.635,43.56],[-73.66,43.50]. ~3 km gap between Fort Ticonderoga and the route start; optionally a short La Chute march.
+5. invasion-of-canada Valcour map: "night escape" line runs through the westernmost British ship [-73.437, 44.600]; the boats slipped between it and the shore → waypoint [-73.4382, 44.600] → [-73.4420, 44.600], or move the ship east.
+6. new-york-defenses m1 (phone): Fort Greene, Fort Box, Oblong Redoubt dropped (`phone: false`) but caption item 2 names them.
+
 ## Pages 25–36 (savannah … road-home-1783)
 
 Verdict: 1 ERROR, several UNMARKED-APPROX (mostly missed in round 1); no INCONSISTENCY. Round-1 fixes correct: E1, I1–I3, P1–P2, N1, N3–N8, N10–N11 fixed; N9 (Maitland) partly (~450 m east of Spring Hill, acceptable); N2 (stony-point `washington: true`) kept by decision (Washington planned both raids and inspected Stony Point after its capture).
