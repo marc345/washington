@@ -97,7 +97,10 @@ function padBbox([w, s, e, n], f = 0.08) {
 }
 
 function countiesIn(bbox) {
-  const csv = sh(['-i', ensureShp(SRC.counties), '-clip', 'bbox=' + bbox.join(','), '-filter-fields', 'GEOID', '-o', 'format=csv', '-']);
+  let csv;
+  try {
+    csv = sh(['-i', ensureShp(SRC.counties), '-clip', 'bbox=' + bbox.join(','), '-filter-fields', 'GEOID', '-o', 'format=csv', '-']);
+  } catch { return []; } // bbox outside the US: no counties
   return csv.trim().split('\n').slice(1).map(s => s.trim().replace(/"/g, '')).filter(Boolean);
 }
 

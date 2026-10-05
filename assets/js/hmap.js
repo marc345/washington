@@ -512,7 +512,7 @@
     if ((cfg.roads || []).length) items.push(['<svg viewBox="0 0 30 12"><path d="M2,6 H28" stroke="#8b6b45" stroke-width="1.6"/></svg>', 'Period road']);
     if ((cfg.battles || []).length) items.push([`<svg viewBox="-11 -11 22 22"><path d="${swordsPath()}" stroke="#7a1f1a" stroke-width="2.2" fill="none"/></svg>`, 'Fighting']);
     if ((cfg.corrections || {}).water) items.push(['<svg viewBox="0 0 26 12"><rect x="1" y="1" width="24" height="10" fill="#bccfd0" stroke="#7d9ea3"/></svg>', 'Water (period shoreline)']);
-    if (cfg.terrain !== false) items.push(['<svg viewBox="0 0 30 12"><path d="M1,9 C8,2 14,2 20,6 S27,9 29,4" stroke="#a08a63" stroke-width="1.2" fill="none"/></svg>', 'Elevation contours']);
+    if (cfg.terrain !== false && (cfg.terrain || {}).contours !== false) items.push(['<svg viewBox="0 0 30 12"><path d="M1,9 C8,2 14,2 20,6 S27,9 29,4" stroke="#a08a63" stroke-width="1.2" fill="none"/></svg>', 'Elevation contours']);
     (cfg.legendExtra || []).forEach(x => items.push([x.svg || '', x.text]));
     lg.innerHTML = items.map(([svg, t]) => `<li>${svg}<span>${t}</span></li>`).join('');
     const cap = fig.querySelector('figcaption');

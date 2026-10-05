@@ -45,7 +45,7 @@
     "summary": "The army's winter encampment on a plateau above the Schuylkill, a day's march from British-held Philadelphia." },
   { "id": "monmouth", "title": "Monmouth campaign", "dates": "Jun 18–28, 1778", "start": "1778-06-18", "coords": [-74.32, 40.26], "washington": true,
     "summary": "Clinton evacuates Philadelphia across New Jersey; Lee's advance guard attack collapses and Washington rallies the army at Monmouth Court House." },
-  { "id": "newport-1778", "title": "Newport", "dates": "Jul – Aug 1778", "start": "1778-07-29", "coords": [-71.31, 41.49], "washington": false,
+  { "id": "newport-1778", "title": "Newport", "dates": "Jul 29 – Aug 30, 1778", "start": "1778-07-29", "coords": [-71.31, 41.49], "washington": false,
     "summary": "The first Franco-American operation against British-held Newport founders when a storm scatters d'Estaing's fleet." },
   { "id": "savannah", "title": "Savannah", "dates": "Dec 1778 – Oct 1779", "start": "1778-12-29", "coords": [-81.09, 32.08], "washington": false,
     "summary": "The British take Savannah; a year later a French and American siege fails with heavy losses in a dawn assault." },
