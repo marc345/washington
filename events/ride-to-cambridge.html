@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Washington rides to Cambridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="ride-to-cambridge">
+<main>
+  <header class="event-head">
+    <h1>Washington rides to Cambridge</h1>
+    <p class="meta">June 23 – July 2, 1775 · Philadelphia to Cambridge, Massachusetts</p>
+  </header>
+
+  <figure class="map">
+    <h2>Philadelphia to Cambridge in ten days</h2>
+    <div class="map-canvas" id="map-route"></div>
+    <figcaption>
+      Washington left Philadelphia with Generals Charles Lee and Philip Schuyler and a mounted escort, taking the main post roads through New Jersey, New York and Connecticut. Early in the journey a courier brought the first reports of Bunker Hill.
+      <ol>
+        <li>June 25: the party crosses the Hudson from Hoboken and enters New York, the same day the royal governor, William Tryon, lands in the city.</li>
+        <li>June 28–29: New Haven, then inland by Wallingford and Durham to Wethersfield and Hartford.</li>
+        <li>July 2: Watertown, seat of the Massachusetts Provincial Congress, and Cambridge that afternoon.</li>
+      </ol>
+      <span class="note-approx">The route follows the period post roads; some overnight stops and dates are approximate.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+(function () {
+  const U = sel => Math.pow(Math.max(1, 1000 / (document.querySelector(sel).clientWidth || 1000)), 0.82);
+  const u = U('#map-route');
+  const route = [
+    'philadelphia', [-74.857, 40.100], 'trenton', 'princeton', 'new-brunswick', [-74.284, 40.557], 'elizabethtown', 'newark', [-74.030, 40.745], 'new-york',
+    'kingsbridge', [-73.782, 40.911], [-73.684, 40.980], [-73.539, 41.053], [-73.408, 41.118], [-73.264, 41.141], [-73.133, 41.184], 'new-haven',
+    [-72.823, 41.457], [-72.681, 41.481], [-72.651, 41.562], 'wethersfield', 'hartford', [-72.644, 41.853], 'springfield-ma',
+    [-72.330, 42.160], [-72.100, 42.210], [-71.990, 42.244], 'worcester', [-71.552, 42.346], [-71.416, 42.383], [-71.183, 42.370], 'cambridge'
+  ];
+  HMap.render('#map-route', {
+    geo: 'ride-to-cambridge-route',
+    bbox: [-75.7, 39.2, -70.5, 42.8],
+    alt: 'Map of Washington\'s route from Philadelphia through New Jersey, New York City and Connecticut to Cambridge, June 23 to July 2, 1775',
+    terrain: { contours: false },
+    moves: [
+      { side: 'continental', kind: 'march', coords: route, straight: true, width: 3 }
+    ],
+    towns: [
+      { place: 'philadelphia', name: 'Philadelphia, Jun 23', label: { dx: 9 * u, dy: 8 * u, anchor: 'start' } },
+      { place: 'trenton', label: { dx: -7 * u, dy: 4 * u, anchor: 'end' } },
+      { place: 'new-brunswick', label: { dx: -7 * u, dy: 4 * u, anchor: 'end' } },
+      { place: 'newark', label: { dx: -7 * u, dy: -4 * u, anchor: 'end' } },
+      { place: 'new-york', name: 'New York, Jun 25–26', label: { dx: 2 * u, dy: 18 * u, anchor: 'middle' } },
+      { place: 'new-haven', name: 'New Haven, Jun 28', label: { dx: 4 * u, dy: 18 * u, anchor: 'start' } },
+      { place: 'hartford', name: 'Hartford, Jun 29', label: { dx: -7 * u, dy: 4 * u, anchor: 'end' } },
+      { place: 'springfield-ma', name: 'Springfield, Jun 30', label: { dx: -7 * u, dy: -5 * u, anchor: 'end' } },
+      { place: 'worcester', label: { dx: 0, dy: 17 * u, anchor: 'middle' } },
+      { place: 'cambridge', name: 'Cambridge, Jul 2', label: { dx: 0, dy: -10 * u, anchor: 'end' } }
+    ],
+    labels: [
+      { coords: [-74.700, 40.950], text: 'NEW JERSEY', kind: 'region' },
+      { coords: [-75.150, 41.400], text: 'PENNSYLVANIA', kind: 'region' },
+      { coords: [-74.550, 42.300], text: 'NEW YORK', kind: 'region' },
+      { coords: [-72.250, 41.600], text: 'CONN.', kind: 'region', size: 12 },
+      { coords: [-73.150, 42.560], text: 'MASSACHUSETTS', kind: 'region', size: 13 },
+      { coords: [-71.500, 41.950], text: 'R.I.', kind: 'region', size: 12 },
+      { coords: [-73.150, 41.060], text: 'Long Island Sound', kind: 'water', size: 12, angle: -10 },
+      { coords: [-72.800, 40.300], text: 'Atlantic Ocean', kind: 'water' },
+      { coords: [-73.955, 41.330], text: 'Hudson R.', kind: 'water', size: 12, angle: -80 }
+    ],
+    callouts: [
+      { coords: [-74.200, 40.880], n: 1 },
+      { coords: [-72.560, 41.420], n: 2 },
+      { coords: [-70.900, 42.280], n: 3 }
+    ]
+  });
+})();
+</script>
+</body>
+</html>

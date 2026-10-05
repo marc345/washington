@@ -425,7 +425,16 @@
   function keepLabelsInside(svg, VW, VH, pad) {
     svg.selectAll('.hm-root text.hm-lbl').each(function () {
       if (this.querySelector('textPath')) return;
-      const b = this.getBBox();
+      let b = this.getBBox();
+      // measure the rotated box for rotated labels
+      const m = /rotate\(([-\d.]+),([-\d.]+),([-\d.]+)\)/.exec(this.getAttribute('transform') || '');
+      if (m) {
+        const a = +m[1] * Math.PI / 180, cx = +m[2], cy = +m[3];
+        const pts = [[b.x, b.y], [b.x + b.width, b.y], [b.x, b.y + b.height], [b.x + b.width, b.y + b.height]]
+          .map(([x, y]) => [cx + (x - cx) * Math.cos(a) - (y - cy) * Math.sin(a), cy + (x - cx) * Math.sin(a) + (y - cy) * Math.cos(a)]);
+        const xs = pts.map(q => q[0]), ys = pts.map(q => q[1]);
+        b = { x: Math.min(...xs), y: Math.min(...ys), width: Math.max(...xs) - Math.min(...xs), height: Math.max(...ys) - Math.min(...ys) };
+      }
       let dx = 0, dy = 0;
       if (b.x < pad) dx = pad - b.x; else if (b.x + b.width > VW - pad) dx = VW - pad - b.x - b.width;
       if (b.y < pad) dy = pad - b.y; else if (b.y + b.height > VH - pad) dy = VH - pad - b.y - b.height;

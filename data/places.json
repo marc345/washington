@@ -111,5 +111,19 @@
   "cliveden": {"name": "Cliveden", "coords": [-75.1812, 40.0474], "kind": "building"},
   "billingsport": {"name": "Billingsport", "coords": [-75.2418, 39.847], "kind": "fort"},
   "valley-forge-hq": {"name": "Washington's HQ, Valley Forge", "coords": [-75.4594, 40.1017], "kind": "hq"},
-  "robinson-house": {"name": "Robinson House", "coords": [-73.9498, 41.3649], "kind": "building"}
+  "robinson-house": {"name": "Robinson House", "coords": [-73.9498, 41.3649], "kind": "building"},
+  "lechmere-point": {"name": "Lechmere Point", "coords": [-71.0772, 42.37], "kind": "village"},
+  "breeds-hill": {"name": "Breed's Hill", "coords": [-71.0608, 42.3764], "kind": "village"},
+  "bunker-hill": {"name": "Bunker Hill", "coords": [-71.0665, 42.3812], "kind": "village"},
+  "prospect-hill": {"name": "Prospect Hill", "coords": [-71.0945, 42.3815], "kind": "fort"},
+  "winter-hill": {"name": "Winter Hill", "coords": [-71.0995, 42.3935], "kind": "fort"},
+  "nooks-hill": {"name": "Nook's Hill", "coords": [-71.0525, 42.3378], "kind": "fort"},
+  "castle-william": {"name": "Castle William", "coords": [-71.0125, 42.3385], "kind": "fort"},
+  "menotomy": {"name": "Menotomy", "coords": [-71.156, 42.415], "kind": "village"},
+  "medford": {"name": "Medford", "coords": [-71.107, 42.4185], "kind": "village"},
+  "watertown": {"name": "Watertown", "coords": [-71.183, 42.37], "kind": "village"},
+  "framingham": {"name": "Framingham", "coords": [-71.436, 42.296], "kind": "village"},
+  "fort-george": {"name": "Fort George", "coords": [-73.712, 43.418], "kind": "fort"},
+  "kinderhook": {"name": "Kinderhook", "coords": [-73.698, 42.395], "kind": "village"},
+  "great-barrington": {"name": "Great Barrington", "coords": [-73.362, 42.196], "kind": "village"}
 }

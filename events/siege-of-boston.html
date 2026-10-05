@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Siege of Boston</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="siege-of-boston">
+<main>
+  <header class="event-head">
+    <h1>Siege of Boston</h1>
+    <p class="meta">July 1775 – February 1776 · Boston, Cambridge, Charlestown and Roxbury, Massachusetts</p>
+  </header>
+
+  <figure class="map">
+    <h2>The siege lines, summer and autumn 1775</h2>
+    <div class="map-canvas" id="map-lines"></div>
+    <figcaption>
+      American camps and earthworks ran in a ten-mile arc from Roxbury round to Winter Hill. They sealed the two land exits from British-held ground: Boston Neck and Charlestown Neck. The British held the Boston peninsula, Bunker Hill and the harbor.
+      <ol>
+        <li>Washington's headquarters in Cambridge, from mid-July 1775.</li>
+        <li>Charlestown Neck: British works on Bunker Hill face the American forts on Prospect and Winter Hills.</li>
+        <li>Boston Neck: British lines face the American works at Roxbury, a mile and a half apart.</li>
+      </ol>
+      <span class="note-approx">Shorelines follow a 1795 survey of Boston (earlier than the later landfill). The western edge of the Back Bay and the line of individual earthworks are approximate.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>Pressing closer: the northern front, August 1775 – January 1776</h2>
+    <div class="map-canvas" id="map-cambridge"></div>
+    <figcaption>
+      Through the autumn and winter the Americans pushed their works forward toward Charlestown Neck and the Charles, partly to provoke the British and partly to bring guns within range.
+      <ol>
+        <li>August 26–27: Ploughed Hill fortified overnight, under British fire the next day.</li>
+        <li>November 9: British troops land at Lechmere Point to seize cattle and are driven off.</li>
+        <li>November 22: a battery goes up on Cobble Hill.</li>
+        <li>December: Lechmere Point is fortified, bringing guns within reach of Boston.</li>
+        <li>January 1, 1776: the new Continental colors are raised on Prospect Hill.</li>
+        <li>January 8, 1776: a night raid burns houses near Charlestown Neck used by the British.</li>
+      </ol>
+      <span class="note-approx">Positions of individual works are approximate.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+(function () {
+  // Period (1795) shoreline: water from data/geo/<map>.shore.json, drawn without seams, plus the period coastline as one edge line.
+  const shore = id => fetch('../data/geo/' + id + '.shore.json').then(r => r.json());
+  const periodShore = c => ({ root, proj, d3 }) => {
+    root.selectAll('path.hm-water').filter((d, i) => i > 0).style('stroke', 'var(--sea)').style('stroke-width', 1.3);
+    root.insert('path', '.hm-rivers').attr('d', d3.geoPath(proj)({ type: 'MultiLineString', coordinates: c.coast }))
+      .attr('fill', 'none').style('stroke', 'var(--sea-edge)').style('stroke-width', 0.6);
+  };
+  // label offsets scaled like the library's symbols, so they clear symbols at phone width too
+  const U = sel => Math.pow(Math.max(1, 1000 / (document.querySelector(sel).clientWidth || 1000)), 0.82);
+  const RIVERS = { hide: ['Charles Riv', 'Mystic Riv', 'Malden Riv', 'Chelsea Riv', 'Muddy Riv', 'Mill Crk'] };
+
+  const u1 = U('#map-lines');
+  shore('siege-of-boston-lines').then(corrections => HMap.render('#map-lines', {
+    geo: 'siege-of-boston-lines',
+    bbox: [-71.15, 42.31, -71.0, 42.405],
+    alt: 'Map of Boston and its surroundings in 1775 showing the arc of American siege lines from Roxbury to Winter Hill and the British posts on the Boston and Charlestown peninsulas',
+    corrections, after: periodShore(corrections), rivers: RIVERS,
+    terrain: { contours: 10 },
+    roads: [
+      { coords: [[-71.0655, 42.3555], [-71.0668, 42.3480], [-71.0700, 42.3410], [-71.0780, 42.3360], [-71.0850, 42.3310], [-71.0910, 42.3300]] },
+      { coords: [[-71.0910, 42.3300], [-71.1060, 42.3330], [-71.1200, 42.3340], [-71.1280, 42.3440], [-71.1260, 42.3560], [-71.1210, 42.3680], [-71.1190, 42.3740]] },
+      { coords: [[-71.1190, 42.3740], [-71.1080, 42.3790], [-71.0950, 42.3800], [-71.0820, 42.3815], [-71.0745, 42.3835], [-71.0680, 42.3800]] },
+      { coords: [[-71.0820, 42.3815], [-71.0920, 42.3880], [-71.1000, 42.3930], [-71.1080, 42.4040]] }
+    ],
+    works: [
+      { side: 'continental', kind: 'redoubt', coords: [[-71.0945, 42.3815]], size: 8 },
+      { side: 'continental', kind: 'redoubt', coords: [[-71.0995, 42.3935]], size: 7 },
+      { side: 'continental', coords: [[-71.0945, 42.3815], [-71.0965, 42.3870], [-71.0995, 42.3935]] },
+      { side: 'continental', coords: [[-71.0890, 42.3330], [-71.0845, 42.3345], [-71.0795, 42.3345]] },
+      { side: 'continental', kind: 'redoubt', coords: [[-71.0950, 42.3252]], size: 7 },
+      { side: 'continental', kind: 'redoubt', coords: [[-71.1050, 42.3468]], size: 6 },
+      { side: 'continental', kind: 'redoubt', coords: [[-71.1042, 42.3570]], size: 6 },
+      { side: 'british', kind: 'redoubt', coords: [[-71.0660, 42.3800]], size: 7 },
+      { side: 'british', coords: [[-71.0712, 42.3790], [-71.0662, 42.3815], [-71.0625, 42.3825]] },
+      { side: 'british', coords: [[-71.0712, 42.3447], [-71.0675, 42.3443], [-71.0640, 42.3440]] },
+      { side: 'british', kind: 'redoubt', coords: [[-71.0565, 42.3672]], size: 5 }
+    ],
+    towns: [
+      { place: 'cambridge', label: { dx: 7 * u1, dy: -3 * u1 } },
+      { place: 'boston', coords: [-71.0590, 42.3595], label: { dx: 7 * u1, dy: 4 * u1 } },
+      { place: 'roxbury', coords: [-71.0910, 42.3300], label: { dx: -7 * u1, dy: 13 * u1, anchor: 'end' } },
+      { name: 'Charlestown (burned)', coords: [-71.0605, 42.3740], kind: 'village', label: { dx: 7 * u1, dy: 4 * u1 } },
+      { name: 'Brookline', coords: [-71.1210, 42.3330], kind: 'village', label: { dx: 0, dy: 15 * u1, anchor: 'middle' } },
+      { name: 'Dorchester', coords: [-71.0660, 42.3140], kind: 'village', label: { dx: -7 * u1, dy: 4 * u1, anchor: 'end' } },
+      { name: 'Chelsea', coords: [-71.0330, 42.3930], kind: 'village', label: { dx: 7 * u1, dy: 4 * u1 } },
+      { name: '', coords: [-71.1263, 42.3771], kind: 'hq' },
+      { name: 'Castle William', coords: [-71.0125, 42.3385], kind: 'fort', side: 'british', label: { dx: 0, dy: 18 * u1, anchor: 'middle' } }
+    ],
+    units: [
+      { side: 'continental', coords: [-71.1150, 42.3890], label: 'Lee (left wing)', labelPos: { dx: -21 * u1, dy: 4 * u1, anchor: 'end' } },
+      { side: 'continental', coords: [-71.1130, 42.3670], label: 'Putnam (center)', labelPos: { dx: -21 * u1, dy: 4 * u1, anchor: 'end' } },
+      { side: 'continental', coords: [-71.0840, 42.3220], label: 'Ward (right wing)' },
+      { side: 'british', coords: [-71.0660, 42.3555], label: 'Howe\'s garrison', labelPos: { dx: 0, dy: 18 * u1, anchor: 'middle' } },
+      { side: 'british', coords: [-71.0640, 42.3785], angle: -20 }
+    ],
+    ships: [
+      { side: 'british', coords: [-71.0300, 42.3500], angle: -30, label: 'Royal Navy', labelPos: { dx: 0, dy: 18 * u1, anchor: 'middle' } }
+    ],
+    labels: [
+      { coords: [-71.0880, 42.3555], text: 'Back Bay', kind: 'water', size: 13 },
+      { coords: [-71.1240, 42.3590], text: 'Charles River', kind: 'water', size: 12, angle: -12 },
+      { coords: [-71.0760, 42.3960], text: 'Mystic River', kind: 'water', size: 12, angle: 20 },
+      { coords: [-71.0240, 42.3640], text: 'Boston\nHarbor', kind: 'water', size: 13 },
+      { coords: [-71.0310, 42.3175], text: 'Dorchester\nBay', kind: 'water', size: 12 },
+      { coords: [-71.0415, 42.3330], text: 'Dorchester\nHeights', kind: 'terrain', size: 11 },
+      { coords: [-71.0130, 42.3790], text: 'Noddle\'s\nIsland', kind: 'terrain', size: 11 },
+      { coords: [-71.0975, 42.3790], text: 'Prospect Hill', kind: 'terrain', size: 11, anchor: 'end' },
+      { coords: [-71.0995, 42.3975], text: 'Winter Hill', kind: 'terrain', size: 11 },
+      { coords: [-71.0620, 42.3865], text: 'Bunker Hill', kind: 'terrain', size: 11 },
+      { coords: [-71.0742, 42.3405], text: 'Boston Neck', kind: 'terrain', size: 11, angle: -68 }
+    ],
+    callouts: [
+      { coords: [-71.1340, 42.3800], n: 1 },
+      { coords: [-71.0805, 42.3880], n: 2 },
+      { coords: [-71.0590, 42.3420], n: 3 }
+    ]
+  }));
+
+  const u2 = U('#map-cambridge');
+  shore('siege-of-boston-cambridge').then(corrections => HMap.render('#map-cambridge', {
+    geo: 'siege-of-boston-cambridge',
+    bbox: [-71.13, 42.352, -71.05, 42.401],
+    alt: 'Map of the Cambridge and Charlestown front showing the American works pushed forward between August 1775 and January 1776',
+    corrections, after: periodShore(corrections), rivers: RIVERS,
+    terrain: { contours: 5 },
+    roads: [
+      { coords: [[-71.1190, 42.3740], [-71.1080, 42.3790], [-71.0950, 42.3800], [-71.0820, 42.3815], [-71.0745, 42.3835], [-71.0680, 42.3800]] },
+      { coords: [[-71.0820, 42.3815], [-71.0920, 42.3880], [-71.1000, 42.3930], [-71.1060, 42.4010]] },
+      { coords: [[-71.1190, 42.3740], [-71.1250, 42.3850], [-71.1300, 42.3920]] },
+      { coords: [[-71.1190, 42.3740], [-71.1205, 42.3700], [-71.1215, 42.3660]] }
+    ],
+    works: [
+      { side: 'continental', kind: 'redoubt', coords: [[-71.0945, 42.3815]], size: 8 },
+      { side: 'continental', kind: 'redoubt', coords: [[-71.0995, 42.3935]], size: 7 },
+      { side: 'continental', coords: [[-71.0945, 42.3815], [-71.0965, 42.3870], [-71.0995, 42.3935]] },
+      { side: 'continental', kind: 'redoubt', coords: [[-71.0845, 42.3905]], size: 6 },
+      { side: 'continental', kind: 'redoubt', coords: [[-71.0868, 42.3772]], size: 6 },
+      { side: 'continental', kind: 'redoubt', coords: [[-71.0772, 42.3700]], size: 6 },
+      { side: 'continental', kind: 'redoubt', coords: [[-71.1042, 42.3570]], size: 6 },
+      { side: 'british', kind: 'redoubt', coords: [[-71.0660, 42.3800]], size: 7 },
+      { side: 'british', coords: [[-71.0712, 42.3790], [-71.0662, 42.3815], [-71.0625, 42.3825]] },
+      { side: 'british', kind: 'redoubt', coords: [[-71.0565, 42.3672]], size: 5 }
+    ],
+    towns: [
+      { place: 'cambridge', coords: [-71.1185, 42.3740], label: { dx: 0, dy: 17 * u2, anchor: 'middle' } },
+      { name: 'Washington\'s HQ', coords: [-71.1263, 42.3771], kind: 'hq', label: { dx: 0, dy: 17 * u2, anchor: 'middle' } },
+      { name: 'Charlestown (ruins)', coords: [-71.0605, 42.3740], kind: 'village', label: { dx: -7 * u2, dy: 4 * u2, anchor: 'end' } },
+      { name: 'Boston', coords: [-71.0590, 42.3595], kind: 'town', label: { dx: -7 * u2, dy: 4 * u2, anchor: 'end' } }
+    ],
+    moves: [
+      { side: 'british', kind: 'attack', approx: true, coords: [[-71.0640, 42.3640], [-71.0700, 42.3670], [-71.0758, 42.3693]] },
+      { side: 'continental', kind: 'attack', approx: true, coords: [[-71.0860, 42.3750], [-71.0810, 42.3720], [-71.0785, 42.3708]] },
+      { side: 'continental', kind: 'attack', approx: true, coords: [[-71.0835, 42.3788], [-71.0775, 42.3800], [-71.0722, 42.3808]] }
+    ],
+    units: [
+      { side: 'continental', coords: [-71.1225, 42.3780], label: 'Camp on the Common', labelPos: { dx: -13 * u2, dy: -10 * u2, anchor: 'start' } },
+      { side: 'british', coords: [-71.0625, 42.3790], angle: -20 }
+    ],
+    labels: [
+      { coords: [-71.0950, 42.3600], text: 'Back Bay', kind: 'water', size: 13 },
+      { coords: [-71.1170, 42.3640], text: 'Charles River', kind: 'water', size: 12, angle: 78 },
+      { coords: [-71.0975, 42.3810], text: 'Prospect Hill', kind: 'terrain', size: 11, anchor: 'end' },
+      { coords: [-71.1030, 42.3950], text: 'Winter Hill', kind: 'terrain', size: 11, anchor: 'end' },
+      { coords: [-71.0845, 42.3935], text: 'Ploughed Hill', kind: 'terrain', size: 11 },
+      { coords: [-71.0890, 42.3762], text: 'Cobble Hill', kind: 'terrain', size: 11, anchor: 'end' },
+      { coords: [-71.0790, 42.3675], text: 'Lechmere Point', kind: 'terrain', size: 11, anchor: 'end' },
+      { coords: [-71.0690, 42.3885], text: 'Charlestown Neck', kind: 'terrain', size: 11 },
+      { coords: [-71.0645, 42.3838], text: 'Bunker Hill (British)', kind: 'terrain', size: 11, anchor: 'start' }
+    ],
+    callouts: [
+      { coords: [-71.0805, 42.3925], n: 1 },
+      { coords: [-71.0700, 42.3700], n: 2 },
+      { coords: [-71.0895, 42.3730], n: 3 },
+      { coords: [-71.0745, 42.3725], n: 4 },
+      { coords: [-71.0920, 42.3850], n: 5 },
+      { coords: [-71.0790, 42.3830], n: 6 }
+    ]
+  }));
+})();
+</script>
+</body>
+</html>
