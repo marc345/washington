@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Battle of the Capes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="battle-of-the-capes">
+<main>
+  <header class="event-head">
+    <h1>Battle of the Capes</h1>
+    <p class="meta">September 5, 1781 · Off Cape Henry, at the mouth of Chesapeake Bay</p>
+  </header>
+
+  <figure class="map">
+    <h2>The battle, afternoon of September 5</h2>
+    <div class="map-canvas" id="map-battle"></div>
+    <figcaption>
+      Graves's 19 ships of the line came down from the northeast and found de Grasse anchored inside Cape Henry. The French cut their cables and came out on the tide in a straggling column, 24 ships strong. Both fleets formed lines heading roughly east, but at an angle, so only the leading ships came within close range.
+      <ol>
+        <li>Morning: the French fleet at anchor in Lynnhaven Bay, with some ships and boats away landing troops up the bay.</li>
+        <li>About 4:15 p.m. the vans close and fight until sunset. The British rear under Hood never really engages.</li>
+      </ol>
+      <span class="note-approx">Ship positions are schematic; each symbol stands for several ships.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>After the battle, September 6–13</h2>
+    <div class="map-canvas" id="map-after"></div>
+    <figcaption>
+      For several days the damaged fleets stayed in sight of each other, drifting southeast off the Carolina coast without renewing the fight. De Grasse then turned back and was inside the Capes again on September 11, where de Barras's squadron from Newport had arrived the day before with the siege guns. Graves burned the crippled <i>Terrible</i> and on September 13 decided to return to New York.
+      <span class="note-approx">The tracks at sea are approximate.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+// a line of ship symbols between two points (rear -> van)
+const shipLine = (side, a, b, n, angle) => Array.from({ length: n }, (_, i) => {
+  const t = n === 1 ? 0 : i / (n - 1);
+  return { side, angle, coords: [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t] };
+});
+
+HMap.render('#map-battle', {
+  geo: 'battle-of-the-capes-sep5',
+  bbox: [-76.25, 36.7, -75.35, 37.25],
+  alt: 'Map of the mouth of Chesapeake Bay showing the French fleet leaving Lynnhaven Bay and the two battle lines converging east of Cape Henry',
+  terrain: false,
+  water: { hide: ['Atlantic Ocean', 'Chesapeake Bay'] },
+  towns: [
+    { place: 'cape-henry', label: { dx: 2, dy: 20 } },
+    { name: 'Cape Charles', coords: [-75.975, 37.11], kind: 'village', label: { dx: -9, dy: -4, anchor: 'end' } }
+  ],
+  moves: [
+    { side: 'british', kind: 'naval', label: 'British approach, morning', labelAt: 0.5, coords: [[-75.40, 37.24], [-75.55, 37.13], [-75.70, 37.05]] },
+    { side: 'french', kind: 'naval', coords: [[-76.07, 36.935], [-75.99, 36.95], [-75.94, 36.925]] },
+    { side: 'british', kind: 'naval', approx: true, coords: [[-75.70, 37.05], [-75.80, 37.04], [-75.86, 37.02]], width: 1.8 }
+  ],
+  ships: [
+    ...shipLine('french', [-76.07, 36.93], [-76.07, 36.93], 1, 0),
+    ...shipLine('british', [-75.875, 37.02], [-75.635, 36.925], 4, 22),
+    ...shipLine('french', [-75.905, 36.903], [-75.645, 36.875], 5, 7)
+  ],
+  battles: [ { coords: [-75.605, 36.895], label: 'vans engage', labelPos: { dx: 16, dy: 22, anchor: 'start' } } ],
+  callouts: [
+    { coords: [-76.065, 36.965], n: 1 },
+    { coords: [-75.575, 36.93], n: 2 }
+  ],
+  labels: [
+    { coords: [-75.80, 37.06], text: 'Hood (rear)', kind: 'note', size: 11.5 },
+    { coords: [-75.75, 36.995], text: 'Graves', kind: 'note', size: 11.5, dy: -12 },
+    { coords: [-75.78, 36.89], text: 'de Grasse', kind: 'note', size: 11.5, dy: 20 },
+    { coords: [-75.645, 36.875], text: 'Bougainville (van)', kind: 'note', size: 11.5, dy: 24 },
+    { coords: [-76.13, 37.17], text: 'Chesapeake Bay', kind: 'water' },
+    { coords: [-76.03, 37.02], text: 'Middle Ground\n(shoal)', kind: 'note', size: 10.5 },
+    { coords: [-75.55, 36.76], text: 'ATLANTIC OCEAN', kind: 'water', size: 14 },
+    { coords: [-76.12, 36.88], text: 'Lynnhaven Bay', kind: 'note', size: 10.5 },
+    { coords: [-75.47, 37.06], text: 'wind from\nthe NNE ↙', kind: 'note', size: 11 },
+    { coords: [-76.17, 36.85], text: 'VIRGINIA', kind: 'region', size: 13 }
+  ]
+});
+
+HMap.render('#map-after', {
+  geo: 'battle-of-the-capes-after',
+  bbox: [-76.6, 35.4, -74.2, 37.7],
+  alt: 'Map of the sea off Virginia and North Carolina showing both fleets drifting southeast after the battle, the French return to the bay, and de Barras arriving from the north',
+  terrain: false,
+  water: { hide: ['Atlantic Ocean', 'Chesapeake Bay'] },
+  towns: [
+    { place: 'cape-henry', label: { dx: 8, dy: 14 } },
+    { place: 'yorktown', label: { dx: -8, dy: -6, anchor: 'end' } }
+  ],
+  moves: [
+    { side: 'french', kind: 'naval', label: 'both fleets drift, Sep 6–9', labelAt: 0.5, coords: [[-75.70, 36.86], [-75.45, 36.55], [-75.20, 36.20], [-75.05, 36.00]] },
+    { side: 'british', kind: 'naval', coords: [[-75.62, 36.95], [-75.33, 36.62], [-75.08, 36.30], [-74.92, 36.08]] },
+    { side: 'french', kind: 'naval', label: 'de Grasse returns, Sep 11', labelAt: 0.45, coords: [[-75.10, 35.95], [-75.55, 36.30], [-75.85, 36.75], [-75.98, 36.97]] },
+    { side: 'french', kind: 'naval', label: 'de Barras, Sep 10', labelAt: 0.5, coords: [[-74.25, 37.65], [-75.10, 37.30], [-75.85, 37.04]] },
+    { side: 'british', kind: 'naval', label: 'Graves to New York', labelAt: 0.5, coords: [[-74.85, 36.15], [-74.65, 36.70], [-74.55, 37.30], [-74.50, 37.68]] }
+  ],
+  ships: [
+    { side: 'french', coords: [-75.05, 35.97], angle: 140 },
+    { side: 'british', coords: [-74.90, 36.06], angle: 140 }
+  ],
+  labels: [
+    { coords: [-76.20, 37.56], text: 'Chesapeake\nBay', kind: 'water', size: 13 },
+    { coords: [-74.80, 35.60], text: 'ATLANTIC OCEAN', kind: 'water' },
+    { coords: [-76.35, 36.20], text: 'NORTH\nCAROLINA', kind: 'region', size: 13 },
+    { coords: [-76.42, 36.72], text: 'VIRGINIA', kind: 'region', size: 13 }
+  ]
+});
+</script>
+</body>
+</html>

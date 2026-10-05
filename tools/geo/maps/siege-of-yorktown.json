@@ -1,0 +1,6 @@
+[
+  { "id": "siege-of-yorktown-theater", "bbox": [-76.63, 37.165, -76.41, 37.325], "detail": "local" },
+  { "id": "siege-of-yorktown-lines", "bbox": [-76.530, 37.2135, -76.484, 37.2445], "detail": "local" },
+  { "id": "siege-of-yorktown-redoubts", "bbox": [-76.5125, 37.2205, -76.4925, 37.2355], "detail": "local" },
+  { "id": "siege-of-yorktown-surrender", "bbox": [-76.528, 37.2025, -76.482, 37.2365], "detail": "local" }
+]

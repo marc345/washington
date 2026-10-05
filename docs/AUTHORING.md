@@ -62,6 +62,7 @@ All coordinates are `[lon, lat]`. Anywhere a coordinate is accepted, you can pas
   callouts:[{ coords, n: 1 }],
   legendExtra: [{ svg: '<svg viewBox="0 0 26 12">…</svg>', text: '…' }],
   legend: false,                   // to suppress the auto legend
+  scale: 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right',   // scale bar position (north arrow is top-right)
   textScale: 1,                    // global label size factor
   after: ({ svg, root, defs, proj, P, fs, u, d3 }) => { /* one-off custom drawing */ },
 }

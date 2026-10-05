@@ -282,7 +282,7 @@
 
     // furniture
     drawNorth(svg, VW - fs(34), fs(40), fs);
-    drawScale(svg, proj, VH, fs, cfg.bbox);
+    drawScale(svg, proj, VH, fs, cfg.bbox, cfg.scale || 'bottom-left');
     el(svg, 'rect', { x: 1.5, y: 1.5, width: VW - 3, height: VH - 3, class: 'hm-frame' });
     el(svg, 'rect', { x: 6, y: 6, width: VW - 12, height: VH - 12, class: 'hm-frame hm-frame-inner' });
 
@@ -465,7 +465,7 @@
     el(g, 'text', { y: -r - fs(3), 'text-anchor': 'middle', 'font-size': fs(12), class: 'hm-lbl hm-north-n' }).text('N');
   }
 
-  function drawScale(svg, proj, VH, fs, bbox) {
+  function drawScale(svg, proj, VH, fs, bbox, pos) {
     // metres per viewbox unit at the map's centre latitude
     const lat = (bbox[1] + bbox[3]) / 2, lon = (bbox[0] + bbox[2]) / 2;
     const a = proj([lon, lat]), b = proj([lon + 0.01, lat]);
@@ -476,7 +476,9 @@
     const kmT = target * 1.60934;
     const km = nice.reduce((best, v) => Math.abs(v - kmT) < Math.abs(best - kmT) ? v : best, nice[0]);
     const lm = mi * 1609.34 / mPerUnit, lk = km * 1000 / mPerUnit;
-    const x = fs(20), y = VH - fs(30);
+    const boxW = Math.max(lm, lk) + fs(64);
+    const x = /right/.test(pos) ? VW - boxW - fs(12) : fs(20);
+    const y = /top/.test(pos) ? fs(40) : VH - fs(30);
     const g = el(svg, 'g', { class: 'hm-scale' });
     el(g, 'rect', { x: x - fs(8), y: y - fs(22), width: Math.max(lm, lk) + fs(64), height: fs(42), class: 'hm-scale-bg' });
     el(g, 'path', { d: `M${x},${y - fs(5)} v${fs(5)} h${lm} v${-fs(5)}`, class: 'hm-scale-bar', 'stroke-width': fs(1.4) });

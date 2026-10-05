@@ -1,0 +1,32 @@
+[
+ {
+  "id": "march-to-yorktown-hudson",
+  "bbox": [
+   -74.95,
+   40.3,
+   -73.65,
+   41.35
+  ],
+  "detail": "regional"
+ },
+ {
+  "id": "march-to-yorktown-route",
+  "bbox": [
+   -78.3,
+   36.55,
+   -73.4,
+   41.25
+  ],
+  "detail": "campaign"
+ },
+ {
+  "id": "march-to-yorktown-fleets",
+  "bbox": [
+   -80.0,
+   33.0,
+   -69.0,
+   42.0
+  ],
+  "detail": "campaign"
+ }
+]

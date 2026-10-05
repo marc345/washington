@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cowpens to Guilford Courthouse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="cowpens-guilford">
+<main>
+  <header class="event-head">
+    <h1>Cowpens to Guilford Courthouse</h1>
+    <p class="meta">January 17 – May 20, 1781 · South Carolina, North Carolina and southern Virginia</p>
+  </header>
+
+  <figure class="map">
+    <h2>Cowpens, dawn on January 17</h2>
+    <div class="map-canvas" id="map-cowpens"></div>
+    <figcaption>
+      Morgan drew up his men in three lines across the Green River road, facing the direction Tarleton would come from. The riflemen and militia in front were asked for only a few shots each before falling back, which drew the British forward onto the Continentals waiting on the crest.
+      <ol>
+        <li>Skirmishers fire, then pull back to the militia line.</li>
+        <li>Pickens's militia give two volleys and retire around the left of the Continental line.</li>
+        <li>Howard's Continentals fall back, turn and fire, then charge. Washington's dragoons and the re-formed militia hit both British flanks, and most of Tarleton's force is killed or captured.</li>
+      </ol>
+      <span class="note-approx">Line positions follow the park's interpretation and are approximate; movements are schematic.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>The race to the Dan, January 17 – February 14</h2>
+    <div class="map-canvas" id="map-dan"></div>
+    <figcaption>
+      After Cowpens, Morgan hurried northeast with his prisoners. Cornwallis burned his baggage at Ramsour's Mill to move faster and forced the Catawba at Cowan's Ford on February 1. Greene joined Morgan, brought up the main army from its camp near Cheraw to Guilford Courthouse, and then raced for the Dan. Rising rivers and a shortage of boats held the British back each time.
+      At Trading Ford the Americans crossed the Yadkin on February 2–3 and the river rose behind them, sending Cornwallis upstream to the Shallow Ford. Greene's army crossed into Virginia at Irwin's and Boyd's ferries on February 13–14, just ahead of the British.
+      <span class="note-approx">Routes are simplified from period accounts and are approximate. The modern reservoirs on these rivers are not shown.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>Guilford Courthouse, March 15</h2>
+    <div class="map-canvas" id="map-guilford"></div>
+    <figcaption>
+      Reinforced, Greene recrossed the Dan in late February and offered battle at Guilford Courthouse, copying Morgan's layout of three lines. Cornwallis attacked up the New Garden road from the west and drove through all three, but lost about a quarter of his army doing it.
+      <ol>
+        <li>First line: North Carolina militia behind a rail fence at the edge of the woods fire one or two volleys and break.</li>
+        <li>Second line: Virginia militia in the woods hold longer, while a separate fight with Lee and Campbell drifts off to the south.</li>
+        <li>Third line: the Continentals near the courthouse. Cornwallis fires grapeshot into the melee, then Greene withdraws in good order toward Troublesome Creek.</li>
+      </ol>
+      <span class="note-approx">Positions are approximate and drawn schematically.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>Cornwallis goes to Wilmington, then Virginia, March 18 – May 20</h2>
+    <div class="map-canvas" id="map-wilmington"></div>
+    <figcaption>
+      Too weak to stay inland, Cornwallis marched down the Cape Fear River to refit at Wilmington. Greene followed as far as Ramsey's Mill, then turned south into South Carolina. On April 25 Cornwallis left Wilmington and marched north, reaching Petersburg on May 20 to take over the British force already raiding Virginia.
+      <span class="note-approx">Routes are approximate.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+// Cowpens geometry: the Green River road runs SE -> NW; lines stand across it.
+const ALONG = m => [-7.75e-6 * m, 6.37e-6 * m];      // metres towards the NW along the road
+const ACROSS = m => [7.75e-6 * m, 6.37e-6 * m];      // metres towards the NE across the road
+const CP = (along, across) => { const a = ALONG(along), b = ACROSS(across); return [-81.8175 + a[0] + b[0], 35.1378 + a[1] + b[1]]; };
+
+HMap.render('#map-cowpens', {
+  geo: 'cowpens-guilford-cowpens',
+  bbox: [-81.825, 35.1315, -81.809, 35.143],
+  terrain: { contours: 2, exaggeration: 6 },
+  alt: 'Map of the Cowpens battlefield showing Morgan\'s three lines across the Green River road and Tarleton\'s attack from the southeast',
+  roads: [ { name: 'Green River road', coords: [CP(-900, 0), CP(-300, 0), CP(300, 0), CP(900, 30)], labelAt: 0.72 } ],
+  units: [
+    { side: 'militia', coords: CP(-230, -70), angle: -45, w: 14, h: 6 },
+    { side: 'militia', coords: CP(-230, 70), angle: -45, w: 14, h: 6, },
+    { side: 'militia', coords: CP(-137, 0), angle: -45, w: 54, h: 9, label: 'Pickens (militia)', labelPos: { dx: -30, dy: 36, anchor: 'end' } },
+    { side: 'continental', coords: CP(0, 0), angle: -45, w: 60, h: 11, label: 'Howard (Continentals)', labelPos: { dx: -28, dy: -18, anchor: 'end' } },
+    { side: 'continental', type: 'cavalry', coords: CP(300, 60), angle: -45, w: 24, h: 10, label: 'Washington\n(dragoons)', labelPos: { dx: -20, dy: -4, anchor: 'end' } },
+    { side: 'british', coords: CP(-470, 0), angle: -45, w: 56, h: 11, label: 'Tarleton', labelPos: { dx: 30, dy: 16 } },
+    { side: 'british', type: 'cavalry', coords: CP(-500, 150), angle: -45, w: 20, h: 9 },
+    { side: 'british', type: 'cavalry', coords: CP(-500, -150), angle: -45, w: 20, h: 9 }
+  ],
+  moves: [
+    { side: 'british', kind: 'attack', coords: [CP(-410, -30), CP(-260, -30), CP(-70, -25)] },
+    { side: 'militia', kind: 'retreat', coords: [CP(-120, 60), CP(-40, 140), CP(120, 140), CP(240, 0)] },
+    { side: 'militia', kind: 'attack', coords: [CP(230, -60), CP(100, -190), CP(-130, -210), CP(-300, -120)] },
+    { side: 'continental', kind: 'attack', label: 'dragoons', labelAt: 0.45, coords: [CP(290, 110), CP(130, 260), CP(-180, 270), CP(-380, 190)] }
+  ],
+  callouts: [ { coords: CP(-230, 125), n: 1 }, { coords: CP(-60, 170), n: 2 }, { coords: CP(70, -110), n: 3 } ],
+  labels: [ { coords: CP(-640, -200), text: 'from Thicketty Creek', kind: 'note', size: 11 }, { coords: CP(760, 120), text: 'to the Broad River', kind: 'note', size: 11 } ]
+});
+
+HMap.render('#map-dan', {
+  geo: 'cowpens-guilford-dan',
+  bbox: [-82.0, 34.55, -78.55, 36.95],
+  alt: 'Map of the Carolina and southern Virginia piedmont showing Morgan\'s and Greene\'s retreat to the Dan River and Cornwallis\'s pursuit',
+  water: { hideIn: [[-82.1, 34.4, -78.4, 37.1]] },
+  rivers: { hide: ['Holston', 'Middle Fk.  Holston', 'S.  Fk.  Holston', 'Clinch', 'Nolichucky'] },
+  towns: [
+    { place: 'cowpens', label: { dx: 9, dy: -6 } },
+    { name: 'Ramsour\'s Mill', coords: [-81.27, 35.47], kind: 'village', label: { dx: -8, dy: -6, anchor: 'end' } },
+    { name: 'Cowan\'s Ford', coords: [-80.96, 35.43], kind: 'ferry', label: { dx: -9, dy: 22, anchor: 'end' } },
+    { name: 'Salisbury', coords: [-80.474, 35.671], kind: 'village', label: { dx: -9, dy: 12, anchor: 'end' } },
+    { name: 'Trading Ford', coords: [-80.39, 35.71], kind: 'ferry', label: { dx: 9, dy: 12 } },
+    { name: 'Shallow Ford', coords: [-80.50, 36.07], kind: 'ferry', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { name: 'Salem', coords: [-80.245, 36.09], kind: 'village', label: { dx: 6, dy: 20 } },
+    { place: 'guilford-courthouse', label: { dx: -10, dy: -16, anchor: 'end' } },
+    { place: 'hillsborough', label: { dx: 9, dy: 14 } },
+    { name: 'Irwin\'s &\nBoyd\'s ferries', coords: [-78.94, 36.68], kind: 'ferry', label: { dx: -6, dy: 22, anchor: 'start' } },
+    { name: 'Hicks Creek camp', coords: [-79.88, 34.70], kind: 'village', label: { dx: 9, dy: 4 } },
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', label: 'Morgan', labelAt: 0.35, coords: [[-81.80, 35.16], [-81.62, 35.33], [-81.30, 35.56], [-80.97, 35.62], [-80.70, 35.66], [-80.48, 35.68], [-80.36, 35.75], [-80.10, 35.98], [-79.86, 36.12]] },
+    { side: 'continental', kind: 'march', label: 'Huger (main army)', labelAt: 0.5, coords: [[-79.88, 34.72], [-79.95, 35.15], [-79.90, 35.65], [-79.86, 36.10]] },
+    { side: 'continental', kind: 'retreat', label: 'Greene, Feb 10–14', labelAt: 0.5, coords: [[-79.82, 36.14], [-79.55, 36.38], [-79.20, 36.58], [-78.96, 36.66]] },
+    { side: 'british', kind: 'march', label: 'Cornwallis', labelAt: 0.12, coords: [[-81.45, 34.88], [-81.33, 35.20], [-81.27, 35.45], [-81.05, 35.44], [-80.95, 35.44], [-80.70, 35.58], [-80.48, 35.66], [-80.40, 35.70]] },
+    { side: 'british', kind: 'march', coords: [[-80.42, 35.73], [-80.55, 35.90], [-80.50, 36.06], [-80.25, 36.10], [-79.95, 36.30], [-79.55, 36.52], [-79.10, 36.66]] },
+    { side: 'british', kind: 'retreat', label: 'Feb 20', labelAt: 0.5, coords: [[-79.08, 36.62], [-79.15, 36.35], [-79.11, 36.10]] }
+  ],
+  battles: [ { coords: [-81.817, 35.138] } ],
+  labels: [
+    { coords: [-80.55, 34.85], text: 'SOUTH CAROLINA', kind: 'region', size: 13 },
+    { coords: [-80.90, 36.30], text: 'NORTH CAROLINA', kind: 'region', size: 13 },
+    { coords: [-80.30, 36.80], text: 'VIRGINIA', kind: 'region', size: 13 },
+    { coords: [-79.45, 36.66], text: 'Dan River', kind: 'water', size: 11.5 },
+    { coords: [-80.62, 35.40], text: 'Catawba R.', kind: 'water', size: 11.5, angle: -60 },
+    { coords: [-80.20, 35.45], text: 'Yadkin R.', kind: 'water', size: 11.5, angle: -60 }
+  ]
+});
+
+const GC = { hoskins: [-79.8523, 36.1298], line1: [-79.8495, 36.1312], line2: [-79.8462, 36.1327], line3: [-79.8418, 36.1348], ch: [-79.8392, 36.1358] };
+HMap.render('#map-guilford', {
+  geo: 'cowpens-guilford-guilford',
+  bbox: [-79.861, 36.1205, -79.833, 36.1415],
+  terrain: { contours: 3, exaggeration: 6 },
+  water: { hideUnnamed: true },
+  alt: 'Map of the Guilford Courthouse battlefield showing Greene\'s three lines along the New Garden road and the British attack from the west',
+  roads: [
+    { name: 'New Garden road', coords: [[-79.866, 36.1230], [-79.8590, 36.1265], GC.hoskins, GC.line2, GC.ch], labelAt: 0.15 },
+    { coords: [GC.ch, [-79.8370, 36.1400], [-79.8330, 36.1440]], labelAt: 0.5 }
+  ],
+  towns: [
+    { name: 'Guilford Courthouse', coords: GC.ch, kind: 'building', label: { dx: 9, dy: 12 } },
+    { name: 'Hoskins farm', coords: GC.hoskins, kind: 'building', label: { dx: 0, dy: 18, anchor: 'middle' } }
+  ],
+  units: [
+    { side: 'militia', coords: [-79.8505, 36.1330], angle: -60, w: 34, h: 8 },
+    { side: 'militia', coords: [-79.8485, 36.1293], angle: -60, w: 34, h: 8, },
+    { side: 'militia', coords: [-79.8470, 36.1348], angle: -60, w: 34, h: 8, },
+    { side: 'militia', coords: [-79.8452, 36.1307], angle: -60, w: 34, h: 8 },
+    { side: 'continental', coords: [-79.8428, 36.1372], angle: -40, w: 34, h: 10 },
+    { side: 'continental', coords: [-79.8410, 36.1330], angle: -80, w: 34, h: 10, label: 'Continentals', labelPos: { dx: 18, dy: 14 } },
+    { side: 'continental', type: 'cavalry', coords: [-79.8520, 36.1352], angle: -60, w: 18, h: 8, label: 'Washington', labelPos: { dx: -14, dy: -6, anchor: 'end' } },
+    { side: 'continental', type: 'cavalry', coords: [-79.8478, 36.1270], angle: -60, w: 18, h: 8, label: 'Lee', labelPos: { dx: 14, dy: 10 } },
+    { side: 'british', coords: [-79.8545, 36.1320], angle: -60, w: 30, h: 10, label: 'Webster', labelPos: { dx: -18, dy: -4, anchor: 'end' } },
+    { side: 'british', coords: [-79.8530, 36.1280], angle: -60, w: 30, h: 10, label: 'Leslie', labelPos: { dx: -18, dy: 12, anchor: 'end' } },
+    { side: 'hessian', coords: [-79.8515, 36.1262], angle: -60, w: 18, h: 9 }
+  ],
+  moves: [
+    { side: 'british', kind: 'attack', coords: [[-79.8535, 36.1325], [-79.8480, 36.1345], [-79.8435, 36.1360]] },
+    { side: 'british', kind: 'attack', coords: [[-79.8520, 36.1288], [-79.8470, 36.1305], [-79.8430, 36.1325]] },
+    { side: 'hessian', kind: 'attack', coords: [[-79.8505, 36.1262], [-79.8470, 36.1245], [-79.8440, 36.1235]] },
+    { side: 'continental', kind: 'retreat', coords: [[-79.8392, 36.1365], [-79.8370, 36.1400], [-79.8335, 36.1435]] }
+  ],
+  battles: [ { coords: [-79.8430, 36.1230], label: 'Bose vs. Lee & Campbell', labelPos: { dx: 0, dy: 22, anchor: 'middle' } } ],
+  callouts: [ { coords: [-79.8468, 36.1288], n: 1 }, { coords: [-79.8435, 36.1302], n: 2 }, { coords: [-79.8450, 36.1386], n: 3 } ],
+  labels: [
+    { coords: [-79.8605, 36.1328], text: 'from New Garden\nMeeting House', kind: 'note', size: 11, anchor: 'start' },
+    { coords: [-79.8350, 36.1400], text: 'to Troublesome Creek', kind: 'note', size: 11, anchor: 'end', dx: -14, dy: 14 }
+  ]
+});
+
+HMap.render('#map-wilmington', {
+  geo: 'cowpens-guilford-wilmington',
+  bbox: [-80.9, 33.5, -76.5, 37.7],
+  alt: 'Map of North Carolina and southern Virginia showing Cornwallis\'s march to Wilmington and then north to Petersburg, and Greene turning back into South Carolina',
+  water: { hide: ['Lake Gaston', 'Smith Mountain Lake', 'Lake Marion', 'Lake Moultrie', 'Lake Murray'] },
+  towns: [
+    { place: 'guilford-courthouse', label: { dx: -9, dy: -6, anchor: 'end' } },
+    { name: 'Ramsey\'s Mill', coords: [-79.07, 35.62], kind: 'village', label: { dx: 9, dy: 4 } },
+    { name: 'Cross Creek', coords: [-78.88, 35.05], kind: 'village', label: { dx: 9, dy: 4 } },
+    { place: 'wilmington-nc', label: { dx: 9, dy: 10 } },
+    { name: 'Halifax', coords: [-77.59, 36.33], kind: 'village', label: { dx: 9, dy: 4 } },
+    { place: 'petersburg', label: { dx: -10, dy: 4, anchor: 'end' } },
+    { place: 'richmond', label: { dx: -9, dy: -4, anchor: 'end' } },
+    { place: 'hillsborough', label: { dx: 9, dy: -6 } }
+  ],
+  moves: [
+    { side: 'british', kind: 'march', label: 'Mar 18 – Apr 7', labelAt: 0.4, coords: [[-79.84, 36.12], [-79.70, 35.95], [-79.30, 35.75], [-79.07, 35.62], [-78.88, 35.07], [-78.40, 34.60], [-77.98, 34.27]] },
+    { side: 'british', kind: 'march', approx: true, label: 'Apr 25 – May 20', labelAt: 0.5, coords: [[-77.92, 34.30], [-77.95, 34.95], [-77.62, 35.30], [-77.62, 35.90], [-77.59, 36.31], [-77.48, 36.80], [-77.42, 37.20]] },
+    { side: 'continental', kind: 'march', label: 'Greene', labelAt: 0.4, coords: [[-79.80, 36.18], [-79.55, 35.95], [-79.15, 35.66], [-79.35, 35.30], [-79.85, 34.75], [-80.55, 34.28]] }
+  ],
+  units: [ { side: 'british', coords: [-76.95, 37.22], label: 'Phillips & Arnold', labelPos: { dx: 0, dy: 26, anchor: 'middle' } } ],
+  battles: [ { coords: [-80.607, 34.29], label: 'Hobkirk\'s Hill (Camden), Apr 25', labelPos: { dx: 16, dy: -10, anchor: 'start' } } ],
+  labels: [
+    { coords: [-79.75, 34.20], text: 'SOUTH\nCAROLINA', kind: 'region', size: 12 },
+    { coords: [-79.40, 36.30], text: 'NORTH CAROLINA', kind: 'region', size: 12 },
+    { coords: [-78.80, 37.20], text: 'VIRGINIA', kind: 'region', size: 12 },
+    { coords: [-77.10, 33.80], text: 'ATLANTIC OCEAN', kind: 'water', size: 13 },
+    { coords: [-78.55, 34.75], text: 'Cape Fear R.', kind: 'water', size: 11.5, angle: 50 }
+  ]
+});
+</script>
+</body>
+</html>

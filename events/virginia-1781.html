@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>War in Virginia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="virginia-1781">
+<main>
+  <header class="event-head">
+    <h1>War in Virginia</h1>
+    <p class="meta">January – August 1781 · The James River, the Potomac and central Virginia</p>
+  </header>
+
+  <figure class="map">
+    <h2>British raids up the James, January – May</h2>
+    <div class="map-canvas" id="map-raids"></div>
+    <figcaption>
+      In January, Arnold sailed up the James from Hampton Roads, landed at Westover and marched into Richmond on January 5, burning stores there and at the Westham foundry before falling back to Portsmouth. In April, Phillips and Arnold came upriver again from Portsmouth, raided Williamsburg and the Chickahominy shipyard, then struck Petersburg, Chesterfield Court House and the state's little navy at Osborne's, and shelled Manchester across from Richmond, which Lafayette had reached just in time to hold.
+      <ol>
+        <li>Petersburg, April 25: Steuben's and Muhlenberg's militia make a stand at Blandford and are pushed back.</li>
+        <li>Osborne's, April 27: Arnold's guns destroy the Virginia state ships.</li>
+      </ol>
+      <span class="note-approx">Routes are approximate.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>A British sloop at Mount Vernon, April 1781</h2>
+    <div class="map-canvas" id="map-potomac"></div>
+    <figcaption>
+      HMS <i>Savage</i> worked up the Potomac, raiding riverside plantations, and anchored off Mount Vernon. Lund Washington, managing the estate, went aboard and supplied provisions to protect the house, and 17 of the enslaved people at Mount Vernon left with the ship. Washington sharply rebuked his cousin for dealing with the enemy.
+      <span class="note-approx">The ship's track is schematic.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>Cornwallis chases Lafayette, May 20 – June 25</h2>
+    <div class="map-canvas" id="map-chase"></div>
+    <figcaption>
+      With Cornwallis's arrival the British had about 7,000 men in Virginia. Lafayette, far weaker, retreated north to meet Wayne's Pennsylvanians on the Rapidan. Cornwallis sent Tarleton to raid Charlottesville, where the legislature scattered and Jefferson barely escaped, and Simcoe to the depot at Point of Fork. Reinforced, Lafayette came back south to cover the stores in Albemarle, and Cornwallis turned east toward the coast.
+      <ol>
+        <li>June 10: Lafayette and Wayne join near Raccoon Ford.</li>
+        <li>June 4–5: Tarleton's and Simcoe's raids.</li>
+      </ol>
+      <span class="note-approx">Routes are approximate.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>Green Spring and the fall-back to Yorktown, June 26 – August 2</h2>
+    <div class="map-canvas" id="map-greenspring"></div>
+    <figcaption>
+      On July 6, as Cornwallis began crossing the James at Jamestown, Wayne attacked what he took to be a rear guard and ran into the main army. A bayonet charge got his men out. Cornwallis crossed to Cobham and went on to Portsmouth, then on Clinton's orders moved by water to Yorktown and Gloucester Point, occupied on August 1–2 as a base for the fleet.
+      <ol>
+        <li>June 26: Simcoe's rangers and Lafayette's advance clash at Spencer's Ordinary.</li>
+        <li>July 6: Green Spring. Lafayette watches from near the Green Spring house.</li>
+      </ol>
+      <span class="note-approx">Positions at Green Spring and Spencer's Ordinary are approximate.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+const UPPER_JAMES = [[-77.10, 37.29], [-77.149, 37.305], [-77.22, 37.325], [-77.27, 37.318], [-77.30, 37.345], [-77.33, 37.38], [-77.36, 37.40], [-77.385, 37.43], [-77.405, 37.47], [-77.425, 37.505], [-77.44, 37.53], [-77.50, 37.56], [-77.55, 37.572], [-77.62, 37.59], [-77.70, 37.62], [-77.85, 37.66], [-77.95, 37.70], [-78.06, 37.72], [-78.164, 37.751], [-78.30, 37.765], [-78.42, 37.79], [-78.49, 37.795], [-78.60, 37.72], [-78.76, 37.62]];
+const RIVANNA = [[-78.164, 37.751], [-78.22, 37.82], [-78.30, 37.90], [-78.40, 37.98], [-78.46, 38.03], [-78.50, 38.08]];
+const riverLine = c => ({ coords: c, color: '#7d9ea3', width: 1.6 });
+const JAMES = [[-76.30, 36.97], [-76.48, 37.03], [-76.62, 37.12], [-76.73, 37.18], [-76.85, 37.215], [-76.98, 37.245], [-77.10, 37.29], [-77.149, 37.300]];
+
+HMap.render('#map-raids', {
+  geo: 'virginia-1781-raids',
+  bbox: [-77.62, 37.12, -76.95, 37.62],
+  alt: 'Map of the James River between Westover and Richmond showing Arnold\'s January raid on Richmond and the Phillips–Arnold raid of April 1781',
+  water: { hide: ["Lakeside Lk", "Gregorys Pond", "Hoehns Lk", "Eaves Lk", "Gillies Pond", "Ukrop Pond", "Canterbury Lk", "Wilde Lk", "Staples Millpond", "Lk Overton", "Lk Eastbourne", "Griggs Pond", "Bryant Pond", "Gillies Lk", "Boar Swamp Lk", "Shirley Millpond", "Tom Brooks Lk", "Groves Lk", "Old Forge Pond", "Cattail Swamp Pond", "Kent Lk", "Cooks Millpond", "Lk Chesdin", "Clarkes Lk", "Jordon Lk", "Rock Quarry Lk", "Picture Lk", "Steers Millpond", "Claytons Pond", "Wheelers Pond", "Jandls Pond", "Hanzlik Pond", "Isaac Walton Pond", "Wright Pond", "Bakers Pond", "Whelans Pond", "Lees Millpond", "Lk Binford", "Woodys Pond", "Charles Lk", "Harrison Lk", "Third Branch Lk", "Reed Pond", "Andrews Pond", "Spray Pond", "Licking Creek Fishing Club Lk", "Lk Page", "Rieves Lk", "Nash Road Lk", "Cosbys Lk", "Salisbury Lk", "Salem Woods Lk", "Lk Margaret", "Lk Patrick Henry", "Chester Club Lk", "Kcratchs Pond", "Crostick Millpond", "Rock Creek Park Lk", "Swift Creek Lk", "Pells Pond", "Lafferty Pond", "Cohoke Millpond", "Old Town Farm Pond", "Harrell Pond", "Avery Millpond", "Atkins Pond", "Eastover Pond", "Sunken Meadow Pond", "Gray Pond", "Beaties Millpond", "Wests Pond", "Parsleys Millpond", "Cherrydale Pond", "Barkers Millpond", "Talley Millpond", "Wrights Pond", "Gaines Millpond", "Westhaven Lk", "Camp Hanover Lk", "Boat Lk", "Cherokee Lk", "Westhampton Lk", "Swan Lk", "Shields Lk", "Wilcox Lk"] },
+  rivers: { only: ['James Riv', 'Appomattox Riv', 'Chickahominy Riv', 'Swift Crk', 'Pamunkey Riv'] },
+  towns: [
+    { place: 'richmond', label: { dx: 9, dy: -6 } },
+    { name: 'Westham foundry', coords: [-77.54, 37.57], kind: 'village', label: { dx: -8, dy: -8, anchor: 'end' } },
+    { name: 'Manchester', coords: [-77.444, 37.521], kind: 'village', label: { dx: -9, dy: 14, anchor: 'end' } },
+    { name: 'Westover', coords: [-77.149, 37.311], kind: 'building', label: { dx: 9, dy: -8 } },
+    { name: 'City Point', coords: [-77.276, 37.313], kind: 'village', label: { dx: 9, dy: 16 } },
+    { place: 'petersburg', label: { dx: -8, dy: -8, anchor: 'end' } },
+    { name: 'Chesterfield C.H.', coords: [-77.506, 37.377], kind: 'village', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { name: 'Osborne\'s', coords: [-77.372, 37.408], kind: 'village', label: { dx: 9, dy: 4 } }
+  ],
+  moves: [
+    { side: 'british', kind: 'naval', label: 'from Portsmouth', labelAt: 0.5, coords: [[-76.95, 37.225], [-77.03, 37.255], [-77.10, 37.29], [-77.14, 37.302]] },
+    { side: 'british', kind: 'march', label: 'Arnold, Jan 4–5', labelAt: 0.5, coords: [[-77.16, 37.32], [-77.25, 37.40], [-77.34, 37.48], [-77.425, 37.533]] },
+    { side: 'british', kind: 'march', width: 1.8, coords: [[-77.45, 37.545], [-77.53, 37.567]] },
+    { side: 'british', kind: 'march', label: 'Phillips, Apr 24–30', labelAt: 0.22, coords: [[-77.28, 37.30], [-77.35, 37.255], [-77.42, 37.27], [-77.50, 37.36], [-77.48, 37.46], [-77.448, 37.512]] },
+    { side: 'british', kind: 'attack', width: 2, label: 'Arnold', labelAt: 0.5, coords: [[-77.49, 37.39], [-77.43, 37.40], [-77.38, 37.405]] },
+    { side: 'continental', kind: 'march', label: 'Lafayette', labelAt: 0.45, coords: [[-77.38, 37.62], [-77.41, 37.58], [-77.432, 37.545]] }
+  ],
+  battles: [ { coords: [-77.37, 37.232] }, { coords: [-77.365, 37.400] } ],
+  callouts: [ { coords: [-77.335, 37.215], n: 1 }, { coords: [-77.40, 37.428], n: 2 } ],
+  labels: [
+    { coords: [-77.05, 37.235], text: 'James River', kind: 'water', angle: -24, dy: 22 },
+    { coords: [-77.22, 37.215], text: 'Appomattox R.', kind: 'water', size: 11 },
+    { coords: [-77.05, 37.42], text: 'Chickahominy R.', kind: 'water', size: 11, angle: -40 }
+  ]
+});
+
+const POTOMAC = [[-76.32, 38.03], [-76.50, 38.10], [-76.70, 38.17], [-76.88, 38.24], [-77.02, 38.31], [-77.13, 38.36], [-77.25, 38.38], [-77.29, 38.45], [-77.24, 38.53], [-77.18, 38.60], [-77.11, 38.67], [-77.09, 38.700]];
+HMap.render('#map-potomac', {
+  geo: 'virginia-1781-potomac',
+  bbox: [-77.35, 38.0, -76.2, 38.85],
+  alt: 'Map of the lower Potomac River showing the track of the British sloop Savage from Chesapeake Bay up to Mount Vernon',
+  water: { hide: ["Saint Marys Lk","Lk Conoy","Burke Lk","Lk Barcroft","Ruffins Pond","Ramsay Lk"] },
+  towns: [
+    { place: 'mount-vernon', label: { dx: 12, dy: 14 } },
+    { place: 'alexandria', label: { dx: 9, dy: 4 } },
+    { name: 'Point Lookout', coords: [-76.322, 38.040], kind: 'village', label: { dx: -9, dy: -4, anchor: 'end' } }
+  ],
+  moves: [ { side: 'british', kind: 'naval', label: 'HMS Savage, April', labelAt: 0.35, coords: POTOMAC } ],
+  ships: [ { side: 'british', coords: [-77.075, 38.698], angle: 30 } ],
+  labels: [
+    { coords: [-76.80, 38.32], text: 'Potomac River', kind: 'water', angle: -18, dy: 0 },
+    { coords: [-76.40, 38.40], text: 'Chesapeake\nBay', kind: 'water', size: 13 },
+    { coords: [-76.98, 38.53], text: 'MARYLAND', kind: 'region', size: 13 },
+    { coords: [-77.10, 38.12], text: 'VIRGINIA', kind: 'region', size: 13 },
+    { coords: [-76.75, 38.12], text: 'plantations plundered\nalong both shores', kind: 'note', size: 11.5 }
+  ]
+});
+
+HMap.render('#map-chase', {
+  geo: 'virginia-1781-chase',
+  bbox: [-78.75, 36.95, -75.95, 38.5],
+  alt: 'Map of central and tidewater Virginia showing Cornwallis\'s pursuit of Lafayette, the raids on Charlottesville and Point of Fork, and the British turn toward Williamsburg',
+  water: { hide: ["Lk Louisa","Lk Anna","Lk Orange","Lk of the Woods","Saint Marys Lk","Lk Conoy","Prudens Millpond","Owens Pond","Abel Lk","Kent Lk","Lk Chesdin","Lk Culpeper","Lees Millpond","Lk Caroline","Ruffins Pond","Shorts Creek Pond","Nash Road Lk","Swift Creek Lk","Olssons Pond","Avery Millpond","Sunken Meadow Pond","Bigler Millpond","Hicks Lk","Lk Lee","Lk Whitehurst","Lk Maury","Lk Meade","Airfield Pond","Dover Lk","Lk Smith","Lk Monticello"] },
+  lines: [ riverLine(UPPER_JAMES), riverLine(RIVANNA) ],
+  towns: [
+    { place: 'petersburg', label: { dx: 9, dy: 12 } },
+    { place: 'richmond', label: { dx: -9, dy: -4, anchor: 'end' } },
+    { name: 'Hanover C.H.', coords: [-77.37, 37.765], kind: 'village', label: { dx: 9, dy: 4 } },
+    { name: 'Charlottesville', coords: [-78.477, 38.03], kind: 'village', label: { dx: -9, dy: -6, anchor: 'end' } },
+    { name: 'Point of Fork', coords: [-78.164, 37.751], kind: 'village', label: { dx: -9, dy: 14, anchor: 'end' } },
+    { name: 'Elk Hill', coords: [-78.087, 37.718], kind: 'building', label: { dx: 9, dy: 14 } },
+    { name: 'Raccoon Ford', coords: [-77.941, 38.363], kind: 'ferry', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { place: 'fredericksburg', label: { dx: 9, dy: 4 } },
+    { place: 'williamsburg', label: { dx: 9, dy: 18 } },
+      ],
+  moves: [
+    { side: 'british', kind: 'march', label: 'Cornwallis', labelAt: 0.2, coords: [[-77.40, 37.24], [-77.20, 37.30], [-77.25, 37.50], [-77.37, 37.76], [-77.58, 37.93], [-77.85, 37.85], [-78.06, 37.73]] },
+    { side: 'british', kind: 'march', coords: [[-78.04, 37.70], [-77.75, 37.62], [-77.45, 37.55], [-77.15, 37.42], [-76.90, 37.33], [-76.72, 37.28]] },
+    { side: 'british', kind: 'attack', label: 'Tarleton', labelAt: 0.5, width: 2.4, coords: [[-77.62, 37.96], [-78.00, 38.03], [-78.45, 38.035]] },
+    { side: 'british', kind: 'attack', label: 'Simcoe', labelAt: 0.5, width: 2.4, coords: [[-77.95, 37.80], [-78.14, 37.755]] },
+    { side: 'continental', kind: 'retreat', label: 'Lafayette, May 27 – Jun 10', labelAt: 0.5, coords: [[-77.44, 37.56], [-77.48, 37.80], [-77.58, 38.08], [-77.70, 38.32], [-77.92, 38.36]] },
+    { side: 'continental', kind: 'march', label: 'Wayne', labelAt: 0.5, coords: [[-77.75, 38.50], [-77.86, 38.43], [-77.93, 38.375]] },
+    { side: 'continental', kind: 'march', label: 'Jun 11–25', labelAt: 0.3, coords: [[-77.96, 38.34], [-78.20, 38.10], [-78.28, 37.96], [-78.00, 37.82], [-77.60, 37.66], [-77.30, 37.52], [-77.00, 37.40]] }
+  ],
+  callouts: [ { coords: [-78.10, 38.44], n: 1 }, { coords: [-78.30, 37.86], n: 2 } ],
+  labels: [
+    { coords: [-76.20, 37.60], text: 'Chesapeake\nBay', kind: 'water', size: 13 },
+    { coords: [-78.35, 37.35], text: 'VIRGINIA', kind: 'region', size: 14 },
+    { coords: [-77.62, 38.24], text: 'Rapidan', kind: 'water', size: 11 },
+  ]
+});
+
+HMap.render('#map-greenspring', {
+  geo: 'virginia-1781-greenspring',
+  bbox: [-76.92, 37.10, -76.40, 37.38],
+  alt: 'Map of the peninsula between the James and York rivers showing Spencer\'s Ordinary, the battle of Green Spring near Jamestown, Cornwallis\'s crossing to Cobham and the British move to Yorktown',
+  water: { hide: ["Old Mill Pond","Deer Lk","Warburton Pond","Nice Lk","Pine Woods Pond","Barlows Pond","Wenger Pond","Lk Pasbehegh","Jolly Pond","Lk Powell","Warehams Pond","Eastover Pond","Sunken Meadow Pond","Bigler Mill Pond","Powell Lk","Williamsburg Country Club Lk","Cheatham Pond","Lee Pond","Pond Number 12","Wormley Pond","Beaverdam Pond","Skimino Pond","Pond Number 11","Bigler Millpond","Jones Pond","Hipps Pond","Pennigan Lk","Queens Lk","Roosevelt Pond","Sluice Millpond","Lk Eustis","Yoder Pond","Woodberry Farm Pond","Haynes Pond","Leigh Pond","Weaver Pond","Robins Pond","Matoaka Lk","Tutters Neck Pond"] },
+  rivers: { hide: ['Lk Eustis', 'Matoaka Trails', 'Yoder Pond'] },
+  towns: [
+    { place: 'williamsburg', label: { dx: 9, dy: -6 } },
+    { name: 'Jamestown', coords: [-76.778, 37.209], kind: 'village', label: { dx: 9, dy: 10 } },
+    { name: 'Green Spring', coords: [-76.795, 37.262], kind: 'building', label: { dx: -8, dy: -6, anchor: 'end' } },
+    { name: 'Spencer\'s Ordinary', coords: [-76.765, 37.318], kind: 'building', label: { dx: 8, dy: -6 } },
+    { name: 'Cobham', coords: [-76.735, 37.150], kind: 'village', label: { dx: 9, dy: 10 } },
+    { place: 'yorktown', label: { dx: -9, dy: -6, anchor: 'end' } },
+    { name: 'Gloucester Point', coords: [-76.497, 37.254], kind: 'village', label: { dx: 8, dy: -8 } }
+  ],
+  moves: [
+    { side: 'british', kind: 'march', label: 'Jul 4', labelAt: 0.5, coords: [[-76.71, 37.268], [-76.75, 37.245], [-76.785, 37.228]] },
+    { side: 'continental', kind: 'attack', coords: [[-76.812, 37.262], [-76.803, 37.248], [-76.794, 37.236]] },
+    { side: 'british', kind: 'naval', label: 'to Cobham, Jul 7–9', labelAt: 0.5, coords: [[-76.775, 37.218], [-76.755, 37.185], [-76.740, 37.158]] },
+    { side: 'british', kind: 'march', approx: true, coords: [[-76.725, 37.145], [-76.67, 37.12], [-76.62, 37.10]] },
+    { side: 'british', kind: 'naval', coords: [[-76.43, 37.105], [-76.41, 37.18], [-76.44, 37.235], [-76.50, 37.245]] }
+  ],
+  units: [ { side: 'british', coords: [-76.785, 37.226], angle: -40, w: 22, h: 9 } ],
+  battles: [ { coords: [-76.792, 37.240] }, { coords: [-76.765, 37.310] } ],
+  callouts: [ { coords: [-76.795, 37.325], n: 1 }, { coords: [-76.825, 37.240], n: 2 } ],
+  labels: [
+    { coords: [-76.62, 37.15], text: 'James River', kind: 'water', angle: -25 },
+    { coords: [-76.58, 37.33], text: 'York River', kind: 'water', angle: -30 },
+    { coords: [-76.88, 37.31], text: 'Chickahominy R.', kind: 'water', size: 11, angle: -60 }
+  ]
+});
+</script>
+</body>
+</html>

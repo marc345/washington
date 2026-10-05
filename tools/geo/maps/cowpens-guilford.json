@@ -1,0 +1,42 @@
+[
+ {
+  "id": "cowpens-guilford-cowpens",
+  "bbox": [
+   -81.825,
+   35.1315,
+   -81.809,
+   35.143
+  ],
+  "detail": "local"
+ },
+ {
+  "id": "cowpens-guilford-dan",
+  "bbox": [
+   -82.0,
+   34.55,
+   -78.55,
+   36.95
+  ],
+  "detail": "regional"
+ },
+ {
+  "id": "cowpens-guilford-guilford",
+  "bbox": [
+   -79.861,
+   36.1205,
+   -79.833,
+   36.1415
+  ],
+  "detail": "local"
+ },
+ {
+  "id": "cowpens-guilford-wilmington",
+  "bbox": [
+   -80.9,
+   33.5,
+   -76.5,
+   37.7
+  ],
+  "detail": "campaign"
+ }
+]

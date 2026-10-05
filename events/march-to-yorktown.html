@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The March to Yorktown</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="march-to-yorktown">
+<main>
+  <header class="event-head">
+    <h1>The march to Yorktown</h1>
+    <p class="meta">August 19 – September 28, 1781 · From the Hudson to Williamsburg, Virginia</p>
+  </header>
+
+  <figure class="map">
+    <h2>Leaving New York, and the Staten Island feint, August 19–30</h2>
+    <div class="map-canvas" id="map-hudson"></div>
+    <figcaption>
+      The allied armies slipped away from their camps around Philipsburg, crossed the Hudson at King's Ferry and marched south through New Jersey in three parallel columns. Their route, with boats carried on wagons and bread ovens built at Chatham, made Clinton expect an attack on Staten Island and New York. Only on August 29–30 did the columns turn southwest, away from the city.
+      <ol>
+        <li>The Americans cross at King's Ferry on August 20–22, the French on August 23–25.</li>
+        <li>Washington's headquarters at Chatham, August 27–28, where the ovens were built.</li>
+      </ol>
+      <span class="note-approx">The two American column routes are approximate.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>To the head of the Chesapeake and down the bay, August 30 – September 26</h2>
+    <div class="map-canvas" id="map-route"></div>
+    <figcaption>
+      The armies paraded through Philadelphia on September 2–4. At Chester on September 5 Washington learned that de Grasse had reached the Chesapeake. There were too few vessels at Head of Elk, so part of the force sailed from there and the rest marched on to embark at Baltimore and Annapolis. Washington rode ahead, stopping at Mount Vernon (September 9–12) for the first time in six years, and reached Williamsburg on September 14.
+      <span class="note-approx">The water route down the bay and Washington's ride are approximate.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>Two French fleets converge, August 5 – September 10</h2>
+    <div class="map-canvas" id="map-fleets"></div>
+    <figcaption>
+      De Grasse sailed from Cap-Français in Saint-Domingue on August 5 with 28 ships of the line and some 3,000 soldiers, and anchored inside the Virginia Capes on August 30. De Barras left Newport on August 25 with the siege artillery, swinging far out to sea to avoid the British. Hood, following from the West Indies, looked into the empty Chesapeake on August 25 and sailed on to New York to join Graves.
+      <span class="note-approx">Tracks at sea are schematic.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+
+HMap.render('#map-hudson', {
+  geo: 'march-to-yorktown-hudson',
+  bbox: [-74.95, 40.30, -73.65, 41.35],
+  alt: 'Map of the lower Hudson valley and northern New Jersey showing the allied crossing at King\'s Ferry and the three columns marching south past Staten Island',
+  water: { hide: ['Greenwood Lk', 'Lk Hopatcong'] },
+  towns: [
+    { name: 'Staten Island', coords: [-74.15, 40.58], kind: 'village', side: 'british', label: { dx: 9, dy: 12 } },
+    { name: 'Philipsburg camps', coords: [-73.83, 41.03], kind: 'village', label: { dx: 6, dy: 18 } },
+    { name: 'King\'s Ferry', coords: [-73.96, 41.245], kind: 'ferry', label: { dx: 10, dy: -6 } },
+    { name: 'Suffern', coords: [-74.149, 41.115], kind: 'village', label: { dx: 9, dy: -4 } },
+    { name: 'Pompton', coords: [-74.29, 40.99], kind: 'village', label: { dx: -8, dy: -4, anchor: 'end' } },
+    { name: 'Paramus', coords: [-74.075, 40.945], kind: 'village', label: { dx: 9, dy: 4 } },
+    { name: 'Whippany', coords: [-74.418, 40.825], kind: 'village', label: { dx: -8, dy: -4, anchor: 'end' } },
+    { name: 'Chatham', coords: [-74.383, 40.741], kind: 'hq', label: { dx: 10, dy: -4 } },
+    { name: 'Springfield', coords: [-74.317, 40.70], kind: 'village', label: { dx: 9, dy: 10 } },
+    { name: 'Bullion\'s Tavern', coords: [-74.578, 40.665], kind: 'village', label: { dx: -8, dy: -4, anchor: 'end' } },
+    { name: 'Somerset Court House', coords: [-74.594, 40.50], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { place: 'elizabethtown', label: { dx: 9, dy: 4 } },
+    { place: 'new-brunswick', label: { dx: 9, dy: 8 } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', label: 'Americans, Aug 19–21', labelAt: 0.5, coords: [[-73.865, 41.02], [-73.87, 41.10], [-73.905, 41.18], [-73.945, 41.24], [-73.975, 41.225]] },
+    { side: 'french', kind: 'march', label: 'French', labelAt: 0.35, coords: [[-73.80, 41.04], [-73.73, 41.13], [-73.78, 41.27], [-73.90, 41.29], [-73.95, 41.255]] },
+    { side: 'french', kind: 'march', label: 'French', labelAt: 0.55, coords: [[-73.985, 41.215], [-74.149, 41.115], [-74.29, 40.99], [-74.418, 40.825], [-74.578, 40.665], [-74.594, 40.50], [-74.62, 40.44]] },
+    { side: 'continental', kind: 'march', approx: true, label: 'Lincoln', labelAt: 0.3, coords: [[-73.985, 41.205], [-74.15, 41.10], [-74.075, 40.945], [-74.128, 40.857], [-74.317, 40.70], [-74.50, 40.56], [-74.565, 40.44]] },
+    { side: 'continental', kind: 'march', approx: true, coords: [[-74.17, 41.095], [-74.27, 40.98], [-74.383, 40.741], [-74.50, 40.60]] }
+  ],
+  units: [
+    { side: 'british', coords: [-73.99, 40.72], label: 'Clinton\n(New York)', labelPos: { dx: 18, dy: -2 } }
+  ],
+  ships: [ { side: 'british', coords: [-74.03, 40.49], angle: 0 } ],
+  callouts: [
+    { coords: [-73.99, 41.28], n: 1 },
+    { coords: [-74.43, 40.712], n: 2 }
+  ],
+  labels: [
+    { coords: [-74.25, 41.25], text: 'NEW YORK', kind: 'region', size: 12 },
+    { coords: [-74.65, 40.95], text: 'NEW JERSEY', kind: 'region', size: 12 },
+    { coords: [-73.915, 40.93], text: 'Hudson River', kind: 'water', size: 12, angle: -78 },
+    { coords: [-73.80, 40.42], text: 'Atlantic Ocean', kind: 'water', size: 13 },
+    { coords: [-74.30, 40.46], text: 'Raritan Bay', kind: 'water', size: 11 },
+    { coords: [-74.555, 40.46], text: 'to Princeton\nand Trenton', kind: 'note', size: 11, anchor: 'start', dx: 10, dy: 0 }
+  ]
+});
+
+HMap.render('#map-route', {
+  geo: 'march-to-yorktown-route',
+  bbox: [-78.3, 36.55, -73.4, 41.25],
+  alt: 'Map from New York to Virginia showing the allied march through New Jersey and Philadelphia to Head of Elk, the voyage down Chesapeake Bay, and Washington\'s ride via Mount Vernon',
+  water: { hide: ['Lake Gaston'] },
+  towns: [
+    { name: 'Philipsburg', coords: [-73.83, 41.03], kind: 'village', label: { dx: -9, dy: 14, anchor: 'end' } },
+    { place: 'princeton', label: { dx: 9, dy: 4 } },
+    { place: 'trenton', label: { dx: -9, dy: -4, anchor: 'end' } },
+    { place: 'philadelphia', label: { dx: 9, dy: 6 } },
+    { place: 'chester', label: { dx: 9, dy: 10 } },
+    { place: 'head-of-elk', label: { dx: 9, dy: 0 } },
+    { place: 'baltimore', label: { dx: -9, dy: -2, anchor: 'end' } },
+    { place: 'annapolis', label: { dx: 9, dy: 6 } },
+    { place: 'mount-vernon', label: { dx: -14, dy: 4, anchor: 'end' } },
+    { place: 'fredericksburg', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { place: 'williamsburg', label: { dx: -9, dy: 8, anchor: 'end' } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', label: 'allied armies, Aug 19 – Sep 8', labelAt: 0.3, coords: [[-73.83, 41.03], [-73.96, 41.25], [-74.15, 41.10], [-74.40, 40.75], [-74.66, 40.35], [-74.766, 40.222], [-75.145, 39.95], [-75.356, 39.849], [-75.55, 39.75], [-75.80, 39.62]] },
+    { side: 'continental', kind: 'naval', label: 'by water, Sep 9–26', labelAt: 0.35, approx: true, coords: [[-75.95, 39.50], [-76.20, 39.25], [-76.40, 38.95], [-76.40, 38.55], [-76.25, 38.05], [-76.14, 37.55], [-76.18, 37.15], [-76.36, 37.00], [-76.55, 37.10], [-76.68, 37.20]] },
+    { side: 'continental', kind: 'march', approx: true, coords: [[-75.85, 39.58], [-76.25, 39.42], [-76.58, 39.30], [-76.50, 39.02]] },
+    { side: 'continental', kind: 'march', label: 'Washington rides ahead', labelAt: 0.4, width: 1.8, coords: [[-76.62, 39.27], [-76.85, 39.00], [-77.08, 38.72], [-77.46, 38.30], [-77.25, 37.80], [-76.95, 37.45], [-76.72, 37.28]] }
+  ],
+  units: [ { side: 'british', coords: [-73.98, 40.70], label: 'Clinton\n(New York)', labelPos: { dx: 18, dy: 4 } },
+           { side: 'british', coords: [-76.51, 37.235], label: 'Cornwallis\n(Yorktown)', labelPos: { dx: 18, dy: 0 } } ],
+  ships: [ { side: 'french', coords: [-76.05, 36.95], label: 'de Grasse, Aug 30', labelPos: { dx: 16, dy: 14, anchor: 'start' } } ],
+  labels: [
+    { coords: [-74.10, 38.30], text: 'ATLANTIC OCEAN', kind: 'water' },
+    { coords: [-77.40, 40.60], text: 'PENNSYLVANIA', kind: 'region', size: 12 },
+    { coords: [-74.55, 39.70], text: 'NEW JERSEY', kind: 'region', size: 12 },
+    { coords: [-77.50, 39.55], text: 'MARYLAND', kind: 'region', size: 12 },
+    { coords: [-77.60, 37.50], text: 'VIRGINIA', kind: 'region', size: 12 },
+    { coords: [-75.30, 38.75], text: 'DELAWARE', kind: 'region', size: 11 }
+  ]
+});
+
+HMap.render('#map-fleets', {
+  geo: 'march-to-yorktown-fleets',
+  bbox: [-80.0, 33.0, -69.0, 42.0],
+  terrain: false,
+  alt: 'Map of the Atlantic coast from Carolina to New England showing de Grasse arriving from the West Indies, de Barras from Newport, and Hood and Graves from New York',
+  water: { hide: ['Lake Marion', 'Lake Moultrie', 'Lake Gaston', 'Smith Mountain Lake'] },
+  towns: [
+    { place: 'newport', label: { dx: 9, dy: 10 } },
+    { place: 'new-york', label: { dx: -9, dy: -6, anchor: 'end' } },
+    { place: 'yorktown', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { place: 'philadelphia', label: { dx: -9, dy: 4, anchor: 'end' } },
+  ],
+  moves: [
+    { side: 'french', kind: 'naval', label: 'de Grasse from Cap-Français, Aug 5–30', labelAt: 0.4, coords: [[-77.6, 33.0], [-75.9, 34.6], [-75.3, 35.9], [-75.9, 36.95]] },
+    { side: 'french', kind: 'naval', label: 'de Barras, Aug 25 – Sep 10', labelAt: 0.45, coords: [[-71.35, 41.3], [-70.3, 39.6], [-71.5, 37.8], [-73.8, 36.9], [-75.85, 37.0]] },
+    { side: 'british', kind: 'naval', label: 'Hood, Aug 25–28', labelAt: 0.3, coords: [[-74.6, 33.0], [-74.9, 35.5], [-75.6, 36.95], [-74.6, 38.6], [-73.95, 40.38]] },
+    { side: 'british', kind: 'naval', label: 'Graves & Hood, Aug 31 – Sep 5', labelAt: 0.5, coords: [[-73.6, 40.30], [-73.5, 39.2], [-74.4, 37.9], [-75.55, 37.05]] }
+  ],
+  battles: [ { coords: [-75.65, 36.85], label: 'Sep 5', labelPos: { dx: 16, dy: 18, anchor: 'start' } } ],
+  labels: [
+    { coords: [-72.2, 35.2], text: 'ATLANTIC OCEAN', kind: 'water' },
+    { coords: [-74.3, 33.5], text: 'from the West Indies', kind: 'note', size: 11.5, anchor: 'start' }
+  ]
+});
+</script>
+</body>
+</html>

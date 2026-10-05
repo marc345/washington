@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Road Home, 1783</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="road-home-1783">
+<main>
+  <header class="event-head">
+    <h1>Evacuation of New York &amp; the road home</h1>
+    <p class="meta">November 25 – December 24, 1783 · New York City to Annapolis and Mount Vernon</p>
+  </header>
+
+  <figure class="map">
+    <h2>Evacuation Day, November 25</h2>
+    <div class="map-canvas" id="map-nyc"></div>
+    <figcaption>
+      Washington and Governor George Clinton waited at Harlem while the last British posts were given up. On November 25 they rode down the Post Road and the Bowery behind Knox's advance guard and entered the city as the British rowed out to their ships, which then lay in the bay and off Staten Island until early December.
+      <span class="note-approx">Manhattan's shoreline is drawn approximately as it was in the 1780s, before later landfill. The road line is approximate.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>Lower Manhattan, November 25 – December 4</h2>
+    <div class="map-canvas" id="map-lower"></div>
+    <figcaption>
+      The procession halted at the Bull's Head Tavern on the Bowery until the British had left, then went on to a reception at Cape's Tavern on Broadway. At Fort George the Americans found the British flag nailed to a greased flagpole, and a sailor climbed it to put up the Stars and Stripes.
+      <ol>
+        <li>December 4: Washington takes leave of his officers at Fraunces Tavern.</li>
+        <li>He walks to Whitehall and crosses by barge to Paulus Hook in New Jersey.</li>
+      </ol>
+      <span class="note-approx">The shoreline is an approximate reconstruction for the 1780s; the New Jersey shore is shown as it is today.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>To Annapolis and Mount Vernon, December 4–24</h2>
+    <div class="map-canvas" id="map-journey"></div>
+    <figcaption>
+      Washington rode south through New Jersey to Philadelphia, where he stayed about a week to settle his wartime expense accounts, then went on through Wilmington and Baltimore to Annapolis, where Congress was sitting. At noon on December 23 he handed back his commission in the Maryland State House, and he reached Mount Vernon on Christmas Eve.
+      <span class="note-approx">Overnight stops are approximate, and the route from Annapolis to Mount Vernon is not exactly known.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+// Approximate 1780s shoreline of lower Manhattan: modern land outside it is later landfill.
+const FILL_WEST = [[-74.0150, 40.7045], [-74.0140, 40.7060], [-74.0128, 40.7090], [-74.0118, 40.7130], [-74.0110, 40.7170], [-74.0103, 40.7210], [-74.0098, 40.7250], [-74.0095, 40.7300], [-74.0090, 40.7350], [-74.0085, 40.7400], [-74.0080, 40.7450], [-74.0160, 40.7450], [-74.0230, 40.7200], [-74.0230, 40.7040]];
+const FILL_BATTERY = [[-74.0150, 40.7045], [-74.0140, 40.7030], [-74.0125, 40.7022], [-74.0115, 40.7025], [-74.0110, 40.6980], [-74.0230, 40.6980], [-74.0230, 40.7040]];
+const FILL_EAST = [[-74.0115, 40.7025], [-74.0085, 40.7040], [-74.0060, 40.7050], [-74.0035, 40.7068], [-74.0010, 40.7083], [-73.9985, 40.7098], [-73.9950, 40.7110], [-73.9900, 40.7120], [-73.9850, 40.7130], [-73.9800, 40.7140], [-73.9790, 40.7180], [-73.9772, 40.7230], [-73.9760, 40.7290], [-73.9748, 40.7340], [-73.9725, 40.7400], [-73.9705, 40.7450], [-73.9690, 40.7450], [-73.9700, 40.7380], [-73.9710, 40.7300], [-73.9715, 40.7200], [-73.9740, 40.7120], [-73.9790, 40.7085], [-73.9850, 40.7075], [-73.9920, 40.7072], [-73.9980, 40.7065], [-74.0010, 40.7045], [-74.0050, 40.7010], [-74.0090, 40.6995], [-74.0115, 40.6990]];
+const COLLECT = [[-74.0035, 40.7165], [-74.0025, 40.7178], [-74.0005, 40.7176], [-73.9993, 40.7162], [-74.0008, 40.7148], [-74.0027, 40.7150]];
+const CORR = { water: [FILL_WEST, FILL_BATTERY, FILL_EAST, COLLECT] };
+const POST_ROAD = [[-73.9500, 40.8095], [-73.9530, 40.7960], [-73.9600, 40.7800], [-73.9680, 40.7650], [-73.9760, 40.7520], [-73.9800, 40.7440], [-73.9860, 40.7350], [-73.9905, 40.7270], [-73.9940, 40.7210], [-73.9965, 40.7160]];
+const DOWNTOWN = [[-73.9965, 40.7160], [-74.0010, 40.7130], [-74.0060, 40.7100], [-74.0100, 40.7080], [-74.0125, 40.7065], [-74.0140, 40.7048]];
+
+HMap.render('#map-nyc', {
+  geo: 'road-home-1783-nyc',
+  bbox: [-74.06, 40.69, -73.90, 40.82],
+  alt: 'Map of Manhattan in 1783 showing Washington\'s route from Harlem down the Post Road and the Bowery into the city',
+  corrections: CORR,
+  roads: [ { name: 'Post Road', coords: POST_ROAD, labelAt: 0.35 } ],
+  towns: [
+    { name: 'Harlem (Day\'s Tavern)', coords: [-73.9500, 40.8095], kind: 'village', label: { dx: -9, dy: -6, anchor: 'end' } },
+    { name: 'McGown\'s Pass', coords: [-73.9530, 40.7960], kind: 'village', label: { dx: 9, dy: 4 } },
+    { name: 'New York', coords: [-74.0080, 40.7090], kind: 'town', label: { dx: -10, dy: -8, anchor: 'end' } },
+    { name: 'Paulus Hook', coords: [-74.0350, 40.7160], kind: 'village', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { name: 'Brooklyn', coords: [-73.9920, 40.6990], kind: 'village', label: { dx: 9, dy: 10 } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', label: 'Washington & Clinton, Nov 25', labelAt: 0.55, coords: POST_ROAD.concat(DOWNTOWN.slice(1)) }
+  ],
+  labels: [
+    { coords: [-74.0000, 40.7700], text: 'Hudson River', kind: 'water', angle: -62 },
+    { coords: [-73.9600, 40.7420], text: 'East River', kind: 'water', angle: -60 },
+    { coords: [-73.9330, 40.8050], text: 'Harlem R.', kind: 'water', size: 11, angle: -60 },
+    { coords: [-73.9720, 40.7880], text: 'MANHATTAN', kind: 'region', size: 12, angle: -62 },
+    { coords: [-74.0400, 40.7750], text: 'NEW JERSEY', kind: 'region', size: 12 },
+    { coords: [-73.9350, 40.7100], text: 'LONG ISLAND', kind: 'region', size: 12 }
+  ],
+  legendExtra: [ { svg: '<svg viewBox="0 0 26 12"><rect x="1" y="1" width="24" height="10" fill="#efe3c4" stroke="#8c7a5c"/></svg>', text: 'Land' } ]
+});
+
+HMap.render('#map-lower', {
+  geo: 'road-home-1783-lower',
+  bbox: [-74.045, 40.695, -73.985, 40.73],
+  terrain: false,
+  alt: 'Map of lower Manhattan in 1783 with the Bowery, Broadway, Fort George, Fraunces Tavern and the barge crossing to Paulus Hook',
+  corrections: CORR,
+  roads: [
+    { name: 'Bowery', coords: [[-73.9900, 40.7240], [-73.9935, 40.7200], [-73.9965, 40.7160]], labelAt: 0.5 },
+    { name: 'Broadway', coords: [[-74.0140, 40.7048], [-74.0105, 40.7100], [-74.0070, 40.7150], [-74.0030, 40.7210], [-74.0000, 40.7260]], labelAt: 0.62 },
+    { name: 'Wall St.', coords: [[-74.0108, 40.7070], [-74.0060, 40.7055]], labelAt: 0.5, size: 9.5 }
+  ],
+  areas: [ { side: 'neutral', coords: [[-74.0145, 40.7045], [-74.0120, 40.7090], [-74.0090, 40.7140], [-74.0040, 40.7150], [-73.9990, 40.7120], [-73.9975, 40.7100], [-74.0010, 40.7083], [-74.0060, 40.7050], [-74.0115, 40.7025]], opacity: 0.12, legend: 'Built-up city (approximate)' } ],
+  towns: [
+    { name: 'Bull\'s Head Tavern', coords: [-73.9965, 40.7160], kind: 'building', label: { dx: 9, dy: 4 } },
+    { name: 'Cape\'s Tavern', coords: [-74.0118, 40.7082], kind: 'building', label: { dx: -9, dy: 4, anchor: 'end' } },
+    { name: 'Fort George', coords: [-74.0140, 40.7040], kind: 'fort', side: 'continental', label: { dx: -12, dy: -2, anchor: 'end' } },
+    { name: 'Fraunces Tavern', coords: [-74.0113, 40.7034], kind: 'building', label: { dx: 9, dy: 12 } },
+    { name: 'Whitehall', coords: [-74.0127, 40.7022], kind: 'ferry', label: { dx: -9, dy: 14, anchor: 'end' } },
+    { name: 'Paulus Hook', coords: [-74.0350, 40.7160], kind: 'village', label: { dx: -9, dy: -6, anchor: 'end' } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', label: 'Nov 25', labelAt: 0.4, coords: [[-73.9900, 40.7240], [-73.9935, 40.7200], [-73.9962, 40.7165]] },
+    { side: 'continental', kind: 'march', coords: [[-73.9975, 40.7155], [-74.0020, 40.7130], [-74.0065, 40.7105], [-74.0110, 40.7088]] },
+    { side: 'continental', kind: 'naval', label: 'barge, Dec 4', labelAt: 0.5, coords: [[-74.0135, 40.7018], [-74.0230, 40.7060], [-74.0300, 40.7120], [-74.0340, 40.7150]] }
+  ],
+  callouts: [ { coords: [-74.0060, 40.7012], n: 1 }, { coords: [-74.0215, 40.7030], n: 2 } ],
+  labels: [
+    { coords: [-74.0240, 40.7230], text: 'Hudson River', kind: 'water', angle: -62 },
+    { coords: [-73.9915, 40.7050], text: 'East River', kind: 'water', angle: -15, size: 13 },
+    { coords: [-74.0014, 40.7178], text: 'Collect Pond', kind: 'note', size: 10.5, dy: -8 },
+  ]
+});
+
+HMap.render('#map-journey', {
+  geo: 'road-home-1783-journey',
+  bbox: [-77.4, 38.25, -73.7, 40.95],
+  alt: 'Map from New York to Virginia showing Washington\'s journey through New Jersey, Philadelphia, Wilmington and Baltimore to Annapolis and Mount Vernon',
+  towns: [
+    { name: 'New York', coords: [-74.008, 40.709], kind: 'town', label: { dx: -9, dy: 16, anchor: 'end' } },
+    { place: 'new-brunswick', label: { dx: 9, dy: 8 } },
+    { place: 'trenton', label: { dx: 9, dy: 8 } },
+    { place: 'philadelphia', label: { dx: 9, dy: 8 } },
+    { place: 'wilmington', label: { dx: 9, dy: 8 } },
+    { place: 'baltimore', label: { dx: -9, dy: -4, anchor: 'end' } },
+    { name: 'Annapolis', coords: [-76.491, 38.978], kind: 'hq', label: { dx: 10, dy: 8 } },
+    { place: 'mount-vernon', label: { dx: -9, dy: 4, anchor: 'end' } }
+  ],
+  moves: [
+    { side: 'continental', kind: 'march', label: 'Dec 4–8', labelAt: 0.5, coords: [[-74.04, 40.71], [-74.20, 40.63], [-74.447, 40.497], [-74.66, 40.35], [-74.766, 40.222], [-75.00, 40.08], [-75.14, 39.96]] },
+    { side: 'continental', kind: 'march', label: 'Dec 15–19', labelAt: 0.45, coords: [[-75.16, 39.94], [-75.356, 39.849], [-75.547, 39.746], [-75.85, 39.60], [-76.20, 39.45], [-76.60, 39.29], [-76.55, 39.10], [-76.50, 38.99]] },
+    { side: 'continental', kind: 'march', approx: true, label: 'Dec 23–24', labelAt: 0.5, coords: [[-76.51, 38.97], [-76.75, 38.85], [-76.98, 38.76], [-77.08, 38.715]] }
+  ],
+  labels: [
+    { coords: [-75.14, 39.96], text: 'Dec 8–15', kind: 'note', size: 11, dx: -12, dy: -10, anchor: 'end' },
+    { coords: [-76.491, 38.978], text: 'resigns, Dec 23', kind: 'note', size: 11, dx: 10, dy: 24, anchor: 'start' },
+    { coords: [-77.086, 38.708], text: 'home, Dec 24', kind: 'note', size: 11, dx: -9, dy: 20, anchor: 'end' },
+    { coords: [-76.25, 38.70], text: 'Chesapeake\nBay', kind: 'water', size: 12 },
+    { coords: [-74.20, 39.30], text: 'ATLANTIC OCEAN', kind: 'water' },
+    { coords: [-76.90, 40.30], text: 'PENNSYLVANIA', kind: 'region', size: 12 },
+    { coords: [-74.55, 39.85], text: 'NEW JERSEY', kind: 'region', size: 12 },
+    { coords: [-77.00, 39.55], text: 'MARYLAND', kind: 'region', size: 12 },
+    { coords: [-75.35, 39.05], text: 'DELAWARE', kind: 'region', size: 11 }
+  ]
+});
+</script>
+</body>
+</html>

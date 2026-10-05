@@ -1,0 +1,32 @@
+[
+ {
+  "id": "road-home-1783-nyc",
+  "bbox": [
+   -74.06,
+   40.69,
+   -73.9,
+   40.82
+  ],
+  "detail": "local"
+ },
+ {
+  "id": "road-home-1783-lower",
+  "bbox": [
+   -74.045,
+   40.695,
+   -73.985,
+   40.73
+  ],
+  "detail": "local"
+ },
+ {
+  "id": "road-home-1783-journey",
+  "bbox": [
+   -77.4,
+   38.25,
+   -73.7,
+   40.95
+  ],
+  "detail": "campaign"
+ }
+]

@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Siege of Yorktown</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IM+Fell+English&display=swap">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/vendor/d3.min.js"></script>
+  <script src="../assets/vendor/topojson-client.min.js"></script>
+  <script src="../assets/js/hmap.js"></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-event="siege-of-yorktown">
+<main>
+  <header class="event-head">
+    <h1>Siege of Yorktown</h1>
+    <p class="meta">September 28 – October 19, 1781 · Yorktown and Gloucester Point, Virginia</p>
+  </header>
+
+  <figure class="map">
+    <h2>Closing the trap, September 28 – October 17</h2>
+    <div class="map-canvas" id="map-theater"></div>
+    <figcaption>
+      The allies marched from Williamsburg on September 28 and closed around Yorktown, the French on the left and the Americans on the right. Across the river, a smaller allied force sealed off the British post at Gloucester Point, and French warships held the mouth of the York.
+      <ol>
+        <li>Cornwallis gives up his outer works on the night of September 29–30 and falls back to the town lines.</li>
+        <li>October 3: Tarleton's foragers clash with Lauzun's legion near the Hook and are driven back inside the Gloucester lines.</li>
+        <li>Night of October 16–17: Cornwallis tries to ferry his army across to Gloucester. A squall scatters the boats after the first trip.</li>
+      </ol>
+      <span class="note-approx">Camp areas, march routes and the Gloucester positions are approximate.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>The siege lines, October 6–14</h2>
+    <div class="map-canvas" id="map-lines"></div>
+    <figcaption>
+      Allied sappers opened the first parallel on the night of October 6, about 600 to 800 yards from the British works, and the guns opened fire on October 9. A second parallel, roughly halfway closer, was begun on October 11 but could not reach the river until two British redoubts near the bank were taken.
+      <span class="note-approx">Trench lines are traced from period maps and the surviving earthworks, simplified.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>The storming of Redoubts 9 and 10, evening of October 14</h2>
+    <div class="map-canvas" id="map-redoubts"></div>
+    <figcaption>
+      After dark, two columns of about 400 men each went in with the bayonet. Hamilton's American light infantry took Redoubt 10 (about 70 defenders) in minutes. The French under the Comte de Deux-Ponts took the larger Redoubt 9 (about 120 British and German defenders) at a heavier cost. That night both redoubts were joined to the second parallel. A French feint against the Fusiliers' Redoubt, on the far side of town, drew attention away.
+      <span class="note-approx">Attack routes are schematic.</span>
+    </figcaption>
+  </figure>
+
+  <figure class="map">
+    <h2>The surrender, October 19</h2>
+    <div class="map-canvas" id="map-surrender"></div>
+    <figcaption>
+      Terms were drafted at the Moore House on October 18. On the afternoon of the 19th the garrison marched out along the Hampton road between the lined-up allied armies, the French on one side and the Americans on the other, and laid down its arms in a field to the south. The Gloucester garrison surrendered the same day.
+      <span class="note-approx">The positions of the allied ranks are schematic.</span>
+    </figcaption>
+  </figure>
+</main>
+
+<script>
+// shared features
+const YT_SHORE_WORKS = [[-76.5113, 37.2394], [-76.5126, 37.2365], [-76.5112, 37.2330], [-76.5085, 37.2306], [-76.5048, 37.2293], [-76.5020, 37.2303], [-76.5009, 37.2321]];
+const HORNWORK = [[-76.5092, 37.2310], [-76.5090, 37.2284], [-76.5062, 37.2279], [-76.5056, 37.2296]];
+const PARALLEL_1 = [[-76.4935, 37.2248], [-76.4975, 37.2232], [-76.5020, 37.2225], [-76.5047, 37.2228], [-76.5090, 37.2232], [-76.5122, 37.2246]];
+const PARALLEL_2 = [[-76.5098, 37.2262], [-76.5055, 37.2264], [-76.5018, 37.2266]];
+const PARALLEL_2X = [[-76.5018, 37.2266], [-76.4996, 37.2274], [-76.4985, 37.2284], [-76.4977, 37.2291], [-76.4972, 37.2298]];
+const MAIN_ST = [[-76.5110, 37.2382], [-76.5072, 37.2350], [-76.5032, 37.2320]];
+const HAMPTON_RD = [[-76.5076, 37.2281], [-76.5068, 37.2240], [-76.5058, 37.2180], [-76.5052, 37.2100], [-76.5040, 37.2000]];
+const WMBG_RD = [[-76.5360, 37.2240], [-76.5250, 37.2280], [-76.5150, 37.2315], [-76.5112, 37.2340]];
+const lineSvg = (color, dash) => `<svg viewBox="0 0 30 12"><path d="M2,6 H28" stroke="${color}" stroke-width="2.6" ${dash ? `stroke-dasharray="${dash}"` : ''}/></svg>`;
+
+HMap.render('#map-theater', {
+  geo: 'siege-of-yorktown-theater',
+  bbox: [-76.63, 37.165, -76.41, 37.325],
+  alt: 'Map of the Yorktown peninsula and Gloucester Point showing the allied approach from Williamsburg, the allied camps, and the British positions',
+  water: { hide: ['Wormley Pond', 'Cheatham Pond', 'Bigler Millpond'] },
+  rivers: { hide: ['Lk Eustis'] },
+  roads: [
+    { coords: [[-76.63, 37.258], [-76.60, 37.249], [-76.57, 37.241], [-76.540, 37.235], [-76.512, 37.233]] },
+    { coords: [[-76.507, 37.229], [-76.505, 37.205], [-76.492, 37.185], [-76.475, 37.165]] },
+    { coords: [[-76.497, 37.254], [-76.505, 37.275], [-76.515, 37.300], [-76.522, 37.325]] }
+  ],
+  areas: [
+    { side: 'french', coords: [[-76.545, 37.243], [-76.532, 37.240], [-76.524, 37.232], [-76.522, 37.220], [-76.530, 37.212], [-76.542, 37.216], [-76.549, 37.230]], opacity: 0.6, legend: 'Allied camps (approximate)' },
+    { side: 'continental', coords: [[-76.518, 37.214], [-76.505, 37.216], [-76.490, 37.215], [-76.482, 37.208], [-76.492, 37.200], [-76.515, 37.202]], opacity: 0.3 }
+  ],
+  works: [
+    { side: 'british', coords: [[-76.5113, 37.2394], [-76.5126, 37.2360], [-76.5100, 37.2318], [-76.5050, 37.2292], [-76.5009, 37.2321]] },
+    { side: 'british', coords: [[-76.5070, 37.2600], [-76.4985, 37.2620], [-76.4900, 37.2585]] },
+    { side: 'continental', coords: PARALLEL_1 }
+  ],
+  towns: [
+    { place: 'yorktown', label: { dx: -12, dy: -10, anchor: 'end' } },
+    { name: 'Gloucester Point', coords: [-76.497, 37.254], kind: 'village', label: { dx: 9, dy: 5 } },
+    { name: 'Washington\'s HQ', coords: [-76.533, 37.2024], kind: 'hq', label: { dx: -9, dy: 12, anchor: 'end' } }
+  ],
+  moves: [
+    { side: 'french', kind: 'march', label: 'French, Sep 28', labelAt: 0.5, coords: [[-76.628, 37.257], [-76.600, 37.249], [-76.570, 37.240], [-76.550, 37.232]] },
+    { side: 'continental', kind: 'march', label: 'Americans, Sep 28–30', labelAt: 0.45, coords: [[-76.618, 37.250], [-76.590, 37.232], [-76.560, 37.214], [-76.535, 37.207], [-76.512, 37.206]] },
+    { side: 'british', kind: 'retreat', label: 'Oct 16', labelAt: 0.5, coords: [[-76.504, 37.239], [-76.501, 37.246], [-76.498, 37.251]], width: 2 },
+    { side: 'french', kind: 'march', approx: true, label: 'Choisy, Oct 3', labelAt: 0.4, coords: [[-76.527, 37.317], [-76.522, 37.302], [-76.516, 37.288]] }
+  ],
+  units: [
+    { side: 'french', coords: [-76.537, 37.226], label: 'French', w: 30, labelPos: { dx: -20, dy: 4, anchor: 'end' } },
+    { side: 'continental', coords: [-76.497, 37.207], label: 'Americans', w: 30, labelPos: { dx: 22, dy: 4 } },
+    { side: 'british', coords: [-76.508, 37.235], w: 16, h: 8 },
+    { side: 'british', coords: [-76.497, 37.258], w: 16, h: 8 },
+    { side: 'militia', coords: [-76.530, 37.310], label: 'Weedon\'s militia', w: 20, h: 9, labelPos: { dx: -16, dy: 4, anchor: 'end' } }
+  ],
+  ships: [
+    { side: 'french', coords: [-76.425, 37.247] },
+    { side: 'french', coords: [-76.430, 37.236], label: 'French ships', labelPos: { dx: 0, dy: 22, anchor: 'middle' } },
+    { side: 'british', coords: [-76.493, 37.247], angle: 160, label: 'British shipping', labelPos: { dx: 14, dy: 22, anchor: 'start' } }
+  ],
+  battles: [ { coords: [-76.514, 37.284], label: 'The Hook', labelPos: { dx: 16, dy: 4, anchor: 'start' } } ],
+  callouts: [
+    { coords: [-76.526, 37.2465], n: 1 },
+    { coords: [-76.503, 37.292], n: 2 },
+    { coords: [-76.487, 37.239], n: 3 }
+  ],
+  labels: [
+    { coords: [-76.455, 37.275], text: 'York River', kind: 'water', angle: -28 },
+    { coords: [-76.612, 37.200], text: 'James River', kind: 'water', angle: -35 },
+    { coords: [-76.620, 37.268], text: '← from Williamsburg', kind: 'note', anchor: 'start', dx: -8 },
+    { coords: [-76.452, 37.296], text: 'GLOUCESTER', kind: 'region', size: 12 },
+    { coords: [-76.474, 37.172], text: 'to Hampton ↓', kind: 'note', anchor: 'start', dx: 6 },
+  ]
+});
+
+HMap.render('#map-lines', {
+  geo: 'siege-of-yorktown-lines',
+  bbox: [-76.530, 37.2135, -76.484, 37.2445],
+  terrain: { contours: 5 },
+  alt: 'Detailed map of the Yorktown siege lines: British inner works and redoubts, and the first and second allied parallels',
+  water: { hide: ['Wormley Pond'], hideUnnamed: true },
+  roads: [
+    { name: 'Main St.', coords: MAIN_ST, size: 10 },
+    { name: 'Hampton Rd', coords: HAMPTON_RD, labelAt: 0.75 },
+    { name: 'Williamsburg Rd', coords: WMBG_RD, labelAt: 0.3 }
+  ],
+  works: [
+    { side: 'british', coords: YT_SHORE_WORKS },
+    { side: 'british', coords: HORNWORK },
+    { side: 'british', kind: 'redoubt', coords: [[-76.5172, 37.2398]], size: 7 },
+    { side: 'british', kind: 'redoubt', coords: [[-76.4992, 37.2276]], size: 7 },
+    { side: 'british', kind: 'redoubt', coords: [[-76.4979, 37.2290]], size: 6 },
+    { side: 'continental', coords: PARALLEL_1 },
+    { side: 'continental', coords: [[-76.5208, 37.2352], [-76.5222, 37.2385]] },
+    { side: 'continental', coords: PARALLEL_2 }
+  ],
+  lines: [ { coords: PARALLEL_2X, color: '#1b3466', width: 2, dash: '4 3' } ],
+  towns: [
+    { place: 'yorktown', label: { dx: 10, dy: -8 } },
+    { name: 'Moore House', coords: [-76.4859, 37.2218], kind: 'building', label: { dx: 0, dy: -9, anchor: 'middle' } },
+    { name: 'Nelson House', coords: [-76.5072, 37.2342], kind: 'building', label: { dx: -8, dy: 4, anchor: 'end' } }
+  ],
+  units: [
+    { side: 'french', type: 'artillery', coords: [-76.5047, 37.2218], w: 16, h: 9, label: 'Grand French Battery', labelPos: { dx: -6, dy: 30, anchor: 'end' } },
+    { side: 'continental', type: 'artillery', coords: [-76.4962, 37.2223], w: 16, h: 9, label: 'American Grand Battery', labelPos: { dx: 0, dy: 30, anchor: 'middle' } },
+    { side: 'french', type: 'artillery', coords: [-76.5240, 37.2364], w: 16, h: 9, labelPos: { dx: 0, dy: 30, anchor: 'middle' }, label: 'French batteries' }
+  ],
+  labels: [
+    { coords: [-76.5172, 37.2398], text: 'Fusiliers\' Redoubt', kind: 'note', dy: -14 },
+    { coords: [-76.4992, 37.2276], text: '9', kind: 'note', dx: -22, dy: 6, size: 14 },
+    { coords: [-76.4979, 37.2290], text: '10', kind: 'note', dx: 24, dy: 0, size: 14 },
+    { coords: [-76.4990, 37.2239], text: '1st parallel, Oct 6–9', kind: 'note', angle: -14, dy: -8, size: 11 },
+    { coords: [-76.5070, 37.2264], text: '2nd parallel, Oct 11–12', kind: 'note', dy: -9, size: 11 },
+    { coords: [-76.5160, 37.2190], text: 'FRENCH', kind: 'region', size: 12 },
+    { coords: [-76.4930, 37.2165], text: 'AMERICANS', kind: 'region', size: 12 },
+    { coords: [-76.4890, 37.2345], text: 'York River', kind: 'water', angle: -16 },
+    { coords: [-76.5148, 37.2275], text: 'Yorktown Creek', kind: 'water', size: 11.5, angle: -68 }
+  ],
+  legendExtra: [
+    { svg: '<svg viewBox="0 0 30 12"><path d="M2,6 H28" stroke="#1b3466" stroke-width="2" stroke-dasharray="4 3"/></svg>', text: 'Second parallel extended after Oct 14' },
+    { svg: '<svg viewBox="-8 -8 16 16"><path d="M0,-6 L1.4,-1.9 5.7,-1.9 2.3,0.7 3.5,4.9 0,2.4 -3.5,4.9 -2.3,0.7 -5.7,-1.9 -1.4,-1.9Z" fill="none" stroke="#6e1716" stroke-width="1.4"/></svg>', text: 'British redoubt' }
+  ]
+});
+
+HMap.render('#map-redoubts', {
+  geo: 'siege-of-yorktown-redoubts',
+  bbox: [-76.5125, 37.2205, -76.4925, 37.2355],
+  terrain: { contours: 2 },
+  alt: 'Close-up map of the assault on Redoubts 9 and 10 on the night of October 14',
+  water: { hideUnnamed: true },
+  works: [
+    { side: 'british', coords: YT_SHORE_WORKS },
+    { side: 'british', coords: HORNWORK },
+    { side: 'british', kind: 'redoubt', coords: [[-76.4992, 37.2276]], size: 9 },
+    { side: 'british', kind: 'redoubt', coords: [[-76.4979, 37.2290]], size: 8 },
+    { side: 'continental', coords: PARALLEL_2 },
+    { side: 'continental', coords: PARALLEL_1 }
+  ],
+  lines: [ { coords: PARALLEL_2X, color: '#1b3466', width: 2, dash: '4 3' } ],
+  roads: [ { name: 'Main St.', coords: MAIN_ST }, { coords: HAMPTON_RD } ],
+  towns: [ { place: 'yorktown', label: { dx: -8, dy: -8, anchor: 'end' } } ],
+  moves: [
+    { side: 'continental', kind: 'attack', label: 'Hamilton', labelAt: 0.5, coords: [[-76.4972, 37.2246], [-76.4968, 37.2264], [-76.4975, 37.2282]] },
+    { side: 'french', kind: 'attack', label: 'Deux-Ponts', labelAt: 0.5, coords: [[-76.5022, 37.2252], [-76.5008, 37.2260], [-76.4997, 37.2270]] }
+      ],
+  units: [
+    { side: 'british', coords: [-76.5035, 37.2305], angle: -20, label: 'British main line', labelPos: { dx: 0, dy: -16, anchor: 'middle' } }
+  ],
+  labels: [
+    { coords: [-76.4992, 37.2276], text: 'Redoubt 9', kind: 'note', dx: -20, dy: -8, anchor: 'end', size: 13 },
+    { coords: [-76.4979, 37.2290], text: 'Redoubt 10', kind: 'note', dx: 18, dy: -8, anchor: 'start', size: 13 },
+    { coords: [-76.4945, 37.2320], text: 'York River', kind: 'water', angle: -38 },
+    { coords: [-76.5075, 37.2263], text: '2nd parallel', kind: 'note', dy: -10, size: 12 },
+    { coords: [-76.5075, 37.2231], text: '1st parallel', kind: 'note', dy: -10, size: 12 }
+  ],
+  legendExtra: [
+    { svg: '<svg viewBox="0 0 30 12"><path d="M2,6 H28" stroke="#1b3466" stroke-width="2" stroke-dasharray="4 3"/></svg>', text: 'Second parallel extended to the river that night' }
+  ]
+});
+
+HMap.render('#map-surrender', {
+  geo: 'siege-of-yorktown-surrender',
+  bbox: [-76.528, 37.2025, -76.482, 37.2365],
+  terrain: { contours: 5 },
+  alt: 'Map of the surrender: the British garrison marching out along the Hampton road between allied ranks to the surrender field',
+  water: { hide: ['Wormley Pond'], hideUnnamed: true },
+  roads: [ { name: 'Hampton Rd', coords: HAMPTON_RD, labelAt: 0.85 }, { coords: MAIN_ST }, { coords: WMBG_RD } ],
+  areas: [
+    { side: 'french', smooth: false, opacity: 0.9, coords: [[-76.5084, 37.2262], [-76.5078, 37.2262], [-76.5066, 37.2130], [-76.5072, 37.2130]] },
+    { side: 'continental', smooth: false, opacity: 0.9, coords: [[-76.5058, 37.2262], [-76.5052, 37.2262], [-76.5040, 37.2130], [-76.5046, 37.2130]] }
+  ],
+  works: [
+    { side: 'british', coords: YT_SHORE_WORKS },
+    { side: 'british', coords: HORNWORK }
+  ],
+  towns: [
+    { place: 'yorktown', label: { dx: 10, dy: -6 } },
+    { name: 'Moore House (terms agreed Oct 18)', coords: [-76.4859, 37.2218], kind: 'building', label: { dx: 0, dy: 16, anchor: 'end' } },
+    { name: 'Surrender Field', coords: [-76.5053, 37.2094], kind: 'building', label: { dx: 22, dy: 5 } }
+  ],
+  moves: [
+    { side: 'british', kind: 'march', width: 2.4, coords: [[-76.5068, 37.2279], [-76.5062, 37.2240], [-76.5055, 37.2160], [-76.5054, 37.2108]] }
+  ],
+  units: [
+    { side: 'british', coords: [-76.5056, 37.2086], w: 22, h: 10, label: 'arms laid down', labelPos: { dx: -18, dy: 4, anchor: 'end' } }
+  ],
+  labels: [
+    { coords: [-76.4900, 37.2300], text: 'York River', kind: 'water', angle: -24 },
+    { coords: [-76.5085, 37.2175], text: 'French\nranks', kind: 'note', anchor: 'end', dx: -10, size: 12.5 },
+    { coords: [-76.5040, 37.2175], text: 'American\nranks', kind: 'note', anchor: 'start', dx: 10, size: 12.5 }
+  ],
+  legendExtra: [
+    { svg: '<svg viewBox="0 0 26 12"><rect x="1" y="3" width="24" height="6" fill="#f4f1e6" stroke="#2b3f7a"/></svg>', text: 'French ranks lining the road' },
+    { svg: '<svg viewBox="0 0 26 12"><rect x="1" y="3" width="24" height="6" fill="#2f5597" stroke="#1b3466"/></svg>', text: 'American ranks lining the road' }
+  ]
+});
+</script>
+</body>
+</html>

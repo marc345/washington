@@ -59,7 +59,7 @@
     "summary": "Charleston falls with its whole garrison, Gates is routed at Camden, and the tide turns at King's Mountain." },
   { "id": "arnold-treason", "title": "Arnold's treason at West Point", "dates": "Sep 1780", "start": "1780-09-21", "coords": [-73.955, 41.39], "washington": true,
     "summary": "Arnold plots to hand over West Point; André is caught near Tarrytown, and Arnold flees to a British ship hours before Washington arrives." },
-  { "id": "cowpens-guilford", "title": "Cowpens to Guilford Courthouse", "dates": "Jan – Apr 1781", "start": "1781-01-17", "coords": [-81.81, 35.13], "washington": false,
+  { "id": "cowpens-guilford", "title": "Cowpens to Guilford Courthouse", "dates": "Jan – May 1781", "start": "1781-01-17", "coords": [-81.81, 35.13], "washington": false,
     "summary": "Morgan destroys Tarleton's force at Cowpens; Greene leads Cornwallis on a race to the Dan and bleeds him at Guilford Courthouse." },
   { "id": "virginia-1781", "title": "War in Virginia", "dates": "Jan – Aug 1781", "start": "1781-01-04", "coords": [-77.43, 37.54], "washington": false,
     "summary": "Arnold raids Richmond, a British sloop extorts supplies from Mount Vernon, and Cornwallis chases Lafayette before falling back to Yorktown." },
