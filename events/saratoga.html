@@ -166,11 +166,11 @@ const FIELD = {
     { coords: [[-73.6125, 43.022], [-73.6110, 43.008], [-73.6130, 42.995], [-73.6185, 42.983], [-73.6250, 42.976]] }
   ],
   towns: [
-    { name: 'Neilson farm', coords: [-73.6416, 42.9863], kind: 'building', label: { dx: 8, dy: 14 } },
-    { name: 'Freeman farm', coords: [-73.6386, 43.0060], kind: 'building', label: { dx: 8, dy: -6 } }
+    { name: 'Neilson farm', coords: [-73.6416, 42.9863], kind: 'building', label: { dx: -8, dy: 14, anchor: 'end' } },
+    { name: 'Freeman farm', coords: [-73.6386, 43.0060], kind: 'building', label: { dx: -8, dy: -6, anchor: 'end' } }
   ],
   labels: [
-    { coords: [-73.6300, 42.9790], text: 'Bemis Heights', kind: 'terrain', size: 13, angle: 20 },
+    { coords: [-73.6300, 42.9790], text: 'Bemis Heights', kind: 'terrain', size: 13, angle: 20, ph: { coords: [-73.6240, 42.9787] } },
     { coords: [-73.6058, 42.9925], text: 'Hudson River', kind: 'water', angle: -68, size: 12 },
     { coords: [-73.6185, 43.0098], text: 'Great Ravine', kind: 'terrain', size: 11.5, angle: -20 },
     { coords: [-73.6270, 42.9925], text: 'Mill Creek', kind: 'water', size: 11, angle: 25 }
@@ -193,7 +193,7 @@ HMap.render('#map-freeman', Object.assign({}, FIELD, {
   ],
   battles: [ { coords: [-73.6392, 43.0045], label: '' } ],
   callouts: [
-    { coords: [-73.6400, 42.9975], n: 1 },
+    { coords: [-73.6368, 43.0030], n: 1 },
     { coords: [-73.6430, 43.0085], n: 2 },
     { coords: [-73.6215, 43.0050], n: 3 }
   ]
@@ -212,27 +212,27 @@ HMap.render('#map-bemis', Object.assign({}, FIELD, {
     { coords: [[-73.6495, 43.0035], [-73.6440, 43.0030], [-73.6420, 42.9990], [-73.6475, 42.9985]], side: 'neutral', opacity: 0.12, legend: 'Barber wheatfield' }
   ],
   moves: [
-    { side: 'british', kind: 'march', coords: [[-73.6380, 43.0035], [-73.6420, 43.0025], [-73.6450, 43.0015]], width: 2.4 },
+    { side: 'british', kind: 'march', coords: [[-73.6390, 43.0035], [-73.6405, 43.0030], [-73.6420, 43.0025]], width: 2.4 },
     { side: 'continental', kind: 'attack', label: 'Poor', labelAt: 0.4, coords: [[-73.6400, 42.9890], [-73.6410, 42.9950], [-73.6435, 42.9990]] },
     { side: 'continental', kind: 'attack', label: 'Morgan', labelAt: 0.35, coords: [[-73.6520, 42.9910], [-73.6575, 42.9990], [-73.6540, 43.0050], [-73.6495, 43.0040]] },
     { side: 'continental', kind: 'attack', label: 'Learned', labelAt: 0.35, coords: [[-73.6470, 42.9925], [-73.6480, 42.9985]], width: 3.5 },
-    { side: 'continental', kind: 'attack', label: 'Arnold', labelAt: 0.4, coords: [[-73.6450, 43.0020], [-73.6430, 43.0040], [-73.6410, 43.0050]], width: 3 },
+    { side: 'continental', kind: 'attack', label: 'Arnold', labelAt: 0.45, coords: [[-73.6372, 42.9968], [-73.6378, 43.0000], [-73.6384, 43.0028]], width: 3 },
     { side: 'continental', kind: 'attack', labelAt: 0.5, coords: [[-73.6495, 43.0060], [-73.6475, 43.0095], [-73.6425, 43.0098]] },
     { side: 'british', kind: 'retreat', coords: [[-73.6450, 43.0030], [-73.6420, 43.0050], [-73.6410, 43.0060]], width: 2 }
   ],
   units: [
-    { side: 'british', coords: [-73.6435, 43.0012], angle: -25 },
+    { side: 'british', coords: [-73.6447, 43.0019], angle: -25, label: 'Burgoyne', labelPos: { dx: -16, dy: 4, anchor: 'end' } },
     { side: 'continental', coords: [-73.6350, 42.9845], label: 'Gates', angle: -20, labelPos: { dx: 0, dy: 18, anchor: 'middle' } }
   ],
   towns: [
-    { name: 'Neilson farm', coords: [-73.6416, 42.9863], kind: 'building', label: { dx: 8, dy: 14 } },
-    { name: 'Balcarres redoubt', coords: [-73.6386, 43.0053], kind: 'fort', side: 'british', label: { dx: 12, dy: -10 } },
+    { name: 'Neilson farm', coords: [-73.6416, 42.9863], kind: 'building', label: { dx: -8, dy: 14, anchor: 'end' } },
+    { name: 'Balcarres redoubt', coords: [-73.6386, 43.0053], kind: 'fort', side: 'british', label: { dx: 14, dy: 18 } },
     { name: 'Breymann redoubt', coords: [-73.6407, 43.0095], kind: 'fort', side: 'hessian', label: { dx: 10, dy: -4 } },
     { name: 'Great Redoubt', coords: [-73.6109, 43.0027], kind: 'fort', side: 'british', label: { dx: -4, dy: 20, anchor: 'end' } }
   ],
-  battles: [ { coords: [-73.6462, 42.9997] } ],
+  battles: [ { coords: [-73.6460, 42.9993] } ],
   callouts: [
-    { coords: [-73.6370, 42.9975], n: 1 },
+    { coords: [-73.6452, 42.9918], n: 1 },
     { coords: [-73.6340, 43.0075], n: 2 },
     { coords: [-73.6450, 43.0125], n: 3 }
   ]

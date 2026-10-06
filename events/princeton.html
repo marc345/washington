@@ -85,6 +85,7 @@ HMap.render('#map-assunpink', {
   terrain: { contours: 5 },
   alt: 'Map of the Post Road from Maidenhead to Trenton showing the British advance and the American line behind Assunpink Creek',
   scale: 'bottom-right',
+  ph: { scale: 'top-left' },
   lines: [{ coords: ASSUNPINK_LOWER, color: '#6f9298', width: 1.6 }],
   roads: [
     { name: 'Post Road', labelAt: 0.8, ph: { name: null }, coords: POST_ROAD.slice(0, 8) },
@@ -128,7 +129,7 @@ HMap.render('#map-assunpink', {
     { coords: [-74.7180, 40.2805], text: 'Five Mile Run', kind: 'water', size: 11, angle: 0 },
     { coords: [-74.7650, 40.2380], text: 'Stockton\nHollow', kind: 'terrain', size: 11 },
     { coords: [-74.6990, 40.2390], text: 'to Sandtown', kind: 'note', size: 10.5 },
-    { coords: [-74.7395, 40.2045], text: 'to Bordentown', kind: 'note', size: 10.5, angle: 30 }
+    { coords: [-74.7395, 40.2045], text: 'to Bordentown', kind: 'note', size: 10.5, angle: 30, ph: { coords: [-74.7350, 40.2015] } }
   ]
 });
 
@@ -157,7 +158,7 @@ HMap.render('#map-night', {
     { side: 'continental', kind: 'march', label: 'to Kingston', labelAt: 0.5,
       coords: [[-74.6620, 40.3505], [-74.6480, 40.3570], [-74.6320, 40.3655]] },
     { side: 'british', kind: 'march', label: 'Cornwallis returns, Jan 3', labelAt: 0.42, ph: { label: 'Cornwallis, Jan 3', labelAt: 0.3 },
-      coords: [[-74.7560, 40.2290], [-74.7445, 40.2470], [-74.7425, 40.2655], [-74.7355, 40.2755], [-74.7362, 40.2930], [-74.7260, 40.3060], [-74.7110, 40.3130], [-74.6925, 40.3290]] }
+      coords: [[-74.7575, 40.2290], [-74.7470, 40.2470], [-74.7455, 40.2655], [-74.7385, 40.2755], [-74.7392, 40.2930], [-74.7285, 40.3070], [-74.7125, 40.3145], [-74.6935, 40.3300]] }
   ],
   units: [
     { side: 'continental', coords: [-74.7470, 40.2232], angle: -45 },
@@ -173,7 +174,7 @@ HMap.render('#map-night', {
     { coords: [-74.6440, 40.3680], n: 5 }
   ],
   labels: [
-    { coords: [-74.7010, 40.2610], text: 'Assunpink Creek', kind: 'water', size: 12, angle: -28 },
+    { coords: [-74.7010, 40.2610], text: 'Assunpink Creek', kind: 'water', size: 12, angle: -28, ph: { coords: [-74.7120, 40.2630] } },
     { coords: [-74.7250, 40.3430], text: 'Stony Brook', kind: 'water', size: 12, angle: -5 },
     { coords: [-74.6190, 40.3480], text: 'Millstone R.', kind: 'water', size: 11.5, angle: -60 },
     { coords: [-74.6280, 40.2280], text: 'NEW JERSEY', kind: 'region' }
@@ -197,15 +198,16 @@ HMap.render('#map-battle', {
     { name: 'Nassau Hall', coords: [-74.6593, 40.3487], kind: 'building', label: { dx: -8, dy: 15, anchor: 'end' } },
     { name: 'T. Clarke house', coords: [-74.6758, 40.3303], kind: 'building', label: { dx: 0, dy: 17, anchor: 'middle' } },
     { name: 'Quaker meeting house', coords: [-74.6795, 40.3275], kind: 'church', label: { dx: -9, dy: -4, anchor: 'end' } },
-    { name: 'Stony Brook bridge', coords: [-74.6823, 40.3334], kind: 'building', label: { dx: -8, dy: -7, anchor: 'end' } }
+    { name: 'Stony Brook bridge', coords: [-74.6823, 40.3334], kind: 'building', label: { dx: -8, dy: -7, anchor: 'end' }, ph: { name: 'Stony Br. bridge' } }
   ],
   moves: [
     { side: 'continental', kind: 'march', label: 'Mercer', labelAt: 0.5, coords: [[-74.6800, 40.3285], [-74.6808, 40.3305], [-74.6797, 40.3326]] },
     { side: 'british', kind: 'attack', label: 'Mawhood', labelAt: 0.62, coords: [[-74.6930, 40.3265], [-74.6862, 40.3318], [-74.6823, 40.3338], [-74.6800, 40.3345]] },
     { side: 'continental', kind: 'attack', label: 'Washington', labelAt: 0.4, coords: [[-74.6712, 40.3283], [-74.6745, 40.3320], [-74.6778, 40.3337]] },
-    { side: 'british', kind: 'retreat', coords: [[-74.6805, 40.3355], [-74.6845, 40.3352], [-74.6900, 40.3312], [-74.6975, 40.3255]] },
+    { side: 'british', kind: 'retreat', label: 'to Maidenhead', labelAt: 0.55, ph: { label: null }, coords: [[-74.6805, 40.3355], [-74.6845, 40.3352], [-74.6886, 40.3322]] },
     { side: 'continental', kind: 'attack', label: 'Sullivan', labelAt: 0.5, coords: [[-74.6715, 40.3290], [-74.6660, 40.3335], [-74.6620, 40.3405], [-74.6600, 40.3465]] },
-    { side: 'british', kind: 'retreat', coords: [[-74.6575, 40.3478], [-74.6545, 40.3495], [-74.6515, 40.3508]] }
+    { side: 'british', kind: 'retreat', label: 'to New Brunswick', labelAt: 0.5, coords: [[-74.6582, 40.3475], [-74.6569, 40.3479], [-74.6556, 40.3483]],
+      ph: { coords: [[-74.6590, 40.3452], [-74.6576, 40.3454], [-74.6562, 40.3456]] } }
   ],
   units: [
     { side: 'british', coords: [-74.6640, 40.3420], angle: -50, label: '40th & 55th', labelPos: { dx: -26, dy: 4, anchor: 'end' } }

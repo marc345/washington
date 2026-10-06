@@ -79,7 +79,7 @@ HMap.render('#map-crossings', {
     { side: 'continental', kind: 'march', label: 'from McConkey\'s Ferry', labelAt: 0.5, ph: { label: null }, coords: [[-74.862, 40.291], [-74.845, 40.281], [-74.830, 40.271]] },
     { side: 'militia', kind: 'march', approx: true, label: 'Ewing (failed)', coords: [[-74.800, 40.196], [-74.784, 40.205], [-74.773, 40.212]] },
     { side: 'continental', kind: 'march', approx: true, label: 'Cadwalader (recalled)', labelAt: 0.5, coords: [[-74.930, 40.077], [-74.921, 40.069], [-74.910, 40.062]] },
-    { side: 'hessian', kind: 'march', label: 'Donop to Mount Holly, Dec 22', labelAt: 0.5, straight: true, ph: { label: 'to Mount Holly' }, coords: [[-74.692, 40.139], [-74.722, 40.092]] }
+    { side: 'hessian', kind: 'march', label: 'Donop to Mount Holly, Dec 22', labelAt: 0.5, straight: true, ph: { label: 'Donop to Mt. Holly' }, coords: [[-74.692, 40.139], [-74.722, 40.092]] }
   ],
   units: [
     { side: 'hessian', coords: [-74.748, 40.212], label: 'Rall', labelPos: { dx: 18, dy: 4 } },
@@ -93,7 +93,7 @@ HMap.render('#map-crossings', {
   labels: [
     { coords: [-74.935, 40.205], text: 'PENNSYLVANIA', kind: 'region' },
     { coords: [-74.720, 40.275], text: 'NEW JERSEY', kind: 'region' },
-    { coords: [-74.952, 40.142], text: 'Delaware River', kind: 'water', angle: -58 },
+    { coords: [-74.778, 40.124], text: 'Delaware River', kind: 'water', angle: -12 },
     { coords: [-74.705, 40.232], text: 'Assunpink Creek', kind: 'water', size: 12, angle: -15 }
   ]
 });
@@ -102,12 +102,14 @@ HMap.render('#map-attack', {
   geo: 'trenton-attack',
   bbox: [-74.792, 40.205, -74.742, 40.240],
   terrain: { contours: 5 },
+  // later canals: D&R feeder (NJ) and Delaware Canal strip (PA)
+  water: { hideIn: [[-74.792, 40.229, -74.782, 40.237], [-74.787, 40.214, -74.781, 40.220]] },
   alt: 'Street-level map of Trenton showing the two American columns converging on the Hessian garrison',
   // lower Assunpink through Trenton (culverted today, so missing from the stream data); same line as princeton.html
   lines: [{ coords: [[-74.7680, 40.2128], [-74.7630, 40.2150], [-74.7604, 40.2168], [-74.7560, 40.2190], [-74.7519, 40.2212]], color: '#6f9298', width: 2.2 }],
   ph: { textScale: 0.85 },
   roads: [
-    { name: 'King St.', coords: [[-74.7637, 40.2257], [-74.7660, 40.2215], [-74.7676, 40.2175]] },
+    { name: 'King St.', ph: { labelAt: 0.25 }, coords: [[-74.7637, 40.2257], [-74.7660, 40.2215], [-74.7676, 40.2175]] },
     { name: 'Queen St.', coords: [[-74.7637, 40.2257], [-74.7624, 40.2210], [-74.7608, 40.2170]] },
     { name: 'Pennington Rd', ph: { name: null }, coords: [[-74.7905, 40.2395], [-74.7800, 40.2340], [-74.7700, 40.2290], [-74.7637, 40.2257]] },
     { name: 'Princeton Rd', ph: { name: null }, coords: [[-74.7637, 40.2257], [-74.7560, 40.2300], [-74.7450, 40.2370]] },
@@ -140,8 +142,8 @@ HMap.render('#map-attack', {
     { coords: [-74.7625, 40.2185], n: 3 }
   ],
   labels: [
-    { coords: [-74.7790, 40.2110], text: 'Delaware River', kind: 'water', angle: -28 },
-    { coords: [-74.7505, 40.2172], text: 'Assunpink Creek', kind: 'water', size: 12.5, angle: -28, ph: { coords: [-74.7660, 40.2125], text: 'Assunpink Cr.' } }
+    { coords: [-74.7708, 40.2135], text: 'Delaware River', kind: 'water', angle: 62 },
+    { coords: [-74.7505, 40.2172], text: 'Assunpink Creek', kind: 'water', size: 12.5, angle: -28, ph: { coords: [-74.7490, 40.2195], angle: -40, text: 'Assunpink Cr.' } }
   ]
 });
 </script>

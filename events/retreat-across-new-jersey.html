@@ -74,10 +74,10 @@ const MODERN_UNNAMED = [box(-74.290, 40.937), box(-74.508, 40.709), box(-74.802,
   box(-74.136, 41.202), box(-75.059, 41.252), box(-74.719, 41.349), box(-74.120, 41.235)];
 
 const HACK_LAKES = ["Baker Pond","Barbour Pond","Cable Lk","Crystal Lk","Duck Pond","Franklin Lk","Green Brook Pond","Hillview Resv","Hoppers Lk","Indian Lk","Lower Blauvelt Lk","Maple Lk","Meadow Lk","North Hudson Lk","Oldham Pond","Packanack Lk","Pines Lk","Pompton Lk","Rambaut Lk","Schlegel Lk","The Lake","Tibbetts Lk","Upper Blauvelt Lk","Van Cortlandt Lk","Verona Lk","Willow Lk","Yantacaw Pond"];
-// Post road Newark – Elizabethtown – Woodbridge – New Brunswick – Kingston – Princeton – Trenton
-const POST_ROAD = [[-74.172, 40.736], [-74.192, 40.708], [-74.215, 40.662], [-74.260, 40.643], [-74.285, 40.616], [-74.291, 40.592],
-  [-74.349, 40.554], [-74.375, 40.535], [-74.410, 40.510], [-74.447, 40.497], [-74.482, 40.482], [-74.546, 40.434], [-74.585, 40.418],
-  [-74.596, 40.386], [-74.614, 40.375], [-74.659, 40.349], [-74.710, 40.311], [-74.734, 40.292], [-74.741, 40.250], [-74.766, 40.222]];
+// Post road Newark – Elizabethtown – Rahway – Woodbridge – New Brunswick – Kingston – Princeton – Trenton, simplified
+// (army tracks are drawn beside it; smoothed curves through every bend overshoot and break up their date labels)
+const TRACK = [[-74.172, 40.736], [-74.215, 40.662], [-74.275, 40.607], [-74.349, 40.554], [-74.447, 40.497], [-74.500, 40.468],
+  [-74.565, 40.425], [-74.600, 40.385], [-74.659, 40.349], [-74.712, 40.310], [-74.738, 40.270], [-74.766, 40.222]];
 // shift a line by (dx, dy) degrees: parallel American and British tracks along one road
 const shift = (pts, dx, dy) => pts.map(([x, y]) => [x + dx, y + dy]);
 // Hackensack meadows (salt marsh and cedar swamp before 19th–20th-century drainage and fill), approximate
@@ -104,7 +104,7 @@ HMap.render('#map-hackensack', {
   towns: [
     { place: 'fort-lee', side: 'continental', label: { dx: -11, dy: 2, anchor: 'end' } },
     { place: 'fort-washington', side: 'british', label: { dx: 10, dy: 16 } },
-    { place: 'lower-closter-landing', label: { dx: 10, dy: 4 }, ph: { name: 'Closter Landing' } },
+    { place: 'lower-closter-landing', label: { dx: 10, dy: 4 }, ph: { label: { dx: -10, dy: 4, anchor: 'end' } } },
     { name: 'New Bridge', coords: [-74.028, 40.913], kind: 'village', label: { dx: 9, dy: -4 } },
     { place: 'hackensack', label: { dx: -8, dy: -8, anchor: 'end' } },
     { name: 'Acquackanonk', coords: [-74.128, 40.857], kind: 'village', label: { dx: -9, dy: -6, anchor: 'end' } },
@@ -140,7 +140,7 @@ HMap.render('#map-route', {
   preset: 'ny1776',
   water: { hide: MODERN_LAKES, hideIn: MODERN_UNNAMED },
   alt: 'Map of New Jersey from Newark to Trenton showing Washington\'s retreat along the post road and Cornwallis\'s pursuit',
-  roads: [{ coords: POST_ROAD }, { coords: [[-74.172, 40.736], [-74.160, 40.770], [-74.150, 40.800]] }],
+  roads: [{ coords: TRACK }, { coords: [[-74.172, 40.736], [-74.160, 40.770], [-74.150, 40.800]] }],
   towns: [
     { place: 'newark', label: { dx: -10, dy: 4, anchor: 'end' } },
     { place: 'elizabethtown', label: { dx: 10, dy: 4 } },
@@ -152,12 +152,12 @@ HMap.render('#map-route', {
     { place: 'trenton', label: { dx: 10, dy: 12 } }
   ],
   moves: [
-    { side: 'continental', kind: 'retreat', label: 'Nov 28–29', labelAt: 0.45, coords: shift(POST_ROAD.slice(0, 10), 0.010, 0.008), ph: { labelAt: 0.4, coords: shift(POST_ROAD.slice(0, 10), 0.018, 0.016) } },
-    { side: 'continental', kind: 'retreat', label: 'Dec 1–2', labelAt: 0.45, coords: shift(POST_ROAD.slice(9, 16), 0.010, 0.010), ph: { labelAt: 0.62, coords: shift(POST_ROAD.slice(9, 16), 0.018, 0.020) } },
-    { side: 'continental', kind: 'retreat', label: 'Dec 2–3', labelAt: 0.5, coords: shift(POST_ROAD.slice(15, 20), 0.006, 0.010), ph: { coords: shift(POST_ROAD.slice(15, 20), 0.012, 0.020) } },
+    { side: 'continental', kind: 'retreat', label: 'Nov 28–29', labelAt: 0.5, coords: shift(TRACK.slice(0, 5), 0.010, 0.008), ph: { coords: shift(TRACK.slice(0, 5), 0.018, 0.016) } },
+    { side: 'continental', kind: 'retreat', label: 'Dec 1–2', labelAt: 0.5, coords: shift(TRACK.slice(4, 9), 0.010, 0.010), ph: { labelAt: 0.62, coords: shift(TRACK.slice(4, 9), 0.018, 0.020) } },
+    { side: 'continental', kind: 'retreat', label: 'Dec 2–3', labelAt: 0.5, coords: shift(TRACK.slice(8), 0.006, 0.010), ph: { coords: shift(TRACK.slice(8), 0.012, 0.020) } },
     { side: 'continental', kind: 'retreat', coords: [[-74.780, 40.216], [-74.805, 40.205], [-74.830, 40.196]] },
-    { side: 'british', kind: 'march', coords: shift(POST_ROAD.slice(0, 10), -0.010, -0.008), ph: { coords: shift(POST_ROAD.slice(0, 10), -0.018, -0.016) } },
-    { side: 'british', kind: 'march', coords: shift(POST_ROAD.slice(9, 19), -0.010, -0.010).concat([[-74.762, 40.226]]), ph: { coords: shift(POST_ROAD.slice(9, 19), -0.018, -0.020).concat([[-74.770, 40.226]]) } }
+    { side: 'british', kind: 'march', coords: shift(TRACK.slice(0, 5), -0.010, -0.008), ph: { coords: shift(TRACK.slice(0, 5), -0.018, -0.016) } },
+    { side: 'british', kind: 'march', coords: shift(TRACK.slice(4, 11), -0.010, -0.010).concat([[-74.762, 40.226]]), ph: { coords: shift(TRACK.slice(4, 11), -0.018, -0.020).concat([[-74.770, 40.226]]) } }
   ],
   units: [
     { side: 'british', coords: [-74.430, 40.470], label: 'Cornwallis', ph: { coords: [-74.415, 40.462] } }
@@ -208,7 +208,7 @@ HMap.render('#map-lee', {
       coords: [[-73.705, 41.140], [-73.850, 41.230], [-73.957, 41.252], [-73.975, 41.215], [-74.040, 41.150], [-74.150, 41.090], [-74.250, 41.030], [-74.300, 40.985], [-74.400, 40.880], [-74.475, 40.805]] },
     { side: 'continental', kind: 'march', coords: [[-74.485, 40.790], [-74.530, 40.755], [-74.563, 40.724]] },
     { side: 'british', kind: 'attack', approx: true, label: 'Harcourt\'s patrol', labelAt: 0.5, coords: [[-74.785, 40.340], [-74.700, 40.440], [-74.610, 40.540], [-74.560, 40.640], [-74.550, 40.698]] },
-    { side: 'british', kind: 'march', label: 'Lee taken away', labelAt: 0.66, coords: [[-74.538, 40.700], [-74.495, 40.610], [-74.455, 40.510]] },
+    { side: 'british', kind: 'march', label: 'Lee taken away', labelAt: 0.66, ph: { labelAt: 0.6, coords: [[-74.530, 40.672], [-74.493, 40.595], [-74.455, 40.510]] }, coords: [[-74.538, 40.700], [-74.495, 40.610], [-74.455, 40.510]] },
     { side: 'continental', kind: 'march', approx: true, label: 'Sullivan, Dec 14–16', labelAt: 0.32, coords: [[-74.578, 40.714], [-74.700, 40.660], [-74.850, 40.610], [-74.958, 40.592], [-75.100, 40.650], [-75.195, 40.680]] },
     { side: 'continental', kind: 'march', approx: true, label: 'Dec 17–20', labelAt: 0.5, coords: [[-75.215, 40.668], [-75.150, 40.560], [-75.060, 40.450], [-74.990, 40.385]] }
   ],

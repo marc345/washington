@@ -76,17 +76,17 @@ HMap.render('#map-works', {
     { side: 'continental', coords: [[-74.0158, 40.7046], [-74.0148, 40.7030], [-74.0128, 40.7022]] },
     { side: 'continental', kind: 'redoubt', coords: [[-73.9990, 40.7195]] },
     { side: 'continental', kind: 'redoubt', coords: [[-73.9935, 40.6893]] },
-    { side: 'continental', kind: 'redoubt', coords: [[-73.9790, 40.6896]], phone: false }
+    { side: 'continental', kind: 'redoubt', coords: [[-73.9790, 40.6896]] }
   ],
   towns: [
     { name: 'New York', coords: [-74.0080, 40.7100], kind: 'town', label: { dx: 10, dy: 5 } },
     { name: 'Brooklyn', coords: [-73.9880, 40.6930], kind: 'village', label: { dx: 0, dy: -9, anchor: 'middle' } },
     { name: 'Fort George', coords: [-74.0138, 40.7040], kind: 'fort', side: 'continental', label: { dx: -12, dy: -6, anchor: 'end' } },
     { name: 'Fort Stirling', coords: [-73.9966, 40.6980], kind: 'fort', side: 'continental', label: { dx: -10, dy: 4, anchor: 'end' } },
-    { name: 'Fort Putnam', coords: [-73.9757, 40.6914], kind: 'fort', side: 'continental', label: { dx: 10, dy: 4 }, ph: { label: { dx: 12, dy: -6 } } },
-    { name: 'Oblong Redoubt', coords: [-73.9790, 40.6896], kind: 'building', label: { dx: -6, dy: -9, anchor: 'end' }, phone: false },
-    { name: 'Fort Greene', coords: [-73.9822, 40.6886], kind: 'fort', side: 'continental', label: { dx: 9, dy: 13 }, phone: false },
-    { name: 'Fort Box', coords: [-73.9853, 40.6862], kind: 'fort', side: 'continental', label: { dx: 9, dy: 13 }, phone: false },
+    { name: 'Fort Putnam', coords: [-73.9757, 40.6914], kind: 'fort', side: 'continental', label: { dx: 10, dy: 4 }, ph: { label: { dx: 11, dy: -1 } } },
+    { name: 'Oblong Redoubt', coords: [-73.9790, 40.6896], kind: 'building', label: { dx: -6, dy: -9, anchor: 'end' }, ph: { label: { dx: 10, dy: 5, anchor: 'start' } } },
+    { name: 'Fort Greene', coords: [-73.9822, 40.6886], kind: 'fort', side: 'continental', label: { dx: 9, dy: 13 }, ph: { label: { dx: 10, dy: 13 } } },
+    { name: 'Fort Box', coords: [-73.9853, 40.6862], kind: 'fort', side: 'continental', label: { dx: 9, dy: 13 }, ph: { label: { dx: 10, dy: 15 } } },
     { name: 'Cobble Hill', coords: [-73.9935, 40.6893], kind: 'building', label: { dx: -9, dy: 4, anchor: 'end' } },
     { name: 'Governors Island', coords: [-74.0160, 40.6905], kind: 'fort', side: 'continental', label: { dx: -12, dy: 4, anchor: 'end' } },
     { name: 'Fort Defiance', coords: [-74.0148, 40.6768], kind: 'fort', side: 'continental', label: { dx: -12, dy: 4, anchor: 'end' } },
@@ -101,7 +101,7 @@ HMap.render('#map-works', {
   ],
   callouts: [
     { coords: [-74.0195, 40.7095], n: 1, ph: { coords: [-74.0205, 40.7005] } },
-    { coords: [-73.9715, 40.6900], n: 2 },
+    { coords: [-73.9715, 40.6900], n: 2, ph: { coords: [-73.9690, 40.6960] } },
     { coords: [-74.0005, 40.7012], n: 3 }
   ],
   labels: [
@@ -109,12 +109,12 @@ HMap.render('#map-works', {
     { coords: [-74.0245, 40.7250], text: 'Hudson (North) River', kind: 'water', angle: -78, ph: { coords: [-74.0262, 40.7310], text: 'Hudson River' } },
     { coords: [-74.0390, 40.6835], text: 'Upper Bay', kind: 'water' },
     { coords: [-73.9680, 40.7020], text: 'Wallabout\nBay', kind: 'water', size: 12 },
-    { coords: [-73.9925, 40.6762], text: 'Gowanus\nmarsh', kind: 'terrain', size: 11.5 },
+    { coords: [-73.9898, 40.6762], text: 'Gowanus\nmarsh', kind: 'terrain', size: 11.5, ph: { coords: [-73.9902, 40.6728] } },
     { coords: [-74.0108, 40.6740], text: 'Red Hook', kind: 'terrain', size: 11.5, ph: { coords: [-74.0118, 40.6712] } },
     { coords: [-74.0005, 40.7180], text: 'Collect\nPond', kind: 'water', size: 10.5, dx: -32, phone: false },
     { coords: [-73.9930, 40.6985], text: 'Brooklyn\nHeights', kind: 'terrain', size: 11, dx: 30, dy: -24, phone: false },
     { coords: [-74.0465, 40.7225], text: 'NEW JERSEY', kind: 'region', size: 13 },
-    { coords: [-73.9690, 40.6780], text: 'LONG ISLAND', kind: 'region', size: 13 }
+    { coords: [-73.9690, 40.6780], text: 'LONG ISLAND', kind: 'region', size: 13, ph: { coords: [-73.9655, 40.6748], size: 12 } }
   ]
 });
 
@@ -173,7 +173,7 @@ HMap.render('#map-fleet', {
     { coords: [-74.175, 40.612], text: 'STATEN\nISLAND', kind: 'region', size: 12 },
     { coords: [-73.790, 40.650], text: 'LONG ISLAND', kind: 'region' },
     { coords: [-74.270, 40.850], text: 'NEW JERSEY', kind: 'region' },
-    { coords: [-73.800, 41.000], text: 'WESTCHESTER', kind: 'region', size: 13 },
+    { coords: [-73.800, 41.000], text: 'WESTCHESTER', kind: 'region', size: 13, ph: { coords: [-73.765, 40.985] } },
     { coords: [-73.880, 40.540], text: 'Atlantic Ocean', kind: 'water' }
   ]
 });

@@ -110,7 +110,7 @@ HMap.render('#map-landing', {
     { side: 'continental', kind: 'retreat', approx: true, coords: [[-74.0060, 40.7130], [-74.0040, 40.7280], [-73.9990, 40.7450], [-73.9930, 40.7600], [-73.9850, 40.7760], [-73.9760, 40.7900], [-73.9665, 40.8020], [-73.9560, 40.8150], [-73.9500, 40.8230]], label: 'Putnam', labelAt: 0.32 }
   ],
   units: [
-    { side: 'militia', coords: [-73.9768, 40.7440], angle: 60, w: 20 },
+    { side: 'militia', coords: [-73.9768, 40.7440], angle: 60, w: 20, label: 'Conn. militia', labelPos: { dx: 14, dy: 16 }, ph: { labelPos: { dx: -10, dy: 42, anchor: 'end' } } },
     { side: 'british', coords: [-73.9805, 40.7505], label: 'Howe', labelPos: { dx: 17, dy: -5, anchor: 'start' }, ph: { labelPos: { dx: -17, dy: 4, anchor: 'end' } } }
   ],
   battles: [ { coords: [-73.9740, 40.7460], label: "Kip's Bay", labelPos: { dx: -16, dy: 26, anchor: 'end' } } ],
@@ -133,7 +133,7 @@ HMap.render('#map-landing', {
   labels: [
     { coords: [-73.9600, 40.7330], text: 'East River', kind: 'water', angle: -62, size: 13 },
     { coords: [-74.0160, 40.7550], text: 'Hudson River', kind: 'water', angle: -60 },
-    { coords: [-73.9310, 40.8250], text: 'Harlem River', kind: 'water', angle: -80, size: 12, ph: { coords: [-73.9290, 40.8130] } },
+    { coords: [-73.9310, 40.8250], text: 'Harlem River', kind: 'water', angle: -80, size: 12, ph: { coords: [-73.9282, 40.8215] } },
     { coords: [-73.9440, 40.8195], text: 'HARLEM HEIGHTS', kind: 'terrain', size: 11, angle: -22 , phone: false },
     { coords: [-73.9255, 40.7965], text: "Montresor's\nIsland", kind: 'terrain', size: 10 , phone: false },
     { coords: [-73.9930, 40.7330], text: 'MANHATTAN', kind: 'region', size: 12, angle: -60 , phone: false },
@@ -146,12 +146,16 @@ HMap.render('#map-battle', {
   preset: 'ny1776',
   geo: 'kips-bay-harlem-heights-battle',
   bbox: [-73.99, 40.79, -73.925, 40.84],
+  // modern pier steps on the Edgewater (New Jersey) shore filled in (drawn here rather than as a land
+  // correction, whose outline would show on the land side)
+  after: ({ root, P }) => root.insert('path', '.hm-rivers').attr('class', 'hm-land hm-land-fix')
+    .attr('d', 'M' + [[-73.9816, 40.8136], [-73.9851, 40.8110], [-73.9857, 40.8113], [-73.9843, 40.8126], [-73.9832, 40.8138]].map(c => P(c).join(',')).join('L') + 'Z'),
   terrain: { contours: 5, exaggeration: 4 },
   alt: 'Map of the Battle of Harlem Heights showing the Hollow Way, the American lines and the fighting around the buckwheat field',
   roads: [ { coords: POST_ROAD }, { coords: BLOOMINGDALE }, { coords: KINGSBRIDGE_RD } ],
   works: AM_LINES,
   moves: [
-    { side: 'continental', kind: 'march', approx: true, coords: [[-73.9525, 40.8202], [-73.9580, 40.8148], [-73.9630, 40.8088], [-73.9670, 40.8042]], label: 'Knowlton, dawn', labelAt: 0.5, ph: { label: 'Knowlton', labelAt: 0.3 } },
+    { side: 'continental', kind: 'march', approx: true, coords: [[-73.9525, 40.8202], [-73.9580, 40.8148], [-73.9630, 40.8088], [-73.9670, 40.8042]], label: 'Knowlton, dawn', labelAt: 0.5, ph: { label: 'Knowlton', labelAt: 0.47 } },
     { side: 'british', kind: 'attack', coords: [[-73.9705, 40.7985], [-73.9670, 40.8060], [-73.9625, 40.8125]], label: 'light infantry', labelAt: 0.45, ph: { label: '' } },
     { side: 'continental', kind: 'attack', coords: [[-73.9520, 40.8195], [-73.9545, 40.8160]], label: 'feint', labelAt: 0.4 },
     { side: 'continental', kind: 'attack', coords: [[-73.9490, 40.8200], [-73.9485, 40.8130], [-73.9520, 40.8075], [-73.9575, 40.8070]], label: 'Knowlton & Leitch', labelAt: 0.25, ph: { label: '' } },
@@ -174,11 +178,11 @@ HMap.render('#map-battle', {
   callouts: [
     { coords: [-73.9720, 40.8050], n: 1 },
     { coords: [-73.9505, 40.8165], n: 2 },
-    { coords: [-73.9530, 40.8040], n: 3, ph: { coords: [-73.9535, 40.8065] } },
+    { coords: [-73.9530, 40.8040], n: 3, ph: { coords: [-73.9515, 40.8040] } },
     { coords: [-73.9580, 40.8120], n: 4 }
   ],
   labels: [
-    { coords: [-73.9600, 40.8185], text: 'Hollow Way', kind: 'terrain', size: 12, angle: -30 },
+    { coords: [-73.9592, 40.8172], text: 'Hollow Way', kind: 'terrain', size: 12, angle: 28, anchor: 'start', ph: { coords: [-73.9606, 40.8178], size: 10.5 } },
     { coords: [-73.9660, 40.8120], text: 'Claremont\nheights', kind: 'terrain', size: 11, dx: -24 , phone: false },
     { coords: [-73.9480, 40.8265], text: 'HARLEM HEIGHTS', kind: 'terrain', size: 11.5, angle: -22, dy: 16 },
     { coords: [-73.9370, 40.8030], text: 'Harlem Plains', kind: 'terrain', size: 11 },

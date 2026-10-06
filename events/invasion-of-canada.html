@@ -140,15 +140,15 @@ HMap.render('#map-routes', {
     { coords: [-71.72, 46.58], n: 8 }
   ],
   labels: [
-    { coords: [-72.2, 45.75], text: 'PROVINCE OF QUEBEC', kind: 'region', ph: { coords: [-72.0, 46.0], size: 12 } },
+    { coords: [-72.2, 45.75], text: 'PROVINCE OF QUEBEC', kind: 'region', ph: { coords: [-71.75, 45.72], size: 12 } },
     { coords: [-73.95, 44.35], text: 'NEW YORK', kind: 'region', size: 11 },
     { coords: [-72.2, 44.15], text: 'NEW HAMPSHIRE\nGRANTS', kind: 'region', size: 11 },
     { coords: [-70.75, 44.30], text: 'MAINE\n(MASS.)', kind: 'region', size: 11 },
     { coords: [-71.85, 46.42], text: 'St. Lawrence', kind: 'water', angle: -27 },
     { coords: [-73.17, 44.55], text: 'Lake Champlain', kind: 'water', angle: -82, size: 12.5 },
-    { coords: [-73.06, 45.7], text: 'Richelieu R.', kind: 'water', angle: -78, size: 11.5, ph: { coords: [-72.92, 45.88] } },
+    { coords: [-73.06, 45.7], text: 'Richelieu R.', kind: 'water', angle: -78, size: 11.5, ph: { coords: [-72.95, 45.74] } },
     { coords: [-69.80, 44.52], text: 'Kennebec R.', kind: 'water', angle: -72, size: 11.5, phone: false },
-    { coords: [-71.05, 45.47], text: 'L. Megantic', kind: 'water', size: 11, anchor: 'end' }
+    { coords: [-70.915, 45.505], text: 'L. Megantic', kind: 'water', size: 11, anchor: 'end', dx: -4 }
   ]
 });
 
@@ -161,12 +161,9 @@ HMap.render('#map-quebec', {
     alt: 'Map of Quebec City showing the walled Upper Town, the Lower Town below the cliffs, and the two American columns attacking the Lower Town from opposite ends',
     corrections: ['data/geo/invasion-of-canada-quebec-shore.json', { water: [
       // Lower Town waterfront, Pointe-à-Carcy and St. Charles estuary as in 1775
-      [[-71.2205, 46.7930], [-71.2196, 46.7975], [-71.2160, 46.8003], [-71.2125, 46.8027], [-71.2100, 46.8043], [-71.2072, 46.8068], [-71.2053, 46.8091], [-71.2037, 46.8109], [-71.2027, 46.8124], [-71.2024, 46.8140], [-71.2028, 46.8155], [-71.2042, 46.8167], [-71.2070, 46.8174], [-71.2110, 46.8178], [-71.2160, 46.8182], [-71.2210, 46.8188], [-71.2260, 46.8194], [-71.2305, 46.8200],
+      [[-71.2194, 46.7924], [-71.2186, 46.7969], [-71.2150, 46.7997], [-71.2115, 46.8021], [-71.2092, 46.8038], [-71.2062, 46.8061], [-71.2040, 46.8085], [-71.2021, 46.8105], [-71.2011, 46.8123], [-71.2009, 46.8141], [-71.2015, 46.8159], [-71.2033, 46.8173], [-71.2068, 46.8179], [-71.2110, 46.8180], [-71.2160, 46.8182], [-71.2210, 46.8188], [-71.2260, 46.8194], [-71.2305, 46.8200],
        [-71.2305, 46.8214], [-71.2270, 46.8238], [-71.2200, 46.8243], [-71.2150, 46.8250], [-71.2105, 46.8268], [-71.2075, 46.8292], [-71.2052, 46.8320], [-71.2048, 46.8360], [-71.1960, 46.8360], [-71.1960, 46.7930]]
     ] }],
-    lines: [
-      { coords: [[-71.2290, 46.8212], [-71.2305, 46.8207], [-71.2345, 46.8212], [-71.2380, 46.8200], [-71.2420, 46.8196], [-71.2460, 46.8205]], color: '#9dbcbf', width: 3.5 }
-    ],
     works: [
       // west wall from Cape Diamond to the cliff above St-Roch, then along the cliff (Côte du Palais)
       { side: 'british', coords: [[-71.2090, 46.8062], [-71.2103, 46.8071], [-71.2118, 46.8086], [-71.2114, 46.8095], [-71.2129, 46.8110], [-71.2125, 46.8118], [-71.2131, 46.8127], [-71.2140, 46.8133], [-71.2135, 46.8140], [-71.2144, 46.8151]] },
@@ -183,7 +180,7 @@ HMap.render('#map-quebec', {
     ],
     moves: [
       { side: 'continental', kind: 'attack', label: 'Montgomery (about 300)', labelAt: 0.45, ph: { label: 'Montgomery', labelAt: 0.6 }, coords: [[-71.2215, 46.7958], [-71.2165, 46.8001], [-71.2128, 46.8025], [-71.2108, 46.8037]] },
-      { side: 'continental', kind: 'retreat', coords: [[-71.2120, 46.8022], [-71.2150, 46.8000], [-71.2190, 46.7970]], width: 2 },
+      { side: 'continental', kind: 'retreat', label: 'falls back', labelAt: 0.5, ph: { label: '' }, coords: [[-71.2112, 46.8026], [-71.2145, 46.8003], [-71.2182, 46.7975]], width: 2 },
       { side: 'continental', kind: 'attack', label: 'Arnold (about 600)', labelAt: 0.4, coords: [[-71.2300, 46.8168], [-71.2230, 46.8175], [-71.2150, 46.8172], [-71.2095, 46.8170], [-71.2064, 46.8168]] },
       { side: 'continental', kind: 'attack', label: 'Morgan', labelAt: 0.5, coords: [[-71.2050, 46.8163], [-71.2042, 46.8155], [-71.2036, 46.8146]], width: 3 },
       { side: 'british', kind: 'attack', label: 'sortie', labelAt: 0.35, coords: [[-71.2126, 46.8152], [-71.2118, 46.8166], [-71.2090, 46.8173], [-71.2070, 46.8173]], width: 3 },
@@ -206,12 +203,12 @@ HMap.render('#map-quebec', {
     ],
     labels: [
       { coords: [-71.2065, 46.8100], text: 'UPPER TOWN', kind: 'region', size: 12.5, angle: -40 },
-      { coords: [-71.2012, 46.8118], text: 'Lower\nTown', kind: 'note', size: 12, anchor: 'start' },
+      { coords: [-71.2030, 46.8120], text: 'Lower\nTown', kind: 'note', size: 12, anchor: 'start' },
       { coords: [-71.2245, 46.8145], text: 'St-Roch', kind: 'note', size: 12.5 },
       { coords: [-71.2235, 46.8082], text: 'St-Jean suburb', kind: 'note', size: 12 },
       { coords: [-71.2290, 46.8040], text: 'Plains of Abraham', kind: 'terrain', size: 13, angle: -30 },
-      { coords: [-71.2068, 46.8080], text: 'Cape Diamond', kind: 'terrain', size: 12.5, angle: -50 },
-      { coords: [-71.1990, 46.8010], text: 'St. Lawrence River', kind: 'water', angle: -62 },
+      { coords: [-71.2068, 46.8080], text: 'Cape Diamond', kind: 'terrain', size: 12.5, angle: -50, ph: { coords: [-71.2058, 46.8068] } },
+      { coords: [-71.1990, 46.8010], text: 'St. Lawrence River', kind: 'water', angle: -62, ph: { text: 'St. Lawrence', size: 13, coords: [-71.1990, 46.7995], angle: -45 } },
       { coords: [-71.2180, 46.8222], text: 'St. Charles estuary', kind: 'water', size: 13, angle: -8 }
     ]
   });
@@ -219,6 +216,7 @@ HMap.render('#map-quebec', {
 HMap.render('#map-retreat', {
   geo: 'invasion-of-canada-retreat',
   bbox: [-74.35, 43.9, -70.9, 47.0],
+  scale: 'bottom-right',
   ph: { textScale: 0.8 },
   alt: 'Map of the St. Lawrence valley and Lake Champlain showing the American retreat from Quebec in 1776 and the British fleet\'s advance up the lake',
   corrections: { water: [MEGANTIC] },
@@ -276,24 +274,24 @@ HMap.render('#map-valcour', {
     { side: 'continental', coords: [-73.4329, 44.6166], label: 'Arnold\'s line', labelPos: { dx: -14, dy: -18, anchor: 'end' }, ph: { coords: [-73.4340, 44.6163] } },
     { side: 'continental', coords: [-73.4301, 44.6174], ph: { coords: [-73.4288, 44.6178] } },
     { side: 'continental', coords: [-73.4248, 44.6098], angle: 30, label: 'Royal Savage', labelPos: { dx: 10, dy: 20, anchor: 'start' } },
-    { side: 'british', coords: [-73.437, 44.600] },
-    { side: 'british', coords: [-73.430, 44.5985] },
-    { side: 'british', coords: [-73.423, 44.598], label: 'Carleton\'s fleet', labelPos: { dx: 0, dy: 22, anchor: 'middle' } },
-    { side: 'british', coords: [-73.416, 44.5985] },
-    { side: 'british', coords: [-73.409, 44.600] }
+    { side: 'british', coords: [-73.4325, 44.5995] },
+    { side: 'british', coords: [-73.4265, 44.5985] },
+    { side: 'british', coords: [-73.4205, 44.598], label: 'Carleton\'s fleet', labelPos: { dx: 0, dy: 22, anchor: 'middle' } },
+    { side: 'british', coords: [-73.4145, 44.5985] },
+    { side: 'british', coords: [-73.4085, 44.600] }
   ],
   moves: [
     { side: 'british', kind: 'naval', label: 'British approach, morning Oct 11', labelAt: 0.35, coords: [[-73.392, 44.645], [-73.385, 44.625], [-73.390, 44.600], [-73.397, 44.589]] },
     { side: 'british', kind: 'naval', coords: [[-73.401, 44.5855], [-73.412, 44.5845], [-73.423, 44.5895]] },
     { side: 'continental', kind: 'retreat', label: 'night escape', labelAt: 0.5, approx: true, coords: [[-73.4375, 44.6125], [-73.4382, 44.600], [-73.433, 44.588], [-73.418, 44.578], [-73.407, 44.568]] }
   ],
-  battles: [ { coords: [-73.431, 44.6040] } ],
+  battles: [ { coords: [-73.4335, 44.6045] } ],
   units: [
     { side: 'native', coords: [-73.418, 44.622], label: 'Indian allies', labelPos: { dx: 18, dy: 4 } },
     { side: 'native', coords: [-73.4475, 44.6000], label: 'Indian allies', labelPos: { dx: -18, dy: 4, anchor: 'end' } }
   ],
   callouts: [
-    { coords: [-73.414, 44.6125], n: 1 },
+    { coords: [-73.4290, 44.6085], n: 1 },
     { coords: [-73.405, 44.591], n: 2 },
     { coords: [-73.443, 44.583], n: 3 },
     { coords: [-73.376, 44.575], n: 4 }

@@ -56,9 +56,11 @@ const sumter = [[-79.8768, 32.7508], [-79.8728, 32.7508], [-79.8728, 32.7540], [
 const fortShore = [[-79.8790, 32.7625], [-79.8720, 32.7628], [-79.8640, 32.7605], [-79.8575, 32.7585], [-79.8500, 32.7572], [-79.8420, 32.7568], [-79.8340, 32.7572], [-79.8300, 32.7500], [-79.8800, 32.7480]];
 // The base outline of the marsh east of Fort Johnson ends in a ruler-straight edge; round it off.
 const johnsonShore = [[-79.8935, 32.7522], [-79.8788, 32.7522], [-79.8788, 32.7468], [-79.8830, 32.7486], [-79.8870, 32.7497], [-79.8905, 32.7503], [-79.8935, 32.7510]];
+// The base shore west of Fort Johnson is a ruler-straight line; give it an irregular edge.
+const johnsonNorth = [[-79.9190, 32.7548], [-79.9178, 32.7532], [-79.9160, 32.7530], [-79.9148, 32.7521], [-79.9130, 32.7526], [-79.9112, 32.7513], [-79.9092, 32.7517], [-79.9075, 32.7507], [-79.9055, 32.7512], [-79.9038, 32.7502], [-79.9020, 32.7507], [-79.9010, 32.7503], [-79.9005, 32.7560], [-79.9190, 32.7580]];
 // Morris Island has eroded heavily (its 1876 lighthouse now stands offshore); drawn wider, as in 18th-century charts.
-const morris = [[-79.8745, 32.7395], [-79.8708, 32.7352], [-79.8684, 32.7290], [-79.8678, 32.7220], [-79.8690, 32.7140], [-79.8714, 32.7060], [-79.8745, 32.6980], [-79.8780, 32.6900], [-79.8815, 32.6832], [-79.8850, 32.6792],
-  [-79.8890, 32.6812], [-79.8872, 32.6885], [-79.8842, 32.6962], [-79.8815, 32.7042], [-79.8795, 32.7122], [-79.8782, 32.7202], [-79.8772, 32.7282], [-79.8766, 32.7345]];
+const morris = [[-79.8752, 32.7440], [-79.8722, 32.7422], [-79.8700, 32.7390], [-79.8686, 32.7340], [-79.8678, 32.7280], [-79.8676, 32.7220], [-79.8681, 32.7160], [-79.8692, 32.7100], [-79.8708, 32.7040], [-79.8728, 32.6980], [-79.8752, 32.6920], [-79.8780, 32.6865], [-79.8812, 32.6818], [-79.8848, 32.6790],
+  [-79.8880, 32.6800], [-79.8890, 32.6830], [-79.8872, 32.6870], [-79.8868, 32.6915], [-79.8848, 32.6950], [-79.8838, 32.7000], [-79.8822, 32.7040], [-79.8818, 32.7090], [-79.8800, 32.7130], [-79.8796, 32.7180], [-79.8782, 32.7215], [-79.8780, 32.7265], [-79.8770, 32.7300], [-79.8772, 32.7350], [-79.8786, 32.7395], [-79.8788, 32.7425], [-79.8774, 32.7442]];
 // Salt marsh behind Sullivan's Island and Long Island (base data shows it as dry land).
 const MARSH = [
   [[-79.8545, 32.7660], [-79.8400, 32.7662], [-79.8300, 32.7697], [-79.8200, 32.7747], [-79.8135, 32.7792], [-79.8090, 32.7840], [-79.8080, 32.7880], [-79.8150, 32.7965], [-79.8280, 32.7930], [-79.8400, 32.7870], [-79.8500, 32.7830], [-79.8565, 32.7780], [-79.8580, 32.7720]],
@@ -73,15 +75,15 @@ HMap.render('#map-harbor', {
   bbox: [-79.98, 32.68, -79.76, 32.84],
   alt: 'Map of Charleston harbor in June 1776 showing the British fleet anchorage, the landing on Long Island and the American posts',
   water: { hide: modernWater },
-  corrections: { water: [sumter, fortShore, johnsonShore], land: [morris], marsh: MARSH },
+  corrections: { water: [sumter, fortShore, johnsonShore, johnsonNorth], land: [morris], marsh: MARSH },
   areas: [
     { coords: [[-79.835, 32.6990], [-79.815, 32.7020], [-79.795, 32.7050], [-79.795, 32.6990], [-79.815, 32.6950], [-79.835, 32.6930]], side: 'neutral', opacity: 0.15, legend: 'Shoal (approximate)' }
   ],
   towns: [
     { place: 'charleston', label: { dx: -8, dy: -8, anchor: 'end' } },
     { place: 'fort-moultrie', name: 'Fort Sullivan', side: 'continental', label: { dx: -8, dy: -10, anchor: 'end' }, ph: { label: { dx: 10, dy: -10, anchor: 'start' } } },
-    { name: 'Fort Johnson', coords: [-79.8995, 32.7525], kind: 'fort', side: 'continental', label: { dx: -8, dy: 20, anchor: 'end' } },
-    { name: 'Haddrell\'s Point', coords: [-79.8665, 32.7735], kind: 'village', label: { dx: -6, dy: -9, anchor: 'end' } }
+    { name: 'Fort Johnson', coords: [-79.8998, 32.7495], kind: 'fort', side: 'continental', label: { dx: -8, dy: 20, anchor: 'end' } },
+    { name: 'Haddrell\'s Point', coords: [-79.8638, 32.7742], kind: 'village', label: { dx: -6, dy: -9, anchor: 'end' } }
   ],
   ships: [
     { side: 'british', coords: [-79.8505, 32.7170], angle: -20, label: 'Parker\'s squadron', labelPos: { dx: 16, dy: 4, anchor: 'start' } }
@@ -105,10 +107,10 @@ HMap.render('#map-harbor', {
     { coords: [-79.800, 32.7400], text: 'Atlantic Ocean', kind: 'water' },
     { coords: [-79.818, 32.6880], text: 'the bar', kind: 'note' },
     { coords: [-79.8370, 32.7290], text: 'Five Fathom\nHole', kind: 'water', size: 12, anchor: 'start' },
-    { coords: [-79.8350, 32.7555], text: 'Sullivan\'s Island', kind: 'region', size: 11.5, angle: -24, ph: { coords: [-79.8320, 32.7525] } },
+    { coords: [-79.8350, 32.7555], text: 'Sullivan\'s Island', kind: 'region', size: 11.5, angle: -24, ph: { text: 'Sullivan\'s I.', coords: [-79.8380, 32.7520], anchor: 'start' } },
     { coords: [-79.7700, 32.7990], text: 'Long Island', kind: 'region', size: 11, angle: -26, ph: { coords: [-79.7660, 32.8060] } },
     { coords: [-79.9300, 32.7280], text: 'JAMES ISLAND', kind: 'region', size: 13 },
-    { coords: [-79.8730, 32.7140], text: 'Morris Island', kind: 'region', size: 11, angle: -72 },
+    { coords: [-79.8730, 32.7140], text: 'Morris Island', kind: 'region', size: 11, angle: -72, ph: { coords: [-79.8745, 32.7110], size: 10 } },
     { coords: [-79.8600, 32.8150], text: 'CHRIST CHURCH\nPARISH', kind: 'region', size: 12 },
     { coords: [-79.9600, 32.8220], text: 'Ashley R.', kind: 'water', size: 12, angle: -60 },
     { coords: [-79.9120, 32.8180], text: 'Cooper R.', kind: 'water', size: 12, angle: -75 }
@@ -130,7 +132,7 @@ HMap.render('#map-fort', {
   ],
   towns: [
     { place: 'fort-moultrie', name: 'Fort Sullivan', side: 'continental', label: { dx: -12, dy: 5, anchor: 'end' } },
-    { name: 'Haddrell\'s Point', coords: [-79.8665, 32.7735], kind: 'village', label: { dx: -8, dy: -7, anchor: 'end' } }
+    { name: 'Haddrell\'s Point', coords: [-79.8638, 32.7742], kind: 'village', label: { dx: -8, dy: -7, anchor: 'end' } }
   ],
   ships: [
     { side: 'british', coords: [-79.8640, 32.7560], ph: { coords: [-79.8665, 32.7562] } },
@@ -157,12 +159,12 @@ HMap.render('#map-fort', {
   ],
   labels: [
     { coords: [-79.8470, 32.7535], text: 'Bristol, Experiment,\nActive, Solebay', kind: 'note', size: 11, anchor: 'start' },
-    { coords: [-79.8375, 32.7655], text: 'Sullivan\'s Island', kind: 'region', size: 11, angle: -26 },
+    { coords: [-79.8375, 32.7655], text: 'Sullivan\'s Island', kind: 'region', size: 11, angle: -26, ph: { size: 9.5, coords: [-79.8385, 32.7652] } },
     { coords: [-79.7965, 32.7790], text: 'Long\nIsland', kind: 'region', size: 11.5 },
     { coords: [-79.8040, 32.7720], text: 'Breach\nInlet', kind: 'water', size: 12 },
     { coords: [-79.8600, 32.7700], text: 'The Cove', kind: 'water', size: 12 },
     { coords: [-79.8120, 32.7525], text: 'Atlantic Ocean', kind: 'water' },
-    { coords: [-79.8720, 32.7440], text: 'Middle Ground', kind: 'note', size: 10.5 }
+    { coords: [-79.8760, 32.7472], text: 'Middle Ground', kind: 'note', size: 10.5, ph: { coords: [-79.8805, 32.7457] } }
   ]
 });
 </script>

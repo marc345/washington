@@ -60,7 +60,7 @@ HMap.render('#map-flank', {
   water: { hide: ['Fernhill Lk', 'Westtown Lk'], hideUnnamed: true },
   rivers: { only: STREAMS },
   roads: [
-    { name: 'Great Road', coords: [[-75.7117, 39.8467], [-75.690, 39.855], [-75.665, 39.866], [-75.648, 39.8705], [-75.620, 39.8710], [-75.5945, 39.8712], [-75.570, 39.876], [-75.535, 39.880]], labelAt: 0.18 },
+    { name: 'Great Road', coords: [[-75.7117, 39.8467], [-75.690, 39.855], [-75.665, 39.866], [-75.648, 39.8705], [-75.620, 39.8710], [-75.5945, 39.8712], [-75.570, 39.876], [-75.535, 39.880]], labelAt: 0.88, ph: { name: null } },
     { coords: [[-75.600, 39.9165], [-75.594, 39.906], [-75.590, 39.885], [-75.592, 39.872]] }
   ],
   towns: [
@@ -86,7 +86,7 @@ HMap.render('#map-flank', {
     { side: 'continental', coords: [-75.5880, 39.8705], label: 'Wayne', labelPos: { dx: 18, dy: 12 }, ph: { labelPos: { dx: 0, dy: 19, anchor: 'middle' } } },
     { side: 'continental', coords: [-75.5820, 39.8800], label: 'Greene', labelPos: { dx: 18, dy: 4 } },
     { side: 'continental', coords: [-75.5960, 39.8880], label: 'Sullivan', labelPos: { dx: 0, dy: -11, anchor: 'middle' } },
-    { side: 'continental', coords: [-75.5770, 39.8930], label: 'Stirling, Stephen', labelPos: { dx: 18, dy: 4 } },
+    { side: 'continental', coords: [-75.5770, 39.8930], label: 'Stirling, Stephen', labelPos: { dx: 18, dy: 4 }, ph: { label: 'Stirling,\nStephen', labelPos: { dx: 16, dy: -3 } } },
     { side: 'continental', coords: [-75.6225, 39.9105], label: 'Hazen', w: 18, labelPos: { dx: 14, dy: 4 } },
     { side: 'militia', coords: [-75.5740, 39.8500], label: 'Armstrong', labelPos: { dx: 18, dy: 4 } }
   ],
@@ -110,21 +110,21 @@ HMap.render('#map-afternoon', {
   water: { hide: ['Karver Lk', 'Brinton Lk'] },
   rivers: { only: STREAMS },
   roads: [
-    { name: 'Birmingham Rd', coords: [[-75.6020, 39.9220], [-75.5995, 39.9140], [-75.5939, 39.9059], [-75.5915, 39.8950], [-75.5895, 39.8830], [-75.5900, 39.8740]], labelAt: 0.12 },
+    { name: 'Birmingham Rd', coords: [[-75.6020, 39.9220], [-75.5995, 39.9140], [-75.5939, 39.9059], [-75.5915, 39.8950], [-75.5895, 39.8830], [-75.5900, 39.8740]], labelAt: 0.12, ph: { name: null } },
     { coords: [[-75.6150, 39.8700], [-75.5945, 39.8712], [-75.5750, 39.8745], [-75.5450, 39.8790]] },
     { coords: [[-75.5895, 39.8800], [-75.5800, 39.8880], [-75.5720, 39.8950], [-75.5672, 39.8993]] },
     { name: 'to Chester', coords: [[-75.5672, 39.8993], [-75.5580, 39.8930], [-75.5450, 39.8860]], labelAt: 0.6 },
     { coords: [[-75.6150, 39.9175], [-75.5995, 39.9165], [-75.5800, 39.9180], [-75.5600, 39.9200]] }
   ],
   towns: [
-    { name: 'Birmingham Meeting House', coords: [-75.5939, 39.9059], kind: 'church', label: { dx: -9, dy: 4, anchor: 'end' }, ph: { label: { dx: -9, dy: -9, anchor: 'end' } } },
+    { name: 'Birmingham Meeting House', coords: [-75.5939, 39.9059], kind: 'church', label: { dx: -9, dy: 4, anchor: 'end' }, ph: { name: 'Birmingham\nMeeting House', label: { dx: -8, dy: -6, anchor: 'end' } } },
     { name: 'Dilworth', coords: [-75.5672, 39.8993], kind: 'village', label: { dx: 8, dy: -5 } },
     { name: 'Chadds Ford', coords: [-75.5960, 39.8710], kind: 'ferry', label: { dx: -9, dy: -6, anchor: 'end' } },
     { name: 'Washington\'s HQ', coords: [-75.5780, 39.8745], kind: 'hq', label: { dx: 9, dy: 12 } }
   ],
   units: [
-    { side: 'british', coords: [-75.6040, 39.9125], label: 'Guards', labelPos: { dx: -18, dy: 4, anchor: 'end' } },
-    { side: 'british', coords: [-75.5935, 39.9135], label: 'Grenadiers', labelPos: { dx: 0, dy: -12, anchor: 'middle' } },
+    { side: 'british', coords: [-75.6040, 39.9125], label: 'Guards', labelPos: { dx: -18, dy: 4, anchor: 'end' }, ph: { coords: [-75.6075, 39.9135] } },
+    { side: 'british', coords: [-75.5925, 39.9135], label: 'Grenadiers', labelPos: { dx: 0, dy: -12, anchor: 'middle' } },
     { side: 'british', coords: [-75.5850, 39.9140], label: 'Light inf.', labelPos: { dx: 0, dy: -12, anchor: 'middle' } },
     { side: 'hessian', coords: [-75.5780, 39.9135], label: 'Jäger', w: 18, labelPos: { dx: 14, dy: 4 } },
     { side: 'continental', coords: [-75.6035, 39.9005], label: 'Sullivan', angle: 10, labelPos: { dx: -18, dy: 4, anchor: 'end' } },
@@ -135,8 +135,8 @@ HMap.render('#map-afternoon', {
     { side: 'hessian', coords: [-75.6095, 39.8735], label: 'Knyphausen', angle: 80, labelPos: { dx: 0, dy: -18, anchor: 'middle' } }
   ],
   moves: [
-    { side: 'british', kind: 'attack', coords: [[-75.6040, 39.9105], [-75.6035, 39.9030]] },
-    { side: 'british', kind: 'attack', coords: [[-75.5935, 39.9115], [-75.5940, 39.9045]] },
+    { side: 'british', kind: 'attack', coords: [[-75.6040, 39.9105], [-75.6035, 39.9030]], ph: { coords: [[-75.6075, 39.9115], [-75.6060, 39.9022]] } },
+    { side: 'british', kind: 'attack', coords: [[-75.5925, 39.9115], [-75.5922, 39.9045]] },
     { side: 'british', kind: 'attack', coords: [[-75.5850, 39.9120], [-75.5860, 39.9057]] },
     { side: 'hessian', kind: 'attack', coords: [[-75.5780, 39.9118], [-75.5785, 39.9030]] },
     { side: 'continental', kind: 'march', label: 'Greene', labelAt: 0.45, coords: [[-75.5850, 39.8770], [-75.5825, 39.8870], [-75.5800, 39.8962]] },
@@ -145,18 +145,16 @@ HMap.render('#map-afternoon', {
     { side: 'continental', kind: 'retreat', coords: [[-75.5850, 39.8735], [-75.5700, 39.8760], [-75.5530, 39.8780]] }
   ],
   battles: [
-    { coords: [-75.5990, 39.9035] },
-    { coords: [-75.5760, 39.9010] }
+    { coords: [-75.5990, 39.9035], label: 'Birmingham Hill', labelPos: { dx: 40, dy: 75, anchor: 'middle' } },
+    { coords: [-75.5760, 39.9010], label: 'Sandy Hollow', labelPos: { dx: 12, dy: -10, anchor: 'start' } }
   ],
   callouts: [
-    { coords: [-75.6115, 39.8975], n: 1 },
+    { coords: [-75.6090, 39.9040], n: 1 },
     { coords: [-75.5700, 39.8880], n: 2 },
     { coords: [-75.6000, 39.8790], n: 3 }
   ],
   labels: [
     { coords: [-75.6000, 39.9195], text: 'Osborne\'s Hill', kind: 'terrain' },
-    { coords: [-75.5915, 39.8975], text: 'Birmingham Hill', kind: 'terrain', size: 11 },
-    { coords: [-75.5735, 39.9055], text: 'Sandy Hollow', kind: 'terrain', size: 11 },
     { coords: [-75.6110, 39.8860], text: 'Brandywine Cr.', kind: 'water', angle: -60, size: 12 }
   ]
 });

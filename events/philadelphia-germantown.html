@@ -77,7 +77,12 @@ const WINDMILL_ISLAND = [[-75.1362, 39.9435], [-75.1350, 39.9440], [-75.1343, 39
 // Camden and Gloucester piers on the New Jersey bank (same ring as delaware-forts-whitemarsh.html)
 const NJ_WATERFRONT = [[-75.1400, 39.9000], [-75.1400, 39.9420], [-75.1385, 39.9560], [-75.1360, 39.9640], [-75.1290, 39.9645], [-75.1295, 39.9560],
   [-75.1300, 39.9420], [-75.1288, 39.9300], [-75.1282, 39.9150], [-75.1272, 39.9050], [-75.1290, 39.8960], [-75.1345, 39.8950]];
-const PERIOD = { water: [PHL_WATERFRONT, NJ_WATERFRONT].map(ring), land: [WINDMILL_ISLAND].map(ring) };
+// Kensington, Port Richmond and Bridesburg piers north of the city, and the Gloucester piers below Camden, also later fill
+const PA_NORTH = [[-75.1370, 39.9640], [-75.1295, 39.9655], [-75.1247, 39.9677], [-75.1198, 39.9697], [-75.1161, 39.9736], [-75.1067, 39.9771],
+  [-75.0979, 39.9789], [-75.0909, 39.9793], [-75.0818, 39.9816], [-75.0759, 39.9836], [-75.0754, 39.9816], [-75.0818, 39.9793], [-75.0909, 39.9771],
+  [-75.0979, 39.9754], [-75.1067, 39.9734], [-75.1150, 39.9706], [-75.1209, 39.9681], [-75.1273, 39.9653], [-75.1359, 39.9628]];
+const NJ_SOUTH = [[-75.1299, 39.9255], [-75.1289, 39.9251], [-75.1270, 39.9205], [-75.1250, 39.9160], [-75.1222, 39.9140], [-75.1218, 39.9080], [-75.1225, 39.9040], [-75.1232, 39.8990], [-75.1299, 39.8990]];
+const PERIOD = { water: [PHL_WATERFRONT, NJ_WATERFRONT, PA_NORTH, NJ_SOUTH].map(ring), land: [WINDMILL_ISLAND].map(ring) };
 const STREAMS = ['Schuylkill Riv', 'Wissahickon Crk', 'Tacony Crk', 'Frankford Crk', 'Sandy Run', 'Pennypack Crk', 'Cobbs Crk', 'Darby Crk', 'Perkiomen Crk', 'Skippack Crk', 'French Crk', 'Pickering Crk', 'Valley Crk', 'Brandywine Crk', 'Chester Crk', 'Crum Crk', 'Ridley Crk', 'Stony Crk', 'Tookany Crk'];
 
 HMap.render('#map-schuylkill', {
@@ -93,7 +98,6 @@ HMap.render('#map-schuylkill', {
     { place: 'chester', label: { dx: -9, dy: -6, anchor: 'end' } },
     { name: 'Darby', coords: [-75.259, 39.918], kind: 'village', label: { dx: 8, dy: 10 } },
     { place: 'chadds-ford', label: { dx: -9, dy: 4, anchor: 'end' } },
-    { name: 'Paoli', coords: [-75.5149, 40.0305], kind: 'village', label: { dx: 8, dy: 12 } },
     { name: 'Yellow Springs', coords: [-75.623, 40.100], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
     { name: 'Reading Furnace', coords: [-75.715, 40.172], kind: 'village', label: { dx: 0, dy: 16, anchor: 'middle' } },
     { name: 'Parker\'s Ford', coords: [-75.5838, 40.1995], kind: 'ferry', label: { dx: 8, dy: 16 } },
@@ -106,28 +110,28 @@ HMap.render('#map-schuylkill', {
   moves: [
     { side: 'continental', kind: 'retreat', label: 'Sep 11–13', labelAt: 0.12, coords: [[-75.590, 39.868], [-75.460, 39.855], [-75.360, 39.856], [-75.262, 39.922], [-75.190, 39.955], [-75.178, 40.028]] },
     { side: 'continental', kind: 'march', label: 'Sep 14–15', labelAt: 0.5, coords: [[-75.190, 40.040], [-75.240, 40.040], [-75.330, 40.040], [-75.440, 40.045], [-75.535, 40.045]] },
-    { side: 'continental', kind: 'retreat', label: 'Sep 16–17', labelAt: 0.5, coords: [[-75.570, 40.045], [-75.615, 40.090], [-75.700, 40.162]] },
+    { side: 'continental', kind: 'retreat', label: 'Sep 16–17', labelAt: 0.3, coords: [[-75.570, 40.045], [-75.615, 40.090], [-75.700, 40.162]] },
     { side: 'continental', kind: 'march', label: 'Sep 18–19', labelAt: 0.4, coords: [[-75.700, 40.180], [-75.640, 40.195], [-75.585, 40.203], [-75.510, 40.195]] },
     { side: 'continental', kind: 'march', label: 'Sep 21–23', labelAt: 0.5, coords: [[-75.505, 40.205], [-75.560, 40.235], [-75.630, 40.250]] },
     { side: 'continental', kind: 'march', label: 'Sep 26', labelAt: 0.5, coords: [[-75.620, 40.262], [-75.540, 40.268], [-75.470, 40.258]] },
     { side: 'british', kind: 'march', label: 'Sep 15–16', labelAt: 0.5, coords: [[-75.585, 39.885], [-75.585, 39.950], [-75.568, 40.010]] },
-    { side: 'british', kind: 'march', coords: [[-75.555, 40.020], [-75.510, 40.050], [-75.470, 40.075]] },
-    { side: 'british', kind: 'march', label: 'feint', labelAt: 0.5, ph: { label: null }, coords: [[-75.470, 40.085], [-75.500, 40.110], [-75.530, 40.122]] },
+    { side: 'british', kind: 'march', coords: [[-75.553, 40.025], [-75.528, 40.053], [-75.495, 40.068], [-75.470, 40.076]] },
+    { side: 'british', kind: 'march', label: 'feint', labelAt: 0.5, coords: [[-75.470, 40.085], [-75.500, 40.110], [-75.530, 40.122]] },
     { side: 'british', kind: 'march', label: 'Sep 22–25', labelAt: 0.55, coords: [[-75.520, 40.128], [-75.470, 40.122], [-75.420, 40.130], [-75.330, 40.135], [-75.250, 40.090], [-75.185, 40.045]] },
     { side: 'british', kind: 'march', label: 'Sep 26', labelAt: 0.5, coords: [[-75.170, 40.030], [-75.152, 39.990], [-75.146, 39.962]] },
-    { side: 'british', kind: 'attack', coords: [[-75.468, 40.068], [-75.490, 40.050], [-75.510, 40.035]] }
+    { side: 'british', kind: 'attack', label: 'Grey', labelAt: 0.4, phone: false, coords: [[-75.462, 40.062], [-75.485, 40.048], [-75.506, 40.039]] }
   ],
   units: [
-    { side: 'continental', coords: [-75.522, 40.023], w: 20 }
+    { side: 'continental', coords: [-75.524, 40.019], w: 20, label: 'Wayne', labelPos: { dx: 0, dy: 19, anchor: 'middle' } }
   ],
   battles: [
     { coords: [-75.565, 40.015], label: 'Battle of the Clouds', labelPos: { dx: -14, dy: 12, anchor: 'end' } },
-    { coords: [-75.5149, 40.0305] }
+    { coords: [-75.517, 40.034], label: 'Paoli', labelPos: { dx: 12, dy: 10, anchor: 'start' } }
   ],
   callouts: [
     { coords: [-75.300, 39.890], n: 1 },
     { coords: [-75.625, 40.030], n: 2 },
-    { coords: [-75.480, 40.005], n: 3 },
+    { coords: [-75.480, 40.005], n: 3, ph: { coords: [-75.470, 40.012] } },
     { coords: [-75.560, 40.168], n: 4 },
     { coords: [-75.125, 39.995], n: 5 }
   ],
@@ -175,17 +179,17 @@ HMap.render('#map-occupation', {
     { side: 'continental', coords: [-75.1385, 39.9565], angle: -70, label: 'Delaware (captured)', labelPos: { dx: 10, dy: -12, anchor: 'start' } }
   ],
   units: [
-    { side: 'british', coords: [-75.1880, 40.0300], label: 'Howe\'s main camp', angle: 35, labelPos: { dx: -18, dy: 4, anchor: 'end' } },
-    { side: 'british', coords: [-75.1600, 40.0420], angle: 35 }
+    { side: 'british', coords: [-75.1880, 40.0300], label: 'Howe\'s main camp', angle: 35, labelPos: { dx: -18, dy: 4, anchor: 'end' } }
   ],
   callouts: [
     { coords: [-75.1650, 39.9930], n: 1 },
     { coords: [-75.1230, 39.9300], n: 2 }
   ],
   labels: [
-    { coords: [-75.1720, 39.9300], text: 'PHILADELPHIA', kind: 'region', size: 14 },
+    { coords: [-75.1720, 39.9300], text: 'PHILADELPHIA', kind: 'region', size: 14, ph: { coords: [-75.1830, 39.9220] } },
     { coords: [-75.2010, 39.9800], text: 'Schuylkill River', kind: 'water', size: 12.5, angle: -65 },
-    { coords: [-75.1270, 39.9110], text: 'Delaware River', kind: 'water', size: 12.5, angle: -80 },
+    { coords: [-75.1283, 39.9090], text: 'Delaware River', kind: 'water', size: 12.5, angle: -84, ph: { coords: [-75.1000, 39.9765], angle: -18 } },
+    { coords: [-75.1438, 39.9524], text: 'batteries', kind: 'note', anchor: 'end' },
     { coords: [-75.0950, 39.9250], text: 'NEW\nJERSEY', kind: 'region', size: 13 },
     { coords: [-75.2150, 40.0430], text: 'Wissahickon Cr.', kind: 'water', size: 11, angle: 55 },
     { coords: [-75.1750, 39.9070], text: 'to Fort Mifflin ↙', kind: 'note', anchor: 'start' }
@@ -213,19 +217,19 @@ HMap.render('#map-attack', {
     { name: 'Cliveden', coords: [-75.1812, 40.0474], kind: 'building', label: { dx: -9, dy: 4, anchor: 'end' } },
     { name: 'Market Square', coords: [-75.1731, 40.0349], kind: 'village', label: { dx: -8, dy: 12, anchor: 'end' } },
     { name: 'Luken\'s Mill', coords: [-75.1630, 40.0540], kind: 'building', label: { dx: 8, dy: 4 } },
-    { name: 'Stenton (Howe\'s HQ)', coords: [-75.1555, 40.0307], kind: 'hq', label: { dx: 8, dy: 12 } },
+    { name: 'Stenton (Howe\'s HQ)', coords: [-75.1555, 40.0307], kind: 'hq', label: { dx: 8, dy: 12 }, ph: { name: 'Stenton\n(Howe\'s HQ)', label: { dx: 10, dy: 2 } } },
     { name: 'Jenkintown', coords: [-75.1257, 40.0960], kind: 'village', label: { dx: 8, dy: 4 } }
   ],
   units: [
     { side: 'british', coords: [-75.1950, 40.0610], label: 'Light inf.', w: 20, angle: -30, labelPos: { dx: -14, dy: -6, anchor: 'end' } },
-    { side: 'british', coords: [-75.1950, 40.0290], angle: 30, label: 'Knyphausen', labelPos: { dx: -18, dy: 10, anchor: 'end' } },
-    { side: 'hessian', coords: [-75.2040, 40.0240], angle: 30 },
-    { side: 'british', coords: [-75.1600, 40.0420], angle: 20, label: 'Grant', labelPos: { dx: 18, dy: 6 } },
+    { side: 'british', coords: [-75.1950, 40.0290], angle: 30, label: 'Knyphausen\'s wing', labelPos: { dx: -18, dy: 0, anchor: 'end' } },
+    { side: 'hessian', coords: [-75.2040, 40.0240], angle: 30, label: 'Hessians', labelPos: { dx: -18, dy: 4, anchor: 'end' }, ph: { labelPos: { dx: 16, dy: 12 } } },
+    { side: 'british', coords: [-75.1600, 40.0420], angle: 20, label: 'Grant\'s wing', labelPos: { dx: 0, dy: -12, anchor: 'middle' } },
     { side: 'british', coords: [-75.1450, 40.0455], angle: 10 },
-    { side: 'hessian', coords: [-75.2140, 40.0190], label: 'Jäger', w: 18, labelPos: { dx: 12, dy: 14 } }
+    { side: 'hessian', coords: [-75.2140, 40.0190], label: 'Jäger', w: 18, labelPos: { dx: 12, dy: 14 }, ph: { labelPos: { dx: -12, dy: -8, anchor: 'end' } } }
   ],
   moves: [
-    { side: 'continental', kind: 'attack', label: 'Sullivan, Wayne, Washington', labelAt: 0.76, ph: { label: 'Sullivan, Wayne', labelAt: 0.6 }, coords: [[-75.2560, 40.1450], [-75.2200, 40.1260], [-75.2110, 40.0990], [-75.2060, 40.0760], [-75.1950, 40.0620]] },
+    { side: 'continental', kind: 'attack', label: 'Sullivan, Wayne, Washington', labelAt: 0.66, ph: { labelAt: 0.63 }, coords: [[-75.2560, 40.1450], [-75.2200, 40.1260], [-75.2110, 40.0990], [-75.2060, 40.0760], [-75.1950, 40.0620]] },
     { side: 'continental', kind: 'attack', label: 'Greene, Stephen, McDougall', labelAt: 0.6, coords: [[-75.1720, 40.1580], [-75.1650, 40.1200], [-75.1615, 40.0800], [-75.1640, 40.0560], [-75.1700, 40.0400]] },
     { side: 'continental', kind: 'attack', coords: [[-75.1640, 40.0640], [-75.1720, 40.0560], [-75.1785, 40.0500]] },
     { side: 'militia', kind: 'march', label: 'Armstrong', labelAt: 0.65, coords: [[-75.2950, 40.1200], [-75.2690, 40.0850], [-75.2440, 40.0550], [-75.2220, 40.0300]] },

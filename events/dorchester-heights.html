@@ -86,10 +86,10 @@
       { name: 'Castle William', coords: [-71.0125, 42.3385], kind: 'fort', side: 'british', label: { dx: 0, dy: 19, anchor: 'middle' } }
     ],
     moves: [
-      { side: 'continental', kind: 'march', label: 'Thomas, from 7 p.m.', labelAt: 0.35, coords: [[-71.0820, 42.3290], [-71.0700, 42.3255], [-71.0600, 42.3270], [-71.0555, 42.3305], [-71.0505, 42.3322], [-71.0472, 42.3326]] },
+      { side: 'continental', kind: 'march', label: 'Thomas, from 7 p.m.', labelAt: 0.35, coords: [[-71.0820, 42.3290], [-71.0700, 42.3255], [-71.0600, 42.3270], [-71.0555, 42.3305], [-71.0505, 42.3322], [-71.0472, 42.3326]], ph: { labelAt: 0.4, coords: [[-71.0820, 42.3290], [-71.0700, 42.3255], [-71.0600, 42.3270], [-71.0555, 42.3305], [-71.0515, 42.3320], [-71.0495, 42.3323]] } },
       { side: 'continental', kind: 'attack', approx: true, coords: [[-71.1000, 42.3600], [-71.0880, 42.3570], [-71.0720, 42.3548]] },
       { side: 'british', kind: 'naval', coords: [[-71.0500, 42.3580], [-71.0350, 42.3480], [-71.0160, 42.3400]] },
-      { side: 'british', kind: 'attack', approx: true, coords: [[-71.0150, 42.3370], [-71.0280, 42.3350], [-71.0410, 42.3340]] }
+      { side: 'british', kind: 'attack', approx: true, coords: [[-71.0150, 42.3370], [-71.0280, 42.3350], [-71.0410, 42.3340]], ph: { coords: [[-71.0150, 42.3370], [-71.0280, 42.3350], [-71.0398, 42.3343]] } }
     ],
     units: [
       { side: 'continental', type: 'artillery', coords: [-71.0772, 42.3700] },
@@ -103,8 +103,8 @@
       { side: 'british', coords: [-71.0330, 42.3630], angle: 10 }
     ],
     labels: [
-      { coords: [-71.0450, 42.3375], text: 'Dorchester Heights', kind: 'terrain', size: 12 },
-      { coords: [-71.0595, 42.3375], text: 'Nook\'s Hill', kind: 'terrain', size: 11, anchor: 'end' },
+      { coords: [-71.0420, 42.3400], text: 'Dorchester Heights', kind: 'terrain', size: 12 },
+      { coords: 'nooks-hill', text: 'Nook\'s Hill', kind: 'terrain', size: 11, anchor: 'middle', dy: 14 },
       { coords: [-71.0745, 42.3712], text: 'Lechmere Pt.', kind: 'terrain', size: 11, anchor: 'start' },
       { coords: [-71.0880, 42.3800], text: 'Cobble Hill', kind: 'terrain', size: 11, anchor: 'end' },
       { coords: [-71.0800, 42.3385], text: 'Lamb\'s Dam', kind: 'terrain', size: 11, anchor: 'end' },
@@ -114,7 +114,7 @@
     ],
     callouts: [
       { coords: [-71.0905, 42.3720], n: 1 },
-      { coords: [-71.0605, 42.3255], n: 2 },
+      { coords: [-71.0605, 42.3255], n: 2, ph: { coords: [-71.0585, 42.3222] } },
       { coords: [-71.0985, 42.3568], n: 3 },
       { coords: [-71.0250, 42.3430], n: 4 }
     ]
@@ -142,7 +142,7 @@
     moves: [
       { side: 'british', kind: 'naval', label: 'March 17', labelAt: 0.35, coords: [[-71.0480, 42.3600], [-71.0200, 42.3500], [-70.9900, 42.3430], [-70.9620, 42.3380], [-70.9450, 42.3250], [-70.9370, 42.3100]] },
       { side: 'british', kind: 'naval', label: 'to Halifax, March 27', labelAt: 0.5, coords: [[-70.9250, 42.3120], [-70.9000, 42.3320], [-70.8700, 42.3560]] },
-      { side: 'continental', kind: 'march', coords: [[-71.0850, 42.3310], [-71.0750, 42.3370], [-71.0690, 42.3430], [-71.0665, 42.3510]] }
+      { side: 'continental', kind: 'march', coords: [[-71.0880, 42.3305], [-71.0780, 42.3360], [-71.0688, 42.3412], [-71.0660, 42.3480], [-71.0658, 42.3525]] }
     ],
     ships: [
       { side: 'british', coords: [-70.9420, 42.3040], angle: 0 },
@@ -159,9 +159,9 @@
       { coords: [-70.9600, 42.3260], text: 'Long I.', kind: 'terrain', size: 11 }
     ],
     callouts: [
-      { coords: [-71.0640, 42.3330], n: 1 },
+      { coords: [-71.0594, 42.3392], n: 1, ph: { coords: [-71.0600, 42.3335] } },
       { coords: [-71.0440, 42.3655], n: 2 },
-      { coords: [-71.0900, 42.3470], n: 3 },
+      { coords: [-71.0745, 42.3415], n: 3 },
       { coords: [-70.9150, 42.2960], n: 4 }
     ]
   });

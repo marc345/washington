@@ -141,7 +141,7 @@
     towns: [
       { place: 'boston', coords: [-71.0590, 42.3595], label: { dx: 0, dy: 17, anchor: 'middle' } },
       { place: 'cambridge', label: { dx: -7, dy: 14, anchor: 'end' } },
-      { place: 'charlestown', coords: [-71.0620, 42.3740], label: { dx: 0, dy: -9, anchor: 'middle' } },
+      { place: 'charlestown', coords: [-71.0620, 42.3740], label: { dx: 0, dy: -9, anchor: 'middle' }, ph: { label: { dx: 0, dy: 17, anchor: 'middle' } } },
       { place: 'lexington', coords: [-71.2307, 42.4493], label: { dx: 0, dy: -12, anchor: 'middle' } },
       { place: 'concord', coords: [-71.3488, 42.4605], label: { dx: 0, dy: 17, anchor: 'middle' } },
       { name: 'Menotomy', coords: [-71.1560, 42.4150], kind: 'village', label: { dx: -9, dy: 15, anchor: 'end' } },
@@ -197,10 +197,10 @@
       { side: 'continental', kind: 'retreat', coords: [[-71.0615, 42.3775], [-71.0650, 42.3800], [-71.0700, 42.3825], [-71.0740, 42.3840], [-71.0790, 42.3865]] }
     ],
     units: [
-      { side: 'british', coords: [-71.0515, 42.3762], angle: 20, label: 'Howe, ~1 p.m.' },
+      { side: 'british', coords: [-71.0515, 42.3762], angle: 20, label: 'Howe, ~1 p.m.', ph: { labelPos: { dx: 2, dy: 24, anchor: 'start' } } },
       { side: 'continental', coords: [-71.0625, 42.3770], angle: -70, label: 'Prescott', labelPos: { dx: -15, dy: 4, anchor: 'end' } },
-      { side: 'continental', coords: [-71.0632, 42.3793], angle: -60, label: 'Knowlton', labelPos: { dx: -15, dy: 4, anchor: 'end' } },
-      { side: 'continental', coords: [-71.0626, 42.3810], angle: -60, label: 'Stark', labelPos: { dx: -15, dy: -4, anchor: 'end' } },
+      { side: 'continental', coords: [-71.0632, 42.3793], angle: -60, label: 'Knowlton', labelPos: { dx: -15, dy: 4, anchor: 'end' }, ph: { coords: [-71.0636, 42.3788] } },
+      { side: 'continental', coords: [-71.0626, 42.3810], angle: -60, label: 'Stark', labelPos: { dx: -15, dy: -4, anchor: 'end' }, ph: { coords: [-71.0620, 42.3817] } },
       { side: 'continental', coords: [-71.0688, 42.3815], label: 'Putnam', labelPos: { dx: 0, dy: -11, anchor: 'middle' } }
     ],
     ships: [
@@ -213,7 +213,7 @@
       { coords: [-71.0630, 42.3752], text: 'Breed\'s Hill', kind: 'terrain', size: 12, anchor: 'end' },
       { coords: [-71.0680, 42.3800], text: 'Bunker Hill', kind: 'terrain', size: 12, anchor: 'end' },
       { coords: [-71.0500, 42.3787], text: 'Moulton\'s\nPoint', kind: 'terrain', size: 11, anchor: 'start' },
-      { coords: [-71.0712, 42.3856], text: 'Charlestown Neck', kind: 'terrain', size: 11, anchor: 'middle', angle: -28 },
+      { coords: [-71.0721, 42.3839], text: 'Charlestown Neck', kind: 'terrain', size: 11, anchor: 'start', dx: 4, angle: -28 },
       { coords: [-71.0560, 42.3860], text: 'Mystic River', kind: 'water', size: 14, angle: -20 },
       { coords: [-71.0700, 42.3660], text: 'Charles River', kind: 'water', size: 14, angle: 20 },
       { coords: [-71.0500, 42.3680], text: 'Boston Harbor', kind: 'water', size: 13 }

@@ -54,7 +54,7 @@
     towns: [
       { place: 'philadelphia', name: 'Philadelphia, Jun 23', label: { dx: 9, dy: 8, anchor: 'start' } },
       { place: 'trenton', label: { dx: -7, dy: 4, anchor: 'end' } },
-      { place: 'new-brunswick', label: { dx: -7, dy: 4, anchor: 'end' } },
+      { place: 'new-brunswick', label: { dx: -7, dy: 4, anchor: 'end' }, ph: { label: { dx: 6, dy: 15, anchor: 'start' } } },
       { place: 'newark', label: { dx: -7, dy: -4, anchor: 'end' } },
       { place: 'new-york', name: 'New York, Jun 25–26', label: { dx: 2, dy: 18, anchor: 'middle' }, ph: { label: { dx: 9, dy: 14, anchor: 'start' } } },
       { place: 'new-haven', name: 'New Haven, Jun 28', label: { dx: 4, dy: 18, anchor: 'start' } },
@@ -70,10 +70,10 @@
       { coords: [-74.550, 42.300], text: 'NEW YORK', kind: 'region' },
       { coords: [-72.250, 41.600], text: 'CONN.', kind: 'region', size: 12 },
       { coords: [-73.150, 42.560], text: 'MASSACHUSETTS', kind: 'region', size: 13 },
-      { coords: [-71.500, 41.950], text: 'R.I.', kind: 'region', size: 12 },
+      { coords: [-71.580, 41.760], text: 'R.I.', kind: 'region', size: 12 },
       { coords: [-73.150, 41.060], text: 'Long Island Sound', kind: 'water', size: 12, angle: -10, phone: false },
-      { coords: [-72.800, 40.300], text: 'Atlantic Ocean', kind: 'water' },
-      { coords: [-73.955, 41.330], text: 'Hudson R.', kind: 'water', size: 12, angle: -80 }
+      { coords: [-72.800, 40.300], text: 'Atlantic Ocean', kind: 'water', ph: { coords: [-72.700, 40.000] } },
+      { coords: [-73.955, 41.330], text: 'Hudson R.', kind: 'water', size: 12, angle: -80, ph: { coords: [-73.955, 41.390] } }
     ],
     callouts: [
       { coords: [-73.990, 40.840], n: 1 },

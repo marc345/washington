@@ -105,9 +105,9 @@ HMap.render('#map-region', {
   callouts: [
     { coords: [-74.648, 40.440], n: 1 },
     { coords: [-74.642, 40.522], n: 2 },
-    { coords: [-74.430, 40.580], n: 3 },
-    { coords: [-74.275, 40.620], n: 4 },
-    { coords: [-74.515, 40.560], n: 5 }
+    { coords: [-74.430, 40.580], n: 3, ph: { coords: [-74.430, 40.604] } },
+    { coords: [-74.275, 40.620], n: 4, ph: { coords: [-74.262, 40.629] } },
+    { coords: [-74.515, 40.560], n: 5, ph: { coords: [-74.500, 40.551] } }
   ],
   labels: [
     { coords: [-74.500, 40.655], text: 'Watchung Mts.', kind: 'terrain', size: 12.5, angle: -32 },
@@ -127,13 +127,13 @@ HMap.render('#map-ridges', {
   areas: [
     { side: 'continental', opacity: 0.25, legend: 'Camp areas (schematic)', coords: [[-74.470, 40.800], [-74.455, 40.790], [-74.445, 40.770], [-74.455, 40.762], [-74.470, 40.775], [-74.485, 40.792]] },
     { side: 'continental', opacity: 0.25, coords: [[-74.575, 40.590], [-74.540, 40.598], [-74.515, 40.592], [-74.525, 40.582], [-74.560, 40.580]] },
-    { side: 'neutral', opacity: 0.12, legend: 'Great Swamp', coords: [[-74.560, 40.720], [-74.500, 40.735], [-74.440, 40.725], [-74.430, 40.700], [-74.480, 40.680], [-74.545, 40.690]] }
+    { side: 'neutral', opacity: 0.12, legend: 'Great Swamp', coords: [[-74.535, 40.722], [-74.495, 40.735], [-74.440, 40.725], [-74.430, 40.700], [-74.480, 40.682], [-74.530, 40.692]] }
   ],
   roads: MORRIS_ROADS.slice(0, 2).map(c => ({ coords: c })).concat([{ coords: [[-74.548, 40.706], [-74.640, 40.645], [-74.665, 40.600]] }, { coords: POST_ROAD.slice(2, 10) }]),
   towns: [
     { name: 'Morristown', coords: [-74.481, 40.797], kind: 'town', label: { dx: -10, dy: -8, anchor: 'end' } },
     { name: '', coords: [-74.4815, 40.7965], kind: 'hq' },
-    { name: '', coords: [-74.4760, 40.7930], kind: 'fort', side: 'continental' },
+    { name: '', coords: [-74.4875, 40.7925], kind: 'fort', side: 'continental' },
     { name: 'Chatham', coords: [-74.383, 40.741], kind: 'village', label: { dx: 9, dy: -4 } },
     { place: 'springfield-nj', label: { dx: 9, dy: 10 } },
     { place: 'basking-ridge', label: { dx: 9, dy: 4 } },
@@ -146,7 +146,7 @@ HMap.render('#map-ridges', {
   ],
   callouts: [
     { coords: [-74.474, 40.814], n: 1 },
-    { coords: [-74.449, 40.795], n: 2 },
+    { coords: [-74.499, 40.786], n: 2, ph: { coords: [-74.511, 40.779] } },
     { coords: [-74.590, 40.600], n: 3 }
   ],
   labels: [

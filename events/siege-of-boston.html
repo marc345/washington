@@ -97,7 +97,7 @@
       { side: 'continental', coords: [-71.1070, 42.3900], label: 'Lee (left wing)', labelPos: { dx: -21, dy: 4, anchor: 'end' } },
       { side: 'continental', coords: [-71.1130, 42.3670], label: 'Putnam (center)', labelPos: { dx: -21, dy: 4, anchor: 'end' } },
       { side: 'continental', coords: [-71.0840, 42.3220], label: 'Ward (right wing)' },
-      { side: 'british', coords: [-71.0660, 42.3555], label: 'Howe\'s garrison', labelPos: { dx: 0, dy: 18, anchor: 'middle' } },
+      { side: 'british', coords: [-71.0660, 42.3555], label: 'British garrison', labelPos: { dx: 0, dy: 18, anchor: 'middle' } },
       { side: 'british', coords: [-71.0640, 42.3785], angle: -20 }
     ],
     ships: [
@@ -111,8 +111,12 @@
       { coords: [-71.0310, 42.3175], text: 'Dorchester\nBay', kind: 'water', size: 12 },
       { coords: [-71.0415, 42.3330], text: 'Dorchester\nHeights', kind: 'terrain', size: 11 },
       { coords: [-71.0130, 42.3790], text: 'Noddle\'s\nIsland', kind: 'terrain', size: 11 },
-      { coords: [-71.0975, 42.3790], text: 'Prospect Hill', kind: 'terrain', size: 11, anchor: 'end' },
-      { coords: [-71.0995, 42.3975], text: 'Winter Hill', kind: 'terrain', size: 11 },
+      { coords: [-71.0975, 42.3790], text: 'Prospect Hill', kind: 'terrain', size: 11, anchor: 'end', ph: { anchor: 'start', dx: 12, dy: 4 } },
+      { coords: [-71.0995, 42.3975], text: 'Winter Hill', kind: 'terrain', size: 11, ph: { coords: [-71.1020, 42.3962], anchor: 'end' } },
+      { coords: [-71.1042, 42.3570], text: 'Fort Washington', kind: 'terrain', size: 10, anchor: 'end', dx: -11, dy: 4 },
+      { coords: [-71.1050, 42.3468], text: 'Sewall\'s Point', kind: 'terrain', size: 10, anchor: 'end', dx: -11, dy: 4 },
+      { coords: [-71.0950, 42.3252], text: 'Roxbury fort', kind: 'terrain', size: 10, anchor: 'start', dx: 11, dy: 4 },
+      { coords: [-71.0565, 42.3672], text: 'Copp\'s Hill', kind: 'terrain', size: 10, anchor: 'start', dx: 10, dy: 4 },
       { coords: [-71.0600, 42.3818], text: 'Bunker Hill', kind: 'terrain', size: 11, anchor: 'start' },
       { coords: [-71.0742, 42.3405], text: 'Boston Neck', kind: 'terrain', size: 11, angle: -68 }
     ],
@@ -154,8 +158,8 @@
       { name: 'Boston', coords: [-71.0590, 42.3595], kind: 'town', label: { dx: -7, dy: 4, anchor: 'end' } }
     ],
     moves: [
-      { side: 'british', kind: 'attack', approx: true, coords: [[-71.0640, 42.3640], [-71.0700, 42.3670], [-71.0758, 42.3693]] },
-      { side: 'continental', kind: 'attack', approx: true, coords: [[-71.0860, 42.3750], [-71.0810, 42.3720], [-71.0785, 42.3708]] },
+      { side: 'british', kind: 'attack', approx: true, coords: [[-71.0640, 42.3640], [-71.0700, 42.3670], [-71.0758, 42.3693]], ph: { coords: [[-71.0640, 42.3640], [-71.0700, 42.3670], [-71.0748, 42.3688]] } },
+      { side: 'continental', kind: 'attack', approx: true, coords: [[-71.0860, 42.3750], [-71.0810, 42.3720], [-71.0785, 42.3708]], ph: { coords: [[-71.0860, 42.3750], [-71.0820, 42.3727], [-71.0798, 42.3716]] } },
       { side: 'continental', kind: 'attack', approx: true, coords: [[-71.0835, 42.3788], [-71.0775, 42.3800], [-71.0722, 42.3808]] }
     ],
     units: [
@@ -170,7 +174,9 @@
       { coords: [-71.0845, 42.3935], text: 'Ploughed Hill', kind: 'terrain', size: 11 },
       { coords: [-71.0890, 42.3762], text: 'Cobble Hill', kind: 'terrain', size: 11, anchor: 'end' },
       { coords: [-71.0790, 42.3675], text: 'Lechmere Point', kind: 'terrain', size: 11, anchor: 'end' },
-      { coords: [-71.0690, 42.3885], text: 'Charlestown Neck', kind: 'terrain', size: 11 },
+      { coords: [-71.0716, 42.3842], text: 'Charlestown Neck', kind: 'terrain', size: 11, anchor: 'start', dx: 4, angle: -30 },
+      { coords: [-71.0565, 42.3672], text: 'Copp\'s Hill', kind: 'terrain', size: 10, anchor: 'end', dx: -10, dy: 4 },
+      { coords: [-71.1042, 42.3570], text: 'Fort Washington', kind: 'terrain', size: 10, anchor: 'start', dx: 11, dy: 4, phone: false },
       { coords: [-71.0645, 42.3838], text: 'Bunker Hill (British)', kind: 'terrain', size: 11, anchor: 'start' }
     ],
     callouts: [

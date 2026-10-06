@@ -125,7 +125,7 @@ HMap.render('#map-positions', {
     { side: 'hessian', coords: [-73.9560, 40.6455], label: 'von Heister', labelPos: { dx: 18, dy: 4 } },
     { side: 'british', coords: [-74.0080, 40.6260], label: 'Grant', angle: -70, labelPos: { dx: 14, dy: 4 } },
     { side: 'british', coords: [-73.9300, 40.6190], label: 'Howe, Clinton, Cornwallis', labelPos: { dx: 0, dy: 20, anchor: 'middle' } },
-    { side: 'continental', coords: [-74.0010, 40.6575], angle: 70, w: 18 },
+    { side: 'continental', coords: [-74.0010, 40.6575], angle: 70, w: 18, label: 'pickets', labelPos: { dx: 12, dy: 12 } },
     { side: 'continental', coords: [-73.9665, 40.6695], label: 'Sullivan', angle: 30, labelPos: { dx: -17, dy: -6, anchor: 'end' } },
     { side: 'continental', coords: [-73.9500, 40.6720], w: 20, label: 'Williams', labelPos: { dx: 14, dy: -8 }, phone: false },
     { side: 'continental', coords: [-73.9290, 40.6745], w: 20, label: 'Miles', labelPos: { dx: 0, dy: -11, anchor: 'middle' } },
@@ -146,13 +146,13 @@ HMap.render('#map-positions', {
     { coords: [-73.9690, 40.7010], n: 2 }
   ],
   labels: [
-    { coords: [-73.9800, 40.6553], text: 'H E I G H T S   O F   G U A N', kind: 'terrain', size: 11.5, angle: -20, ph: { coords: [-73.8800, 40.6790], text: 'HEIGHTS OF GUAN', angle: -14 } },
+    { coords: [-73.9800, 40.6553], text: 'H E I G H T S   O F   G U A N', kind: 'terrain', size: 11.5, angle: -20, ph: { coords: [-73.8625, 40.6885], text: 'HEIGHTS OF GUAN', angle: -21, size: 10 } },
     { coords: [-74.0040, 40.6560], text: 'Gowanus Pass', kind: 'terrain', size: 11, anchor: 'end', dx: -12, dy: -4, ph: { text: 'Gowanus P.' } },
     { coords: [-73.9655, 40.6650], text: 'Flatbush Pass', kind: 'terrain', size: 11, anchor: 'start', dx: 10, dy: 2, ph: { text: 'Flatbush P.', anchor: 'end', dx: -12, dy: 14 } },
     { coords: [-73.9530, 40.6685], text: 'Bedford Pass', kind: 'terrain', size: 11, anchor: 'start', dx: 10, dy: 14, ph: { text: 'Bedford P.' } },
     { coords: [-73.9000, 40.6805], text: 'Jamaica Pass', kind: 'terrain', size: 11.5, anchor: 'middle', dx: 0, dy: -14 },
     { coords: [-74.0300, 40.5930], text: 'Gravesend\nBay', kind: 'water', size: 12.5 },
-    { coords: [-74.0380, 40.6550], text: 'Upper Bay', kind: 'water', size: 13 },
+    { coords: [-74.0380, 40.6550], text: 'Upper Bay', kind: 'water', size: 13, ph: { coords: [-74.0430, 40.6700] } },
     { coords: [-74.0440, 40.6160], text: 'The\nNarrows', kind: 'water', size: 11 , phone: false },
     { coords: [-73.8780, 40.6020], text: 'Jamaica Bay', kind: 'water', size: 13 },
     { coords: [-73.9500, 40.5730], text: 'Coney Island', kind: 'terrain', size: 11 , phone: false },
@@ -175,20 +175,20 @@ HMap.render('#map-battle', {
   works: [{ side: 'continental', coords: LINES }],
   moves: [
     { side: 'british', kind: 'march', coords: [[-73.9330, 40.6230], [-73.9190, 40.6370], [-73.9040, 40.6520], [-73.8955, 40.6670], [-73.8985, 40.6790]], label: 'night march, 9 p.m.–3 a.m.', labelAt: 0.5, width: 3.4 },
-    { side: 'british', kind: 'march', coords: [[-73.9010, 40.6830], [-73.9200, 40.6840], [-73.9400, 40.6828], [-73.9535, 40.6815]], label: 'Howe & Clinton, 8–9 a.m.', labelAt: 0.5, width: 3.4, ph: { label: 'Howe, 8–9 a.m.' } },
-    { side: 'british', kind: 'attack', coords: [[-73.9560, 40.6800], [-73.9660, 40.6772], [-73.9760, 40.6748], [-73.9832, 40.6735]], label: 'Cornwallis', labelAt: 0.45, ph: { label: '' } },
+    { side: 'british', kind: 'march', coords: [[-73.9010, 40.6830], [-73.9200, 40.6840], [-73.9400, 40.6828], [-73.9535, 40.6815]], label: 'Howe & Clinton, 8–9 a.m.', labelAt: 0.5, width: 3.4, ph: { label: 'Howe, 8–9 a.m.', labelAt: 0.4 } },
+    { side: 'british', kind: 'attack', coords: [[-73.9560, 40.6800], [-73.9660, 40.6772], [-73.9760, 40.6748], [-73.9832, 40.6735]] },
     { side: 'british', kind: 'attack', coords: [[-73.9545, 40.6780], [-73.9590, 40.6730], [-73.9630, 40.6700]] },
     { side: 'british', kind: 'attack', coords: [[-74.0110, 40.6260], [-74.0085, 40.6400], [-74.0045, 40.6510], [-74.0005, 40.6585]], label: 'Grant', labelAt: 0.35 },
     { side: 'hessian', kind: 'attack', coords: [[-73.9570, 40.6460], [-73.9600, 40.6560], [-73.9640, 40.6630]], label: 'Hessians', labelAt: 0.45 },
     { side: 'continental', kind: 'retreat', coords: [[-73.9670, 40.6700], [-73.9725, 40.6780], [-73.9785, 40.6850]] },
-    { side: 'continental', kind: 'retreat', coords: [[-73.9300, 40.6765], [-73.9450, 40.6880], [-73.9640, 40.6935]], label: 'Miles', labelAt: 0.5 },
+    { side: 'continental', kind: 'retreat', coords: [[-73.9300, 40.6765], [-73.9450, 40.6880], [-73.9640, 40.6935]], label: 'Miles', labelAt: 0.5, ph: { labelAt: 0.8 } },
     { side: 'continental', kind: 'retreat', coords: [[-73.9975, 40.6640], [-73.9985, 40.6700], [-73.9960, 40.6770], [-73.9920, 40.6830]] },
     { side: 'continental', kind: 'attack', coords: [[-73.9930, 40.6700], [-73.9895, 40.6715], [-73.9862, 40.6724]] }
   ],
   units: [
     { side: 'continental', coords: [-73.9955, 40.6612], angle: -12, w: 30, label: 'Stirling', labelPos: { dx: 0, dy: 15, anchor: 'middle' } },
     { side: 'continental', coords: [-73.9665, 40.6695], angle: 30, label: 'Sullivan', labelPos: { dx: 16, dy: 10 }, ph: { labelPos: { dx: -16, dy: 4, anchor: 'end' } } },
-    { side: 'british', coords: [-73.9832, 40.6750], w: 20, label: '', angle: 0, ph: { label: 'Cornwallis', labelPos: { dx: 0, dy: -12, anchor: 'middle' } } },
+    { side: 'british', coords: [-73.9832, 40.6750], w: 20, angle: 0, label: 'Cornwallis', labelPos: { dx: 0, dy: -12, anchor: 'middle' } },
     { side: 'continental', coords: [-73.9800, 40.6940], label: 'Putnam', labelPos: { dx: 0, dy: -11, anchor: 'middle' } }
   ],
   battles: [
@@ -199,7 +199,7 @@ HMap.render('#map-battle', {
   ],
   towns: [
     { place: 'brooklyn', label: { dx: -8, dy: -5, anchor: 'end' } },
-    { name: 'Flatbush', coords: [-73.9575, 40.6500], kind: 'village', label: { dx: 8, dy: 4 } },
+    { name: 'Flatbush', coords: [-73.9575, 40.6500], kind: 'village', label: { dx: 8, dy: 4 }, ph: { label: { dx: -8, dy: 6, anchor: 'end' } } },
     { name: 'Flatlands', coords: [-73.9350, 40.6220], kind: 'village', label: { dx: -9, dy: 4, anchor: 'end' } },
     { name: 'Bedford', coords: [-73.9545, 40.6795], kind: 'village', label: { dx: -2, dy: -10, anchor: 'end' } },
     { name: "Howard's tavern", coords: [-73.9035, 40.6790], kind: 'building', label: { dx: 9, dy: 14 }, phone: false }
@@ -207,7 +207,7 @@ HMap.render('#map-battle', {
   callouts: [
     { coords: [-73.8880, 40.6800], n: 1, ph: { coords: [-73.8890, 40.6720] } },
     { coords: [-74.0150, 40.6480], n: 2 },
-    { coords: [-73.9520, 40.6590], n: 3 },
+    { coords: [-73.9520, 40.6590], n: 3, ph: { coords: [-73.9470, 40.6600] } },
     { coords: [-73.9925, 40.6755], n: 4 }
   ],
   labels: [
@@ -242,7 +242,7 @@ HMap.render('#map-retreat', {
   ],
   units: [
     { side: 'continental', coords: [-73.9722, 40.6962], angle: -55, label: 'Mifflin', labelPos: { dx: 14, dy: 4 } },
-    { side: 'continental', coords: [-73.9855, 40.6845], angle: -35, w: 18 },
+    { side: 'continental', coords: [-73.9855, 40.6845], angle: -35, w: 18, label: 'covering force', labelPos: { dx: 14, dy: 10 } },
     { side: 'british', coords: [-73.9640, 40.6860], angle: -70, label: 'Howe', labelPos: { dx: 0, dy: 22, anchor: 'middle' } }
   ],
   towns: [
