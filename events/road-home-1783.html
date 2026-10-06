@@ -53,8 +53,6 @@
 </main>
 
 <script>
-// pier tips off Hoboken that reach past the shared 1776 Jersey shoreline correction
-const HOBOKEN_PIERS = [[-74.0228, 40.7350], [-74.0125, 40.7350], [-74.0125, 40.7650], [-74.0228, 40.7650]];
 const POST_ROAD = [[-73.9500, 40.8095], [-73.9530, 40.7960], [-73.9600, 40.7800], [-73.9680, 40.7650], [-73.9760, 40.7520], [-73.9800, 40.7440], [-73.9860, 40.7350], [-73.9905, 40.7270], [-73.9940, 40.7210], [-73.9965, 40.7160]];
 const DOWNTOWN = [[-73.9965, 40.7160], [-74.0010, 40.7130], [-74.0060, 40.7100], [-74.0100, 40.7080], [-74.0125, 40.7065], [-74.0140, 40.7048]];
 
@@ -63,7 +61,6 @@ HMap.render('#map-nyc', {
   bbox: [-74.06, 40.69, -73.90, 40.82],
   alt: 'Map of Manhattan in 1783 showing Washington\'s route from Harlem down the Post Road and the Bowery into the city',
   preset: 'ny1776',
-  corrections: { water: [HOBOKEN_PIERS] },
   ph: { scale: 'top-left' },
   roads: [ { name: 'Post Road', coords: POST_ROAD, labelAt: 0.35 } ],
   towns: [

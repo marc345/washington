@@ -95,7 +95,9 @@
           'Tibbetts Lk', 'Green Brook Pond', 'Indian Lk', 'Duck Pond', 'Hartsdale Lk', 'Prospect Park Lk', 'Willow Lk', 'East Pond', 'West Pond'],
         hideIn: [[-73.676, 40.964, -73.664, 40.978]],
       },
-      rivers: { hide: ['Hudson Riv', 'Hudson River Phl', 'East Riv', 'Harlem Riv', 'Jersey City Aqueduct', 'Sewer R O W'] },
+      // plus Meadowlands drainage ditches (whole streams that are only ditches)
+      rivers: { hide: ['Hudson Riv', 'Hudson River Phl', 'East Riv', 'Harlem Riv', 'Jersey City Aqueduct', 'Sewer R O W',
+        'Moonachie Crk', 'Losen Slote', 'Bashes Crk', 'Doctor Crk', 'Hackensacks Crk', 'Penhun Crk', 'Ackermans Crk'] },
     },
   };
   function applyPreset(cfg) {
