@@ -4,12 +4,10 @@ A geographic companion to Chernow's *Washington: A Life* (Revolutionary War part
 
 Read first: `SPEC.md` (goals, rules, process), `docs/AUTHORING.md` (page/map authoring and the `HMap.render` schema), `data/events.json` (the 36 events in book order). `PLAN.md` holds the research notes.
 
-## Status (2026-10-05)
+## Status (2026-10-06)
 
 - Process steps 1–3 of SPEC are done. All 36 event pages are built.
-- **Review loop (SPEC steps 4–6):** rounds 1–3 are done (reviews in `docs/reviews/round1-*.md`, `round2-*.md`, `round3.md`). Round 3 found 5 BUGs (no factual errors), all fixed in the same round. **Next: round 4, the last allowed** (`docs/reviews/round4.md`; three combined visual+history reviewers, one per page range). After round 4: fix what it finds, then write the final report of what remains (SPEC step 6) and stop the loop.
-  - Process per round: six review subagents (visual and history × pages 1–12, 13–24, 25–36; subagents can't write files, so save their final messages into the review files and push each as it arrives), then one fix subagent per page range (pages only; shared-file requests come back to the coordinator), screenshot all pages, commit, push.
-  - Usage limits have cut agents off mid-task; partial page edits are safe to commit after a no-error screenshot run. Visual reviews are the most expensive; a fix agent can do the visual check itself.
+- **Review loop (SPEC steps 4–6): finished.** Four rounds were run (the maximum); reviews are in `docs/reviews/`, and `docs/reviews/final-report.md` lists what remains (cosmetic items and known data gaps only). Nothing is in progress.
 - Stopping rule: repeat review → fix only while reviews find bugs, factual errors or inconsistencies. Cosmetic nitpicks alone don't trigger another round. Maximum 4 rounds, then report what remains.
 
 ## Done in round 1 (library, see docs/AUTHORING.md)
