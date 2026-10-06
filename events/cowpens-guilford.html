@@ -85,7 +85,7 @@ HMap.render('#map-cowpens', {
   alt: 'Map of the Cowpens battlefield showing Morgan\'s three lines across the Green River road and Tarleton\'s attack from the southeast',
   roads: [ { name: 'Green River road', coords: [CP(-900, 0), CP(-300, 0), CP(300, 0), CP(900, 30)], labelAt: 0.1 } ],
   units: [
-    { side: 'militia', coords: CP(-230, -70), angle: -45, w: 14, h: 6, label: 'skirmishers', labelPos: { dx: -12, dy: 4, anchor: 'end' } },
+    { side: 'militia', coords: CP(-230, -70), angle: -45, w: 14, h: 6, label: 'skirmishers', labelPos: { dx: -12, dy: 4, anchor: 'end' }, ph: { labelPos: { dx: 14, dy: 4, anchor: 'start' } } },
     { side: 'militia', coords: CP(-230, 70), angle: -45, w: 14, h: 6, },
     { side: 'militia', coords: CP(-137, 0), angle: -45, w: 54, h: 9, label: 'Pickens (militia)', labelPos: { dx: -30, dy: 36, anchor: 'end' } },
     { side: 'continental', coords: CP(0, 0), angle: -45, w: 60, h: 11, label: 'Howard (Continentals)', labelPos: { dx: -28, dy: -18, anchor: 'end' } },

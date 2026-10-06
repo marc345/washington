@@ -39,3 +39,22 @@ Verdict: 2 BUGs, no history ERRORs. No console/HTTP/overflow errors. All round-2
 - monmouth: m1 desktop road through "Clinton, June 18–26"; phone m1 "Delaware R." × "Crosswicks"; phone m2 callout 3 covers "fl" of "flank move"; phone m3 "American guns" under Lafayette block.
 - trenton: m1 chevron mounds (modern fill, elevation data); phone m2 "Knox's guns" touches Greene's arrowhead.
 
+## Pages 25–36 (savannah … road-home-1783)
+
+Verdict: 3 BUGs (two introduced by round-2 fixes), no ERRORs/INCONSISTENCY/UNMARKED-APPROX. All round-2 findings fixed; new positions and dates verified (Fishkill, Fort Reed, Sullivan Hill, de Barras start, Arnold at Petersburg, Cornwallis May–June, Dearborn Sep 26 / Butler Sep 28, Camden deployment).
+
+### BUG (all fixed by the coordinator in the same round)
+1. **cowpens-guilford m1 phone:** new "skirmishers" label under "Pickens (militia)" → phone label east of the block.
+2. **sullivan-expedition m2 phone:** "Sullivan Hill" overlaps the end of "escape toward Newtown" → phone position moved.
+3. **arnold-treason m2 (both):** "Arnold's flight, Sept 25" crosses Verplanck's Point on land → waypoints moved into the channel past King's Ferry.
+
+### NIT
+- sullivan m3 item 5 named Butler first with "Sep 26 and 28" in Dearborn/Butler order (fixed: "Dearborn's … Sep 26 and Butler's on Sep 28"); phone m3 return route crosses "Genesee Castle", arrowhead touches "Aug 26 – Sep 14"; phone m2 Poor & Clinton arrow across "Baldwin Cr.".
+- cowpens: phone m4 "Arnold's force" covers the Petersburg square; phone m2 "Salem" ambiguous between dots; phone m4 "Guilford Courthouse" touches "NORTH CAROLINA"; m1 only one skirmisher block labelled.
+- march-to-yorktown phone m2: north arrow on the Philipsburg dot.
+- savannah phone m2: "SOUTH CAROLINA" touches callout 2.
+- morristown-1779-80 phone m2: callout 3 clips "Lee & Ogden"; Springfield crowded.
+- arnold-treason phone m2: "Smith's" runs into "Haverstraw Bay".
+- charleston-camden phone m3: Gates arrowhead touches "Caswell".
+- virginia-1781 phone m4: battle symbol covers Spencer's Ordinary.
+- stony-point phone m3: "Paulus Hook" on the edge of the British-held area.

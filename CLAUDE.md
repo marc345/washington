@@ -7,7 +7,7 @@ Read first: `SPEC.md` (goals, rules, process), `docs/AUTHORING.md` (page/map aut
 ## Status (2026-10-05)
 
 - Process steps 1–3 of SPEC are done. All 36 event pages are built.
-- **Review loop (SPEC steps 4–6):** rounds 1 and 2 are done (reviews in `docs/reviews/round{1,2}-*.md`; round-2 fixes in the commits up to "Round 2 fixes for pages 25–36"). **Next: round 3 reviews** (`docs/reviews/round3-*.md`; a missing page range there = re-run that review). Round 2 found bugs and factual errors, so round 3 is required; round 4 is the last allowed.
+- **Review loop (SPEC steps 4–6):** rounds 1–3 are done (reviews in `docs/reviews/round1-*.md`, `round2-*.md`, `round3.md`). Round 3 found 5 BUGs (no factual errors), all fixed in the same round. **Next: round 4, the last allowed** (`docs/reviews/round4.md`; three combined visual+history reviewers, one per page range). After round 4: fix what it finds, then write the final report of what remains (SPEC step 6) and stop the loop.
   - Process per round: six review subagents (visual and history × pages 1–12, 13–24, 25–36; subagents can't write files, so save their final messages into the review files and push each as it arrives), then one fix subagent per page range (pages only; shared-file requests come back to the coordinator), screenshot all pages, commit, push.
   - Usage limits have cut agents off mid-task; partial page edits are safe to commit after a no-error screenshot run. Visual reviews are the most expensive; a fix agent can do the visual check itself.
 - Stopping rule: repeat review → fix only while reviews find bugs, factual errors or inconsistencies. Cosmetic nitpicks alone don't trigger another round. Maximum 4 rounds, then report what remains.
