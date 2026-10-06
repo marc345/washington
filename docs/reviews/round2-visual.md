@@ -81,3 +81,7 @@ Verdict: BUGs remain (one library cause, one anachronism, misplaced labels, phon
 - Unlabelled units on many pages vs trenton.html labelling every unit: philadelphia m1–m3, saratoga m3, valley-forge m1, monmouth m3, newport m2 → label or use callouts consistently.
 - Shortened phone labels lose information: trenton m1 drops "Donop"; howe m2 drops "Sep 6–8".
 
+## Pages 25–36 (savannah … road-home-1783)
+
+The separate round-2 visual review of these pages was cut off twice by usage limits. It was folded into the round-2 fix pass: the fix agent checked every map at both widths against the round-1 findings and fixed what it found (see the commit message of the pages 25–36 round-2 fix commit).
+
