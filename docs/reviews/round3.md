@@ -2,11 +2,28 @@
 
 Three reviewers, each checking visuals (every map at 1280 px and 390 px) and the history of the round-2 changes for one page range. m1, m2… = map number. A missing page range means that review has not been saved yet.
 
+## Index + pages 1–12 (lexington-concord-bunker-hill … fort-washington)
+
+Verdict: no BUGs/ERRORs. No console/HTTP errors; overview pins checked at four zooms and both widths (no overlaps, none under attribution/zoom control). All round-2 visual BUGs and history findings fixed with no regressions; round-2 changes (Fort Lee, Lake George, Morris Island, Fort Johnson, Haddrell's Point, Nook's Hill, siege forts, Valcour ships, new unit labels, approx flags) verified.
+
+### NIT
+- index: default-zoom pin "2·8·9 +15" holds 18 events (Ride to Cambridge folded into NY group); all cards reachable, splits on zoom; wide pins ~5 px off-centre.
+- lexington: phone m3 arrowheads/swords mostly cover the redoubt; phone m2 "Percy, from 9 a.m." touches "Roxbury".
+- siege-of-boston m1: red block on Bunker Hill unlabelled; "Charles River" on land west of the river.
+- invasion-of-canada: m1 "L. Megantic" ~50 units NW of the lake; phone m2 Montgomery arrowhead touches "Près-de-Ville"; phone m3 north arrow touches "Quebec"; phone m4 escape arrowhead touches the "to Split Rock…" note.
+- knox m1: "Lake George" label on land west of the lake.
+- dorchester m1: desktop "Dorchester Heights" half over water; phone stars touch arrowheads.
+- charleston m1 desktop: thin straight sliver of old outline inside Morris Island, tiny spike at its north tip.
+- new-york-defenses m2 phone: Fort Constitution and Fort Washington stars touch; "Fort Washington" label centred under the pair crossing the Hudson → anchor start right of its star.
+- long-island m3: "Mifflin" and "covering force" blocks vs caption "Mifflin's covering force" read as two forces → relabel or merge. m1 Jamaica Bay fill/basins remain.
+- kips-bay: m1 desktop militia block covers part of "Kip's Bay", "Conn. militia" in the river; phone m1 militia label ~70 units below its block; m2 Knowlton route through "Hollow Way".
+- white-plains m1 phone: Fort Lee and Ft. Washington stars half over water.
+
 ## Pages 13–24 (retreat-across-new-jersey … newport-1778)
 
 Verdict: 2 BUGs, no history ERRORs. No console/HTTP/overflow errors. All round-2 BUGs and the history ERROR/INCONSISTENCY are fixed; round-2 text and position changes verified (Trenton river labels, Monmouth dates, Delaware forts galley dates, Germantown wings, Saratoga Jul 6 leg, Princeton retreats, Lacey at Crooked Billet, Fort Nonsense, Sandy Hollow).
 
-### BUG
+### BUG (both fixed by the coordinator in the same round)
 1. **retreat-across-new-jersey m3 phone:** scale box covers most of the "River line guarded by Washington" shading → `ph: { scale: 'bottom-right' }`.
 2. **newport-1778 m1 (both):** French "into the bay, Aug 8" track crosses Brenton's Neck (point [-71.355, 41.462] on land) → route up the East Passage.
 
