@@ -61,8 +61,8 @@ HMap.render('#map-hudson', {
   water: { hide: ['Greenwood Lk', 'Lk Hopatcong'] },
   towns: [
     { name: 'Staten Island', coords: [-74.15, 40.58], kind: 'village', side: 'british', label: { dx: 9, dy: 12 } },
-    { name: 'Philipsburg\ncamps', coords: [-73.83, 41.03], kind: 'village', label: { dx: 8, dy: 14 } },
-    { name: 'King\'s Ferry', coords: [-73.96, 41.245], kind: 'ferry', label: { dx: 10, dy: -6 } },
+    { name: 'Philipsburg\ncamps', coords: [-73.83, 41.03], kind: 'village', label: { dx: 8, dy: 14 }, ph: { label: { dx: -4, dy: 20, anchor: 'start' } } },
+    { name: 'King\'s Ferry', coords: [-73.96, 41.245], kind: 'ferry', label: { dx: 10, dy: -6 }, ph: { label: { dx: -12, dy: 4, anchor: 'end' } } },
     { name: 'Suffern', coords: [-74.149, 41.115], kind: 'village', label: { dx: 9, dy: -4 } },
     { name: 'Pompton', coords: [-74.29, 40.99], kind: 'village', label: { dx: -8, dy: -4, anchor: 'end' } },
     { name: 'Paramus', coords: [-74.075, 40.945], kind: 'village', label: { dx: 9, dy: 4 } },
@@ -70,7 +70,7 @@ HMap.render('#map-hudson', {
     { name: 'Chatham', coords: [-74.383, 40.741], kind: 'hq', label: { dx: 10, dy: -4 } },
     { name: 'Springfield', coords: [-74.317, 40.70], kind: 'village', label: { dx: 9, dy: 10 } },
     { name: 'Bullion\'s Tavern', coords: [-74.578, 40.665], kind: 'village', label: { dx: -8, dy: -4, anchor: 'end' } },
-    { name: 'Somerset Court House', coords: [-74.594, 40.50], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Somerset Court House', coords: [-74.594, 40.50], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' }, ph: { name: 'Somerset C.H.' } },
     { place: 'elizabethtown', label: { dx: 9, dy: 4 } },
     { place: 'new-brunswick', label: { dx: 0, dy: -12, anchor: 'middle' } }
   ],
@@ -84,13 +84,13 @@ HMap.render('#map-hudson', {
   units: [
     { side: 'british', coords: [-73.99, 40.72], label: 'Clinton\n(New York)', labelPos: { dx: 18, dy: -2 } }
   ],
-  ships: [ { side: 'british', coords: [-74.03, 40.49], angle: 0 } ],
+  ships: [ { side: 'british', coords: [-74.03, 40.49], angle: 0, label: 'British fleet', labelPos: { dx: 0, dy: 22, anchor: 'middle' } } ],
   callouts: [
     { coords: [-73.99, 41.28], n: 1 },
     { coords: [-74.43, 40.712], n: 2 }
   ],
   labels: [
-    { coords: [-74.25, 41.25], text: 'NEW YORK', kind: 'region', size: 12 },
+    { coords: [-74.25, 41.25], text: 'NEW YORK', kind: 'region', size: 12, ph: { coords: [-74.55, 41.25] } },
     { coords: [-74.65, 40.95], text: 'NEW JERSEY', kind: 'region', size: 12 },
     { coords: [-73.915, 40.93], text: 'Hudson River', kind: 'water', size: 12, angle: -78 },
     { coords: [-73.80, 40.42], text: 'Atlantic Ocean', kind: 'water', size: 13 },
@@ -121,9 +121,9 @@ HMap.render('#map-route', {
     { side: 'continental', kind: 'march', label: 'allied armies, Aug 19 – Sep 8', labelAt: 0.4, ph: { label: 'allied armies' }, coords: [[-73.83, 41.03], [-73.96, 41.25], [-74.15, 41.10], [-74.40, 40.75], [-74.66, 40.35], [-74.766, 40.222], [-75.145, 39.95], [-75.356, 39.849], [-75.55, 39.75], [-75.80, 39.62]] },
     { side: 'continental', kind: 'naval', label: 'by water, Sep 9–26', labelAt: 0.5, approx: true, coords: [[-75.95, 39.50], [-76.20, 39.25], [-76.40, 38.95], [-76.40, 38.55], [-76.25, 38.05], [-76.14, 37.55], [-76.18, 37.15], [-76.36, 37.00], [-76.55, 37.10], [-76.68, 37.20]] },
     { side: 'continental', kind: 'march', approx: true, coords: [[-75.85, 39.58], [-76.25, 39.42], [-76.58, 39.30], [-76.50, 39.02]] },
-    { side: 'continental', kind: 'march', approx: true, label: 'Washington rides ahead', labelAt: 0.8, ph: { label: 'Washington' }, width: 1.8, coords: [[-76.62, 39.27], [-76.85, 39.00], [-77.08, 38.72], [-77.46, 38.30], [-77.25, 37.80], [-76.95, 37.45], [-76.72, 37.28]] }
+    { side: 'continental', kind: 'march', approx: true, label: 'Washington rides ahead', labelAt: 0.8, flip: false, ph: { label: 'Washington' }, width: 1.8, coords: [[-76.62, 39.27], [-76.85, 39.00], [-77.08, 38.72], [-77.46, 38.30], [-77.25, 37.80], [-76.95, 37.45], [-76.72, 37.28]] }
   ],
-  units: [ { side: 'british', coords: [-73.98, 40.70], label: 'Clinton\n(New York)', labelPos: { dx: 18, dy: 4 } },
+  units: [ { side: 'british', coords: [-73.98, 40.70], label: 'Clinton\n(New York)', labelPos: { dx: 18, dy: 4 }, ph: { label: 'Clinton', labelPos: { dx: 0, dy: 22, anchor: 'middle' } } },
            { side: 'british', coords: [-76.51, 37.235], label: 'Cornwallis\n(Yorktown)', labelPos: { dx: 18, dy: 0 } } ],
   ships: [ { side: 'french', coords: [-76.05, 36.95], label: 'de Grasse, Aug 30', labelPos: { dx: 16, dy: 14, anchor: 'start' } } ],
   labels: [

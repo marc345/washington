@@ -108,8 +108,8 @@ HMap.render('#map-theater', {
   units: [
     { side: 'french', coords: [-76.537, 37.226], label: 'French', w: 30, labelPos: { dx: -20, dy: 4, anchor: 'end' } },
     { side: 'continental', coords: [-76.497, 37.207], label: 'Americans', w: 30, labelPos: { dx: 22, dy: 4 } },
-    { side: 'british', coords: [-76.508, 37.235], w: 16, h: 8 },
-    { side: 'british', coords: [-76.497, 37.258], w: 16, h: 8 },
+    { side: 'british', coords: [-76.508, 37.235], w: 16, h: 8, label: 'Cornwallis', labelPos: { dx: 14, dy: 12, anchor: 'start' } },
+    { side: 'british', coords: [-76.497, 37.258], w: 16, h: 8, label: 'Tarleton', labelPos: { dx: 14, dy: -4, anchor: 'start' } },
     { side: 'militia', coords: [-76.530, 37.310], label: 'Weedon\'s militia', w: 20, h: 9, labelPos: { dx: -16, dy: 4, anchor: 'end' } }
   ],
   ships: [
@@ -246,6 +246,7 @@ HMap.render('#map-surrender', {
   ],
   labels: [
     { coords: [-76.4900, 37.2300], text: 'York River', kind: 'water', angle: -24 },
+    { coords: [-76.5140, 37.2335], text: 'YORKTOWN', kind: 'region', size: 11, anchor: 'end' },
     { coords: [-76.5085, 37.2175], text: 'French\nranks', kind: 'note', anchor: 'end', dx: -10, size: 12.5 },
     { coords: [-76.5040, 37.2175], text: 'American\nranks', kind: 'note', anchor: 'start', dx: 10, size: 12.5 },
     { coords: [-76.5040, 37.2045], text: 'Hampton road', kind: 'note', anchor: 'start', dx: 8, size: 11 }

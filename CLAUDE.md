@@ -7,10 +7,9 @@ Read first: `SPEC.md` (goals, rules, process), `docs/AUTHORING.md` (page/map aut
 ## Status (2026-10-05)
 
 - Process steps 1–3 of SPEC are done. All 36 event pages are built.
-- **Review loop (SPEC steps 4–6):** round 1 is done (reviews in `docs/reviews/round1-*.md`, fixes in commit 901d045). **Now: round 2.** Findings are in `docs/reviews/round2-visual.md` and `docs/reviews/round2-history.md`; each file lists the page ranges it holds. All history ranges and visual 1–24 are saved; visual 25–36 was folded into the fix pass. Fixes for pages 1–24 are done (c7729e3); pages 25–36 fix pass (visual check + round-2 history findings) is the last round-2 step — if its commit is missing, re-run it.
-  - Round-2 shared fixes already pushed: label clamp no longer covers own symbol, overview pin grouping, Fort Lee on land, Redoubt/Ship legend entries.
-  - Round-2 page fixes: one subagent per page range (1–12, 13–24, 25–36), pages only; shared-file requests come back to the coordinator. If pages show uncommitted edits after a restart, check them with screenshots and commit. Then screenshot all pages, commit, push.
-  - Then round 3 only if round 2 found bugs, factual errors or inconsistencies (it did, so round 3 reviews follow the round-2 fixes).
+- **Review loop (SPEC steps 4–6):** rounds 1 and 2 are done (reviews in `docs/reviews/round{1,2}-*.md`; round-2 fixes in the commits up to "Round 2 fixes for pages 25–36"). **Next: round 3 reviews** (`docs/reviews/round3-*.md`; a missing page range there = re-run that review). Round 2 found bugs and factual errors, so round 3 is required; round 4 is the last allowed.
+  - Process per round: six review subagents (visual and history × pages 1–12, 13–24, 25–36; subagents can't write files, so save their final messages into the review files and push each as it arrives), then one fix subagent per page range (pages only; shared-file requests come back to the coordinator), screenshot all pages, commit, push.
+  - Usage limits have cut agents off mid-task; partial page edits are safe to commit after a no-error screenshot run. Visual reviews are the most expensive; a fix agent can do the visual check itself.
 - Stopping rule: repeat review → fix only while reviews find bugs, factual errors or inconsistencies. Cosmetic nitpicks alone don't trigger another round. Maximum 4 rounds, then report what remains.
 
 ## Done in round 1 (library, see docs/AUTHORING.md)

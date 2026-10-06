@@ -61,7 +61,7 @@
         <li>Sep 7: Kanadaseaga, the chief Seneca town.</li>
         <li>Sep 13: a scouting party under Lt. Thomas Boyd is ambushed near Conesus Lake. Boyd and Sgt. Michael Parker are captured and killed.</li>
         <li>Sep 14–15: Genesee Castle (Little Beard's Town), the largest town, is destroyed. The army turns back.</li>
-        <li>Sep 20–28: Butler's detachment burns the Cayuga towns on the east shore, and Dearborn's the west shore. Both rejoin the army near Tioga, and it reaches Easton on Oct 15.</li>
+        <li>Sep 20–28: Butler's detachment burns the Cayuga towns on the east shore, and Dearborn's the west shore. They rejoin the army at Fort Reed (Newtown) on Sep 26 and 28, and it reaches Easton on Oct 15.</li>
       </ol>
       <span class="note-approx">Town sites and routes are approximate. Only the main towns are shown.</span>
     </figcaption>
@@ -146,10 +146,10 @@ HMap.render('#map-newtown', {
     { coords: [-76.7170, 42.0440], n: 1 },
     { coords: [-76.7110, 42.0520], n: 2 },
     { coords: [-76.7280, 42.0295], n: 3 },
-    { coords: [-76.7440, 42.0560], n: 4 }
+    { coords: [-76.7580, 42.0645], n: 4 }
   ],
   labels: [
-    { coords: [-76.7390, 42.0475], text: 'Sullivan Hill', kind: 'terrain', size: 13, angle: -25 },
+    { coords: [-76.7470, 42.0505], text: 'Sullivan Hill', kind: 'terrain', size: 13, angle: -25 },
     { coords: [-76.7560, 42.0420], text: 'Chemung River', kind: 'water', angle: -38 },
     { coords: [-76.7260, 42.0545], text: 'Baldwin Cr.', kind: 'water', size: 11.5, angle: -60 }
   ]
@@ -167,8 +167,8 @@ HMap.render('#map-lakes', {
   alt: 'Map of the Finger Lakes region showing the army\'s route from Tioga past Seneca Lake to the Genesee River, the Seneca and Cayuga towns it burned, and the detachments that swept Cayuga Lake',
   towns: [
     { place: 'tioga', label: { dx: 8, dy: 12 } },
-    { name: 'Newtown', coords: [-76.800, 42.090], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
-    { name: 'Catharine\'s Town', coords: [-76.845, 42.347], kind: 'village', label: { dx: 8, dy: 12 } },
+    { name: 'Newtown (Fort Reed)', coords: [-76.800, 42.090], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Catharine\'s Town', coords: [-76.845, 42.347], kind: 'village', label: { dx: 8, dy: -6 } },
     { name: 'Kendaia', coords: [-76.875, 42.715], kind: 'village', label: { dx: 8, dy: 4 } },
     { name: 'Kanadaseaga', coords: [-76.980, 42.870], kind: 'village', label: { dx: -2, dy: -9, anchor: 'end' } },
     { name: 'Skoiyase', coords: [-76.860, 42.905], kind: 'village', label: { dx: 6, dy: -7 } },
@@ -180,10 +180,10 @@ HMap.render('#map-lakes', {
     { name: 'Coreorgonel', coords: [-76.530, 42.430], kind: 'village', label: { dx: 8, dy: -6 } }
   ],
   moves: [
-    { side: 'continental', kind: 'march', label: 'Aug 26 – Sep 14', labelAt: 0.92, coords: [[-76.515, 41.99], [-76.735, 42.04], [-76.83, 42.18], [-76.845, 42.35], [-76.835, 42.47], [-76.845, 42.60], [-76.862, 42.72], [-76.935, 42.86], [-77.28, 42.89], [-77.50, 42.79], [-77.70, 42.74], [-77.80, 42.775]] },
-    { side: 'continental', kind: 'retreat', label: 'return, Sep 16–30', labelAt: 0.88, coords: [[-77.80, 42.80], [-77.66, 42.84], [-77.50, 42.835], [-77.28, 42.915], [-76.98, 42.895], [-76.88, 42.80], [-76.835, 42.70], [-76.815, 42.50], [-76.82, 42.34], [-76.77, 42.16], [-76.62, 42.03], [-76.53, 41.99]] },
-    { side: 'continental', kind: 'march', label: 'Dearborn', labelAt: 0.35, approx: true, coords: [[-76.86, 42.68], [-76.78, 42.56], [-76.62, 42.45], [-76.56, 42.415]] },
-    { side: 'continental', kind: 'march', label: 'Butler', labelAt: 0.4, approx: true, coords: [[-76.90, 42.90], [-76.725, 42.835], [-76.695, 42.76], [-76.64, 42.68], [-76.56, 42.60], [-76.48, 42.51], [-76.46, 42.38], [-76.48, 42.20], [-76.50, 42.02]] }
+    { side: 'continental', kind: 'march', label: 'Aug 26 – Sep 14', labelAt: 0.92, approx: true, coords: [[-76.515, 41.99], [-76.735, 42.04], [-76.83, 42.18], [-76.845, 42.35], [-76.835, 42.47], [-76.845, 42.60], [-76.862, 42.72], [-76.935, 42.86], [-77.28, 42.89], [-77.50, 42.79], [-77.70, 42.74], [-77.80, 42.775]] },
+    { side: 'continental', kind: 'retreat', label: 'return, Sep 16–30', labelAt: 0.2, ph: { labelAt: 0.1 }, approx: true, coords: [[-77.80, 42.80], [-77.66, 42.84], [-77.50, 42.835], [-77.28, 42.915], [-76.98, 42.895], [-76.88, 42.80], [-76.835, 42.70], [-76.815, 42.50], [-76.82, 42.34], [-76.77, 42.16], [-76.62, 42.03], [-76.53, 41.99]] },
+    { side: 'continental', kind: 'march', label: 'Dearborn', labelAt: 0.22, approx: true, coords: [[-76.86, 42.68], [-76.78, 42.56], [-76.62, 42.45], [-76.56, 42.415], [-76.61, 42.30], [-76.71, 42.17], [-76.785, 42.105]] },
+    { side: 'continental', kind: 'march', label: 'Butler', labelAt: 0.4, approx: true, coords: [[-76.90, 42.90], [-76.725, 42.835], [-76.695, 42.76], [-76.64, 42.68], [-76.56, 42.60], [-76.48, 42.51], [-76.46, 42.38], [-76.49, 42.24], [-76.60, 42.14], [-76.77, 42.10]] }
   ],
   battles: [
     { coords: [-76.735, 42.04], label: 'Aug 29', labelPos: { dx: 14, dy: 4, anchor: 'start' } },

@@ -107,17 +107,17 @@ HMap.render('#map-campaign', {
     { coords: [-81.377, 35.142], label: 'King\'s Mountain, Oct 7', labelPos: { dx: 10, dy: 24, anchor: 'start' } }
   ],
   moves: [
-    { side: 'british', kind: 'naval', label: 'Feb 11', labelAt: 0.5, coords: [[-79.950, 32.520], [-80.100, 32.560], [-80.170, 32.610]] },
-    { side: 'british', kind: 'march', label: 'Cornwallis, June', labelAt: 0.5, coords: [[-79.990, 32.900], [-80.150, 33.300], [-80.450, 33.850], [-80.590, 34.210]] },
-    { side: 'continental', kind: 'march', label: 'Gates', labelAt: 0.4, coords: [[-79.640, 35.700], [-79.920, 35.000], [-80.250, 34.620], [-80.560, 34.420]] },
-    { side: 'continental', kind: 'retreat', label: 'flight to Charlotte', labelAt: 0.78, ph: { label: 'flight', labelAt: 0.22 }, coords: [[-80.625, 34.360], [-80.700, 34.600], [-80.790, 34.950], [-80.835, 35.190]] },
+    { side: 'british', kind: 'naval', approx: true, label: 'Feb 11', labelAt: 0.5, coords: [[-79.950, 32.520], [-80.100, 32.560], [-80.170, 32.610]] },
+    { side: 'british', kind: 'march', approx: true, label: 'Cornwallis, May–June', labelAt: 0.5, ph: { labelAt: 0.68 }, coords: [[-79.990, 32.900], [-80.150, 33.300], [-80.450, 33.850], [-80.590, 34.210]] },
+    { side: 'continental', kind: 'march', approx: true, label: 'Gates', labelAt: 0.4, coords: [[-79.640, 35.700], [-79.920, 35.000], [-80.250, 34.620], [-80.560, 34.420]] },
+    { side: 'continental', kind: 'retreat', approx: true, label: 'flight to Charlotte', labelAt: 0.78, ph: { label: 'flight', labelAt: 0.22 }, coords: [[-80.625, 34.360], [-80.700, 34.600], [-80.790, 34.950], [-80.835, 35.190]] },
     { side: 'militia', kind: 'march', approx: true, label: 'Overmountain men', labelAt: 0.3, ph: { label: 'Overmountain', labelAt: 0.22 }, coords: [[-82.220, 36.320], [-81.950, 36.050], [-81.700, 35.760], [-81.900, 35.380], [-81.820, 35.160], [-81.420, 35.140]] },
     { side: 'loyalist', kind: 'march', approx: true, label: 'Ferguson', labelAt: 0.55, coords: [[-81.900, 35.340], [-81.650, 35.280], [-81.400, 35.160]] }
   ],
   callouts: [
     { coords: [-80.400, 32.580], n: 1 },
     { coords: [-80.900, 34.700], n: 2 },
-    { coords: [-79.550, 35.950], n: 3 },
+    { coords: [-79.550, 35.950], n: 3, ph: { coords: [-79.850, 35.820] } },
     { coords: [-82.450, 36.200], n: 4 }
   ],
   labels: [
@@ -133,8 +133,8 @@ HMap.render('#map-campaign', {
 
 // 1780 shorelines: the peninsula's Ashley-side marshes and the Cooper wharves were later filled (approximate)
 // (outer edges run through modern water so no straight edge shows on land)
-const ashleyFill = [[-79.9290, 32.7718], [-79.9335, 32.7728], [-79.9385, 32.7745], [-79.9425, 32.7775], [-79.9450, 32.7815], [-79.9470, 32.7865], [-79.9495, 32.7915], [-79.9530, 32.7950], [-79.9690, 32.7950], [-79.9655, 32.7900], [-79.9610, 32.7860], [-79.9570, 32.7820], [-79.9510, 32.7775], [-79.9465, 32.7735], [-79.9420, 32.7700], [-79.9330, 32.7680], [-79.9290, 32.7690]];
-const cooperFill = ([[-79.9290, 32.7718], [-79.9268, 32.7760], [-79.9270, 32.7820], [-79.9290, 32.7880], [-79.9300, 32.7960], [-79.9180, 32.7960], [-79.9180, 32.7690]]);
+const ashleyFill = [[-79.9290, 32.7718], [-79.9335, 32.7728], [-79.9385, 32.7745], [-79.9425, 32.7775], [-79.9450, 32.7815], [-79.9470, 32.7865], [-79.9495, 32.7915], [-79.9530, 32.7935], [-79.9575, 32.7937], [-79.9620, 32.7920], [-79.9665, 32.7895], [-79.9705, 32.7868], [-79.9610, 32.7860], [-79.9570, 32.7820], [-79.9510, 32.7775], [-79.9465, 32.7735], [-79.9420, 32.7700], [-79.9330, 32.7680], [-79.9290, 32.7690]];
+const cooperFill = ([[-79.9290, 32.7718], [-79.9268, 32.7760], [-79.9270, 32.7820], [-79.9290, 32.7880], [-79.9302, 32.7975], [-79.9270, 32.8010], [-79.9180, 32.8030], [-79.9180, 32.7690]]);
 const sumter = ([[-79.8768, 32.7508], [-79.8728, 32.7508], [-79.8728, 32.7540], [-79.8768, 32.7540]]);
 // Morris Island before later erosion: a long beach island from Cummings Point south (approximate)
 const morris = [[-79.8745, 32.7490], [-79.8722, 32.7465], [-79.8708, 32.7430], [-79.8700, 32.7380], [-79.8702, 32.7300], [-79.8712, 32.7200], [-79.8730, 32.7100], [-79.8752, 32.7000], [-79.8770, 32.6950], [-79.8900, 32.6950], [-79.8890, 32.7050], [-79.8850, 32.7150], [-79.8800, 32.7250], [-79.8775, 32.7350], [-79.8780, 32.7420], [-79.8770, 32.7470]];
@@ -201,8 +201,8 @@ HMap.render('#map-camden', {
   ],
   units: [
     { side: 'continental', coords: [-80.6145, 34.3335], w: 22, label: 'de Kalb, Gist', labelPos: { dx: -16, dy: 4, anchor: 'end' } },
-    { side: 'militia', coords: [-80.6050, 34.3335], w: 22, label: '' },
-    { side: 'militia', coords: [-80.5960, 34.3335], w: 22, label: 'Stevens, Caswell', labelPos: { dx: 16, dy: -8, anchor: 'start' } },
+    { side: 'militia', coords: [-80.6050, 34.3335], w: 22, label: 'Caswell', labelPos: { dx: 0, dy: -12, anchor: 'middle' } },
+    { side: 'militia', coords: [-80.5960, 34.3335], w: 22, label: 'Stevens', labelPos: { dx: 16, dy: -8, anchor: 'start' } },
     { side: 'continental', coords: [-80.6080, 34.3420], w: 20, label: 'Smallwood', labelPos: { dx: 14, dy: -6, anchor: 'start' } },
     { side: 'british', coords: [-80.5960, 34.3265], w: 22, label: 'Webster', labelPos: { dx: 16, dy: 10, anchor: 'start' } },
     { side: 'loyalist', coords: [-80.6145, 34.3265], w: 22, label: 'Rawdon', labelPos: { dx: -16, dy: 4, anchor: 'end' } },

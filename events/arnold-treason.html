@@ -75,7 +75,7 @@ HMap.render('#map-ride', {
     { place: 'hartford', label: { dx: 10, dy: -6 } },
     { place: 'west-point', side: 'continental', label: { dx: -12, dy: 4, anchor: 'end' } },
     { place: 'peekskill', label: { dx: 8, dy: 12 } },
-    { name: 'Fishkill', coords: [-73.899, 41.535], kind: 'village', label: { dx: 8, dy: -4 } },
+    { name: 'Fishkill', coords: [-73.899, 41.535], kind: 'village', label: { dx: -8, dy: -6, anchor: 'end' } },
     { name: 'Litchfield', coords: [-73.189, 41.747], kind: 'village', label: { dx: 0, dy: -10, anchor: 'middle' } },
     { name: 'Farmington', coords: [-72.832, 41.720], kind: 'village', label: { dx: 0, dy: 16, anchor: 'middle' } },
     { name: 'Danbury', coords: [-73.454, 41.394], kind: 'village', label: { dx: 8, dy: 4 } },
@@ -84,14 +84,14 @@ HMap.render('#map-ride', {
     { place: 'new-haven', label: { dx: 8, dy: 10 } }
   ],
   moves: [
-    { side: 'continental', kind: 'march', approx: true, label: 'Washington, Sept 18–25', labelAt: 0.72, coords: [[-73.940, 41.270], [-73.900, 41.470], [-73.700, 41.560], [-73.480, 41.650], [-73.300, 41.720], [-73.190, 41.750]] },
+    { side: 'continental', kind: 'march', approx: true, label: 'Washington, Sept 18–25', labelAt: 0.72, coords: [[-73.940, 41.270], [-73.925, 41.420], [-73.899, 41.535], [-73.700, 41.600], [-73.480, 41.660], [-73.300, 41.720], [-73.190, 41.750]] },
     { side: 'continental', kind: 'march', coords: [[-73.190, 41.750], [-72.840, 41.722], [-72.690, 41.760]] },
     { side: 'french', kind: 'march', coords: [[-72.450, 41.620], [-72.560, 41.700], [-72.660, 41.755]] },
     { side: 'continental', kind: 'march', approx: true, label: 'messenger misses him', labelAt: 0.5, coords: [[-73.700, 41.140], [-73.560, 41.280], [-73.460, 41.385]] }
   ],
   callouts: [
     { coords: [-72.640, 41.640], n: 1 },
-    { coords: [-74.040, 41.570], n: 2 }
+    { coords: [-73.850, 41.490], n: 2 }
   ],
   labels: [
     { coords: [-72.950, 41.080], text: 'Long Island Sound', kind: 'water' },
@@ -116,7 +116,7 @@ HMap.render('#map-plot', {
     { place: 'stony-point', side: 'continental', label: { dx: -12, dy: 10, anchor: 'end' } },
     { place: 'verplancks-point', side: 'continental', label: { dx: 12, dy: 0, anchor: 'start' } },
     { place: 'peekskill', label: { dx: 8, dy: -4 } },
-    { name: 'Smith\'s house', coords: [-73.9880, 41.2085], kind: 'building', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { name: 'Smith\'s house', coords: [-73.9880, 41.2085], kind: 'building', label: { dx: -8, dy: 4, anchor: 'end' }, ph: { name: 'Smith\'s' } },
     { name: 'Crompond', coords: [-73.8400, 41.2940], kind: 'village', label: { dx: 8, dy: -4 } },
     { name: 'Pines Bridge', coords: [-73.7980, 41.2290], kind: 'ferry', label: { dx: 9, dy: 4 } },
     { name: 'Tarrytown', coords: [-73.8590, 41.0760], kind: 'village', label: { dx: 8, dy: 12 } },

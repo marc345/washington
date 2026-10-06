@@ -80,7 +80,7 @@ HMap.render('#map-camp', {
     { name: 'Ford house', coords: [-74.4705, 40.7983], kind: 'hq', label: { dx: 12, dy: 4, anchor: 'start' } },
     { name: '', coords: [-74.4930, 40.7905], kind: 'building' },
     { name: '', coords: [-74.5455, 40.7605], kind: 'building' },
-    { name: 'Fort Nonsense (1777)', coords: [-74.4777, 40.7922], kind: 'fort', side: 'continental', label: { dx: 10, dy: 14, anchor: 'start' } }
+    { name: 'Fort Nonsense (1777)', coords: [-74.4777, 40.7922], kind: 'fort', side: 'continental', label: { dx: 10, dy: 14, anchor: 'start' }, ph: { label: { dx: 0, dy: 22, anchor: 'middle' } } }
   ],
   callouts: [
     { coords: [-74.4705, 40.8050], n: 1 },
@@ -124,8 +124,8 @@ HMap.render('#map-springfield', {
   ],
   moves: [
     { side: 'british', kind: 'march', approx: true, label: 'June 7', labelAt: 0.75, ph: { labelAt: 0.05 }, coords: [[-74.1900, 40.6490], [-74.2140, 40.6640], [-74.2400, 40.6828], [-74.2700, 40.6925], [-74.2900, 40.6975]] },
-    { side: 'british', kind: 'attack', label: 'Knyphausen, June 23', labelAt: 0.4, coords: [[-74.1960, 40.6610], [-74.2190, 40.6740], [-74.2440, 40.6905], [-74.2620, 40.6975], [-74.2860, 40.7035], [-74.2995, 40.7085]] },
-    { side: 'british', kind: 'attack', label: 'Mathew', labelAt: 0.6, coords: [[-74.2440, 40.6930], [-74.2600, 40.7010], [-74.2700, 40.7040], [-74.2790, 40.7130], [-74.2845, 40.7195]] }
+    { side: 'british', kind: 'attack', label: 'Knyphausen, June 23', labelAt: 0.4, ph: { labelAt: 0.25 }, coords: [[-74.1960, 40.6610], [-74.2190, 40.6740], [-74.2440, 40.6905], [-74.2620, 40.6975], [-74.2860, 40.7035], [-74.2995, 40.7085]] },
+    { side: 'british', kind: 'attack', label: 'Mathew', labelAt: 0.6, ph: { labelAt: 0.78 }, coords: [[-74.2440, 40.6930], [-74.2600, 40.7010], [-74.2700, 40.7040], [-74.2790, 40.7130], [-74.2845, 40.7195]] }
   ],
   units: [
     { side: 'continental', coords: [-74.3010, 40.7095], angle: -70, w: 20, label: 'Angell', labelPos: { dx: 14, dy: 16 } },
@@ -142,7 +142,7 @@ HMap.render('#map-springfield', {
   ],
   labels: [
     { coords: [-74.3400, 40.6900], text: 'Watchung\nMts.', kind: 'terrain', size: 12 },
-    { coords: [-74.3260, 40.7350], text: 'Short Hills', kind: 'terrain', size: 12, angle: -30 },
+    { coords: [-74.3260, 40.7350], text: 'Short Hills', kind: 'terrain', size: 12, angle: -30, ph: { coords: [-74.3110, 40.7400] } },
     { coords: [-74.3150, 40.6820], text: 'Rahway R.', kind: 'water', size: 11.5, angle: -80 },
     { coords: [-74.1800, 40.6900], text: 'Newark Bay', kind: 'water', size: 12.5, angle: -60 },
     { coords: [-74.1880, 40.6385], text: 'to Staten Island', kind: 'note', size: 10.5 },

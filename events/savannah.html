@@ -76,7 +76,7 @@ HMap.render('#map-1778', {
   alt: 'Map of the eastern approaches to Savannah showing the British landing at Brewton Hill, the American line and the flanking path through the swamp',
   water: localWater, rivers: localRivers,
   areas: [
-    { coords: town, side: 'neutral', opacity: 0.25, smooth: false, label: 'Savannah', size: 13 },
+    { coords: town, side: 'neutral', opacity: 0.25, smooth: false, label: 'Savannah', size: 13, labelAt: [-81.0925, 32.0796] },
     { coords: [[-81.0930, 32.0715], [-81.0860, 32.0700], [-81.0760, 32.0700], [-81.0680, 32.0690], [-81.0660, 32.0640], [-81.0760, 32.0615], [-81.0880, 32.0625], [-81.0950, 32.0670]], side: 'neutral', opacity: 0.12, legend: 'Swamp and rice fields (approximate)' },
     { coords: [[-81.0735, 32.0790], [-81.0640, 32.0785], [-81.0640, 32.0745], [-81.0735, 32.0750]], side: 'neutral', opacity: 0.12 }
   ],
@@ -93,7 +93,7 @@ HMap.render('#map-1778', {
   moves: [
     { side: 'british', kind: 'naval', label: 'landing', labelAt: 0.4, coords: [[-81.0400, 32.0870], [-81.0480, 32.0815], [-81.0525, 32.0770]] },
     { side: 'british', kind: 'march', label: 'Campbell', labelAt: 0.55, coords: [[-81.0540, 32.0720], [-81.0640, 32.0728], [-81.0730, 32.0740]] },
-    { side: 'british', kind: 'attack', label: 'Baird', labelAt: 0.5, coords: [[-81.0660, 32.0715], [-81.0700, 32.0665], [-81.0800, 32.0650], [-81.0890, 32.0665], [-81.0925, 32.0725]] },
+    { side: 'british', kind: 'attack', approx: true, label: 'Baird', labelAt: 0.5, coords: [[-81.0660, 32.0715], [-81.0700, 32.0665], [-81.0800, 32.0650], [-81.0890, 32.0665], [-81.0925, 32.0725]] },
     { side: 'continental', kind: 'retreat', coords: [[-81.0800, 32.0750], [-81.0920, 32.0770], [-81.1040, 32.0800]] },
     { side: 'continental', kind: 'retreat', coords: [[-81.1040, 32.0800], [-81.1120, 32.0850], [-81.1190, 32.0920]] }
   ],
@@ -134,9 +134,9 @@ HMap.render('#map-region', {
     { side: 'french', coords: [-80.810, 31.935] }
   ],
   moves: [
-    { side: 'french', kind: 'naval', label: 'Sept 12', labelAt: 0.5, coords: [[-80.860, 31.920], [-80.960, 31.930], [-81.060, 31.945], [-81.090, 31.972]] },
-    { side: 'french', kind: 'march', label: 'Sept 16', labelAt: 0.5, coords: [[-81.098, 31.988], [-81.105, 32.030], [-81.098, 32.065]] },
-    { side: 'continental', kind: 'march', label: 'Lincoln, from Charleston', labelAt: 0.35, coords: [[-80.900, 32.480], [-81.030, 32.360], [-81.110, 32.290], [-81.135, 32.268]] },
+    { side: 'french', kind: 'naval', approx: true, label: 'Sept 12', labelAt: 0.5, coords: [[-80.860, 31.920], [-80.960, 31.930], [-81.060, 31.945], [-81.090, 31.972]] },
+    { side: 'french', kind: 'march', approx: true, label: 'Sept 16', labelAt: 0.5, coords: [[-81.098, 31.988], [-81.105, 32.030], [-81.098, 32.065]] },
+    { side: 'continental', kind: 'march', approx: true, label: 'Lincoln, from Charleston', labelAt: 0.35, coords: [[-80.900, 32.480], [-81.030, 32.360], [-81.110, 32.290], [-81.135, 32.268]] },
     { side: 'continental', kind: 'march', approx: true, label: 'Sept 16', labelAt: 0.5, coords: [[-81.140, 32.262], [-81.170, 32.200], [-81.160, 32.130], [-81.110, 32.088]] },
     { side: 'british', kind: 'naval', approx: true, label: 'Maitland', labelAt: 0.25, coords: [[-80.672, 32.420], [-80.690, 32.330], [-80.740, 32.265], [-80.790, 32.210], [-80.835, 32.150], [-80.900, 32.105], [-80.970, 32.090], [-81.075, 32.088]] }
   ],
@@ -147,8 +147,8 @@ HMap.render('#map-region', {
   ],
   labels: [
     { coords: [-80.720, 32.060], text: 'Atlantic Ocean', kind: 'water' },
-    { coords: [-81.250, 32.200], text: 'GEORGIA', kind: 'region' },
-    { coords: [-80.930, 32.200], text: 'SOUTH CAROLINA', kind: 'region' },
+    { coords: [-81.250, 32.200], text: 'GEORGIA', kind: 'region', ph: { coords: [-81.21, 32.05] } },
+    { coords: [-80.930, 32.200], text: 'SOUTH CAROLINA', kind: 'region', ph: { coords: [-80.975, 32.215] } },
     { coords: [-81.212, 32.440], text: 'Savannah R.', kind: 'water', size: 12, angle: -68 },
     { coords: [-80.760, 32.170], text: 'Hilton Head I.', kind: 'region', size: 11, angle: -50 },
     { coords: [-80.828, 32.012], text: 'Tybee I.', kind: 'region', size: 11, anchor: 'start' },
@@ -177,10 +177,10 @@ HMap.render('#map-assault', {
     { name: 'Spring Hill redoubt', coords: [-81.0997, 32.0748], kind: 'building', label: { dx: 10, dy: -8, anchor: 'start' } }
   ],
   moves: [
-    { side: 'french', kind: 'attack', label: 'd\'Estaing', labelAt: 0.5, coords: [[-81.1040, 32.0660], [-81.1020, 32.0700], [-81.1003, 32.0738]] },
-    { side: 'continental', kind: 'attack', label: 'Laurens, McIntosh', labelAt: 0.4, coords: [[-81.1120, 32.0700], [-81.1070, 32.0730], [-81.1010, 32.0752]] },
+    { side: 'french', kind: 'attack', approx: true, label: 'd\'Estaing', labelAt: 0.5, coords: [[-81.1040, 32.0660], [-81.1020, 32.0700], [-81.1003, 32.0738]] },
+    { side: 'continental', kind: 'attack', approx: true, label: 'Laurens, McIntosh', labelAt: 0.4, coords: [[-81.1120, 32.0700], [-81.1070, 32.0730], [-81.1010, 32.0752]] },
     { side: 'french', kind: 'attack', approx: true, label: 'Dillon (French)', labelAt: 0.45, coords: [[-81.1130, 32.0730], [-81.1090, 32.0770], [-81.1040, 32.0785]] },
-    { side: 'militia', kind: 'attack', label: 'Huger (feint)', labelAt: 0.5, coords: [[-81.0740, 32.0650], [-81.0770, 32.0690], [-81.0800, 32.0725]] },
+    { side: 'militia', kind: 'attack', approx: true, label: 'Huger (feint)', labelAt: 0.5, coords: [[-81.0740, 32.0650], [-81.0770, 32.0690], [-81.0800, 32.0725]] },
   ],
   units: [
     { side: 'british', coords: [-81.0950, 32.0740], angle: 14, label: 'Maitland', labelPos: { dx: 16, dy: 4, anchor: 'start' } },

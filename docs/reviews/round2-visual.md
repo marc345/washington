@@ -83,5 +83,12 @@ Verdict: BUGs remain (one library cause, one anachronism, misplaced labels, phon
 
 ## Pages 25–36 (savannah … road-home-1783)
 
-The separate round-2 visual review of these pages was cut off twice by usage limits. It was folded into the round-2 fix pass: the fix agent checked every map at both widths against the round-1 findings and fixed what it found (see the commit message of the pages 25–36 round-2 fix commit).
+The separate round-2 visual review of these pages was cut off twice by usage limits, so the fix agent did the visual check (every map, both widths) and fixed what it found in the same pass. Most round-1 findings were already fixed. Found (all fixed unless noted):
 
+- **BUG stony-point m3:** no Upper Bay/Hudson mouth (unnamed water hidden); "British-held New York" area in the water off the new 1776 shoreline.
+- **BUG road-home-1783 m2:** "Built-up city" area spilled into the East River; phone "Bull's Head Tavern" over "Collect Pond".
+- **BUG charleston-camden m2:** straight-edged landfill land at the top of the peninsula (Ashley and Cooper sides).
+- **BUG unlabelled units/symbols:** charleston-camden m3 militia block; cowpens m1 skirmishers and two dragoon blocks; virginia m4 Cornwallis block, Wayne's attack; siege-of-yorktown m1 two British blocks; capes m2 both ships; march-to-yorktown m1 British ship.
+- **BUG phone collisions:** savannah m2 (GEORGIA × Sept 16 arrow, SOUTH CAROLINA × callout); sullivan m3 ("return" on Honeoye); morristown m2 (Mathew, Knyphausen on battle symbols); stony-point m1 (Haverstraw); charleston m1 ("Cornwallis" on Camden, callout 3 at frame edge); cowpens m3 (Guilford Courthouse × arrow, Continentals, callout 2); virginia m3 (Tarleton on Charlottesville), m4 (Wayne, callout 2, "James River" behind scale box); march-to-yorktown m1 (King's Ferry, NEW YORK, Philipsburg), m2 (Clinton on Princeton).
+- NIT: savannah m1 town label on edge line; sullivan m2 callout 4 on retreat arrow, "Sullivan Hill" under arrowhead; arnold m2 phone "Smith's house" × route; cowpens m2 Guilford label × British route; virginia m1 "James River" on the Appomattox; march m2 Washington's ride label upside-down; capes m2 de Barras under north arrow; siege-of-yorktown m4 Yorktown unlabelled (just outside frame); road-home m3 "New York" on route.
+- Left (NIT): road-home m1 straight Meadowlands ditch streams (Bellmans, Cromakill, Wolf, Mill creeks — partly natural, so not hidden); capes m1 phone "Lynnhaven Bay" partly on land; march m3 two red tracks near the capes close but legible; road-home m2 Fort George label touches the barge track.

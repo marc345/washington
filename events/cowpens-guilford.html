@@ -85,14 +85,14 @@ HMap.render('#map-cowpens', {
   alt: 'Map of the Cowpens battlefield showing Morgan\'s three lines across the Green River road and Tarleton\'s attack from the southeast',
   roads: [ { name: 'Green River road', coords: [CP(-900, 0), CP(-300, 0), CP(300, 0), CP(900, 30)], labelAt: 0.1 } ],
   units: [
-    { side: 'militia', coords: CP(-230, -70), angle: -45, w: 14, h: 6 },
+    { side: 'militia', coords: CP(-230, -70), angle: -45, w: 14, h: 6, label: 'skirmishers', labelPos: { dx: -12, dy: 4, anchor: 'end' } },
     { side: 'militia', coords: CP(-230, 70), angle: -45, w: 14, h: 6, },
     { side: 'militia', coords: CP(-137, 0), angle: -45, w: 54, h: 9, label: 'Pickens (militia)', labelPos: { dx: -30, dy: 36, anchor: 'end' } },
     { side: 'continental', coords: CP(0, 0), angle: -45, w: 60, h: 11, label: 'Howard (Continentals)', labelPos: { dx: -28, dy: -18, anchor: 'end' } },
     { side: 'continental', type: 'cavalry', coords: CP(300, 60), angle: -45, w: 24, h: 10, label: 'Washington\n(dragoons)', labelPos: { dx: -20, dy: -4, anchor: 'end' } },
     { side: 'british', coords: CP(-470, 0), angle: -45, w: 56, h: 11, label: 'Tarleton', labelPos: { dx: 30, dy: 16 } },
-    { side: 'british', type: 'cavalry', coords: CP(-500, 150), angle: -45, w: 20, h: 9 },
-    { side: 'british', type: 'cavalry', coords: CP(-500, -150), angle: -45, w: 20, h: 9 }
+    { side: 'british', type: 'cavalry', coords: CP(-500, 150), angle: -45, w: 20, h: 9, label: 'dragoons', labelPos: { dx: 14, dy: 4 } },
+    { side: 'british', type: 'cavalry', coords: CP(-500, -150), angle: -45, w: 20, h: 9, label: 'dragoons', labelPos: { dx: -14, dy: 4, anchor: 'end' } }
   ],
   moves: [
     { side: 'british', kind: 'attack', coords: [CP(-410, -30), CP(-260, -30), CP(-70, -25)] },
@@ -118,7 +118,7 @@ HMap.render('#map-dan', {
     { name: 'Trading Ford', coords: [-80.39, 35.71], kind: 'ferry', label: { dx: 9, dy: 12 } },
     { name: 'Shallow Ford', coords: [-80.50, 36.07], kind: 'ferry', label: { dx: -9, dy: 4, anchor: 'end' } },
     { name: 'Salem', coords: [-80.245, 36.09], kind: 'village', label: { dx: 6, dy: 20 } },
-    { place: 'guilford-courthouse', label: { dx: -10, dy: -16, anchor: 'end' } },
+    { place: 'guilford-courthouse', label: { dx: 10, dy: 16 }, ph: { label: { dx: -10, dy: -16, anchor: 'end' } } },
     { place: 'hillsborough', label: { dx: 9, dy: 14 } },
     { name: 'Irwin\'s &\nBoyd\'s ferries', coords: [-78.94, 36.68], kind: 'ferry', label: { dx: -6, dy: 22, anchor: 'start' } },
     { name: 'Hicks Creek camp', coords: [-79.88, 34.70], kind: 'village', label: { dx: 9, dy: 4 } },
@@ -155,7 +155,7 @@ HMap.render('#map-guilford', {
     { coords: [GC.ch, [-79.8370, 36.1400], [-79.8330, 36.1440]] }
   ],
   towns: [
-    { name: 'Guilford Courthouse', coords: GC.ch, kind: 'building', label: { dx: 9, dy: 12 } },
+    { name: 'Guilford Courthouse', coords: GC.ch, kind: 'building', label: { dx: 9, dy: 12 }, ph: { name: 'Courthouse', label: { dx: 8, dy: 16 } } },
     { name: 'Hoskins farm', coords: GC.hoskins, kind: 'building', label: { dx: 4, dy: 18, anchor: 'start' } }
   ],
   // the three American lines stand across the road (which runs WSW-ENE)
@@ -189,7 +189,7 @@ HMap.render('#map-wilmington', {
   alt: 'Map of North Carolina and southern Virginia showing Cornwallis\'s march to Wilmington and then north to Petersburg, and Greene turning back into South Carolina',
   water: { hide: ['Lake Gaston', 'Smith Mountain Lake', 'Lake Marion', 'Lake Moultrie', 'Lake Murray'] },
   towns: [
-    { place: 'guilford-courthouse', label: { dx: -9, dy: -6, anchor: 'end' } },
+    { place: 'guilford-courthouse', label: { dx: -9, dy: -6, anchor: 'end' }, ph: { label: { dx: 0, dy: -10, anchor: 'middle' } } },
     { name: 'Ramsey\'s Mill', coords: [-79.07, 35.62], kind: 'village', label: { dx: 9, dy: 4 } },
     { name: 'Cross Creek', coords: [-78.88, 35.05], kind: 'village', label: { dx: -9, dy: 4, anchor: 'end' } },
     { place: 'wilmington-nc', label: { dx: 9, dy: 10 } },
@@ -199,11 +199,11 @@ HMap.render('#map-wilmington', {
     { place: 'hillsborough', label: { dx: 9, dy: -6 } }
   ],
   moves: [
-    { side: 'british', kind: 'march', label: 'Mar 18 – Apr 7', labelAt: 0.6, coords: [[-79.84, 36.12], [-79.70, 35.95], [-79.30, 35.75], [-79.07, 35.62], [-78.88, 35.07], [-78.40, 34.60], [-77.98, 34.27]] },
+    { side: 'british', kind: 'march', approx: true, label: 'Mar 18 – Apr 7', labelAt: 0.6, coords: [[-79.84, 36.12], [-79.70, 35.95], [-79.30, 35.75], [-79.07, 35.62], [-78.88, 35.07], [-78.40, 34.60], [-77.98, 34.27]] },
     { side: 'british', kind: 'march', approx: true, label: 'Apr 25 – May 20', labelAt: 0.5, coords: [[-77.92, 34.30], [-77.95, 34.95], [-77.62, 35.30], [-77.62, 35.90], [-77.59, 36.31], [-77.48, 36.80], [-77.42, 37.20]] },
-    { side: 'continental', kind: 'march', label: 'Greene', labelAt: 0.4, coords: [[-79.80, 36.18], [-79.55, 35.95], [-79.15, 35.66], [-79.35, 35.30], [-79.85, 34.75], [-80.55, 34.28]] }
+    { side: 'continental', kind: 'march', approx: true, label: 'Greene', labelAt: 0.4, coords: [[-79.80, 36.18], [-79.55, 35.95], [-79.15, 35.66], [-79.35, 35.30], [-79.85, 34.75], [-80.55, 34.28]] }
   ],
-  units: [ { side: 'british', coords: [-77.27, 37.17], label: 'Arnold\'s force', labelPos: { dx: 0, dy: 22, anchor: 'middle' } } ],
+  units: [ { side: 'british', coords: [-77.31, 37.22], label: 'Arnold\'s force', labelPos: { dx: 0, dy: 22, anchor: 'middle' } } ],
   battles: [ { coords: [-80.607, 34.29], label: 'Hobkirk\'s Hill (Camden), Apr 25', labelPos: { dx: 16, dy: -10, anchor: 'start' } } ],
   labels: [
     { coords: [-79.75, 34.20], text: 'SOUTH\nCAROLINA', kind: 'region', size: 12 },
