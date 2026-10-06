@@ -130,7 +130,12 @@
   const PHONE_W = 640;
   const ITEM_KEYS = ['roads', 'areas', 'lines', 'works', 'towns', 'moves', 'units', 'ships', 'battles', 'labels', 'callouts'];
   function forWidth(cfg, cw) {
-    if (cw > PHONE_W) return cfg;
+    if (cw > PHONE_W) {
+      // `desktop: false` items appear on phones only
+      const c = Object.assign({}, cfg);
+      ITEM_KEYS.forEach(k => { if (c[k]) c[k] = c[k].filter(it => it.desktop !== false); });
+      return c;
+    }
     const c = Object.assign({}, cfg, cfg.ph || {});
     ITEM_KEYS.forEach(k => {
       if (c[k]) c[k] = c[k].filter(it => it.phone !== false).map(it => it.ph ? Object.assign({}, it, it.ph) : it);

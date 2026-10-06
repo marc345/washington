@@ -62,7 +62,7 @@
         <li>Greene's guns on Combs Hill fire into the British flank in the mid-afternoon, ending the duel.</li>
         <li>Lafayette commands the second line behind the hill.</li>
       </ol>
-      <span class="note-approx">Positions are schematic. The hedgerow, parsonage and Combs Hill locations follow the state battlefield park.</span>
+      <span class="note-approx">Positions are schematic. The hedgerow, parsonage and Combs Hill locations follow the state battlefield park. Stream names are modern.</span>
     </figcaption>
   </figure>
 </main>
@@ -132,7 +132,7 @@ const BATTLE_COMMON = {
   roads: [
     { coords: ROAD_522 },
     { coords: [[-74.3306, 40.2816], [-74.3380, 40.2880], [-74.3400, 40.3000], [-74.3360, 40.3200]] },
-    { name: 'to Middletown', labelAt: 0.6, ph: { name: null }, coords: [[-74.2737, 40.2579], [-74.2650, 40.2640], [-74.2540, 40.2720], [-74.2480, 40.2780]] }
+    { coords: [[-74.2737, 40.2579], [-74.2650, 40.2640], [-74.2540, 40.2720], [-74.2480, 40.2780]] }
   ]
 };
 const STREAM_LABELS = [
@@ -151,18 +151,19 @@ HMap.render('#map-morning', Object.assign({}, BATTLE_COMMON, {
   ],
   moves: [
     { side: 'continental', kind: 'march', label: 'Lee', labelAt: 0.35, coords: [[-74.3560, 40.2975], [-74.3400, 40.2910], [-74.3270, 40.2805], [-74.3100, 40.2745], [-74.2930, 40.2700]] },
-    { side: 'continental', kind: 'attack', label: 'Wayne', labelAt: 0.5, coords: [[-74.2930, 40.2700], [-74.2840, 40.2685], [-74.2790, 40.2665]] },
+    { side: 'continental', kind: 'attack', label: 'Wayne', labelAt: 0.5, ph: { labelAt: 0.22 }, coords: [[-74.2930, 40.2700], [-74.2840, 40.2685], [-74.2790, 40.2665]] },
     { side: 'continental', kind: 'march', approx: true, label: 'flank move', labelAt: 0.5, coords: [[-74.2950, 40.2725], [-74.2900, 40.2800], [-74.2800, 40.2830], [-74.2700, 40.2790]] },
     { side: 'british', kind: 'attack', label: 'Clinton turns back', labelAt: 0.45, coords: [[-74.2640, 40.2700], [-74.2760, 40.2730], [-74.2900, 40.2770], [-74.3020, 40.2790]] },
     { side: 'continental', kind: 'retreat', label: 'Lee falls back', labelAt: 0.5, ph: { labelAt: 0.3 }, coords: [[-74.2960, 40.2672], [-74.3060, 40.2697], [-74.3150, 40.2712], [-74.3240, 40.2748]] },
-    { side: 'british', kind: 'march', coords: [[-74.2720, 40.2605], [-74.2670, 40.2640], [-74.2630, 40.2668]] }
+    { side: 'british', kind: 'march', label: 'to Middletown', labelAt: 0.5, coords: [[-74.2720, 40.2605], [-74.2678, 40.2636], [-74.2645, 40.2660]],
+      ph: { coords: [[-74.2690, 40.2582], [-74.2660, 40.2620], [-74.2635, 40.2660]] } }
   ],
   units: [
     { side: 'british', coords: [-74.2770, 40.2640], angle: -20, label: 'rear guard', labelPos: { dx: -18, dy: 6, anchor: 'end' } }
   ],
   battles: [{ coords: [-74.2830, 40.2715] }],
   callouts: [
-    { coords: [-74.2670, 40.2580], n: 1 },
+    { coords: [-74.2670, 40.2580], n: 1, ph: { coords: [-74.2715, 40.2530] } },
     { coords: [-74.2905, 40.2630], n: 2, ph: { coords: [-74.3086, 40.2629] } },
     { coords: [-74.2930, 40.2830], n: 3 },
     { coords: [-74.3200, 40.2690], n: 4 }
@@ -188,7 +189,7 @@ HMap.render('#map-afternoon', Object.assign({}, BATTLE_COMMON, {
   ],
   units: [
     { side: 'continental', coords: [-74.3225, 40.2810], angle: -60, w: 34, label: 'Stirling', labelPos: { dx: -28, dy: -6, anchor: 'end' } },
-    { side: 'continental', type: 'artillery', coords: [-74.3200, 40.2758], angle: -60 },
+    { side: 'continental', type: 'artillery', coords: [-74.3200, 40.2758], angle: -60, label: 'American guns', labelPos: { dx: -18, dy: 14, anchor: 'end' } },
     { side: 'continental', coords: [-74.3290, 40.2765], angle: -60, w: 30, label: 'Lafayette', labelPos: { dx: -24, dy: 10, anchor: 'end' } },
     { side: 'continental', coords: [-74.3108, 40.2718], angle: -85, label: 'Wayne', labelPos: { dx: -16, dy: 4, anchor: 'end' } },
     { side: 'continental', type: 'artillery', coords: [-74.3130, 40.2635], angle: 30, label: 'Greene', labelPos: { dx: -24, dy: 4, anchor: 'end' } },

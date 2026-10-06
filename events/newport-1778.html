@@ -73,7 +73,7 @@ HMap.render('#map-bay', {
   ph: { textScale: 0.85 },
   alt: 'Map of Narragansett Bay showing the French fleet forcing the passage into the bay, Sullivan crossing onto Aquidneck Island, and the British fleet arriving off Point Judith',
   towns: [
-    { place: 'newport', side: 'british', label: { dx: -8, dy: 14, anchor: 'end' } },
+    { place: 'newport', side: 'british', label: { dx: 9, dy: 14 } },
     { name: 'Tiverton', coords: [-71.200, 41.640], kind: 'village', label: { dx: 8, dy: 4 } },
     { name: 'Bristol', coords: [-71.268, 41.677], kind: 'village', label: { dx: -8, dy: -4, anchor: 'end' } },
     { name: 'Point Judith', coords: [-71.481, 41.361], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
@@ -91,7 +91,7 @@ HMap.render('#map-bay', {
     { side: 'french', kind: 'naval', coords: [[-71.36, 41.52], [-71.363, 41.47], [-71.37, 41.42], [-71.355, 41.37], [-71.335, 41.338]] },
     { side: 'french', kind: 'naval', coords: [[-71.43, 41.41], [-71.43, 41.46], [-71.425, 41.50]], width: 1.6 },
     { side: 'french', kind: 'naval', coords: [[-71.20, 41.42], [-71.215, 41.47], [-71.222, 41.51]], width: 1.6 },
-    { side: 'continental', kind: 'march', label: 'Sullivan', labelAt: 0.7, coords: [[-71.17, 41.66], [-71.195, 41.635], [-71.225, 41.62], [-71.250, 41.60]] },
+    { side: 'continental', kind: 'march', label: 'Sullivan', labelAt: 0.7, ph: { labelAt: 0.78 }, coords: [[-71.17, 41.66], [-71.195, 41.635], [-71.225, 41.62], [-71.250, 41.60]] },
     { side: 'continental', kind: 'march', coords: [[-71.255, 41.585], [-71.265, 41.55], [-71.275, 41.515]] }
   ],
   callouts: [
@@ -102,10 +102,10 @@ HMap.render('#map-bay', {
     { coords: [-71.395, 41.555], n: 5 }
   ],
   labels: [
-    { coords: [-71.27, 41.555], text: 'Aquidneck I.', kind: 'terrain', size: 12.5, angle: -60 },
+    { coords: [-71.27, 41.555], text: 'Aquidneck I.', kind: 'terrain', size: 12.5, angle: -60, ph: { coords: [-71.252, 41.515] } },
     { coords: [-71.383, 41.505], text: 'Conanicut I.', kind: 'terrain', size: 11.5, angle: -78 },
     { coords: [-71.32, 41.60], text: 'Prudence I.', kind: 'terrain', size: 11, angle: -70 },
-    { coords: [-71.212, 41.505], text: 'Sakonnet R.', kind: 'water', size: 12, angle: -80 },
+    { coords: [-71.216, 41.585], text: 'Sakonnet R.', kind: 'water', size: 12, angle: -70 },
     { coords: [-71.32, 41.705], text: 'Narragansett Bay', kind: 'water', size: 13 },
     { coords: [-71.15, 41.37], text: 'ATLANTIC OCEAN', kind: 'water', size: 13 },
     { coords: [-71.52, 41.62], text: 'RHODE ISLAND', kind: 'region', size: 13 },
@@ -129,19 +129,19 @@ HMap.render('#map-siege', {
     { side: 'continental', coords: [[-71.2790, 41.5045], [-71.2840, 41.5040], [-71.2870, 41.5050]] }
   ],
   roads: [
-    { name: 'East Road', coords: [[-71.2750, 41.5600], [-71.2770, 41.5350], [-71.2830, 41.5150], [-71.2950, 41.5000], [-71.3080, 41.4920]], labelAt: 0.25 },
+    { name: 'East Road', coords: [[-71.2750, 41.5600], [-71.2770, 41.5350], [-71.2830, 41.5150], [-71.2950, 41.5000], [-71.3080, 41.4920]], labelAt: 0.25, ph: { labelAt: 0.12 } },
     { name: 'West Road', coords: [[-71.3020, 41.5600], [-71.3080, 41.5350], [-71.3140, 41.5150], [-71.3125, 41.4950]], labelAt: 0.25 }
   ],
   towns: [
     { place: 'newport', label: { dx: -10, dy: 4, anchor: 'end' } },
     { name: 'Green End', coords: [-71.2937, 41.5044], kind: 'building', label: { dx: -10, dy: 16, anchor: 'end' } },
-    { name: 'Tonomy Hill', coords: [-71.3030, 41.5075], kind: 'building', label: { dx: -4, dy: -12, anchor: 'end' } }
+    { name: 'Tonomy Hill', coords: [-71.3030, 41.5075], kind: 'building', label: { dx: -6, dy: 17, anchor: 'end' } }
   ],
   units: [
     { side: 'british', coords: [-71.3050, 41.4990], label: 'Pigot', labelPos: { dx: 18, dy: 4 } },
-    { side: 'hessian', coords: [-71.2995, 41.4955], angle: 60 },
+    { side: 'hessian', coords: [-71.2995, 41.4955], angle: 60, label: 'Hessians', labelPos: { dx: -16, dy: 10, anchor: 'end' } },
     { side: 'continental', coords: [-71.2745, 41.5100], angle: 80, label: 'Sullivan', labelPos: { dx: 12, dy: 4 } },
-    { side: 'militia', coords: [-71.2735, 41.5185], angle: 80 }
+    { side: 'militia', coords: [-71.2735, 41.5185], angle: 80, label: 'militia', labelPos: { dx: -12, dy: 4, anchor: 'end' } }
   ],
   moves: [
     { side: 'continental', kind: 'march', label: 'Aug 15', labelAt: 0.5, coords: [[-71.2725, 41.5580], [-71.2735, 41.5400], [-71.2735, 41.5230]] },
