@@ -68,7 +68,7 @@ HMap.render('#map-region', {
     { name: 'Whitemarsh', coords: [-75.215, 40.125], kind: 'village', label: { dx: 8, dy: -4 } },
     { name: 'Crooked Billet', coords: [-75.107, 40.175], kind: 'building', label: { dx: -8, dy: 4, anchor: 'end' }, ph: { label: { dx: -10, dy: 14, anchor: 'end' } } },
     { name: 'Darby', coords: [-75.259, 39.918], kind: 'village' },
-    { name: 'Frankford', coords: [-75.087, 40.020], kind: 'village', label: { dx: 8, dy: 10 } },
+    { name: 'Frankford', coords: [-75.087, 40.020], kind: 'village', label: { dx: 8, dy: 10 }, phone: false },
     { name: 'Gloucester', coords: [-75.128, 39.892], kind: 'village', label: { dx: -8, dy: 12, anchor: 'end' } }
   ],
   moves: [
@@ -81,20 +81,20 @@ HMap.render('#map-region', {
   ],
   units: [
     { side: 'continental', coords: [-75.360, 40.028], label: 'Radnor outposts', w: 20, labelPos: { dx: 14, dy: 4 } },
-    { side: 'militia', coords: [-75.095, 40.163], w: 20 }
+    { side: 'militia', coords: [-75.095, 40.163], w: 20, label: 'Lacey', labelPos: { dx: 14, dy: 14 }, ph: { labelPos: { dx: 0, dy: 16, anchor: 'middle' } } }
   ],
   battles: [
     { coords: [-75.100, 40.182], label: '' }
   ],
   callouts: [
-    { coords: [-75.070, 40.185], n: 1 },
+    { coords: [-75.070, 40.185], n: 1, ph: { coords: [-75.128, 40.200] } },
     { coords: [-75.275, 40.105], n: 2, ph: { coords: [-75.215, 40.085] } },
     { coords: [-75.100, 39.872], n: 3 }
   ],
   labels: [
     { coords: [-75.215, 39.962], text: 'British lines', kind: 'note', size: 10.5 },
     { coords: [-75.560, 40.165], text: 'Schuylkill River', kind: 'water', angle: -25 },
-    { coords: [-75.240, 39.870], text: 'Delaware River', kind: 'water', angle: -20 },
+    { coords: [-75.240, 39.870], text: 'Delaware River', kind: 'water', angle: -20, ph: { coords: [-75.200, 39.871], text: 'Delaware R.' } },
     { coords: [-75.520, 39.950], text: 'PENNSYLVANIA', kind: 'region' },
     { coords: [-75.300, 39.990], text: 'about 18 miles', kind: 'note', angle: 20 }
   ],
@@ -129,7 +129,7 @@ HMap.render('#map-camp', {
     { coords: [[-75.4441, 40.1088], [-75.4443, 40.1132]], color: '#3a2f24', width: 3.5, legend: 'Sullivan\'s Bridge (spring 1778)' }
   ],
   towns: [
-    { name: 'Washington\'s HQ (Potts house)', coords: [-75.4594, 40.1017], kind: 'hq', label: { dx: -9, dy: -8, anchor: 'end' } },
+    { name: 'Washington\'s HQ (Potts house)', coords: [-75.4594, 40.1017], kind: 'hq', label: { dx: -9, dy: -8, anchor: 'end' }, ph: { name: 'Washington\'s HQ\n(Potts house)', label: { dx: -6, dy: -20, anchor: 'end' } } },
     { name: 'Steuben', coords: [-75.4698, 40.0991], kind: 'building', label: { dx: 8, dy: 4 } },
     { name: 'Fatland Ford', coords: [-75.4445, 40.1140], kind: 'ferry', label: { dx: 9, dy: 4 } },
     { name: 'Star Redoubt', coords: [-75.4438, 40.1046], kind: 'building', label: { dx: 9, dy: -4 } }
@@ -142,8 +142,8 @@ HMap.render('#map-camp', {
     { coords: [-75.4400, 40.0985], text: 'Grand Parade', kind: 'note', size: 12 },
     { coords: [-75.4440, 40.0945], text: 'Artillery park', kind: 'note', size: 10.5 },
     { coords: [-75.4235, 40.0930], text: 'OUTER LINE', kind: 'note', size: 10.5, angle: -35 },
-    { coords: [-75.4290, 40.1000], text: 'Muhlenberg, Weedon', kind: 'note', size: 10, angle: -38 },
-    { coords: [-75.4365, 40.0952], text: 'Mass. & N.H. brigades', kind: 'note', size: 10, angle: -28 },
+    { coords: [-75.4290, 40.1000], text: 'Muhlenberg, Weedon', kind: 'note', size: 10, angle: -38, ph: { coords: [-75.4265, 40.1025] } },
+    { coords: [-75.4365, 40.0952], text: 'Mass. & N.H. brigades', kind: 'note', size: 10, angle: -28, ph: { coords: [-75.4385, 40.0942] } },
     { coords: [-75.4445, 40.0895], text: 'Pennsylvanians', kind: 'note', size: 10, angle: -32 },
     { coords: [-75.4555, 40.1060], text: 'N.C., N.J., Conn., R.I.', kind: 'note', size: 10 },
     { coords: [-75.4240, 40.0830], text: 'to Philadelphia ↘', kind: 'note' }

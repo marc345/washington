@@ -127,12 +127,12 @@ HMap.render('#map-river', {
     { place: 'philadelphia', label: { dx: -9, dy: 4, anchor: 'end' } },
     { place: 'chester', label: { dx: -8, dy: 14, anchor: 'end' } },
     { name: 'Darby', coords: [-75.259, 39.918], kind: 'village' },
-    { name: 'Cooper\'s Ferry', coords: [-75.126, 39.944], kind: 'ferry', label: { dx: 8, dy: 4 }, ph: { label: { dx: 4, dy: 17 } } },
+    { name: 'Cooper\'s Ferry', coords: [-75.126, 39.944], kind: 'ferry', label: { dx: 8, dy: 4 }, ph: { name: 'Cooper\'s\nFerry', label: { dx: 10, dy: -2 } } },
     { name: 'Gloucester', coords: [-75.128, 39.892], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
     { name: 'Woodbury', coords: [-75.153, 39.838], kind: 'village' },
     { name: 'Billingsport', coords: [-75.2418, 39.8470], kind: 'fort', side: 'continental', label: { dx: 9, dy: 13 } },
     { place: 'fort-mifflin', name: 'Fort Mifflin', side: 'continental', label: { dx: -10, dy: -4, anchor: 'end' } },
-    { place: 'fort-mercer', side: 'continental', label: { dx: 10, dy: 5 } }
+    { place: 'fort-mercer', side: 'continental', label: { dx: 10, dy: 5 }, ph: { name: 'Fort Mercer\n(Red Bank)', label: { dx: 12, dy: -16 } } }
   ],
   moves: [
     { side: 'british', kind: 'march', label: 'Oct 1–2 · Nov 18', labelAt: 0.5, coords: [[-75.350, 39.846], [-75.300, 39.838], [-75.250, 39.842]] },
@@ -173,8 +173,8 @@ HMap.render('#map-mifflin', {
     { kind: 'redoubt', coords: [[-75.2320, 39.8750]], side: 'british' }
   ],
   towns: [
-    { place: 'fort-mifflin', name: 'Fort Mifflin', side: 'continental', label: { dx: 10, dy: 14 }, ph: { label: { dx: -2, dy: 22, anchor: 'end' } } },
-    { place: 'fort-mercer', side: 'continental', label: { dx: 4, dy: 20 }, ph: { label: { dx: -4, dy: 22, anchor: 'end' } } }
+    { place: 'fort-mifflin', name: 'Fort Mifflin', side: 'continental', label: { dx: 10, dy: 14 }, ph: { label: { dx: -10, dy: 12, anchor: 'end' } } },
+    { place: 'fort-mercer', side: 'continental', label: { dx: 4, dy: 20 }, ph: { name: 'Fort Mercer\n(Red Bank)', label: { dx: -6, dy: 18, anchor: 'end' } } }
   ],
   moves: [
     { side: 'hessian', kind: 'attack', label: 'Donop', labelAt: 0.4, coords: [[-75.1770, 39.8790], [-75.1830, 39.8752], [-75.1897, 39.8726]] },
@@ -222,7 +222,7 @@ HMap.render('#map-whitemarsh', {
   ],
   towns: [
     { place: 'philadelphia', label: { dx: 9, dy: 5 } },
-    { place: 'germantown', label: { dx: -8, dy: 4, anchor: 'end' } },
+    { place: 'germantown', label: { dx: -8, dy: 4, anchor: 'end' }, ph: { label: { dx: -8, dy: -6, anchor: 'end' } } },
     { name: 'Chestnut Hill', coords: [-75.2074, 40.0771], kind: 'village', label: { dx: 8, dy: 12 } },
     { name: 'Headquarters', coords: [-75.205, 40.142], kind: 'hq', label: { dx: 0, dy: -11, anchor: 'middle' } },
     { name: 'Jenkintown', coords: [-75.1257, 40.0960], kind: 'village' },
@@ -249,12 +249,12 @@ HMap.render('#map-whitemarsh', {
   ],
   callouts: [
     { coords: [-75.232, 40.085], n: 1 },
-    { coords: [-75.168, 40.130], n: 2 },
+    { coords: [-75.168, 40.130], n: 2, ph: { coords: [-75.150, 40.142] } },
     { coords: [-75.298, 40.046], n: 3 }
   ],
   labels: [
     { coords: [-75.390, 40.125], text: 'Schuylkill River', kind: 'water', angle: -8 },
-    { coords: [-75.226, 40.058], text: 'Wissahickon Cr.', kind: 'water', size: 11, angle: 62 },
+    { coords: [-75.226, 40.058], text: 'Wissahickon Cr.', kind: 'water', size: 11, angle: 62, ph: { coords: [-75.232, 40.072] } },
     { coords: [-75.262, 40.040], text: 'Schuylkill R.', kind: 'water', size: 12, angle: 48 },
     { coords: [-75.420, 40.000], text: 'PENNSYLVANIA', kind: 'region' }
   ]

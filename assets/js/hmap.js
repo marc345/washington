@@ -207,7 +207,8 @@
     const landD = corr.baseLand ? corr.baseLand.map(r => path(poly(r))).join('') : path(land);
     const fixD = (corr.land || []).map(r => path(poly(r))).join('');
     el(defs, 'clipPath', { id: uid + '-land' }).append('path').attr('d', landD + fixD);
-    el(root, 'path', { d: landD + fixD, class: 'hm-land' });
+    // land fixes are drawn after the water, unstroked, so their edges over land don't show
+    el(root, 'path', { d: landD, class: 'hm-land' });
 
     // terrain: hillshade + contours from the elevation grid
     if (elev && cfg.terrain !== false) drawTerrain(root, defs, uid, elev, proj, cfg.terrain || {}, fs);
