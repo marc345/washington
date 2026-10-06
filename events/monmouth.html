@@ -90,14 +90,14 @@ HMap.render('#map-campaign', {
     { name: 'Middletown', coords: [-74.117, 40.395], kind: 'village', label: { dx: -9, dy: -6, anchor: 'end' } },
     { place: 'sandy-hook', label: { dx: -10, dy: -6, anchor: 'end' } },
     { place: 'trenton', label: { dx: -10, dy: 4, anchor: 'end' } },
-    { name: 'Coryell\'s Ferry', coords: [-74.945, 40.365], kind: 'ferry', label: { dx: -8, dy: 14, anchor: 'end' } },
+    { name: 'Coryell\'s Ferry', coords: [-74.945, 40.365], kind: 'ferry', label: { dx: -8, dy: -8, anchor: 'end' } },
     { name: 'Hopewell', coords: [-74.765, 40.389], kind: 'village', label: { dx: 0, dy: 15, anchor: 'middle' } },
     { name: 'Kingston', coords: [-74.614, 40.375], kind: 'village', label: { dx: 0, dy: 15, anchor: 'middle' } },
     { name: 'Cranbury', coords: [-74.514, 40.316], kind: 'village', label: { dx: 0, dy: 15, anchor: 'middle' } },
     { name: 'Englishtown', coords: [-74.358, 40.297], kind: 'village', label: { dx: 0, dy: -10, anchor: 'middle' } }
   ],
   moves: [
-    { side: 'british', kind: 'march', label: 'Clinton, June 18–26', labelAt: 0.84,
+    { side: 'british', kind: 'march', label: 'Clinton, June 18–26', labelAt: 0.84, ph: { label: 'Clinton', labelAt: 0.27 },
       coords: [[-75.150, 39.930], [-75.128, 39.900], [-75.033, 39.880], [-74.950, 39.948], [-74.787, 39.980], [-74.712, 40.055], [-74.645, 40.140], [-74.584, 40.165], [-74.515, 40.152], [-74.400, 40.192], [-74.285, 40.248]] },
     { side: 'british', kind: 'march', coords: [[-74.262, 40.268], [-74.200, 40.318], [-74.117, 40.382], [-74.040, 40.410], [-74.012, 40.448]] },
     { side: 'continental', kind: 'march', label: 'Washington', labelAt: 0.2,
@@ -106,7 +106,7 @@ HMap.render('#map-campaign', {
   ],
   battles: [{ coords: [-74.300, 40.272] }],
   callouts: [
-    { coords: [-75.060, 39.845], n: 1, ph: { coords: [-74.93, 39.85] } },
+    { coords: [-75.060, 39.845], n: 1, ph: { coords: [-74.87, 39.84] } },
     { coords: [-74.560, 40.105], n: 2 },
     { coords: [-74.945, 40.445], n: 3 },
     { coords: [-74.400, 40.270], n: 4 },
