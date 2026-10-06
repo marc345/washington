@@ -89,13 +89,13 @@ HMap.render('#map-westchester', {
     { coords: [-73.8420, 40.8380], label: 'Westchester\ncauseway', labelPos: { dx: -14, dy: 0, anchor: 'end' } },
     { coords: [-73.8100, 40.8730], label: 'Glover', labelPos: { dx: -14, dy: 4, anchor: 'end' } },
     { coords: [-73.7350, 40.9520], label: 'Mamaroneck', labelPos: { dx: 14, dy: 4, anchor: 'start' } },
-    { coords: [-73.7855, 41.0245], label: "Chatterton's Hill", labelPos: { dx: -14, dy: 4, anchor: 'end' } }
+    { coords: [-73.7855, 41.0245], label: "Chatterton's Hill", labelPos: { dx: -14, dy: 4, anchor: 'end' }, ph: { labelPos: { dx: -16, dy: -10, anchor: 'end' } } }
   ],
   towns: [
     { place: 'white-plains', label: { dx: 9, dy: 4 } },
-    { place: 'kingsbridge', label: { dx: 9, dy: 4 } },
-    { place: 'fort-washington', side: 'continental', label: { dx: -10, dy: 18, anchor: 'end' }, ph: { name: 'Ft. Washington', label: { dx: 10, dy: -6 } } },
-    { place: 'fort-lee', side: 'continental', label: { dx: -10, dy: 4, anchor: 'end' } },
+    { place: 'kingsbridge', label: { dx: 9, dy: 4 }, ph: { label: { dx: -9, dy: 4, anchor: 'end' } } },
+    { place: 'fort-washington', side: 'continental', label: { dx: 10, dy: 12 }, ph: { name: 'Ft. Washington', label: { dx: 10, dy: -5 } } },
+    { place: 'fort-lee', side: 'continental', label: { dx: -10, dy: 4, anchor: 'end' }, ph: { label: { dx: 2, dy: -13, anchor: 'middle' } } },
     { place: 'dobbs-ferry', label: { dx: -8, dy: -6, anchor: 'end' } },
     { place: 'tarrytown', label: { dx: 8, dy: 4 } },
     { name: 'New Rochelle', coords: [-73.7825, 40.9115], kind: 'village', label: { dx: 8, dy: 4 } },
@@ -148,7 +148,7 @@ HMap.render('#map-chatterton', {
   ],
   units: [
     { side: 'continental', coords: [-73.7885, 41.0262], angle: 75, w: 30, label: 'McDougall', labelPos: { dx: -16, dy: -10, anchor: 'end' } },
-    { side: 'militia', coords: [-73.7935, 41.0205], angle: 60, w: 20 },
+    { side: 'militia', coords: [-73.7935, 41.0205], angle: 60, w: 20, label: 'militia', labelPos: { dx: -14, dy: 4, anchor: 'end' }, ph: { labelPos: { dx: -10, dy: 22, anchor: 'end' } } },
     { side: 'british', type: 'artillery', coords: [-73.7745, 41.0195], label: 'guns', labelPos: { dx: 16, dy: 4 } },
     { side: 'continental', coords: [-73.7640, 41.0390], label: 'main army', labelPos: { dx: 0, dy: -12, anchor: 'middle' } }
   ],

@@ -100,7 +100,7 @@ HMap.render('#map-campaign', {
     { place: 'crown-point', label: { dx: -10, dy: 4, anchor: 'end' } },
     { place: 'fort-ticonderoga', side: 'continental', label: { dx: -11, dy: 4, anchor: 'end' } },
     { name: 'Skenesborough', coords: [-73.405, 43.556], kind: 'village', label: { dx: 8, dy: 4 } },
-    { place: 'fort-edward', side: 'continental', label: { dx: 10, dy: 4 } },
+    { place: 'fort-edward', side: 'continental', label: { dx: 9, dy: 17 } },
     { place: 'saratoga', label: { dx: -9, dy: -3, anchor: 'end' } },
     { place: 'albany', label: { dx: 9, dy: 5 } },
     { place: 'bennington', label: { dx: 8, dy: 13 } },
@@ -110,25 +110,27 @@ HMap.render('#map-campaign', {
   ],
   moves: [
     { side: 'british', kind: 'naval', label: 'Burgoyne', labelAt: 0.4, coords: [[-73.34, 44.56], [-73.38, 44.40], [-73.42, 44.10], [-73.40, 43.86]] },
+    // Jul 6: boats up the south arm of the lake to Skenesborough
+    { side: 'british', kind: 'naval', coords: [[-73.398, 43.825], [-73.382, 43.78], [-73.393, 43.70], [-73.402, 43.62], [-73.405, 43.568]], width: 1.8 },
     { side: 'british', kind: 'march', label: 'Jul 6–30', labelAt: 0.55, coords: [[-73.405, 43.55], [-73.49, 43.414], [-73.585, 43.275]] },
     { side: 'british', kind: 'naval', coords: [[-73.44, 43.80], [-73.49, 43.72], [-73.52, 43.66], [-73.60, 43.58], [-73.66, 43.50], [-73.705, 43.428]], width: 1.8 },
     { side: 'british', kind: 'march', coords: [[-73.705, 43.418], [-73.66, 43.355], [-73.60, 43.29]], width: 1.8 },
     { side: 'british', kind: 'march', coords: [[-73.59, 43.26], [-73.575, 43.17], [-73.59, 43.10], [-73.63, 43.01]] },
-    { side: 'continental', kind: 'retreat', label: 'St. Clair', labelAt: 0.3, approx: true, coords: [[-73.37, 43.82], [-73.14, 43.70], [-73.00, 43.55], [-73.05, 43.35], [-73.40, 43.27], [-73.56, 43.25]] },
+    { side: 'continental', kind: 'retreat', label: 'St. Clair', labelAt: 0.4, ph: { labelAt: 0.5 }, approx: true, coords: [[-73.37, 43.82], [-73.14, 43.70], [-73.00, 43.55], [-73.05, 43.35], [-73.40, 43.29], [-73.565, 43.275]] },
     { side: 'continental', kind: 'retreat', approx: true, coords: [[-73.60, 43.25], [-73.62, 43.05], [-73.68, 42.85], [-73.70, 42.79]] },
     { side: 'continental', kind: 'march', coords: [[-73.73, 42.79], [-73.72, 42.90], [-73.66, 42.99]] },
     { side: 'hessian', kind: 'attack', label: 'Baum', labelAt: 0.5, coords: [[-73.545, 43.170], [-73.45, 43.05], [-73.32, 42.95]] },
     { side: 'militia', kind: 'attack', coords: [[-73.20, 42.88], [-73.27, 42.925]], width: 3 },
     { side: 'british', kind: 'naval', label: 'St. Leger', labelAt: 0.55, coords: [[-75.86, 43.235], [-75.70, 43.20], [-75.50, 43.21]] },
     { side: 'british', kind: 'retreat', approx: true, coords: [[-75.50, 43.25], [-75.70, 43.285], [-75.86, 43.30]], width: 2 },
-    { side: 'militia', kind: 'attack', coords: [[-74.98, 43.03], [-75.20, 43.10], [-75.34, 43.17]], width: 3 },
+    { side: 'militia', kind: 'attack', coords: [[-74.98, 43.03], [-75.20, 43.10], [-75.34, 43.17]], width: 3, ph: { coords: [[-74.98, 43.03], [-75.15, 43.09], [-75.30, 43.15]] } },
     { side: 'continental', kind: 'march', label: 'Arnold\'s relief', labelAt: 0.4, approx: true, coords: [[-73.75, 42.75], [-74.20, 42.84], [-74.70, 42.90], [-75.00, 42.98], [-75.42, 43.18]] },
     { side: 'british', kind: 'naval', coords: [[-73.96, 41.86], [-73.95, 41.92], [-73.95, 42.06]] }
   ],
   battles: [
     { coords: [-73.13, 43.696], label: 'Hubbardton', labelPos: { dx: 0, dy: -15, anchor: 'middle' } },
     { coords: [-73.303, 42.94] },
-    { coords: [-75.366, 43.177], label: 'Oriskany', labelPos: { dx: 0, dy: 22, anchor: 'middle' }, ph: { labelPos: { dx: 4, dy: 24, anchor: 'start' } } },
+    { coords: [-75.366, 43.177], label: 'Oriskany', labelPos: { dx: 0, dy: 22, anchor: 'middle' }, ph: { coords: [-75.31, 43.165], labelPos: { dx: 4, dy: 24, anchor: 'start' } } },
     { coords: [-73.64, 43.00], label: 'Freeman\'s Farm,\nBemis Heights', labelPos: { dx: -14, dy: 4, anchor: 'end' } }
   ],
   callouts: [
@@ -147,7 +149,7 @@ HMap.render('#map-campaign', {
     { coords: [-74.40, 42.82], text: 'Mohawk R.', kind: 'water', size: 11.5, angle: -12 },
     { coords: [-73.88, 42.40], text: 'Hudson R.', kind: 'water', size: 11.5, angle: -85 },
     { coords: [-74.75, 42.35], text: 'NEW YORK', kind: 'region', size: 13 },
-    { coords: [-72.86, 43.40], text: 'NEW HAMPSHIRE\nGRANTS', kind: 'region', size: 11 },
+    { coords: [-72.86, 43.40], text: 'NEW HAMPSHIRE\nGRANTS', kind: 'region', size: 11, ph: { text: 'N.H.\nGRANTS', coords: [-72.76, 43.17] } },
     { coords: [-74.45, 43.90], text: 'Adirondack wilderness', kind: 'terrain', size: 12.5 }
   ]
 });
@@ -170,7 +172,7 @@ const FIELD = {
     { name: 'Freeman farm', coords: [-73.6386, 43.0060], kind: 'building', label: { dx: -8, dy: -6, anchor: 'end' } }
   ],
   labels: [
-    { coords: [-73.6300, 42.9790], text: 'Bemis Heights', kind: 'terrain', size: 13, angle: 20, ph: { coords: [-73.6240, 42.9787] } },
+    { coords: [-73.6300, 42.9790], text: 'Bemis Heights', kind: 'terrain', size: 13, angle: 20, ph: { coords: [-73.6200, 42.9855], angle: -20 } },
     { coords: [-73.6058, 42.9925], text: 'Hudson River', kind: 'water', angle: -68, size: 12 },
     { coords: [-73.6185, 43.0098], text: 'Great Ravine', kind: 'terrain', size: 11.5, angle: -20 },
     { coords: [-73.6270, 42.9925], text: 'Mill Creek', kind: 'water', size: 11, angle: 25 }

@@ -122,9 +122,9 @@ HMap.render('#map-fort-lee', {
   alt: 'Map of the Hudson and Hackensack rivers showing Cornwallis\'s crossing to the Palisades and the retreat of the Fort Lee garrison',
   roads: [ { coords: [[-73.9640, 40.8510], [-73.9800, 40.8650], [-73.9750, 40.8900], [-74.0000, 40.9050], [-74.0290, 40.9130], [-74.0420, 40.8950], [-74.0430, 40.8870]] } ],
   moves: [
-    { side: 'british', kind: 'naval', coords: [[-73.8990, 40.9330], [-73.9100, 40.9390], [-73.9195, 40.9435]], label: 'Nov 19–20', labelAt: 0.5 },
+    { side: 'british', kind: 'naval', coords: [[-73.8990, 40.9330], [-73.9100, 40.9390], [-73.9195, 40.9435]], label: 'Nov 19–20', labelAt: 0.5, approx: true },
     { side: 'british', kind: 'march', approx: true, coords: [[-73.9240, 40.9445], [-73.9420, 40.9390], [-73.9600, 40.9230], [-73.9690, 40.8980], [-73.9690, 40.8720], [-73.9650, 40.8560]], label: 'Cornwallis', labelAt: 0.4 },
-    { side: 'continental', kind: 'retreat', coords: [[-73.9660, 40.8525], [-73.9800, 40.8655], [-73.9770, 40.8880], [-74.0000, 40.9045], [-74.0270, 40.9125]], label: 'garrison', labelAt: 0.55 },
+    { side: 'continental', kind: 'retreat', coords: [[-73.9660, 40.8525], [-73.9800, 40.8655], [-73.9770, 40.8880], [-74.0000, 40.9045], [-74.0270, 40.9125]], label: 'garrison', labelAt: 0.55, approx: true },
     { side: 'continental', kind: 'retreat', approx: true, coords: [[-74.0300, 40.9110], [-74.0410, 40.8960], [-74.0430, 40.8890]] }
   ],
   towns: [
@@ -136,7 +136,7 @@ HMap.render('#map-fort-lee', {
     { name: 'Liberty Pole', coords: [-73.9770, 40.8880], kind: 'village', label: { dx: -9, dy: 4, anchor: 'end' } },
     { name: 'Lower Closter Landing', coords: [-73.9215, 40.9440], kind: 'ferry', label: { dx: 9, dy: -12 } },
     { name: 'Closter', coords: [-73.9620, 40.9730], kind: 'village', label: { dx: -8, dy: 4, anchor: 'end' } },
-    { name: 'Philipse Manor (Yonkers)', coords: [-73.8990, 40.9330], kind: 'village', label: { dx: 8, dy: 14 } }
+    { name: 'Philipse Manor (Yonkers)', coords: [-73.8990, 40.9330], kind: 'village', label: { dx: 8, dy: 14 }, ph: { name: 'Philipse Manor', label: { dx: -6, dy: 18, anchor: 'middle' } } }
   ],
   labels: [
     { coords: [-73.9330, 40.9000], text: 'Hudson River', kind: 'water', angle: -62 },

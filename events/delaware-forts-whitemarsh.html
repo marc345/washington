@@ -28,7 +28,7 @@
       <ol>
         <li>Oct 2: a British force crosses from Chester and takes the unfinished fort at Billingsport; the lower barrier is gradually cleared.</li>
         <li>Oct 22: Donop's Hessians march down from Cooper's Ferry and assault Fort Mercer at Red Bank.</li>
-        <li>Nov 18–20: Cornwallis crosses from Chester to Billingsport; Fort Mercer is abandoned before he arrives, and the American galleys are burned or slip upriver past the city.</li>
+        <li>Nov 18–21: Cornwallis crosses from Chester to Billingsport; Fort Mercer is abandoned before he arrives, and the Pennsylvania galleys slip upriver past the city on the night of Nov 19–20, and the remaining Continental vessels are burned on Nov 21.</li>
       </ol>
       <span class="note-approx">Shoreline adjusted to the period: the marsh islands below the Schuylkill mouth, now joined to the mainland under the airport and Navy Yard, are shown as islands, and the Philadelphia and Camden waterfronts are pulled back to about their 1777 lines. Island outlines and barrier positions are approximate.</span>
     </figcaption>
@@ -52,7 +52,7 @@
     <h2>Whitemarsh to Valley Forge, December 4–19</h2>
     <div class="map-canvas" id="map-whitemarsh"></div>
     <figcaption>
-      Howe marched out of Philadelphia to fight the army in its hill camp at Whitemarsh, probed its left and right for three days, and returned without attacking. A week later the army crossed the Schuylkill and went into winter quarters at Valley Forge.
+      Howe marched out of Philadelphia to fight the army in its hill camp at Whitemarsh, probed its left and right for three days, and returned without attacking. Days later the army crossed the Schuylkill and went into winter quarters at Valley Forge.
       <ol>
         <li>Dec 5: Howe reaches Chestnut Hill; Pennsylvania militia are driven back and their general, James Irvine, is captured.</li>
         <li>Dec 7: fighting at Edge Hill with Morgan's riflemen and Maryland militia.</li>
@@ -105,8 +105,11 @@ const ISLAND_MARSH = [[-75.305, 39.866], [-75.285, 39.886], [-75.255, 39.896], [
 const PERIOD = { water: [BACK_CHANNEL, MOUTH, NJ_WATERFRONT, PHL_WATERFRONT].map(ring), land: [MUD_ISLAND, PROVINCE_SHORE, LEAGUE_ISLAND, WINDMILL_ISLAND].map(ring),
   marsh: [ISLAND_MARSH, LEAGUE_ISLAND].map(ring) };
 // modern impoundments and dredge-spoil basins (unnamed water)
-const SPOIL_PONDS = [[-75.240, 39.826, -75.222, 39.842], [-75.233, 39.814, -75.221, 39.824], [-75.265, 39.880, -75.252, 39.890],
-  [-75.190, 39.890, -75.175, 39.898]];  // last: Navy Yard reserve basin
+const SPOIL_PONDS = [[-75.240, 39.826, -75.222, 39.842], [-75.233, 39.814, -75.221, 39.824], [-75.310, 39.866, -75.252, 39.890],
+  [-75.190, 39.890, -75.175, 39.898],  // Navy Yard reserve basin
+  [-75.215, 39.795, -75.200, 39.805], [-75.346, 39.808, -75.332, 39.822], [-75.127, 39.861, -75.113, 39.875]];  // NJ quarry and spoil ponds
+// dammed mill ponds and park lakes on the New Jersey creeks
+const NJ_LAKES = ['Newton Lk', 'Mantua Lk', 'Bell Lk', 'Stewart Lk', 'Blackwood Lk', 'Bells Lk'];
 const CHEVAUX = '#3a2f24';
 
 HMap.render('#map-river', {
@@ -114,8 +117,8 @@ HMap.render('#map-river', {
   bbox: [-75.38, 39.76, -75.08, 39.97],
   alt: 'Map of the Delaware River from Chester to Philadelphia showing the river forts and the lines of sunken obstructions',
   corrections: PERIOD,
-  water: { hide: ['Newton Lk'], hideIn: [[-75.235, 39.884, -75.21, 39.895]].concat(SPOIL_PONDS) },
-  rivers: { only: ['Schuylkill Riv', 'Darby Crk', 'Cobbs Crk', 'Mantua Crk', 'Woodbury Crk', 'Big Timber Crk', 'Newton Crk', 'Cooper Riv', 'Raccoon Crk', 'Crum Crk', 'Ridley Crk', 'Chester Crk'] },
+  water: { hide: NJ_LAKES, hideIn: [[-75.235, 39.884, -75.21, 39.895]].concat(SPOIL_PONDS) },
+  rivers: { only: ['Schuylkill Riv', 'Darby Crk', 'Cobbs Crk', 'Mantua Crk', 'Woodbury Crk', 'Big Timber Crk', 'Newton Crk', 'Cooper Riv', 'Crum Crk', 'Ridley Crk', 'Chester Crk'] },
   lines: [
     { coords: [[-75.2405, 39.8478], [-75.2470, 39.8520], [-75.2540, 39.8560]], color: CHEVAUX, width: 3, dash: '2 2', legend: 'Chevaux-de-frise (sunken obstructions)' },
     { coords: [[-75.2165, 39.8728], [-75.2100, 39.8705], [-75.2030, 39.8680]], color: CHEVAUX, width: 3, dash: '2 2' }
@@ -135,7 +138,7 @@ HMap.render('#map-river', {
     { side: 'british', kind: 'march', label: 'Oct 1–2 · Nov 18', labelAt: 0.5, coords: [[-75.350, 39.846], [-75.300, 39.838], [-75.250, 39.842]] },
     { side: 'hessian', kind: 'march', approx: true, label: 'Donop, Oct 21–22', labelAt: 0.3, coords: [[-75.124, 39.940], [-75.098, 39.918], [-75.090, 39.885], [-75.110, 39.866], [-75.150, 39.864], [-75.184, 39.869]] },
     { side: 'british', kind: 'march', approx: true, label: 'Nov 20', labelAt: 0.5, coords: [[-75.236, 39.846], [-75.212, 39.850], [-75.196, 39.862]] },
-    { side: 'continental', kind: 'naval', label: 'galleys slip upriver, Nov 21', labelAt: 0.55, coords: [[-75.192, 39.880], [-75.160, 39.900], [-75.136, 39.925], [-75.128, 39.955], [-75.105, 39.966]] }
+    { side: 'continental', kind: 'naval', label: 'galleys slip upriver, Nov 19–20', labelAt: 0.55, coords: [[-75.192, 39.880], [-75.160, 39.900], [-75.136, 39.925], [-75.128, 39.955], [-75.105, 39.966]] }
   ],
   ships: [
     { side: 'british', coords: [-75.335, 39.8515], label: 'British fleet', angle: 10, labelPos: { dx: 0, dy: -14 } }
@@ -158,7 +161,8 @@ HMap.render('#map-mifflin', {
   bbox: [-75.245, 39.853, -75.175, 39.897],
   alt: 'Detail map of Fort Mifflin on Mud Island and Fort Mercer at Red Bank with British batteries, ships and the Hessian assault',
   corrections: PERIOD,
-  water: { hideIn: [[-75.235, 39.884, -75.21, 39.895], [-75.216, 39.877, -75.210, 39.882]].concat(SPOIL_PONDS) },
+  // straight dredged mouth of Hessian Run (unnamed in 1777)
+  water: { hideIn: [[-75.235, 39.884, -75.21, 39.895], [-75.216, 39.877, -75.210, 39.882], [-75.196, 39.857, -75.180, 39.866]].concat(SPOIL_PONDS) },
   lines: [
     { coords: [[-75.2165, 39.8728], [-75.2100, 39.8705], [-75.2030, 39.8680]], color: CHEVAUX, width: 3.5, dash: '2 2', legend: 'Chevaux-de-frise (sunken obstructions)' }
   ],
@@ -169,8 +173,8 @@ HMap.render('#map-mifflin', {
     { kind: 'redoubt', coords: [[-75.2320, 39.8750]], side: 'british' }
   ],
   towns: [
-    { place: 'fort-mifflin', name: 'Fort Mifflin', side: 'continental', label: { dx: 10, dy: 14 } },
-    { place: 'fort-mercer', side: 'continental', label: { dx: 4, dy: 20 } }
+    { place: 'fort-mifflin', name: 'Fort Mifflin', side: 'continental', label: { dx: 10, dy: 14 }, ph: { label: { dx: -2, dy: 22, anchor: 'end' } } },
+    { place: 'fort-mercer', side: 'continental', label: { dx: 4, dy: 20 }, ph: { label: { dx: -4, dy: 22, anchor: 'end' } } }
   ],
   moves: [
     { side: 'hessian', kind: 'attack', label: 'Donop', labelAt: 0.4, coords: [[-75.1770, 39.8790], [-75.1830, 39.8752], [-75.1897, 39.8726]] },
